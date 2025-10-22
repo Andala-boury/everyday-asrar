@@ -881,7 +881,6 @@ export default function AsrarEveryday() {
     const newResult = {
       display: displayName || arabicInput,
       arabic: arabicInput,
-      audit,
       kabir,
       saghir,
       hadath,
