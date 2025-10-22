@@ -126,6 +126,20 @@ function auditAbjad(text: string, abjadMap: Record<string, number>, elementsMap:
   };
 }
 
+// Helper functions for calculations
+function abjadSum(text: string): number {
+  const normalized = text.replace(/[ًٌٍَُِّْ\s]/g, '');
+  return [...normalized].reduce((sum, char) => sum + (ABJAD[char] || 0), 0);
+}
+
+function digitalRoot(n: number): number {
+  return calcDigitalRoot(n);
+}
+
+function hadathRemainder(n: number): number {
+  return calcHadathRemainder(n);
+}
+
 function sacredResonance(n: number) {
   const sacred = nearestSacred(n);
   return sacred;
