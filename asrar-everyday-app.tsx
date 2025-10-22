@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { Calculator, Book, TrendingUp, Moon, Sun, Info, Sparkles, Flame, Droplet, Wind, Mountain, History, Star, GitCompare, Calendar, Trash2, X, Copy, CheckCircle, AlertTriangle, Zap, Compass } from 'lucide-react';
+import { Calculator, Book, TrendingUp, Moon, Sun, Info, Sparkles, Flame, Droplet, Wind, Mountain, History, Star, GitCompare, Calendar, Trash2, X, Copy, CheckCircle, AlertTriangle, Zap, Compass, Keyboard } from 'lucide-react';
 import { transliterateLatinToArabic } from './src/lib/text-normalize';
 import { HadadSummaryPanel } from './src/components/hadad-summary';
 import { IlmHurufPanel } from './src/features/ilm-huruf';
@@ -9,6 +9,7 @@ import { LETTER_ELEMENTS, digitalRoot as calcDigitalRoot, hadathRemainder as cal
 import type { AbjadAudit, AuditStep, ElementType, SacredResonance } from './src/components/hadad-summary/types';
 import { useAbjad } from './src/contexts/AbjadContext';
 import { AbjadSystemSelector } from './src/components/AbjadSystemSelector';
+import { ArabicKeyboard } from './src/components/ArabicKeyboard';
 
 // ============================================================================
 // DOMAIN RULES & CORE DATA
@@ -820,6 +821,7 @@ export default function AsrarEveryday() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [showComparison, setShowComparison] = useState(false);
+  const [showKeyboard, setShowKeyboard] = useState(false);
   
   // Helper function for element analysis
   const analyzeElements = (text: string) => {
@@ -871,6 +873,21 @@ export default function AsrarEveryday() {
     // Recalculate if result exists
     if (result && arabicInput) {
       calculate();
+    }
+  };
+
+  const handleKeyboardPress = (char: string) => {
+    if (char === '⌫') {
+      // Backspace
+      setArabicInput(arabicInput.slice(0, -1));
+      setLatinInput(''); // Clear latin when typing Arabic
+    } else if (char === '⎵') {
+      // Space
+      setArabicInput(arabicInput + ' ');
+    } else {
+      // Regular character
+      setArabicInput(arabicInput + char);
+      setLatinInput(''); // Clear latin when typing Arabic
     }
   };
   
@@ -1044,6 +1061,9 @@ export default function AsrarEveryday() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Main Content Area */}
             <div className="lg:col-span-2 space-y-8">
+              {/* Abjad System Selector */}
+              <AbjadSystemSelector />
+              
               {/* Input Section */}
               <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
             <h2 className="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
@@ -1080,9 +1100,22 @@ export default function AsrarEveryday() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                  Arabic Text <span className="text-red-500">*</span>
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Arabic Text <span className="text-red-500">*</span>
+                  </label>
+                  <button
+                    onClick={() => setShowKeyboard(!showKeyboard)}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                      showKeyboard
+                        ? 'bg-indigo-600 text-white'
+                        : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+                    }`}
+                  >
+                    <Keyboard className="w-4 h-4" />
+                    {showKeyboard ? 'Hide Keyboard' : 'Show Keyboard'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={arabicInput}
@@ -1096,6 +1129,14 @@ export default function AsrarEveryday() {
                   className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none transition-all text-2xl font-arabic"
                   style={{ fontFamily: "'Noto Naskh Arabic', 'Amiri', serif" }}
                 />
+                {showKeyboard && (
+                  <div className="mt-3">
+                    <ArabicKeyboard 
+                      onKeyPress={handleKeyboardPress}
+                      onClose={() => setShowKeyboard(false)}
+                    />
+                  </div>
+                )}
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   Examples: يس (70), بسم الله (786), باكا (108)
                 </p>

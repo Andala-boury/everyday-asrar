@@ -30,6 +30,7 @@ import {
 import { transliterateLatinToArabic } from '../../lib/text-normalize';
 import { ArabicKeyboard } from '../../components/ArabicKeyboard';
 import { useAbjad } from '../../contexts/AbjadContext';
+import { AbjadSystemSelector } from '../../components/AbjadSystemSelector';
 
 const PLANET_ICONS: Record<Planet, typeof Sun> = {
   Sun, Moon,
@@ -175,6 +176,9 @@ export function IlmHurufPanel() {
 
   return (
     <div className="space-y-6">
+      {/* Abjad System Selector */}
+      <AbjadSystemSelector />
+      
       {/* Mode Selection */}
       <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6">
         <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
