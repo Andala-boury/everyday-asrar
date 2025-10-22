@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sun, Moon, Star, Heart, BookOpen, Lightbulb, 
   Calendar, Clock, Compass, Users, Sparkles,
@@ -62,6 +62,11 @@ export function IlmHurufPanel() {
   const [birthDate, setBirthDate] = useState('');
   const [results, setResults] = useState<any>(null);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
+
+  // Clear results when mode changes to prevent showing stale data
+  useEffect(() => {
+    setResults(null);
+  }, [mode]);
 
   const handleLatinInput = (value: string, isFirstName: boolean = true) => {
     if (isFirstName) {
@@ -415,7 +420,7 @@ export function IlmHurufPanel() {
       {/* Results */}
       {results && mode === 'weekly' && <WeeklyResults results={results} selectedDay={selectedDay} setSelectedDay={setSelectedDay} />}
       {results && mode === 'destiny' && <DestinyResults results={results} />}
-      {results && mode === 'compatibility' && <CompatibilityResults results={results} />}
+      {results && mode === 'compatibility' && results.person1 && results.person2 && <CompatibilityResults results={results} />}
       {results && mode === 'life-path' && <LifePathResults results={results} />}
       {results && mode === 'timing' && <TimingResults results={results} birthDate={birthDate} />}
     </div>
@@ -626,6 +631,15 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
 }
 
 function DestinyResults({ results }: { results: any }) {
+  // Safety check
+  if (!results || !results.destiny) {
+    return (
+      <div className="text-center text-slate-500 dark:text-slate-400 py-8">
+        Unable to calculate destiny. Please enter a name.
+      </div>
+    );
+  }
+
   const station = results.destiny;
   
   return (
@@ -729,6 +743,15 @@ function DestinyResults({ results }: { results: any }) {
 }
 
 function CompatibilityResults({ results }: { results: any }) {
+  // Safety check
+  if (!results || !results.person1 || !results.person2) {
+    return (
+      <div className="text-center text-slate-500 dark:text-slate-400 py-8">
+        Unable to calculate compatibility. Please ensure both names are entered.
+      </div>
+    );
+  }
+
   const harmonyColor = results.harmonyScore >= 75 ? 'text-green-600' : results.harmonyScore >= 50 ? 'text-amber-600' : 'text-red-600';
   const harmonyBg = results.harmonyScore >= 75 ? 'bg-green-50 dark:bg-green-900/20' : results.harmonyScore >= 50 ? 'bg-amber-50 dark:bg-amber-900/20' : 'bg-red-50 dark:bg-red-900/20';
   
