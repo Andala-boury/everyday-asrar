@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { 
   Sun, Moon, Star, Heart, BookOpen, Lightbulb, 
   Calendar, Clock, Compass, Users, Sparkles,
-  TrendingUp, Target, MessageCircle, Home, Flame
+  TrendingUp, Target, MessageCircle, Home, Flame, Keyboard
 } from 'lucide-react';
 import {
   analyzeNameDestiny,
@@ -27,6 +27,8 @@ import {
   type HarmonyType,
   type DominantForce as DominantForceType
 } from './core';
+import { transliterateLatinToArabic } from '../../lib/text-normalize';
+import { ArabicKeyboard } from '../../components/ArabicKeyboard';
 
 const PLANET_ICONS: Record<Planet, typeof Sun> = {
   Sun, Moon,
@@ -51,9 +53,74 @@ export function IlmHurufPanel() {
   const [mode, setMode] = useState<'destiny' | 'compatibility' | 'timing' | 'life-path' | 'weekly'>('weekly');
   const [name, setName] = useState('');
   const [name2, setName2] = useState('');
+  const [latinInput, setLatinInput] = useState('');
+  const [latinInput2, setLatinInput2] = useState('');
+  const [showKeyboard, setShowKeyboard] = useState(false);
+  const [showKeyboard2, setShowKeyboard2] = useState(false);
+  const [translitConfidence, setTranslitConfidence] = useState<number | null>(null);
+  const [translitWarnings, setTranslitWarnings] = useState<string[]>([]);
   const [birthDate, setBirthDate] = useState('');
   const [results, setResults] = useState<any>(null);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
+
+  const handleLatinInput = (value: string, isFirstName: boolean = true) => {
+    if (isFirstName) {
+      setLatinInput(value);
+    } else {
+      setLatinInput2(value);
+    }
+    
+    if (value.trim()) {
+      const result = transliterateLatinToArabic(value);
+      if (isFirstName) {
+        setName(result.primary);
+        setTranslitConfidence(result.confidence);
+        setTranslitWarnings(result.warnings);
+      } else {
+        setName2(result.primary);
+      }
+    } else {
+      if (isFirstName) {
+        setName('');
+        setTranslitConfidence(null);
+        setTranslitWarnings([]);
+      } else {
+        setName2('');
+      }
+    }
+  };
+
+  const handleKeyboardPress = (char: string, isFirstName: boolean = true) => {
+    const currentName = isFirstName ? name : name2;
+    
+    if (char === '⌫') {
+      // Backspace
+      const newValue = currentName.slice(0, -1);
+      if (isFirstName) {
+        setName(newValue);
+        setLatinInput(''); // Clear latin when typing Arabic
+      } else {
+        setName2(newValue);
+        setLatinInput2('');
+      }
+    } else if (char === '⎵') {
+      // Space
+      if (isFirstName) {
+        setName(currentName + ' ');
+      } else {
+        setName2(currentName + ' ');
+      }
+    } else {
+      // Regular character
+      if (isFirstName) {
+        setName(currentName + char);
+        setLatinInput(''); // Clear latin when typing Arabic
+      } else {
+        setName2(currentName + char);
+        setLatinInput2('');
+      }
+    }
+  };
 
   const handleAnalyze = () => {
     if (mode === 'destiny' && name) {
@@ -175,18 +242,71 @@ export function IlmHurufPanel() {
         
         <div className="space-y-4">
           {(mode === 'destiny' || mode === 'compatibility' || mode === 'weekly') && (
-            <div>
-              <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                {mode === 'compatibility' ? 'First Person (Arabic)' : 'Name (Arabic)'}
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="محمد"
-                className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right"
-                dir="rtl"
-              />
+            <div className="space-y-3">
+              {/* Latin Input */}
+              <div>
+                <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                  {mode === 'compatibility' ? 'First Person - Latin (English/French)' : 'Name - Latin (English/French)'}
+                </label>
+                <input
+                  type="text"
+                  value={latinInput}
+                  onChange={(e) => handleLatinInput(e.target.value, true)}
+                  placeholder="e.g., Muhammad, Hassan, Fatima, Layla"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                />
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Auto-transliterates to Arabic • Supports EN/FR names
+                </p>
+                {translitConfidence !== null && translitConfidence < 100 && (
+                  <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
+                    <p className="text-xs text-amber-800 dark:text-amber-200">
+                      Confidence: {translitConfidence}% 
+                      {translitWarnings.length > 0 && ` • ${translitWarnings.join(', ')}`}
+                    </p>
+                  </div>
+                )}
+              </div>
+              
+              {/* Arabic Input */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    {mode === 'compatibility' ? 'First Person - Arabic' : 'Name - Arabic'}
+                  </label>
+                  <button
+                    onClick={() => setShowKeyboard(!showKeyboard)}
+                    className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                      showKeyboard
+                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700'
+                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600'
+                    }`}
+                  >
+                    <Keyboard className="w-3 h-3" />
+                    {showKeyboard ? 'Hide' : 'Show'} Keyboard
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setLatinInput(''); // Clear latin if user types Arabic directly
+                  }}
+                  placeholder="محمد"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right text-xl font-arabic"
+                  dir="rtl"
+                  style={{ fontFamily: "'Noto Naskh Arabic', 'Amiri', serif" }}
+                />
+                {showKeyboard && (
+                  <div className="mt-3">
+                    <ArabicKeyboard 
+                      onKeyPress={(char) => handleKeyboardPress(char, true)}
+                      onClose={() => setShowKeyboard(false)}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           )}
           
@@ -208,18 +328,63 @@ export function IlmHurufPanel() {
           )}
           
           {mode === 'compatibility' && (
-            <div>
-              <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                Second Person (Arabic)
-              </label>
-              <input
-                type="text"
-                value={name2}
-                onChange={(e) => setName2(e.target.value)}
-                placeholder="فاطمة"
-                className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right"
-                dir="rtl"
-              />
+            <div className="space-y-3">
+              {/* Latin Input for Second Person */}
+              <div>
+                <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                  Second Person - Latin (English/French)
+                </label>
+                <input
+                  type="text"
+                  value={latinInput2}
+                  onChange={(e) => handleLatinInput(e.target.value, false)}
+                  placeholder="e.g., Fatima, Aisha, Zainab"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                />
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Auto-transliterates to Arabic
+                </p>
+              </div>
+              
+              {/* Arabic Input for Second Person */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Second Person - Arabic
+                  </label>
+                  <button
+                    onClick={() => setShowKeyboard2(!showKeyboard2)}
+                    className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                      showKeyboard2
+                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700'
+                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600'
+                    }`}
+                  >
+                    <Keyboard className="w-3 h-3" />
+                    {showKeyboard2 ? 'Hide' : 'Show'} Keyboard
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={name2}
+                  onChange={(e) => {
+                    setName2(e.target.value);
+                    setLatinInput2(''); // Clear latin if user types Arabic directly
+                  }}
+                  placeholder="فاطمة"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right text-xl font-arabic"
+                  dir="rtl"
+                  style={{ fontFamily: "'Noto Naskh Arabic', 'Amiri', serif" }}
+                />
+                {showKeyboard2 && (
+                  <div className="mt-3">
+                    <ArabicKeyboard 
+                      onKeyPress={(char) => handleKeyboardPress(char, false)}
+                      onClose={() => setShowKeyboard2(false)}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           )}
           
@@ -588,11 +753,11 @@ function CompatibilityResults({ results }: { results: any }) {
               {results.person1.saghir}
             </div>
             <div className="text-sm font-medium text-slate-600 dark:text-slate-400">
-              {results.person1.destiny.name}
+              {results.person1.destiny?.name || 'Unknown'}
             </div>
           </div>
           <div className="text-xs text-slate-600 dark:text-slate-400">
-            {results.person1.destiny.quality}
+            {results.person1.destiny?.quality || ''}
           </div>
         </div>
         
@@ -602,11 +767,11 @@ function CompatibilityResults({ results }: { results: any }) {
               {results.person2.saghir}
             </div>
             <div className="text-sm font-medium text-slate-600 dark:text-slate-400">
-              {results.person2.destiny.name}
+              {results.person2.destiny?.name || 'Unknown'}
             </div>
           </div>
           <div className="text-xs text-slate-600 dark:text-slate-400">
-            {results.person2.destiny.quality}
+            {results.person2.destiny?.quality || ''}
           </div>
         </div>
       </div>
