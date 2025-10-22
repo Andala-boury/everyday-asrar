@@ -29,6 +29,7 @@ import {
 } from './core';
 import { transliterateLatinToArabic } from '../../lib/text-normalize';
 import { ArabicKeyboard } from '../../components/ArabicKeyboard';
+import { useAbjad } from '../../contexts/AbjadContext';
 
 const PLANET_ICONS: Record<Planet, typeof Sun> = {
   Sun, Moon,
@@ -50,6 +51,7 @@ const PLANET_COLORS: Record<Planet, string> = {
 };
 
 export function IlmHurufPanel() {
+  const { abjad } = useAbjad(); // Get the current Abjad system
   const [mode, setMode] = useState<'destiny' | 'compatibility' | 'timing' | 'life-path' | 'weekly'>('weekly');
   const [name, setName] = useState('');
   const [name2, setName2] = useState('');
@@ -130,10 +132,10 @@ export function IlmHurufPanel() {
   const handleAnalyze = () => {
     try {
       if (mode === 'destiny' && name) {
-        const result = analyzeNameDestiny(name);
+        const result = analyzeNameDestiny(name, abjad);
         setResults(result);
       } else if (mode === 'compatibility' && name && name2) {
-        const result = analyzeCompatibility(name, name2);
+        const result = analyzeCompatibility(name, name2, abjad);
         setResults(result);
       } else if (mode === 'life-path' && birthDate) {
         const result = calculateLifePath(new Date(birthDate));
@@ -144,7 +146,7 @@ export function IlmHurufPanel() {
         const personalYear = birthDate ? calculatePersonalYear(new Date(birthDate), now.getFullYear()) : null;
         setResults({ planetaryHour, personalYear });
       } else if (mode === 'weekly' && name) {
-        const profile = calculateUserProfile(name, birthDate ? new Date(birthDate) : undefined);
+        const profile = calculateUserProfile(name, birthDate ? new Date(birthDate) : undefined, undefined, abjad);
         const weeklySummary = generateWeeklySummary(profile);
         const harmonyType = calculateHarmonyType(
           profile.element,

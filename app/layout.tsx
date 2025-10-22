@@ -1,5 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
+import { AbjadProvider } from '../src/contexts/AbjadContext'
 
 export const metadata: Metadata = {
   title: 'Asrār Everyday - Islamic Numerology Explorer',
@@ -13,7 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AbjadProvider>
+          {children}
+        </AbjadProvider>
+      </body>
     </html>
   )
 }

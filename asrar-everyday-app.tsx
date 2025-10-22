@@ -5,8 +5,10 @@ import { Calculator, Book, TrendingUp, Moon, Sun, Info, Sparkles, Flame, Droplet
 import { transliterateLatinToArabic } from './src/lib/text-normalize';
 import { HadadSummaryPanel } from './src/components/hadad-summary';
 import { IlmHurufPanel } from './src/features/ilm-huruf';
-import { ABJAD, LETTER_ELEMENTS, digitalRoot as calcDigitalRoot, hadathRemainder as calcHadathRemainder, hadathToElement, nearestSacred } from './src/components/hadad-summary/hadad-core';
+import { LETTER_ELEMENTS, digitalRoot as calcDigitalRoot, hadathRemainder as calcHadathRemainder, hadathToElement, nearestSacred } from './src/components/hadad-summary/hadad-core';
 import type { AbjadAudit, AuditStep, ElementType, SacredResonance } from './src/components/hadad-summary/types';
+import { useAbjad } from './src/contexts/AbjadContext';
+import { AbjadSystemSelector } from './src/components/AbjadSystemSelector';
 
 // ============================================================================
 // DOMAIN RULES & CORE DATA
@@ -127,9 +129,9 @@ function auditAbjad(text: string, abjadMap: Record<string, number>, elementsMap:
 }
 
 // Helper functions for calculations
-function abjadSum(text: string): number {
+function abjadSum(text: string, abjadMap: Record<string, number>): number {
   const normalized = text.replace(/[ًٌٍَُِّْ\s]/g, '');
-  return [...normalized].reduce((sum, char) => sum + (ABJAD[char] || 0), 0);
+  return [...normalized].reduce((sum, char) => sum + (abjadMap[char] || 0), 0);
 }
 
 function digitalRoot(n: number): number {
@@ -146,26 +148,6 @@ function sacredResonance(n: number) {
 }
 
 // hadathToElement is now imported from hadad-core
-
-function analyzeElements(text: string) {
-  const audit = auditAbjad(text, ABJAD, LETTER_ELEMENTS);
-  const counts: Record<ElementType, number> = { Fire: 0, Water: 0, Air: 0, Earth: 0 };
-  const values: Record<ElementType, number> = { Fire: 0, Water: 0, Air: 0, Earth: 0 };
-  
-  audit.steps.forEach(step => {
-    const element = step.element as ElementType | undefined;
-    if (element) {
-      counts[element]++;
-      values[element] += step.value;
-    }
-  });
-  
-  const entries = Object.entries(counts) as [ElementType, number][];
-  const dominant = entries.reduce((a, b) => b[1] > a[1] ? b : a)[0];
-  const secondary = entries.filter(([el]) => el !== dominant).reduce((a, b) => b[1] > a[1] ? b : a)[0];
-  
-  return { counts, values, dominant, secondary, audit };
-}
 
 function findSacredMatches(kabir: number) {
   return SACRED_NUMBERS
@@ -605,7 +587,11 @@ function HistoryPanel({
   );
 }
 
-function ComparisonMode({ onClose }: { onClose: () => void }) {
+function ComparisonMode({ onClose, abjad, analyzeElements }: { 
+  onClose: () => void;
+  abjad: Record<string, number>;
+  analyzeElements: (text: string) => any;
+}) {
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
   const [name1, setName1] = useState('');
@@ -618,18 +604,18 @@ function ComparisonMode({ onClose }: { onClose: () => void }) {
     const calc1 = {
       display: name1 || input1,
       arabic: input1,
-      kabir: abjadSum(input1),
-      saghir: digitalRoot(abjadSum(input1)),
-      hadathElement: hadathToElement(hadathRemainder(abjadSum(input1))),
+      kabir: abjadSum(input1, abjad),
+      saghir: digitalRoot(abjadSum(input1, abjad)),
+      hadathElement: hadathToElement(hadathRemainder(abjadSum(input1, abjad))),
       ...analyzeElements(input1)
     };
     
     const calc2 = {
       display: name2 || input2,
       arabic: input2,
-      kabir: abjadSum(input2),
-      saghir: digitalRoot(abjadSum(input2)),
-      hadathElement: hadathToElement(hadathRemainder(abjadSum(input2))),
+      kabir: abjadSum(input2, abjad),
+      saghir: digitalRoot(abjadSum(input2, abjad)),
+      hadathElement: hadathToElement(hadathRemainder(abjadSum(input2, abjad))),
       ...analyzeElements(input2)
     };
     
@@ -821,6 +807,7 @@ function DailyReflectionCard() {
 // ============================================================================
 
 export default function AsrarEveryday() {
+  const { abjad } = useAbjad(); // Get the current Abjad system
   const [darkMode, setDarkMode] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(true);
   const [viewMode, setViewMode] = useState<'calculator' | 'guidance'>('calculator');
@@ -833,6 +820,27 @@ export default function AsrarEveryday() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [showComparison, setShowComparison] = useState(false);
+  
+  // Helper function for element analysis
+  const analyzeElements = (text: string) => {
+    const audit = auditAbjad(text, abjad, LETTER_ELEMENTS);
+    const counts: Record<ElementType, number> = { Fire: 0, Water: 0, Air: 0, Earth: 0 };
+    const values: Record<ElementType, number> = { Fire: 0, Water: 0, Air: 0, Earth: 0 };
+    
+    audit.steps.forEach(step => {
+      const element = step.element as ElementType | undefined;
+      if (element) {
+        counts[element]++;
+        values[element] += step.value;
+      }
+    });
+    
+    const entries = Object.entries(counts) as [ElementType, number][];
+    const dominant = entries.reduce((a, b) => b[1] > a[1] ? b : a)[0];
+    const secondary = entries.filter(([el]) => el !== dominant).reduce((a, b) => b[1] > a[1] ? b : a)[0];
+    
+    return { counts, values, dominant, secondary, audit };
+  };
   
   useEffect(() => {
     setHistory(loadHistory());
@@ -869,7 +877,7 @@ export default function AsrarEveryday() {
   const calculate = () => {
     if (!arabicInput.trim()) return;
     
-    const audit = auditAbjad(arabicInput, ABJAD, LETTER_ELEMENTS);
+    const audit = auditAbjad(arabicInput, abjad, LETTER_ELEMENTS);
     const kabir = audit.total;
     const saghir = calcDigitalRoot(kabir);
     const hadath = calcHadathRemainder(kabir);
@@ -995,6 +1003,11 @@ export default function AsrarEveryday() {
           {/* Daily Reflection */}
           <div className="mb-8">
             <DailyReflectionCard />
+          </div>
+          
+          {/* Abjad System Selector */}
+          <div className="mb-8">
+            <AbjadSystemSelector />
           </div>
           
           {/* View Mode Tabs */}
@@ -1191,7 +1204,7 @@ export default function AsrarEveryday() {
         </main>
         
         {/* Modals */}
-        {showComparison && <ComparisonMode onClose={() => setShowComparison(false)} />}
+        {showComparison && <ComparisonMode onClose={() => setShowComparison(false)} abjad={abjad} analyzeElements={analyzeElements} />}
         
         {/* Footer */}
         <footer className="border-t border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm mt-12">

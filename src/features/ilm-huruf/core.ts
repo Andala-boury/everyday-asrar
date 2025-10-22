@@ -3,7 +3,8 @@
  * Based on the tradition of Imam al-Būnī and classical masters
  */
 
-import { ABJAD, digitalRoot, hadathRemainder } from '../../components/hadad-summary/hadad-core';
+import { digitalRoot, hadathRemainder } from '../../components/hadad-summary/hadad-core';
+import { ABJAD_MAGHRIBI } from '../../contexts/AbjadContext';
 
 // ============================================================================
 // CLASSICAL LETTER SCIENCE - Al-Būnī's Methodology
@@ -240,7 +241,7 @@ export function calculateLifePath(birthDate: Date): {
 /**
  * Name destiny - What your name reveals about your life purpose
  */
-export function analyzeNameDestiny(name: string) {
+export function analyzeNameDestiny(name: string, abjad: Record<string, number> = ABJAD_MAGHRIBI) {
   const normalized = name.replace(/[ًٌٍَُِّْ]/g, '').replace(/\s+/g, '');
   const letters = [...normalized];
   
@@ -250,7 +251,7 @@ export function analyzeNameDestiny(name: string) {
   }
   
   // Kabīr (sum of all letters)
-  const kabir = letters.reduce((sum, ch) => sum + (ABJAD[ch] || 0), 0);
+  const kabir = letters.reduce((sum, ch) => sum + (abjad[ch] || 0), 0);
   
   // Ṣaghīr (digital root)
   const saghir = digitalRoot(kabir);
@@ -260,11 +261,11 @@ export function analyzeNameDestiny(name: string) {
   
   // Soul urge (vowels only)
   const vowels = letters.filter(ch => 'اوي'.includes(ch));
-  const soulUrge = digitalRoot(vowels.reduce((sum, ch) => sum + (ABJAD[ch] || 0), 0));
+  const soulUrge = digitalRoot(vowels.reduce((sum, ch) => sum + (abjad[ch] || 0), 0));
   
   // Personality (consonants only)
   const consonants = letters.filter(ch => !'اوي'.includes(ch));
-  const personality = digitalRoot(consonants.reduce((sum, ch) => sum + (ABJAD[ch] || 0), 0));
+  const personality = digitalRoot(consonants.reduce((sum, ch) => sum + (abjad[ch] || 0), 0));
   
   // Ensure values are within valid range (1-9)
   const validSaghir = saghir || 9;
@@ -298,9 +299,9 @@ function generateDestinyInterpretation(destiny: number, soul: number, personalit
 /**
  * Compatibility analysis between two souls
  */
-export function analyzeCompatibility(name1: string, name2: string) {
-  const person1 = analyzeNameDestiny(name1);
-  const person2 = analyzeNameDestiny(name2);
+export function analyzeCompatibility(name1: string, name2: string, abjad: Record<string, number> = ABJAD_MAGHRIBI) {
+  const person1 = analyzeNameDestiny(name1, abjad);
+  const person2 = analyzeNameDestiny(name2, abjad);
   
   const destinyDiff = Math.abs(person1.saghir - person2.saghir);
   const soulDiff = Math.abs(person1.soulUrgeNumber - person2.soulUrgeNumber);
@@ -824,9 +825,10 @@ function getElementPhase(daysSinceAnchor: number): ElementType {
 export function calculateUserProfile(
   nameArabic: string,
   birthDate?: Date,
-  motherName?: string
+  motherName?: string,
+  abjad: Record<string, number> = ABJAD_MAGHRIBI
 ): UserProfile {
-  const destiny = analyzeNameDestiny(nameArabic);
+  const destiny = analyzeNameDestiny(nameArabic, abjad);
   
   // Determine element from letters
   const letters = [...nameArabic.replace(/[ًٌٍَُِّْ\s]/g, '')];
