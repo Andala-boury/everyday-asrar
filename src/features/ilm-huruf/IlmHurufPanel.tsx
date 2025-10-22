@@ -128,35 +128,46 @@ export function IlmHurufPanel() {
   };
 
   const handleAnalyze = () => {
-    if (mode === 'destiny' && name) {
-      setResults(analyzeNameDestiny(name));
-    } else if (mode === 'compatibility' && name && name2) {
-      setResults(analyzeCompatibility(name, name2));
-    } else if (mode === 'life-path' && birthDate) {
-      setResults(calculateLifePath(new Date(birthDate)));
-    } else if (mode === 'timing') {
-      const now = new Date();
-      const planetaryHour = calculatePlanetaryHour(now);
-      const personalYear = birthDate ? calculatePersonalYear(new Date(birthDate), now.getFullYear()) : null;
-      setResults({ planetaryHour, personalYear });
-    } else if (mode === 'weekly' && name) {
-      const profile = calculateUserProfile(name, birthDate ? new Date(birthDate) : undefined);
-      const weeklySummary = generateWeeklySummary(profile);
-      const harmonyType = calculateHarmonyType(
-        profile.element,
-        profile.kawkab,
-        profile.ruh,
-        weeklySummary.days[0].day_planet,
-        weeklySummary.days[0].ruh_phase
-      );
-      const dominantForce = calculateDominantForce(
-        profile.saghir,
-        profile.element,
-        profile.kawkab,
-        profile.letter_geometry
-      );
-      setResults({ profile, weeklySummary, harmonyType, dominantForce });
-      setSelectedDay(null);
+    try {
+      if (mode === 'destiny' && name) {
+        const result = analyzeNameDestiny(name);
+        setResults(result);
+      } else if (mode === 'compatibility' && name && name2) {
+        const result = analyzeCompatibility(name, name2);
+        setResults(result);
+      } else if (mode === 'life-path' && birthDate) {
+        const result = calculateLifePath(new Date(birthDate));
+        setResults(result);
+      } else if (mode === 'timing') {
+        const now = new Date();
+        const planetaryHour = calculatePlanetaryHour(now);
+        const personalYear = birthDate ? calculatePersonalYear(new Date(birthDate), now.getFullYear()) : null;
+        setResults({ planetaryHour, personalYear });
+      } else if (mode === 'weekly' && name) {
+        const profile = calculateUserProfile(name, birthDate ? new Date(birthDate) : undefined);
+        const weeklySummary = generateWeeklySummary(profile);
+        const harmonyType = calculateHarmonyType(
+          profile.element,
+          profile.kawkab,
+          profile.ruh,
+          weeklySummary.days[0].day_planet,
+          weeklySummary.days[0].ruh_phase
+        );
+        const dominantForce = calculateDominantForce(
+          profile.saghir,
+          profile.element,
+          profile.kawkab,
+          profile.letter_geometry
+        );
+        setResults({ profile, weeklySummary, harmonyType, dominantForce });
+        setSelectedDay(null);
+      }
+    } catch (error) {
+      console.error('Analysis error:', error);
+      setResults({
+        error: true,
+        message: error instanceof Error ? error.message : 'Unable to analyze. Please check your input.'
+      });
     }
   };
 
@@ -418,11 +429,20 @@ export function IlmHurufPanel() {
       </div>
 
       {/* Results */}
-      {results && mode === 'weekly' && <WeeklyResults results={results} selectedDay={selectedDay} setSelectedDay={setSelectedDay} />}
-      {results && mode === 'destiny' && <DestinyResults results={results} />}
-      {results && mode === 'compatibility' && results.person1 && results.person2 && <CompatibilityResults results={results} />}
-      {results && mode === 'life-path' && <LifePathResults results={results} />}
-      {results && mode === 'timing' && <TimingResults results={results} birthDate={birthDate} />}
+      {results && results.error && (
+        <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
+          <div className="flex items-center gap-3 mb-2">
+            <MessageCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
+            <h3 className="text-lg font-bold text-red-800 dark:text-red-200">Analysis Error</h3>
+          </div>
+          <p className="text-red-700 dark:text-red-300">{results.message}</p>
+        </div>
+      )}
+      {results && !results.error && mode === 'weekly' && <WeeklyResults results={results} selectedDay={selectedDay} setSelectedDay={setSelectedDay} />}
+      {results && !results.error && mode === 'destiny' && <DestinyResults results={results} />}
+      {results && !results.error && mode === 'compatibility' && results.person1 && results.person2 && <CompatibilityResults results={results} />}
+      {results && !results.error && mode === 'life-path' && <LifePathResults results={results} />}
+      {results && !results.error && mode === 'timing' && <TimingResults results={results} birthDate={birthDate} />}
     </div>
   );
 }

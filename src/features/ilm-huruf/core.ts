@@ -244,6 +244,11 @@ export function analyzeNameDestiny(name: string) {
   const normalized = name.replace(/[ًٌٍَُِّْ]/g, '').replace(/\s+/g, '');
   const letters = [...normalized];
   
+  // Safety check - ensure we have valid input
+  if (letters.length === 0) {
+    throw new Error('Name cannot be empty');
+  }
+  
   // Kabīr (sum of all letters)
   const kabir = letters.reduce((sum, ch) => sum + (ABJAD[ch] || 0), 0);
   
@@ -261,16 +266,21 @@ export function analyzeNameDestiny(name: string) {
   const consonants = letters.filter(ch => !'اوي'.includes(ch));
   const personality = digitalRoot(consonants.reduce((sum, ch) => sum + (ABJAD[ch] || 0), 0));
   
+  // Ensure values are within valid range (1-9)
+  const validSaghir = saghir || 9;
+  const validSoulUrge = soulUrge || 9;
+  const validPersonality = personality || 9;
+  
   return {
     kabir,
-    saghir,
+    saghir: validSaghir,
     hadath,
-    soulUrgeNumber: soulUrge,
-    personalityNumber: personality,
-    destiny: SPIRITUAL_STATIONS[saghir as keyof typeof SPIRITUAL_STATIONS],
-    soulUrge: SPIRITUAL_STATIONS[soulUrge as keyof typeof SPIRITUAL_STATIONS],
-    personality: SPIRITUAL_STATIONS[personality as keyof typeof SPIRITUAL_STATIONS],
-    interpretation: generateDestinyInterpretation(saghir, soulUrge, personality)
+    soulUrgeNumber: validSoulUrge,
+    personalityNumber: validPersonality,
+    destiny: SPIRITUAL_STATIONS[validSaghir as keyof typeof SPIRITUAL_STATIONS],
+    soulUrge: SPIRITUAL_STATIONS[validSoulUrge as keyof typeof SPIRITUAL_STATIONS],
+    personality: SPIRITUAL_STATIONS[validPersonality as keyof typeof SPIRITUAL_STATIONS],
+    interpretation: generateDestinyInterpretation(validSaghir, validSoulUrge, validPersonality)
   };
 }
 
