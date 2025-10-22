@@ -749,14 +749,14 @@ function ComparisonMode({ onClose }: { onClose: () => void }) {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 dark:text-slate-400">Element:</span>
-                        <span className={`font-semibold ${ELEMENT_INFO[calc.dominant].color}`}>{calc.dominant}</span>
+                        <span className={`font-semibold ${ELEMENT_INFO[calc.dominant as ElementType].color}`}>{calc.dominant}</span>
                       </div>
                       <div className="flex flex-wrap gap-1 mt-3">
                         {Object.entries(calc.counts)
-                          .filter(([_, count]) => count > 0)
+                          .filter(([_, count]) => (count as number) > 0)
                           .map(([element, count]) => (
                             <span key={element} className={`text-xs px-2 py-1 rounded ${ELEMENT_INFO[element as ElementType].bg}`}>
-                              {element}: {count}
+                              {element}: {count as number}
                             </span>
                           ))}
                       </div>
