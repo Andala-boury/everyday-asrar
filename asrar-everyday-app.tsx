@@ -13,7 +13,7 @@ import type { AbjadAudit, AuditStep, ElementType } from './src/components/hadad-
 // ============================================================================
 
 // ABJAD and LETTER_ELEMENTS are now imported from hadad-core
-type ElementType = 'Fire' | 'Water' | 'Air' | 'Earth';
+// ElementType is imported from types.ts
 
 const ELEMENT_INFO = {
   Fire: { icon: Flame, color: 'text-orange-500', bg: 'bg-orange-500/10', label: 'Fire 🔥', quality: 'Transformative, Initiating' },
