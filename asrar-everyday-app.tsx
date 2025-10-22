@@ -388,10 +388,12 @@ function TaMarbutaToggle({ value, onChange }: { value: 'ه' | 'ة'; onChange: (v
           <span className="font-arabic text-lg">ة</span>
         </button>
       </div>
-      <Info
-        className="w-4 h-4 text-slate-400 cursor-help"
+      <div 
         title="Choose how tāʾ marbūṭa is counted: ه (hāʾ=5, Maghrib) or ة (tāʾ=400, Mashreq)"
-      />
+        className="flex items-center"
+      >
+        <Info className="w-4 h-4 text-slate-400 cursor-help" />
+      </div>
     </div>
   );
 }
