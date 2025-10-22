@@ -136,7 +136,7 @@ function digitalRoot(n: number): number {
   return calcDigitalRoot(n);
 }
 
-function hadathRemainder(n: number): number {
+function hadathRemainder(n: number): 0 | 1 | 2 | 3 {
   return calcHadathRemainder(n);
 }
 
