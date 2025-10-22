@@ -40,8 +40,13 @@ export interface UmHadad {
 export interface SacredResonance {
   nearest: number;
   delta: number;
+  isExact: boolean;
+  factors: number[];
+  divisibleBy7: boolean;
   div7: boolean;
+  divisibleBy19: boolean;
   div19: boolean;
+  divisibleBy99: boolean;
   div99: boolean;
 }
 

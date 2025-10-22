@@ -6,7 +6,7 @@ import { transliterateLatinToArabic } from './src/lib/text-normalize';
 import { HadadSummaryPanel } from './src/components/hadad-summary';
 import { IlmHurufPanel } from './src/features/ilm-huruf';
 import { ABJAD, LETTER_ELEMENTS, digitalRoot as calcDigitalRoot, hadathRemainder as calcHadathRemainder, hadathToElement, nearestSacred } from './src/components/hadad-summary/hadad-core';
-import type { AbjadAudit, AuditStep, ElementType } from './src/components/hadad-summary/types';
+import type { AbjadAudit, AuditStep, ElementType, SacredResonance } from './src/components/hadad-summary/types';
 
 // ============================================================================
 // DOMAIN RULES & CORE DATA

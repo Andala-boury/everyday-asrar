@@ -106,12 +106,28 @@ export const nearestSacred = (n: number): SacredResonance => {
     sacredSet[0]
   );
   
+  const isExact = n === nearest;
+  const delta = n - nearest;
+  const divisibleBy7 = n % 7 === 0;
+  const divisibleBy19 = n % 19 === 0;
+  const divisibleBy99 = n % 99 === 0;
+  
+  const factors: number[] = [];
+  if (divisibleBy7) factors.push(7);
+  if (divisibleBy19) factors.push(19);
+  if (divisibleBy99) factors.push(99);
+  
   return {
     nearest,
-    delta: n - nearest,
-    div7: n % 7 === 0,
-    div19: n % 19 === 0,
-    div99: n % 99 === 0
+    delta,
+    isExact,
+    factors,
+    divisibleBy7,
+    div7: divisibleBy7,
+    divisibleBy19,
+    div19: divisibleBy19,
+    divisibleBy99,
+    div99: divisibleBy99
   };
 };
 
