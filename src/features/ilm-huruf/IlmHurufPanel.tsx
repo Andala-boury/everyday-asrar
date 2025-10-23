@@ -668,6 +668,31 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   </div>
                 )}
                 
+                {/* Energy Return Speed (Irtiṭāb) - Lesson 25 */}
+                <div className="mb-2 p-2 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-lg border border-purple-200 dark:border-purple-700/50">
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-sm flex-shrink-0">
+                      {day.energyReturn.speed === 'instant' && '⚡'}
+                      {day.energyReturn.speed === 'quick' && '💨'}
+                      {day.energyReturn.speed === 'gradual' && '🌊'}
+                      {day.energyReturn.speed === 'delayed' && '🌱'}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1 mb-0.5">
+                        <span className="text-[10px] font-bold text-purple-900 dark:text-purple-100 uppercase">
+                          {day.energyReturn.speed}
+                        </span>
+                        <span className="text-[9px] text-purple-600 dark:text-purple-400">
+                          ({day.energyReturn.timeframe})
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-purple-700 dark:text-purple-300 leading-tight">
+                        {day.energyReturn.practice}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
                 {/* Badges */}
                 <div className="flex flex-wrap gap-1">
                   {isBest && (
@@ -849,6 +874,53 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   <h4 className="font-bold text-slate-900 dark:text-slate-100">Your Guidance for This Day</h4>
                 </div>
                 
+                {/* Energy Return - Detailed (Irtiṭāb) */}
+                <div className="mb-5 p-4 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/30 dark:to-indigo-900/30 rounded-lg border border-purple-200 dark:border-purple-700">
+                  <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3 flex items-center gap-2">
+                    <span className="text-2xl">
+                      {day.energyReturn.speed === 'instant' && '⚡'}
+                      {day.energyReturn.speed === 'quick' && '💨'}
+                      {day.energyReturn.speed === 'gradual' && '🌊'}
+                      {day.energyReturn.speed === 'delayed' && '🌱'}
+                    </span>
+                    <span>Energy Return Wisdom</span>
+                  </h4>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm text-slate-700 dark:text-slate-300 mb-2">
+                        <strong className="text-purple-700 dark:text-purple-300">Return Speed:</strong>{' '}
+                        <span className="uppercase font-bold">{day.energyReturn.speed}</span>
+                        {' '}
+                        <span className="text-purple-600 dark:text-purple-400">
+                          ({day.energyReturn.timeframe})
+                        </span>
+                      </p>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        {day.energyReturn.description}
+                      </p>
+                    </div>
+                    
+                    <div className="pt-3 border-t border-purple-200 dark:border-purple-700">
+                      <p className="text-xs font-semibold text-purple-800 dark:text-purple-200 mb-2 uppercase tracking-wide flex items-center gap-1">
+                        <span>🎯</span>
+                        <span>Today's Practice:</span>
+                      </p>
+                      <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                        {day.energyReturn.practice}
+                      </p>
+                    </div>
+                    
+                    <div className="pt-3 border-t border-purple-200 dark:border-purple-700">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 italic leading-relaxed">
+                        <span className="font-semibold">Classical teaching (Lesson 25):</span> "Man zaraʿa khayran ḥaṣada khayran" 
+                        (Who plants good, harvests good) — The timing of harvest depends on the seed and season.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Daily Tips */}
                 <div className="space-y-3">
                   {day.tips.map((tip, idx) => (
                     <div key={idx} className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">

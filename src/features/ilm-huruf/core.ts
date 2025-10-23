@@ -577,6 +577,13 @@ export interface DailyReading {
   restLevel?: 'gentle' | 'deep'; // Deep if ≤ 1, gentle if 2-4
   restPractices?: string[]; // Specific rest practices
   betterDays?: string[]; // Suggest better days for rescheduling
+  // Energy Return (Irtiṭāb) - Lesson 25
+  energyReturn: {
+    speed: 'instant' | 'quick' | 'gradual' | 'delayed';
+    timeframe: string; // "same day", "few hours", "2-3 days", "1-2 weeks"
+    description: string; // User-friendly explanation
+    practice: string; // Actionable suggestion
+  };
 }
 
 /**
@@ -703,6 +710,136 @@ function findBetterDays(allDays: DailyReading[], currentScore: number): string[]
     .filter(day => day.harmony_score >= 7) // Only high-harmony days
     .map(day => `${day.weekday} (${day.day_planet}, ${day.harmony_score}/10)`)
     .slice(0, 2); // Max 2 suggestions
+}
+
+// ============================================================================
+// ENERGY RETURN (IRTIṬĀB) - LESSON 25
+// Classical teaching: Different elements return energy at different speeds
+// ============================================================================
+
+export type EnergyReturnSpeed = 'instant' | 'quick' | 'gradual' | 'delayed';
+
+export interface EnergyReturnInfo {
+  speed: EnergyReturnSpeed;
+  timeframe: string;
+  description: string;
+  practice: string;
+}
+
+/**
+ * Get planet's natural energy return speed
+ * Based on classical elemental timing
+ */
+function getPlanetReturnSpeed(planet: Planet): EnergyReturnSpeed {
+  const speedMap: Record<Planet, EnergyReturnSpeed> = {
+    'Sun': 'instant',      // Fire - immediate results
+    'Mars': 'instant',     // Fire - fast action/reaction
+    'Mercury': 'quick',    // Air - rapid communication
+    'Jupiter': 'quick',    // Air/Fire - expansion happens steadily but noticeably
+    'Moon': 'gradual',     // Water - emotional cycles
+    'Venus': 'gradual',    // Water - relationships take time
+    'Saturn': 'delayed'    // Earth - structure takes time to build
+  };
+  
+  return speedMap[planet];
+}
+
+/**
+ * Get detailed energy return information
+ * Customized by planet and speed
+ */
+function getEnergyReturnDetails(
+  speed: EnergyReturnSpeed,
+  planet: Planet
+): EnergyReturnInfo {
+  
+  const baseDetails: Record<EnergyReturnSpeed, { timeframe: string; description: string }> = {
+    'instant': {
+      timeframe: 'same day',
+      description: 'Actions create immediate consequences'
+    },
+    'quick': {
+      timeframe: 'few hours',
+      description: 'What you give flows back quickly'
+    },
+    'gradual': {
+      timeframe: '2-3 days',
+      description: 'What you give today takes time to return'
+    },
+    'delayed': {
+      timeframe: '1-2 weeks',
+      description: 'Building foundations—results come later'
+    }
+  };
+  
+  // Planet-specific practices for each speed
+  const planetPractices: Record<Planet, Record<EnergyReturnSpeed, string>> = {
+    'Sun': {
+      instant: 'Lead with generosity—authority returns respect today',
+      quick: 'Lead with generosity—results come quickly',
+      gradual: 'Lead with patience—influence grows steadily',
+      delayed: 'Lead with consistency—reputation builds over time'
+    },
+    'Mars': {
+      instant: 'Act with courage—strength returns strength immediately',
+      quick: 'Act boldly—momentum builds fast',
+      gradual: 'Push forward—progress shows in days',
+      delayed: 'Train consistently—power builds gradually'
+    },
+    'Mercury': {
+      instant: 'Speak clearly—understanding comes back instantly',
+      quick: 'Communicate well—replies come swiftly',
+      gradual: 'Share knowledge—learning compounds over days',
+      delayed: 'Write persistently—wisdom accumulates slowly'
+    },
+    'Moon': {
+      instant: 'Give care—comfort returns quickly today',
+      quick: 'Give care—warmth returns in hours',
+      gradual: 'Nurture bonds—emotional depth grows over days',
+      delayed: 'Tend relationships—trust builds with time'
+    },
+    'Venus': {
+      instant: 'Show love—beauty reflects back today',
+      quick: 'Show love—joy returns soon',
+      gradual: 'Create beauty—appreciation deepens over days',
+      delayed: 'Invest in art—value increases with time'
+    },
+    'Jupiter': {
+      instant: 'Think big—opportunities appear today',
+      quick: 'Expand horizons—doors open quickly',
+      gradual: 'Study deeply—wisdom unfolds over days',
+      delayed: 'Build legacy—growth compounds over time'
+    },
+    'Saturn': {
+      instant: 'Structure well—stability shows today',
+      quick: 'Organize now—order appears soon',
+      gradual: 'Plan carefully—results manifest in days',
+      delayed: 'Build foundations—lasting results take weeks'
+    }
+  };
+  
+  const practice = planetPractices[planet]?.[speed] || baseDetails[speed].description;
+  
+  return {
+    speed,
+    timeframe: baseDetails[speed].timeframe,
+    description: baseDetails[speed].description,
+    practice
+  };
+}
+
+/**
+ * Calculate energy return speed for a given day
+ * Based on Lesson 25: Irtiṭāb (Energy Return) concept
+ * 
+ * Fire: Instant (same day)
+ * Air: Quick (few hours)
+ * Water: Gradual (2-3 days)
+ * Earth: Delayed (1-2 weeks)
+ */
+function calculateEnergyReturn(planet: Planet): EnergyReturnInfo {
+  const speed = getPlanetReturnSpeed(planet);
+  return getEnergyReturnDetails(speed, planet);
 }
 
 /**
@@ -1015,6 +1152,9 @@ export function generateDailyReading(
   const restPractices = isRestDay ? getRestPractices(restLevel, dayPlanet) : undefined;
   const betterDays = (isRestDay && allWeekDays) ? findBetterDays(allWeekDays, score) : undefined;
   
+  // Energy Return (Irtiṭāb) - Lesson 25
+  const energyReturn = calculateEnergyReturn(dayPlanet);
+  
   return {
     date: date.toISOString().split('T')[0],
     weekday,
@@ -1028,7 +1168,8 @@ export function generateDailyReading(
     isRestDay,
     restLevel: isRestDay ? restLevel : undefined,
     restPractices,
-    betterDays
+    betterDays,
+    energyReturn
   };
 }
 
