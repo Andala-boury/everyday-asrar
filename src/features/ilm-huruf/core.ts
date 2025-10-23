@@ -572,6 +572,11 @@ export interface DailyReading {
   harmony_score: number; // 0-10
   band: 'High' | 'Moderate' | 'Low';
   tips: string[];
+  // Rest Signal (Infisāl) fields
+  isRestDay?: boolean; // True if harmony ≤ 4
+  restLevel?: 'gentle' | 'deep'; // Deep if ≤ 1, gentle if 2-4
+  restPractices?: string[]; // Specific rest practices
+  betterDays?: string[]; // Suggest better days for rescheduling
 }
 
 /**
@@ -618,6 +623,87 @@ const PLANET_FRIENDSHIPS: Record<Planet, Planet[]> = {
   Venus: ['Moon', 'Mercury', 'Saturn'],
   Saturn: ['Venus', 'Mercury']
 };
+
+/**
+ * Get rest practices based on rest level and planetary influence
+ * Classical wisdom: Al-sukūn qabl al-ḥaraka (Stillness before motion)
+ */
+function getRestPractices(level: 'gentle' | 'deep', planet: Planet): string[] {
+  if (level === 'deep') {
+    return [
+      'Physical rest - sleep, lie down, minimal movement',
+      'Cancel all non-essential meetings/tasks',
+      'Light prayer or dhikr only (no intensive practice)',
+      'No decision-making today - defer to better days',
+      'Hydrate, nourish, be gentle with yourself'
+    ];
+  }
+  
+  // Gentle rest - planet-specific suggestions
+  const gentlePractices: Record<Planet, string[]> = {
+    Sun: [
+      '20min silence or meditation away from bright light',
+      'Gentle walk in shade (no goals, just presence)',
+      'Journal thoughts without forcing solutions',
+      'Postpone leadership decisions until tomorrow',
+      'Early bedtime for solar repair (before 10pm)'
+    ],
+    Moon: [
+      '20min by water (real or visualized)',
+      'Gentle emotional release - cry, write, express',
+      'Nourish with warm, comforting food',
+      'Postpone emotional conversations',
+      'Extra sleep - honor your lunar rhythm'
+    ],
+    Mars: [
+      'Very gentle movement only (stretching, slow walk)',
+      'Channel anger into gentle journaling, not action',
+      'No conflicts or confrontations today',
+      'Postpone physical challenges',
+      'Cool down with breathing exercises'
+    ],
+    Mercury: [
+      'Information fast - limit reading/messages',
+      'Speak less, listen to silence',
+      'Postpone important communications',
+      'Simple, single-focus tasks only',
+      'Mental rest - no problem-solving'
+    ],
+    Jupiter: [
+      'Scale back ambitious plans',
+      'Small, contained activities only',
+      'Postpone teaching or sharing wisdom',
+      'Gratitude practice for what is',
+      'Rest in contentment, not expansion'
+    ],
+    Venus: [
+      'Gentle self-care (bath, soft music, beauty)',
+      'No relationship decisions today',
+      'Postpone social gatherings',
+      'Solo time in pleasant surroundings',
+      'Appreciate without acquiring'
+    ],
+    Saturn: [
+      'Release rigidity - no forcing structure',
+      'Postpone long-term planning',
+      'Let go of "should" thoughts',
+      'Gentle flexibility exercises',
+      'Trust the pause before discipline returns'
+    ]
+  };
+  
+  return gentlePractices[planet];
+}
+
+/**
+ * Find better days in the week for rescheduling
+ */
+function findBetterDays(allDays: DailyReading[], currentScore: number): string[] {
+  return allDays
+    .filter(day => day.harmony_score >= 7) // Only high-harmony days
+    .map(day => `${day.weekday} (${day.day_planet}, ${day.harmony_score}/10)`)
+    .slice(0, 2); // Max 2 suggestions
+}
 
 /**
  * Determine Rūḥ phase group (Begin/Build/Complete)
@@ -908,7 +994,8 @@ export function calculateUserProfile(
  */
 export function generateDailyReading(
   profile: UserProfile,
-  date: Date
+  date: Date,
+  allWeekDays?: DailyReading[] // Optional: for betterDays calculation
 ): DailyReading {
   const anchorDate = new Date(profile.anchor);
   const daysSinceAnchor = Math.floor((date.getTime() - anchorDate.getTime()) / (1000 * 60 * 60 * 24));
@@ -922,6 +1009,12 @@ export function generateDailyReading(
   const band = getScoreBand(score);
   const tips = generateDailyTips(band, profile.element, dayPlanet);
   
+  // Rest Signal Detection (Infisāl)
+  const isRestDay = score <= 4;
+  const restLevel = score <= 1 ? 'deep' : 'gentle';
+  const restPractices = isRestDay ? getRestPractices(restLevel, dayPlanet) : undefined;
+  const betterDays = (isRestDay && allWeekDays) ? findBetterDays(allWeekDays, score) : undefined;
+  
   return {
     date: date.toISOString().split('T')[0],
     weekday,
@@ -931,7 +1024,11 @@ export function generateDailyReading(
     element_phase: elementPhase,
     harmony_score: score,
     band,
-    tips
+    tips,
+    isRestDay,
+    restLevel: isRestDay ? restLevel : undefined,
+    restPractices,
+    betterDays
   };
 }
 
@@ -944,10 +1041,18 @@ export function generateWeeklySummary(
 ): WeeklySummary {
   const days: DailyReading[] = [];
   
+  // First pass: generate all days without betterDays
   for (let i = 0; i < 7; i++) {
     const date = new Date(startDate);
     date.setDate(startDate.getDate() + i);
     days.push(generateDailyReading(profile, date));
+  }
+  
+  // Second pass: add betterDays for rest days
+  for (let i = 0; i < days.length; i++) {
+    if (days[i].isRestDay) {
+      days[i].betterDays = findBetterDays(days, days[i].harmony_score);
+    }
   }
   
   // Find best and gentle days

@@ -496,6 +496,11 @@ interface WeeklyResultsProps {
 
 function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsProps) {
   const { profile, weeklySummary, harmonyType, dominantForce } = results;
+  const [expandedRestDay, setExpandedRestDay] = useState<string | null>(null);
+  
+  const toggleRestSignal = (dayDate: string) => {
+    setExpandedRestDay(expandedRestDay === dayDate ? null : dayDate);
+  };
   
   // Safety check
   if (!profile || !weeklySummary) {
@@ -644,6 +649,25 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   </div>
                 </div>
                 
+                {/* Rest Signal Badge */}
+                {day.isRestDay && (
+                  <div className="mb-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent day selection toggle
+                        toggleRestSignal(day.date);
+                      }}
+                      className={`w-full text-[10px] px-2 py-1 rounded-full font-bold transition-colors ${
+                        day.restLevel === 'deep'
+                          ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/50'
+                          : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50'
+                      }`}
+                    >
+                      {day.restLevel === 'deep' ? '🛑 DEEP REST' : '🌙 REST SIGNAL'}
+                    </button>
+                  </div>
+                )}
+                
                 {/* Badges */}
                 <div className="flex flex-wrap gap-1">
                   {isBest && (
@@ -673,6 +697,83 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
             );
           })}
         </div>
+        
+        {/* Expandable Rest Signal Content */}
+        {expandedRestDay && (() => {
+          const restDay = weeklySummary.days.find(d => d.date === expandedRestDay);
+          if (!restDay || !restDay.isRestDay) return null;
+          
+          return (
+            <div className="mt-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-5 border-2 border-blue-200 dark:border-blue-800 animate-in slide-in-from-top duration-300">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">{restDay.restLevel === 'deep' ? '🛑' : '🌙'}</span>
+                  <h4 className="font-bold text-blue-900 dark:text-blue-100">
+                    {restDay.restLevel === 'deep' ? 'Deep Rest Needed' : 'Rest Signal (Infisāl)'}
+                  </h4>
+                </div>
+                <button
+                  onClick={() => setExpandedRestDay(null)}
+                  className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 text-sm"
+                >
+                  ✕
+                </button>
+              </div>
+              
+              <p className="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+                {restDay.restLevel === 'deep' 
+                  ? 'Critical low energy - honor this healing signal from your body and spirit.'
+                  : `Low harmony (${restDay.harmony_score}/10) + ${restDay.day_planet} energy = Time to pause, not push.`
+                }
+              </p>
+              
+              {/* Rest Practices */}
+              <div className="mb-4">
+                <p className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-2 uppercase tracking-wide">
+                  Rest Practices (choose one):
+                </p>
+                <ul className="space-y-2">
+                  {restDay.restPractices?.map((practice, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                      <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">□</span>
+                      <span>{practice}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              {/* Better Days Suggestions */}
+              {restDay.betterDays && restDay.betterDays.length > 0 && (
+                <div className="pt-4 border-t border-blue-200 dark:border-blue-700">
+                  <p className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-2 flex items-center gap-1">
+                    <span>💡</span>
+                    <span className="uppercase tracking-wide">Better Days This Week:</span>
+                  </p>
+                  <ul className="space-y-1">
+                    {restDay.betterDays.map((betterDay, i) => (
+                      <li key={i} className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                        <span className="text-green-500">•</span>
+                        <span>{betterDay}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 italic">
+                    Reschedule important tasks to these high-harmony days for better outcomes.
+                  </p>
+                </div>
+              )}
+              
+              {/* Classical Wisdom */}
+              <div className="mt-4 pt-4 border-t border-blue-200 dark:border-blue-700">
+                <p className="text-xs italic text-slate-600 dark:text-slate-400 text-center">
+                  <span className="font-semibold">Classical wisdom:</span> "Al-sukūn qabl al-ḥaraka" 
+                  <br />
+                  <span className="text-[10px]">(Stillness before motion brings blessed action)</span>
+                </p>
+              </div>
+            </div>
+          );
+        })()}
         
         {/* Selected Day Details - Enhanced */}
         {selectedDay && (() => {
