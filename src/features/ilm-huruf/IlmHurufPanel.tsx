@@ -6,6 +6,8 @@ import {
   Calendar, Clock, Compass, Users, Sparkles,
   TrendingUp, Target, MessageCircle, Home, Flame, Keyboard, ExternalLink
 } from 'lucide-react';
+import { BalanceMeter } from '../../components/BalanceMeter';
+import type { ElementType } from '../../components/BalanceMeter';
 import {
   analyzeNameDestiny,
   analyzeCompatibility,
@@ -34,6 +36,18 @@ import { ArabicKeyboard } from '../../components/ArabicKeyboard';
 import { useAbjad } from '../../contexts/AbjadContext';
 import { AbjadSystemSelector } from '../../components/AbjadSystemSelector';
 
+/**
+ * Get current day's element based on planetary day assignment
+ * Sun=Fire, Mon=Water, Tue=Fire, Wed=Air, Thu=Water, Fri=Air, Sat=Earth
+ * Based on classical planetary day rulership from Al-Būnī tradition
+ */
+function getCurrentDayElement(): ElementType {
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0=Sunday, 1=Monday, etc.
+  const dayElements: ElementType[] = ['Fire', 'Water', 'Fire', 'Air', 'Water', 'Air', 'Earth'];
+  return dayElements[dayOfWeek];
+}
+
 const PLANET_ICONS: Record<Planet, typeof Sun> = {
   Sun, Moon,
   Mercury: MessageCircle,
@@ -51,6 +65,16 @@ const PLANET_COLORS: Record<Planet, string> = {
   Mars: 'text-red-500',
   Jupiter: 'text-indigo-500',
   Saturn: 'text-slate-600'
+};
+
+const PLANET_ICONS_EMOJI: Record<Planet, string> = {
+  Sun: '☀️',
+  Moon: '🌙',
+  Mars: '♂️',
+  Mercury: '☿️',
+  Jupiter: '♃',
+  Venus: '♀️',
+  Saturn: '♄'
 };
 
 export function IlmHurufPanel() {
@@ -526,6 +550,12 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
         </div>
       </div>
 
+      {/* Balance Meter - Al-Būnī's Mīzān Concept */}
+      <BalanceMeter 
+        userElement={profile.element as ElementType} 
+        currentDayElement={getCurrentDayElement()} 
+      />
+
       {/* Harmony & Dominant Force */}
       <div className="grid md:grid-cols-2 gap-4">
         <div className={`rounded-xl p-4 border-2 ${HARMONY_COLORS[harmonyType]}`}>
@@ -545,76 +575,106 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
         </div>
       </div>
 
-      {/* Week at a Glance - 7 Bars */}
+      {/* Week at a Glance - Enhanced Display */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-6 text-slate-900 dark:text-slate-100 flex items-center gap-2">
           <Calendar className="w-5 h-5 text-green-500" />
           Week at a Glance
         </h3>
         
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-7 gap-3">
           {weeklySummary.days.map((day) => {
             const isBest = day.date === weeklySummary.best_day;
             const isGentle = day.date === weeklySummary.gentle_day;
             const isFocus = day.date === weeklySummary.focus_day;
             const isSelected = day.date === selectedDay;
+            const firstTip = day.tips[0] || 'Plan mindfully';
+            const truncatedTip = firstTip.length > 45 ? firstTip.slice(0, 45) + '...' : firstTip;
             
             return (
               <button
                 key={day.date}
                 onClick={() => setSelectedDay(day.date === selectedDay ? null : day.date)}
-                className={`relative rounded-lg p-2 transition-all ${
+                className={`relative rounded-xl p-3 transition-all duration-200 border-2 ${
                   isSelected 
-                    ? 'ring-2 ring-purple-500 bg-purple-50 dark:bg-purple-900/30' 
-                    : 'hover:bg-slate-50 dark:hover:bg-slate-700/50'
+                    ? 'ring-2 ring-purple-500 bg-purple-50 dark:bg-purple-900/30 border-purple-300 dark:border-purple-700 shadow-lg scale-105' 
+                    : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:shadow-md hover:scale-102'
                 }`}
               >
                 {/* Day name */}
-                <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
-                  {day.weekday.slice(0, 3)}
+                <div className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-2">
+                  {day.weekday}
                 </div>
                 
-                {/* Score bar */}
-                <div className="h-24 bg-slate-100 dark:bg-slate-700 rounded relative overflow-hidden">
-                  <div
-                    className={`absolute bottom-0 left-0 right-0 transition-all ${
-                      day.band === 'High' ? 'bg-green-500' :
-                      day.band === 'Moderate' ? 'bg-amber-500' :
-                      'bg-blue-400'
-                    }`}
-                    style={{ height: `${(day.harmony_score / 10) * 100}%` }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-lg font-bold text-slate-900 dark:text-white mix-blend-difference">
-                      {day.harmony_score}
+                {/* Score display with bar */}
+                <div className="mb-2">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-slate-600 dark:text-slate-400">Harmony</span>
+                    <span className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                      {day.harmony_score}/10
                     </span>
+                  </div>
+                  <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-500 ${
+                        day.band === 'High' ? 'bg-green-500' :
+                        day.band === 'Moderate' ? 'bg-amber-500' :
+                        'bg-blue-400'
+                      }`}
+                      style={{ width: `${(day.harmony_score / 10) * 100}%` }}
+                    />
+                  </div>
+                </div>
+                
+                {/* Planet info */}
+                <div className="flex items-center gap-1.5 mb-2 py-1.5 px-2 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+                  <span className="text-lg">{PLANET_ICONS_EMOJI[day.day_planet]}</span>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                    {day.day_planet}
+                  </span>
+                </div>
+                
+                {/* Key tip preview */}
+                <div className="mb-2 min-h-[2.5rem]">
+                  <div className="flex items-start gap-1">
+                    <span className="text-xs flex-shrink-0">💡</span>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight text-left">
+                      {truncatedTip}
+                    </p>
                   </div>
                 </div>
                 
                 {/* Badges */}
-                <div className="mt-2 space-y-1">
+                <div className="flex flex-wrap gap-1">
                   {isBest && (
-                    <div className="text-xs px-2 py-0.5 rounded bg-green-500 text-white font-medium">
+                    <div className="text-[10px] px-1.5 py-0.5 rounded-full bg-green-500 text-white font-bold">
                       Best
                     </div>
                   )}
                   {isGentle && (
-                    <div className="text-xs px-2 py-0.5 rounded bg-blue-400 text-white font-medium">
+                    <div className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-400 text-white font-bold">
                       Gentle
                     </div>
                   )}
                   {isFocus && !isBest && (
-                    <div className="text-xs px-2 py-0.5 rounded bg-purple-500 text-white font-medium">
+                    <div className="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-500 text-white font-bold">
                       Focus
                     </div>
                   )}
                 </div>
+                
+                {/* Click indicator */}
+                {!isSelected && (
+                  <div className="absolute bottom-1 right-1 text-[10px] text-slate-400 dark:text-slate-600">
+                    ▼
+                  </div>
+                )}
               </button>
             );
           })}
         </div>
         
-        {/* Selected Day Details */}
+        {/* Selected Day Details - Enhanced */}
         {selectedDay && (() => {
           const day = weeklySummary.days.find(d => d.date === selectedDay);
           if (!day) return null;
@@ -622,26 +682,90 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
           const PlanetIcon = PLANET_ICONS[day.day_planet];
           
           return (
-            <div className="mt-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
-              <div className="flex items-center gap-3 mb-4">
-                <PlanetIcon className={`w-8 h-8 ${PLANET_COLORS[day.day_planet]}`} />
-                <div>
-                  <div className="font-bold text-slate-900 dark:text-slate-100">
-                    {day.weekday}, {new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            <div className="mt-6 animate-in slide-in-from-top duration-300">
+              <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl p-6 text-white shadow-xl">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="text-4xl">{PLANET_ICONS_EMOJI[day.day_planet]}</div>
+                    <div>
+                      <div className="text-2xl font-bold">
+                        {day.weekday}
+                      </div>
+                      <div className="text-sm opacity-90">
+                        {new Date(day.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">
-                    {day.day_planet} Day • Rūḥ Phase {day.ruh_phase} ({day.ruh_phase_group})
+                  <div className="text-right">
+                    <div className="text-4xl font-bold">{day.harmony_score}</div>
+                    <div className="text-xs opacity-90">/ 10</div>
+                  </div>
+                </div>
+                
+                <div className="grid md:grid-cols-3 gap-3 mb-4">
+                  <div className="bg-white/10 backdrop-blur rounded-lg p-3">
+                    <div className="text-xs opacity-75 mb-1">Planet</div>
+                    <div className="font-bold flex items-center gap-2">
+                      <PlanetIcon className="w-5 h-5" />
+                      {day.day_planet}
+                    </div>
+                    <div className="text-xs opacity-75 mt-1">
+                      {day.day_planet === 'Sun' && 'Leadership & Vitality'}
+                      {day.day_planet === 'Moon' && 'Emotions & Intuition'}
+                      {day.day_planet === 'Mars' && 'Action & Courage'}
+                      {day.day_planet === 'Mercury' && 'Communication & Learning'}
+                      {day.day_planet === 'Jupiter' && 'Expansion & Wisdom'}
+                      {day.day_planet === 'Venus' && 'Love & Harmony'}
+                      {day.day_planet === 'Saturn' && 'Structure & Discipline'}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/10 backdrop-blur rounded-lg p-3">
+                    <div className="text-xs opacity-75 mb-1">Rūḥ Phase</div>
+                    <div className="font-bold">{day.ruh_phase_group}</div>
+                    <div className="text-xs opacity-75 mt-1">Phase {day.ruh_phase}/9</div>
+                  </div>
+                  
+                  <div className="bg-white/10 backdrop-blur rounded-lg p-3">
+                    <div className="text-xs opacity-75 mb-1">Energy Band</div>
+                    <div className={`font-bold flex items-center gap-2`}>
+                      {day.band === 'High' && '🔥 High'}
+                      {day.band === 'Moderate' && '⚖️ Moderate'}
+                      {day.band === 'Low' && '🌊 Gentle'}
+                    </div>
+                    <div className="text-xs opacity-75 mt-1">
+                      {day.band === 'High' && 'Peak performance day'}
+                      {day.band === 'Moderate' && 'Steady progress day'}
+                      {day.band === 'Low' && 'Rest & reflection day'}
+                    </div>
                   </div>
                 </div>
               </div>
               
-              <div className="space-y-2">
-                {day.tips.map((tip, idx) => (
-                  <div key={idx} className="flex items-start gap-2">
-                    <Sparkles className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-slate-700 dark:text-slate-300">{tip}</span>
-                  </div>
-                ))}
+              <div className="mt-4 bg-white dark:bg-slate-800 rounded-xl p-5 border-2 border-purple-200 dark:border-purple-800">
+                <div className="flex items-center gap-2 mb-4">
+                  <Sparkles className="w-5 h-5 text-purple-500" />
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100">Your Guidance for This Day</h4>
+                </div>
+                
+                <div className="space-y-3">
+                  {day.tips.map((tip, idx) => (
+                    <div key={idx} className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-bold">
+                        {idx + 1}
+                      </div>
+                      <span className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{tip}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                <button
+                  onClick={() => setSelectedDay(null)}
+                  className="mt-4 w-full px-4 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
+                >
+                  <span>▲</span>
+                  Close Details
+                </button>
               </div>
             </div>
           );
