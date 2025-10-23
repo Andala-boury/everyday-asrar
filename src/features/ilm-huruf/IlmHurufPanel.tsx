@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Sun, Moon, Star, Heart, BookOpen, Lightbulb, 
   Calendar, Clock, Compass, Users, Sparkles,
-  TrendingUp, Target, MessageCircle, Home, Flame, Keyboard
+  TrendingUp, Target, MessageCircle, Home, Flame, Keyboard, ExternalLink
 } from 'lucide-react';
 import {
   analyzeNameDestiny,
@@ -27,6 +27,8 @@ import {
   type HarmonyType,
   type DominantForce as DominantForceType
 } from './core';
+import { getQuranResonanceMessage } from './quranResonance';
+import { fetchQuranVerse, type VerseText } from './quranApi';
 import { transliterateLatinToArabic } from '../../lib/text-normalize';
 import { ArabicKeyboard } from '../../components/ArabicKeyboard';
 import { useAbjad } from '../../contexts/AbjadContext';
@@ -657,6 +659,33 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
 }
 
 function DestinyResults({ results }: { results: any }) {
+  const [verseText, setVerseText] = useState<VerseText | null>(null);
+  const [loadingVerse, setLoadingVerse] = useState(false);
+  const [verseError, setVerseError] = useState<string | null>(null);
+
+  // Fetch Quranic verse when quranResonance is available
+  useEffect(() => {
+    if (results?.quranResonance) {
+      console.log('Quranic Resonance:', results.quranResonance);
+      setLoadingVerse(true);
+      setVerseError(null);
+      fetchQuranVerse(
+        results.quranResonance.surahNumber,
+        results.quranResonance.ayahNumber
+      )
+        .then(verse => {
+          console.log('Fetched verse:', verse);
+          setVerseText(verse);
+          setLoadingVerse(false);
+        })
+        .catch(err => {
+          console.error('Failed to fetch verse:', err);
+          setVerseError('Unable to load verse text. Please try again.');
+          setLoadingVerse(false);
+        });
+    }
+  }, [results?.quranResonance]);
+
   // Safety check
   if (!results || !results.destiny) {
     return (
@@ -667,6 +696,9 @@ function DestinyResults({ results }: { results: any }) {
   }
 
   const station = results.destiny;
+  
+  // Debug log
+  console.log('DestinyResults rendering. Has quranResonance?', !!results.quranResonance, results.quranResonance);
   
   return (
     <div className="space-y-6">
@@ -692,6 +724,91 @@ function DestinyResults({ results }: { results: any }) {
           <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{results.hadath}</div>
         </div>
       </div>
+
+      {/* Qur'anic Resonance */}
+      {results.quranResonance && (
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border-2 border-emerald-500 dark:border-emerald-600 overflow-hidden">
+          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-4">
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-6 h-6 text-white" />
+              <h3 className="text-xl font-bold text-white">
+                Qur'anic Resonance
+              </h3>
+            </div>
+          </div>
+          
+          <div className="p-6 space-y-5 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-slate-800 dark:to-slate-900">
+            <div className="text-center space-y-3">
+              <div className="text-4xl font-bold text-black dark:text-white mb-2" style={{ fontFamily: 'Amiri, serif' }}>
+                {results.quranResonance.surahNameArabic}
+              </div>
+              <div className="text-2xl font-bold text-black dark:text-white">
+                {results.quranResonance.surahName}
+              </div>
+              <div className="inline-block px-5 py-2 bg-emerald-600 dark:bg-emerald-700 rounded-lg shadow-md">
+                <div className="text-base font-bold text-white">
+                  Ayah {results.quranResonance.ayahNumber} of {results.quranResonance.totalAyahsInSurah}
+                </div>
+              </div>
+            </div>
+            
+            {/* Verse Text Display */}
+            {loadingVerse && (
+              <div className="text-center py-4">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
+                <p className="text-sm text-black dark:text-slate-400 mt-2">Loading verse...</p>
+              </div>
+            )}
+            
+            {verseError && !loadingVerse && (
+              <div className="text-center py-4">
+                <p className="text-sm text-red-600 dark:text-red-400">{verseError}</p>
+              </div>
+            )}
+            
+            {verseText && !loadingVerse && (
+              <div className="space-y-4 bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-emerald-200 dark:border-emerald-700">
+                {/* Arabic Text */}
+                <div className="text-right">
+                  <p className="text-2xl leading-loose text-black dark:text-white font-semibold" 
+                     style={{ fontFamily: 'Amiri, serif', lineHeight: '2.2' }}>
+                    {verseText.arabic}
+                  </p>
+                </div>
+                
+                {/* Translation */}
+                <div className="pt-3 border-t border-emerald-200 dark:border-emerald-700">
+                  <p className="text-base text-black dark:text-slate-300 leading-relaxed mb-2">
+                    {verseText.translation}
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-slate-500 italic">
+                    — {verseText.translationName}
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            <div className="flex justify-center pt-2">
+              <a
+                href={results.quranResonance.quranLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-all duration-200 font-bold shadow-lg hover:shadow-xl text-base"
+              >
+                <BookOpen className="w-5 h-5" />
+                Read Full Verse on Quran.com
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+            
+            <div className="pt-4 border-t-2 border-emerald-200 dark:border-emerald-800">
+              <p className="text-base text-black dark:text-slate-300 italic text-center leading-relaxed font-medium">
+                {getQuranResonanceMessage()}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Soul Triad */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">

@@ -5,6 +5,7 @@
 
 import { digitalRoot, hadathRemainder } from '../../components/hadad-summary/hadad-core';
 import { ABJAD_MAGHRIBI } from '../../contexts/AbjadContext';
+import { computeQuranResonance, type QuranResonance } from './quranResonance';
 
 // ============================================================================
 // CLASSICAL LETTER SCIENCE - Al-Būnī's Methodology
@@ -272,6 +273,10 @@ export function analyzeNameDestiny(name: string, abjad: Record<string, number> =
   const validSoulUrge = soulUrge || 9;
   const validPersonality = personality || 9;
   
+  // Compute Qur'anic Resonance from Kabīr (Hadad)
+  const quranResonance = computeQuranResonance(kabir);
+  console.log('✨ analyzeNameDestiny - Kabir:', kabir, 'QuranResonance:', quranResonance);
+  
   return {
     kabir,
     saghir: validSaghir,
@@ -281,7 +286,8 @@ export function analyzeNameDestiny(name: string, abjad: Record<string, number> =
     destiny: SPIRITUAL_STATIONS[validSaghir as keyof typeof SPIRITUAL_STATIONS],
     soulUrge: SPIRITUAL_STATIONS[validSoulUrge as keyof typeof SPIRITUAL_STATIONS],
     personality: SPIRITUAL_STATIONS[validPersonality as keyof typeof SPIRITUAL_STATIONS],
-    interpretation: generateDestinyInterpretation(validSaghir, validSoulUrge, validPersonality)
+    interpretation: generateDestinyInterpretation(validSaghir, validSoulUrge, validPersonality),
+    quranResonance
   };
 }
 
