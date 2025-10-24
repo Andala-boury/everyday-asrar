@@ -996,6 +996,216 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   </div>
                 </div>
                 
+                {/* Task Sequencer (Niẓām - Lesson 28) - Only for high-harmony days */}
+                {day.taskSequence && (
+                  <div className="p-5 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg border-2 border-purple-200 dark:border-purple-700">
+                    
+                    {/* Header */}
+                    <div className="mb-4">
+                      <h4 className="text-lg font-bold text-purple-900 dark:text-purple-100 flex items-center gap-2">
+                        <span className="text-2xl">📋</span>
+                        <span>Optimal Sequence for {day.weekday}</span>
+                      </h4>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                        {day.day_planet} day • Harmony {day.harmony_score}/10
+                      </p>
+                    </div>
+                    
+                    {/* Time Windows */}
+                    <div className="space-y-4">
+                      
+                      {/* Morning */}
+                      <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-yellow-400">
+                        <div className="flex items-center justify-between mb-2">
+                          <h5 className="font-semibold text-slate-900 dark:text-slate-100">
+                            🌅 Morning
+                          </h5>
+                          <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded text-yellow-800 dark:text-yellow-200 font-medium">
+                            {day.taskSequence.morning.timeRange}
+                          </span>
+                        </div>
+                        
+                        <p className="text-sm text-purple-700 dark:text-purple-300 mb-3 font-medium">
+                          {day.taskSequence.morning.energyType}
+                        </p>
+                        
+                        <div className="grid md:grid-cols-2 gap-3">
+                          <div>
+                            <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
+                              ✓ Best For:
+                            </p>
+                            <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                              {day.taskSequence.morning.bestFor.map((task, i) => (
+                                <li key={i}>• {task}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div>
+                            <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
+                              ✗ Avoid:
+                            </p>
+                            <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                              {day.taskSequence.morning.avoid.map((task, i) => (
+                                <li key={i}>• {task}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        
+                        {day.taskSequence.morning.planetalPhase && (
+                          <p className="text-xs text-purple-600 dark:text-purple-400 mt-2 italic">
+                            {day.taskSequence.morning.planetalPhase}
+                          </p>
+                        )}
+                      </div>
+                      
+                      {/* Midday */}
+                      <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-blue-400">
+                        <div className="flex items-center justify-between mb-2">
+                          <h5 className="font-semibold text-slate-900 dark:text-slate-100">
+                            ☀️ Midday
+                          </h5>
+                          <span className="text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded text-blue-800 dark:text-blue-200 font-medium">
+                            {day.taskSequence.midday.timeRange}
+                          </span>
+                        </div>
+                        
+                        <p className="text-sm text-purple-700 dark:text-purple-300 mb-3 font-medium">
+                          {day.taskSequence.midday.energyType}
+                        </p>
+                        
+                        <div className="grid md:grid-cols-2 gap-3">
+                          <div>
+                            <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
+                              ✓ Best For:
+                            </p>
+                            <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                              {day.taskSequence.midday.bestFor.map((task, i) => (
+                                <li key={i}>• {task}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div>
+                            <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
+                              ✗ Avoid:
+                            </p>
+                            <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                              {day.taskSequence.midday.avoid.map((task, i) => (
+                                <li key={i}>• {task}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        
+                        {day.taskSequence.midday.planetalPhase && (
+                          <p className="text-xs text-purple-600 dark:text-purple-400 mt-2 italic">
+                            {day.taskSequence.midday.planetalPhase}
+                          </p>
+                        )}
+                      </div>
+                      
+                      {/* Afternoon */}
+                      <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-orange-400">
+                        <div className="flex items-center justify-between mb-2">
+                          <h5 className="font-semibold text-slate-900 dark:text-slate-100">
+                            🌆 Afternoon
+                          </h5>
+                          <span className="text-xs bg-orange-100 dark:bg-orange-900/30 px-2 py-1 rounded text-orange-800 dark:text-orange-200 font-medium">
+                            {day.taskSequence.afternoon.timeRange}
+                          </span>
+                        </div>
+                        
+                        <p className="text-sm text-purple-700 dark:text-purple-300 mb-3 font-medium">
+                          {day.taskSequence.afternoon.energyType}
+                        </p>
+                        
+                        <div className="grid md:grid-cols-2 gap-3">
+                          <div>
+                            <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
+                              ✓ Best For:
+                            </p>
+                            <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                              {day.taskSequence.afternoon.bestFor.map((task, i) => (
+                                <li key={i}>• {task}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div>
+                            <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
+                              ✗ Avoid:
+                            </p>
+                            <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                              {day.taskSequence.afternoon.avoid.map((task, i) => (
+                                <li key={i}>• {task}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        
+                        {day.taskSequence.afternoon.planetalPhase && (
+                          <p className="text-xs text-purple-600 dark:text-purple-400 mt-2 italic">
+                            {day.taskSequence.afternoon.planetalPhase}
+                          </p>
+                        )}
+                      </div>
+                      
+                      {/* Evening */}
+                      <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-purple-400">
+                        <div className="flex items-center justify-between mb-2">
+                          <h5 className="font-semibold text-slate-900 dark:text-slate-100">
+                            🌙 Evening
+                          </h5>
+                          <span className="text-xs bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded text-purple-800 dark:text-purple-200 font-medium">
+                            {day.taskSequence.evening.timeRange}
+                          </span>
+                        </div>
+                        
+                        <p className="text-sm text-purple-700 dark:text-purple-300 mb-3 font-medium">
+                          {day.taskSequence.evening.energyType}
+                        </p>
+                        
+                        <div className="grid md:grid-cols-2 gap-3">
+                          <div>
+                            <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
+                              ✓ Best For:
+                            </p>
+                            <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                              {day.taskSequence.evening.bestFor.map((task, i) => (
+                                <li key={i}>• {task}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div>
+                            <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
+                              ✗ Avoid:
+                            </p>
+                            <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                              {day.taskSequence.evening.avoid.map((task, i) => (
+                                <li key={i}>• {task}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        
+                        {day.taskSequence.evening.planetalPhase && (
+                          <p className="text-xs text-purple-600 dark:text-purple-400 mt-2 italic">
+                            {day.taskSequence.evening.planetalPhase}
+                          </p>
+                        )}
+                      </div>
+                      
+                    </div>
+                    
+                    {/* Classical Wisdom */}
+                    <div className="mt-4 pt-4 border-t border-purple-200 dark:border-purple-700">
+                      <p className="text-xs italic text-slate-500 dark:text-slate-400">
+                        <span className="font-semibold">Classical teaching (Lesson 28):</span> "Li-kulli shay'in waqtun" 
+                        (For everything there is a time) — Success comes from right action at right time.
+                      </p>
+                    </div>
+                  </div>
+                )}
+                
                 {/* Daily Tips */}
                 <div className="space-y-3">
                   {day.tips.map((tip, idx) => (

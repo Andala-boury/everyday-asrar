@@ -584,6 +584,26 @@ export interface DailyReading {
     description: string; // User-friendly explanation
     practice: string; // Actionable suggestion
   };
+  // Task Sequencer (Niẓām) - Lesson 28
+  taskSequence?: TaskSequence;
+}
+
+/**
+ * Task Sequencer interfaces for optimal timing throughout the day
+ */
+export interface TaskSequence {
+  morning: TaskWindow;
+  midday: TaskWindow;
+  afternoon: TaskWindow;
+  evening: TaskWindow;
+}
+
+export interface TaskWindow {
+  timeRange: string;        // "7-9 AM"
+  energyType: string;        // "Peak clarity", "Social energy", etc.
+  bestFor: string[];         // ["Important decisions", "Creative work"]
+  avoid: string[];           // ["Routine tasks", "Interruptions"]
+  planetalPhase?: string;    // "Jupiter hour begins"
 }
 
 /**
@@ -840,6 +860,359 @@ function getEnergyReturnDetails(
 function calculateEnergyReturn(planet: Planet): EnergyReturnInfo {
   const speed = getPlanetReturnSpeed(planet);
   return getEnergyReturnDetails(speed, planet);
+}
+
+/**
+ * Generate Task Sequence for high-harmony days (Niẓām - Lesson 28)
+ * Returns optimal timing for different activities throughout the day
+ * Only for harmony >= 7
+ */
+function generateTaskSequence(
+  planet: Planet,
+  element: ElementType,
+  harmonyScore: number
+): TaskSequence | undefined {
+  
+  // Only generate for high-harmony days (7-10)
+  if (harmonyScore < 7) {
+    return undefined;
+  }
+  
+  // Planet-specific sequences
+  const sequences: Record<Planet, TaskSequence> = {
+    'Sun': {
+      morning: {
+        timeRange: '7-9 AM',
+        energyType: 'Peak leadership energy',
+        bestFor: [
+          'Important decisions',
+          'Set daily direction',
+          'Lead team meetings',
+          'Strategic planning'
+        ],
+        avoid: ['Routine tasks', 'Following others'],
+        planetalPhase: 'Sun rises - authority peaks'
+      },
+      midday: {
+        timeRange: '11 AM-1 PM',
+        energyType: 'High visibility',
+        bestFor: [
+          'Public presentations',
+          'Client meetings',
+          'Performance reviews',
+          'Launch initiatives'
+        ],
+        avoid: ['Background work', 'Hiding mistakes'],
+        planetalPhase: 'Solar noon - maximum presence'
+      },
+      afternoon: {
+        timeRange: '3-5 PM',
+        energyType: 'Delegation phase',
+        bestFor: [
+          'Delegate tasks',
+          'Teach and mentor',
+          'Review team work',
+          'Empower others'
+        ],
+        avoid: ['Micromanaging', 'Solo work']
+      },
+      evening: {
+        timeRange: '6-8 PM',
+        energyType: 'Reflection time',
+        bestFor: [
+          'Reflect on achievements',
+          'Plan tomorrow',
+          'Celebrate wins',
+          'Rest with dignity'
+        ],
+        avoid: ['New starts', 'Criticism']
+      }
+    },
+    
+    'Moon': {
+      morning: {
+        timeRange: '6-8 AM',
+        energyType: 'Emotional clarity',
+        bestFor: [
+          'Check in with feelings',
+          'Nurturing activities',
+          'Self-care routines',
+          'Gentle exercise'
+        ],
+        avoid: ['Harsh decisions', 'Confrontation']
+      },
+      midday: {
+        timeRange: '11 AM-1 PM',
+        energyType: 'Empathy peak',
+        bestFor: [
+          'One-on-one conversations',
+          'Emotional support',
+          'Counseling sessions',
+          'Family matters'
+        ],
+        avoid: ['Cold logic', 'Aggressive negotiations']
+      },
+      afternoon: {
+        timeRange: '3-5 PM',
+        energyType: 'Creative flow',
+        bestFor: [
+          'Creative writing',
+          'Art and music',
+          'Intuitive work',
+          'Dream interpretation'
+        ],
+        avoid: ['Analytical tasks', 'Number crunching']
+      },
+      evening: {
+        timeRange: '7-9 PM',
+        energyType: 'Deep rest begins',
+        bestFor: [
+          'Wind down gently',
+          'Light reading',
+          'Meditation',
+          'Early sleep preparation'
+        ],
+        avoid: ['Stimulation', 'Heavy meals', 'Screens']
+      }
+    },
+    
+    'Mars': {
+      morning: {
+        timeRange: '6-8 AM',
+        energyType: 'Peak physical energy',
+        bestFor: [
+          'Vigorous exercise',
+          'Tackle hardest task first',
+          'Difficult conversations',
+          'Physical challenges'
+        ],
+        avoid: ['Procrastination', 'Hesitation']
+      },
+      midday: {
+        timeRange: '11 AM-1 PM',
+        energyType: 'Combat mode',
+        bestFor: [
+          'Competitive situations',
+          'Negotiations',
+          'Push through obstacles',
+          'Defend positions'
+        ],
+        avoid: ['Passive waiting', 'People-pleasing']
+      },
+      afternoon: {
+        timeRange: '2-4 PM',
+        energyType: 'Sustained push',
+        bestFor: [
+          'Complete unfinished tasks',
+          'Power through resistance',
+          'Athletic training',
+          'Assert boundaries'
+        ],
+        avoid: ['Giving up', 'Overthinking']
+      },
+      evening: {
+        timeRange: '6-8 PM',
+        energyType: 'Cool down needed',
+        bestFor: [
+          'Gentle stretching',
+          'Process day\'s battles',
+          'Release tension',
+          'Forgive conflicts'
+        ],
+        avoid: ['New fights', 'Revenge planning', 'Alcohol']
+      }
+    },
+    
+    'Mercury': {
+      morning: {
+        timeRange: '7-9 AM',
+        energyType: 'Mental sharpness',
+        bestFor: [
+          'Writing tasks',
+          'Study complex topics',
+          'Plan communications',
+          'Learn new skills'
+        ],
+        avoid: ['Mindless work', 'Physical-only tasks']
+      },
+      midday: {
+        timeRange: '11 AM-1 PM',
+        energyType: 'Communication peak',
+        bestFor: [
+          'Important calls',
+          'Presentations',
+          'Teach or explain',
+          'Networking'
+        ],
+        avoid: ['Solo work', 'Silence']
+      },
+      afternoon: {
+        timeRange: '3-5 PM',
+        energyType: 'Quick connections',
+        bestFor: [
+          'Short trips/errands',
+          'Email responses',
+          'Quick meetings',
+          'Social media'
+        ],
+        avoid: ['Deep focus', 'Long commitments']
+      },
+      evening: {
+        timeRange: '6-8 PM',
+        energyType: 'Integration time',
+        bestFor: [
+          'Review what you learned',
+          'Journal insights',
+          'Organize notes',
+          'Light reading'
+        ],
+        avoid: ['New information', 'Complex learning']
+      }
+    },
+    
+    'Jupiter': {
+      morning: {
+        timeRange: '8-10 AM',
+        energyType: 'Expansion begins',
+        bestFor: [
+          'Think big picture',
+          'Strategic planning',
+          'Study philosophy',
+          'Set ambitious goals'
+        ],
+        avoid: ['Small thinking', 'Petty details']
+      },
+      midday: {
+        timeRange: '11 AM-1 PM',
+        energyType: 'Opportunity window',
+        bestFor: [
+          'Seek opportunities',
+          'Make connections',
+          'Generous acts',
+          'Teaching'
+        ],
+        avoid: ['Stinginess', 'Narrowness']
+      },
+      afternoon: {
+        timeRange: '2-4 PM',
+        energyType: 'Growth momentum',
+        bestFor: [
+          'Expand projects',
+          'Take calculated risks',
+          'Travel planning',
+          'Cultural exploration'
+        ],
+        avoid: ['Contraction', 'Fear-based decisions']
+      },
+      evening: {
+        timeRange: '6-8 PM',
+        energyType: 'Wisdom integration',
+        bestFor: [
+          'Philosophical reflection',
+          'Gratitude practice',
+          'Mentor someone',
+          'Spiritual study'
+        ],
+        avoid: ['Materialism', 'Pessimism']
+      }
+    },
+    
+    'Venus': {
+      morning: {
+        timeRange: '7-9 AM',
+        energyType: 'Beauty appreciation',
+        bestFor: [
+          'Self-care rituals',
+          'Beautify environment',
+          'Artistic creation',
+          'Gentle movement'
+        ],
+        avoid: ['Harsh criticism', 'Ugliness']
+      },
+      midday: {
+        timeRange: '11 AM-1 PM',
+        energyType: 'Relationship harmony',
+        bestFor: [
+          'Romantic gestures',
+          'Diplomatic meetings',
+          'Collaborative work',
+          'Peacemaking'
+        ],
+        avoid: ['Conflict', 'Criticism', 'Confrontation']
+      },
+      afternoon: {
+        timeRange: '3-5 PM',
+        energyType: 'Creative flow',
+        bestFor: [
+          'Art and music',
+          'Design work',
+          'Cooking',
+          'Fashion/style choices'
+        ],
+        avoid: ['Analytical work', 'Criticism']
+      },
+      evening: {
+        timeRange: '6-8 PM',
+        energyType: 'Pleasure time',
+        bestFor: [
+          'Enjoy good food',
+          'Time with loved ones',
+          'Entertainment',
+          'Sensory pleasures'
+        ],
+        avoid: ['Work', 'Stress', 'Discipline']
+      }
+    },
+    
+    'Saturn': {
+      morning: {
+        timeRange: '6-8 AM',
+        energyType: 'Discipline peak',
+        bestFor: [
+          'Difficult tasks first',
+          'Build structures',
+          'Set boundaries',
+          'Focus on responsibilities'
+        ],
+        avoid: ['Procrastination', 'Play']
+      },
+      midday: {
+        timeRange: '11 AM-1 PM',
+        energyType: 'Serious work mode',
+        bestFor: [
+          'Complex problem-solving',
+          'Long-term planning',
+          'Quality control',
+          'Professional duties'
+        ],
+        avoid: ['Shortcuts', 'Quick fixes']
+      },
+      afternoon: {
+        timeRange: '2-4 PM',
+        energyType: 'Endurance phase',
+        bestFor: [
+          'Persist through challenges',
+          'Detail-oriented work',
+          'Administrative tasks',
+          'Build foundations'
+        ],
+        avoid: ['Giving up', 'Seeking easy path']
+      },
+      evening: {
+        timeRange: '6-8 PM',
+        energyType: 'Review time',
+        bestFor: [
+          'Assess progress',
+          'Plan improvements',
+          'Organize for tomorrow',
+          'Solo reflection'
+        ],
+        avoid: ['Socializing', 'Indulgence']
+      }
+    }
+  };
+  
+  return sequences[planet];
 }
 
 /**
@@ -1155,6 +1528,9 @@ export function generateDailyReading(
   // Energy Return (Irtiṭāb) - Lesson 25
   const energyReturn = calculateEnergyReturn(dayPlanet);
   
+  // Task Sequencer (Niẓām) - Lesson 28 (only for high-harmony days)
+  const taskSequence = generateTaskSequence(dayPlanet, elementPhase, score);
+  
   return {
     date: date.toISOString().split('T')[0],
     weekday,
@@ -1169,7 +1545,8 @@ export function generateDailyReading(
     restLevel: isRestDay ? restLevel : undefined,
     restPractices,
     betterDays,
-    energyReturn
+    energyReturn,
+    taskSequence
   };
 }
 
