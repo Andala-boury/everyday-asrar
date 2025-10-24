@@ -436,7 +436,83 @@ export function IlmHurufPanel() {
             </div>
           )}
           
-          {(mode === 'life-path' || mode === 'timing') && (
+          {mode === 'timing' && (
+            <div className="space-y-4">
+              {/* Name fields for Rest Signal feature */}
+              <div className="space-y-3">
+                {/* Latin Input */}
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                    Your Name - Latin (English/French) <span className="text-xs text-slate-500">(Optional - for Rest Signal)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={latinInput}
+                    onChange={(e) => handleLatinInput(e.target.value, true)}
+                    placeholder="e.g., Muhammad, Hassan, Fatima, Layla"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  />
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    Enables personalized Rest Signal detection
+                  </p>
+                </div>
+                
+                {/* Arabic Input */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                      Your Name - Arabic <span className="text-xs text-slate-500">(Optional)</span>
+                    </label>
+                    <button
+                      onClick={() => setShowKeyboard(!showKeyboard)}
+                      className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                        showKeyboard
+                          ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700'
+                          : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600'
+                      }`}
+                    >
+                      <Keyboard className="w-3 h-3" />
+                      {showKeyboard ? 'Hide' : 'Show'} Keyboard
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      setLatinInput('');
+                    }}
+                    placeholder="محمد"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right text-xl font-arabic"
+                    dir="rtl"
+                    style={{ fontFamily: "'Noto Naskh Arabic', 'Amiri', serif" }}
+                  />
+                  {showKeyboard && (
+                    <div className="mt-3">
+                      <ArabicKeyboard 
+                        onKeyPress={(char) => handleKeyboardPress(char, true)}
+                        onClose={() => setShowKeyboard(false)}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                  Birth Date
+                </label>
+                <input
+                  type="date"
+                  value={birthDate}
+                  onChange={(e) => setBirthDate(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                />
+              </div>
+            </div>
+          )}
+          
+          {mode === 'life-path' && (
             <div>
               <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
                 Birth Date
@@ -474,7 +550,7 @@ export function IlmHurufPanel() {
       {results && !results.error && mode === 'destiny' && <DestinyResults results={results} />}
       {results && !results.error && mode === 'compatibility' && results.person1 && results.person2 && <CompatibilityResults results={results} />}
       {results && !results.error && mode === 'life-path' && <LifePathResults results={results} />}
-      {results && !results.error && mode === 'timing' && <TimingResults results={results} birthDate={birthDate} />}
+      {results && !results.error && mode === 'timing' && <TimingResults results={results} birthDate={birthDate} name={name} abjad={abjad} />}
     </div>
   );
 }
@@ -652,19 +728,19 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 {/* Rest Signal Badge */}
                 {day.isRestDay && (
                   <div className="mb-2">
-                    <button
+                    <div
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent day selection toggle
                         toggleRestSignal(day.date);
                       }}
-                      className={`w-full text-[10px] px-2 py-1 rounded-full font-bold transition-colors ${
+                      className={`w-full text-[10px] px-2 py-1 rounded-full font-bold transition-colors cursor-pointer ${
                         day.restLevel === 'deep'
                           ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/50'
                           : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50'
                       }`}
                     >
                       {day.restLevel === 'deep' ? '🛑 DEEP REST' : '🌙 REST SIGNAL'}
-                    </button>
+                    </div>
                   </div>
                 )}
                 
@@ -1331,8 +1407,55 @@ function LifePathResults({ results }: { results: any }) {
   );
 }
 
-function TimingResults({ results, birthDate }: { results: any; birthDate: string }) {
+function TimingResults({ results, birthDate, name, abjad }: { results: any; birthDate: string; name: string; abjad: any }) {
   const { planetaryHour, personalYear } = results;
+  const [restAlertDismissed, setRestAlertDismissed] = useState(false);
+  
+  // Get today's rest status
+  const today = new Date();
+  const todayWeekday = today.toLocaleDateString('en-US', { weekday: 'long' });
+  let todayReading: DailyReading | null = null;
+  
+  // Calculate today's reading if we have a birth date and name
+  if (birthDate && name) {
+    try {
+      // Generate a profile for today's reading
+      const tempProfile = calculateUserProfile(name, new Date(birthDate), undefined, abjad);
+      const weeklySummary = generateWeeklySummary(tempProfile, today);
+      todayReading = weeklySummary.days.find(d => d.weekday === todayWeekday) || null;
+    } catch (e) {
+      console.error('Error calculating today\'s reading:', e);
+    }
+  }
+  
+  // Check sessionStorage for dismissal
+  useEffect(() => {
+    const dismissed = sessionStorage.getItem('restAlertDismissed');
+    const dismissedDate = sessionStorage.getItem('restAlertDismissedDate');
+    const todayStr = today.toISOString().split('T')[0];
+    
+    if (dismissed === 'true' && dismissedDate === todayStr) {
+      setRestAlertDismissed(true);
+    }
+  }, []);
+  
+  const dismissRestAlert = () => {
+    setRestAlertDismissed(true);
+    const todayStr = today.toISOString().split('T')[0];
+    sessionStorage.setItem('restAlertDismissed', 'true');
+    sessionStorage.setItem('restAlertDismissedDate', todayStr);
+  };
+  
+  const scrollToWeekView = () => {
+    // Scroll to weekly section if it exists
+    const weekSection = document.querySelector('[data-week-view]');
+    if (weekSection) {
+      weekSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // If not on page, inform user
+      alert('Switch to "Weekly View" tab to see your full week forecast');
+    }
+  };
   
   if (!planetaryHour || !planetaryHour.planet) {
     return (
@@ -1348,6 +1471,103 @@ function TimingResults({ results, birthDate }: { results: any; birthDate: string
   
   return (
     <div className="space-y-6">
+      
+      {/* Today's Rest Signal Alert */}
+      {todayReading?.isRestDay && !restAlertDismissed && (
+        <div className={`p-5 rounded-xl border-2 animate-in slide-in-from-top duration-300 ${
+          todayReading.restLevel === 'deep' 
+            ? 'bg-red-50 border-red-300 dark:bg-red-900/20 dark:border-red-700'
+            : 'bg-blue-50 border-blue-300 dark:bg-blue-900/20 dark:border-blue-700'
+        }`}>
+          
+          {/* Header */}
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <span className="text-4xl">
+                {todayReading.restLevel === 'deep' ? '🛑' : '🌙'}
+              </span>
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                  {todayReading.restLevel === 'deep' ? 'Deep Rest Needed Today' : 'Today is a Rest Day'}
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                  Harmony: {todayReading.harmony_score}/10 • {todayReading.day_planet} energy • {todayReading.weekday}
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Message */}
+          <div className="mb-4">
+            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+              {todayReading.restLevel === 'deep' 
+                ? 'Critical low energy detected. Your spirit is recalibrating—honor this healing signal with deep physical and mental rest today.'
+                : 'Low harmony today suggests this is a strategic rest day. Focus on planning and reflection rather than execution and new starts.'
+              }
+            </p>
+          </div>
+          
+          {/* Quick Practices */}
+          {todayReading.restPractices && todayReading.restPractices.length > 0 && (
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-4 mb-4">
+              <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wide">
+                Recommended Today:
+              </p>
+              <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-2">
+                {todayReading.restPractices.slice(0, 3).map((practice, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">•</span>
+                    <span>{practice}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            <button 
+              onClick={scrollToWeekView}
+              className="text-sm px-4 py-2 bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-2 font-medium"
+            >
+              <Calendar className="w-4 h-4" />
+              View Full Week
+            </button>
+            
+            <button 
+              onClick={dismissRestAlert}
+              className="text-sm px-4 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors"
+            >
+              Dismiss
+            </button>
+          </div>
+          
+          {/* Classical Wisdom */}
+          <p className="text-xs italic text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-200 dark:border-slate-700">
+            <span className="font-semibold">
+              "{todayReading.restLevel === 'deep' 
+                ? 'Man ʿarafa infisāl waqtihi, faqad ḥafaẓa ṭāqatahu' 
+                : 'Al-sukūn qabl al-ḥaraka'
+              }"
+            </span>
+            {' — '}
+            {todayReading.restLevel === 'deep'
+              ? 'Who knows the time for disconnection, preserves their energy'
+              : 'Stillness before motion brings blessed action'
+            }
+          </p>
+        </div>
+      )}
+      
+      {/* Note about rest day context */}
+      {todayReading?.isRestDay && !restAlertDismissed && (
+        <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
+          <p className="text-sm text-amber-800 dark:text-amber-200">
+            <strong>⚠️ Rest day active</strong> — Planetary hours below are shown for reference, but minimize activities today.
+          </p>
+        </div>
+      )}
+      
       {/* Current Planetary Hour */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
