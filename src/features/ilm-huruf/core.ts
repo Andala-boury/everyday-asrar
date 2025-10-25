@@ -277,6 +277,9 @@ export function analyzeNameDestiny(name: string, abjad: Record<string, number> =
   const quranResonance = computeQuranResonance(kabir);
   console.log('✨ analyzeNameDestiny - Kabir:', kabir, 'QuranResonance:', quranResonance);
   
+  // Analyze letter geometry
+  const geometry = analyzeGeometry(name);
+  
   return {
     kabir,
     saghir: validSaghir,
@@ -287,7 +290,8 @@ export function analyzeNameDestiny(name: string, abjad: Record<string, number> =
     soulUrge: SPIRITUAL_STATIONS[validSoulUrge as keyof typeof SPIRITUAL_STATIONS],
     personality: SPIRITUAL_STATIONS[validPersonality as keyof typeof SPIRITUAL_STATIONS],
     interpretation: generateDestinyInterpretation(validSaghir, validSoulUrge, validPersonality),
-    quranResonance
+    quranResonance,
+    geometry
   };
 }
 
@@ -300,6 +304,777 @@ function generateDestinyInterpretation(destiny: number, soul: number, personalit
     `Your soul deeply yearns for ${s.quality.toLowerCase()}, ` +
     `while outwardly you express ${p.quality.toLowerCase()}. ` +
     `Integration comes when you align all three dimensions.`;
+}
+
+// ============================================================================
+// MOTHER'S NAME ANALYSIS - Um Ḥadad (Spiritual Origin)
+// ============================================================================
+
+/**
+ * Mother's Name Analysis Result
+ * Reveals the Aṣl al-Rūḥānī (Spiritual Origin) - the inherited elemental foundation
+ */
+export interface MotherAnalysis {
+  name: string;
+  element: ElementType;
+  elementArabic: string;
+  kabir: number;
+  saghir: number;
+  hadath: number;
+}
+
+/**
+ * Element compatibility relations for inheritance analysis
+ */
+type ElementRelation = 'same' | 'compatible' | 'opposing' | 'neutral';
+
+const ELEMENT_RELATIONS: Record<ElementType, Record<ElementType, ElementRelation>> = {
+  Fire: {
+    Fire: 'same',
+    Air: 'compatible',   // Air feeds Fire
+    Water: 'opposing',   // Water extinguishes Fire
+    Earth: 'neutral'
+  },
+  Water: {
+    Water: 'same',
+    Earth: 'compatible', // Water nourishes Earth
+    Fire: 'opposing',    // Fire evaporates Water
+    Air: 'neutral'
+  },
+  Air: {
+    Air: 'same',
+    Fire: 'compatible',  // Air feeds Fire
+    Earth: 'opposing',   // Earth grounds Air
+    Water: 'neutral'
+  },
+  Earth: {
+    Earth: 'same',
+    Water: 'compatible', // Earth contains Water
+    Air: 'opposing',     // Air disperses Earth
+    Fire: 'neutral'
+  }
+};
+
+/**
+ * Get Arabic name for element
+ */
+function getElementArabic(element: ElementType): string {
+  const arabicNames: Record<ElementType, string> = {
+    Fire: 'نار',
+    Water: 'ماء',
+    Air: 'هواء',
+    Earth: 'تراب'
+  };
+  return arabicNames[element];
+}
+
+/**
+ * Analyze mother's name to reveal spiritual origin (Um Ḥadad)
+ * Uses same Ḥadad calculation as main name analysis
+ */
+export function analyzeMotherName(arabicName: string, abjad: Record<string, number> = ABJAD_MAGHRIBI): MotherAnalysis {
+  const normalized = arabicName.replace(/[ًٌٍَُِّْ]/g, '').replace(/\s+/g, '');
+  const letters = [...normalized];
+  
+  if (letters.length === 0) {
+    throw new Error('Mother\'s name cannot be empty');
+  }
+  
+  // Calculate Kabīr (sum of all letters)
+  const kabir = letters.reduce((sum, ch) => sum + (abjad[ch] || 0), 0);
+  
+  // Calculate Ṣaghīr (digital root)
+  const saghir = digitalRoot(kabir);
+  
+  // Calculate Ḥadath (remainder ÷ 12) to determine element
+  const hadath = hadathRemainder(kabir);
+  
+  // Determine element from Ḥadath
+  const element = hadathToElement(hadath);
+  
+  return {
+    name: arabicName,
+    element,
+    elementArabic: getElementArabic(element),
+    kabir,
+    saghir,
+    hadath
+  };
+}
+
+/**
+ * Generate inheritance insight based on user's element and mother's element
+ * Explains the relationship between expression (user) and foundation (mother)
+ */
+export function generateInheritanceInsight(
+  userElement: ElementType,
+  motherElement: ElementType
+): string {
+  const relation = ELEMENT_RELATIONS[userElement][motherElement];
+  
+  if (relation === 'same') {
+    return `You express and inherit the same ${userElement} energy. Strong, consistent elemental identity with deep ${motherElement} roots. This creates a pure lineage of ${userElement} qualities - what you express outwardly mirrors your inner foundation.`;
+  }
+  
+  if (relation === 'compatible') {
+    // Specific compatible pairs
+    if (userElement === 'Fire' && motherElement === 'Air') {
+      return `You express with Fire but have Air roots. Your Air foundation feeds your Fire action - like wind fanning flames. This creates natural confidence and momentum. Your mother's airy nature (movement, ideas) supports your fiery expression (passion, action).`;
+    }
+    if (userElement === 'Air' && motherElement === 'Fire') {
+      return `You express with Air but have Fire roots. Your Fire foundation energizes your Air movement - like heat creating wind. This brings dynamic communication and inspired ideas. Your mother's fiery nature (passion, will) fuels your airy expression (thought, connection).`;
+    }
+    if (userElement === 'Water' && motherElement === 'Earth') {
+      return `You express with Water but have Earth roots. Your Earth foundation contains your Water flow - like a riverbed holding water. This brings emotional stability and practical intuition. Your mother's earthy nature (stability, form) grounds your watery expression (emotion, depth).`;
+    }
+    if (userElement === 'Earth' && motherElement === 'Water') {
+      return `You express with Earth but have Water roots. Your Water foundation nourishes your Earth structure - like rain feeding the soil. This brings fertile creativity and adaptable stability. Your mother's watery nature (emotion, flow) enriches your earthy expression (building, manifesting).`;
+    }
+    
+    return `You express with ${userElement} but have ${motherElement} roots. These elements support each other naturally - your foundation enhances your expression. This creates a harmonious flow between inner origin and outer manifestation.`;
+  }
+  
+  if (relation === 'opposing') {
+    // Specific opposing pairs
+    if (userElement === 'Fire' && motherElement === 'Water') {
+      return `You express with Fire but have Water roots. This creates dynamic tension - passion balanced by emotional depth. You may feel pulled between action and reflection, intensity and flow. This explains why you can be both fierce and deeply sensitive. Learn to honor both: your Fire drive and your Water foundation.`;
+    }
+    if (userElement === 'Water' && motherElement === 'Fire') {
+      return `You express with Water but have Fire roots. This creates dynamic tension - emotional depth fueled by inner passion. You may feel pulled between flow and force, receptivity and assertion. This explains why you can be both gentle and intensely willful. Your calm exterior holds powerful depths.`;
+    }
+    if (userElement === 'Air' && motherElement === 'Earth') {
+      return `You express with Air but have Earth roots. This creates dynamic tension - movement balanced by stability. You may feel pulled between freedom and security, ideas and form. This explains why you value both exploration and solid foundations. Your grounded base allows safe flight.`;
+    }
+    if (userElement === 'Earth' && motherElement === 'Air') {
+      return `You express with Earth but have Air roots. This creates dynamic tension - structure built on freedom. You may feel pulled between stability and change, form and flow. This explains why you can be both reliable and surprisingly adaptable. Your stable exterior holds spacious depths.`;
+    }
+    
+    return `You express with ${userElement} but have ${motherElement} roots. This creates dynamic tension - explains why you balance ${userElement === 'Fire' || userElement === 'Air' ? 'passion with depth or movement with stability' : 'depth with action or stability with change'}. This polarity is your gift - you contain both extremes.`;
+  }
+  
+  // Neutral relation
+  if (userElement === 'Fire' && motherElement === 'Earth') {
+    return `You express with Fire and have Earth foundation. Fire and Earth create different modes - active expression vs. stable foundation. You can be intensely active outwardly while maintaining inner groundedness. Your earthy roots keep your fire from burning out.`;
+  }
+  if (userElement === 'Earth' && motherElement === 'Fire') {
+    return `You express with Earth and have Fire foundation. These create different modes - stable expression powered by passionate foundation. Your outer reliability is fueled by inner drive. Your fiery roots energize your earthy manifestation.`;
+  }
+  if (userElement === 'Water' && motherElement === 'Air') {
+    return `You express with Water and have Air foundation. These create different modes - emotional expression with mental foundation. You feel deeply but process through understanding. Your airy roots give perspective to your watery flow.`;
+  }
+  if (userElement === 'Air' && motherElement === 'Water') {
+    return `You express with Air and have Water foundation. These create different modes - mental expression with emotional foundation. You think and communicate, but it's rooted in deep feeling. Your watery roots give depth to your airy ideas.`;
+  }
+  
+  return `You express with ${userElement} and have ${motherElement} foundation. These create different modes - active expression vs. restful foundation. This gives you versatility and range.`;
+}
+
+// ============================================================================
+// LETTER GEOMETRY ANALYSIS - Handasa al-Ḥurūf (Letter Shapes)
+// ============================================================================
+
+/**
+ * Geometry types based on physical letter shapes
+ */
+export type GeometryType = 'vertical' | 'round' | 'flat' | 'angular';
+
+/**
+ * Geometry classification result for a single type
+ */
+export interface GeometryTypeData {
+  count: number;
+  letters: string[];
+  percentage: number;
+}
+
+/**
+ * Complete geometry analysis for a name
+ */
+export interface GeometryAnalysis {
+  vertical: GeometryTypeData;
+  round: GeometryTypeData;
+  flat: GeometryTypeData;
+  angular: GeometryTypeData;
+  total: number;
+  dominant: GeometryType;
+  secondary: GeometryType | null;
+  profile: string;
+}
+
+/**
+ * Geometry classification map based on Imam al-Būnī's teachings
+ */
+const GEOMETRY_MAP: Record<GeometryType, string[]> = {
+  vertical: ['ا', 'ل', 'ط', 'ظ', 'ك', 'لا'], // Vertical/Upward forms
+  round: ['م', 'و', 'ن', 'ه', 'ة', 'ق', 'ف'], // Round/Circular forms
+  flat: ['س', 'ش', 'ص', 'ض', 'ب', 'ت', 'ث'], // Flat/Horizontal forms
+  angular: ['ح', 'خ', 'ع', 'غ', 'ج', 'ز', 'ر', 'ذ', 'د'] // Angular/Sharp forms
+};
+
+/**
+ * Arabic names for geometry types
+ */
+export const GEOMETRY_NAMES = {
+  vertical: { en: 'Vertical', ar: 'عمودي', transliteration: 'ʿAmūdī' },
+  round: { en: 'Round', ar: 'مدور', transliteration: 'Mudawwar' },
+  flat: { en: 'Flat', ar: 'مسطح', transliteration: 'Musaṭṭaḥ' },
+  angular: { en: 'Angular', ar: 'زاوية', transliteration: 'Zāwiya' }
+};
+
+/**
+ * Keywords for each geometry type
+ */
+export const GEOMETRY_KEYWORDS: Record<GeometryType, string[]> = {
+  vertical: ['Aspiration', 'Spiritual reach', 'Goals', 'Growth'],
+  round: ['Compassion', 'Wholeness', 'Cycles', 'Embrace'],
+  flat: ['Stability', 'Grounding', 'Foundation', 'Balance'],
+  angular: ['Decisiveness', 'Sharpness', 'Clarity', 'Transformation']
+};
+
+/**
+ * Analyze the geometric composition of a name
+ */
+export function analyzeGeometry(arabicName: string): GeometryAnalysis {
+  const normalized = arabicName.replace(/[ًٌٍَُِّْ]/g, '').replace(/\s+/g, '');
+  const letters = [...normalized];
+  
+  const result: Record<GeometryType, GeometryTypeData> = {
+    vertical: { count: 0, letters: [], percentage: 0 },
+    round: { count: 0, letters: [], percentage: 0 },
+    flat: { count: 0, letters: [], percentage: 0 },
+    angular: { count: 0, letters: [], percentage: 0 }
+  };
+  
+  // Count each letter's geometry type
+  letters.forEach(letter => {
+    (Object.keys(GEOMETRY_MAP) as GeometryType[]).forEach(type => {
+      if (GEOMETRY_MAP[type].includes(letter)) {
+        result[type].count++;
+        if (!result[type].letters.includes(letter)) {
+          result[type].letters.push(letter);
+        }
+      }
+    });
+  });
+  
+  // Calculate total and percentages
+  const total = letters.length;
+  (Object.keys(result) as GeometryType[]).forEach(type => {
+    result[type].percentage = total > 0 ? (result[type].count / total) * 100 : 0;
+  });
+  
+  // Find dominant and secondary
+  const sorted = (Object.keys(result) as GeometryType[])
+    .sort((a, b) => result[b].percentage - result[a].percentage);
+  
+  const dominant = sorted[0];
+  const secondary = result[sorted[1]].percentage > 10 ? sorted[1] : null;
+  
+  // Generate profile
+  const profile = generateGeometricProfile(result, dominant, secondary);
+  
+  return {
+    ...result,
+    total,
+    dominant,
+    secondary,
+    profile
+  };
+}
+
+/**
+ * Generate personality profile based on geometric composition
+ */
+function generateGeometricProfile(
+  counts: Record<GeometryType, GeometryTypeData>,
+  dominant: GeometryType,
+  secondary: GeometryType | null
+): string {
+  const dominantPct = counts[dominant].percentage;
+  
+  // Single dominant type (>60%)
+  if (dominantPct > 60) {
+    const profiles = {
+      vertical: "Strong upward-moving energy. You naturally reach for ideals and higher purposes. Spiritual seeker with aspirational drive, always looking to elevate yourself and others.",
+      round: "Embracing and nurturing energy. You contain and complete cycles with emotional warmth. Natural capacity for compassion and wholeness, creating safe spaces for growth.",
+      flat: "Grounded and stable foundation. You create horizontal expansion with practical stability. Reliable, earth-connected energy that others can depend upon.",
+      angular: "Sharp and decisive energy. You cut through complexity with clarity and transformation. Direct, purposeful approach that doesn't waste time or energy."
+    };
+    return profiles[dominant];
+  }
+  
+  // Combination profiles
+  if (secondary) {
+    const comboKey = `${dominant}-${secondary}`;
+    const combos: Record<string, string> = {
+      'vertical-round': "You reach for ideals (vertical) while embracing others (round). Aspirational yet compassionate - you lift others as you climb. Balances spiritual seeking with emotional warmth.",
+      'vertical-flat': "You ground your aspirations (vertical + flat). Practical dreamer who builds stable paths to high goals. Your vision is matched by methodical execution.",
+      'vertical-angular': "You ascend with sharpness (vertical + angular). Ambitious and decisive, cutting through obstacles to reach heights. Dynamic upward momentum with clear direction.",
+      'round-vertical': "You nurture with aspiration (round + vertical). Compassionate idealism - you care deeply while reaching for better. Emotional warmth directed toward growth.",
+      'round-flat': "You embrace with stability (round + flat). Grounded compassion - reliable emotional support with practical care. Creating safe, stable containers for others.",
+      'round-angular': "You nurture with decisiveness (round + angular). Compassionate yet clear-cutting when needed - protective warmth. You defend what you love with precision.",
+      'flat-vertical': "You stabilize with reach (flat + vertical). Building solid foundations while aiming high. Grounded ambition that creates lasting structures.",
+      'flat-round': "You ground with embrace (flat + round). Stable compassion - dependable emotional availability. Practical nurturing that provides real support.",
+      'flat-angular': "You stabilize with sharp clarity (flat + angular). Grounded decisiveness - you build with precision and purpose. Methodical yet incisive approach.",
+      'angular-vertical': "You sharpen while rising (angular + vertical). Decisive aspiration - cutting your path to higher goals. Purposeful ascent with no wasted energy.",
+      'angular-round': "You cut with compassion (angular + round). Clear boundaries with emotional awareness. Decisive yet nurturing - you protect through clarity.",
+      'angular-flat': "You sharpen with grounding (angular + flat). Decisive stability - precise and dependable. You establish clear, reliable structures."
+    };
+    
+    return combos[comboKey] || `Balanced geometric energy combining ${dominant} with ${secondary}. This creates a versatile expression that draws on multiple energetic patterns.`;
+  }
+  
+  // Balanced (no clear dominant)
+  return "Balanced geometric energy across multiple forms. You have versatility in expression, able to be aspirational, nurturing, grounded, or decisive as situations require. Adaptable spiritual presence.";
+}
+
+// ============================================================================
+// REAL-TIME PLANETARY HOUR & ACT NOW LOGIC
+// ============================================================================
+
+/**
+ * Alignment quality between user element and current planetary hour
+ */
+export type AlignmentQuality = 'perfect' | 'strong' | 'moderate' | 'weak' | 'opposing';
+
+/**
+ * Urgency level for action
+ */
+export type UrgencyLevel = 'high' | 'medium' | 'low';
+
+/**
+ * Action type for buttons
+ */
+export type ActionType = 'start' | 'schedule' | 'rest' | 'plan' | 'wait';
+
+/**
+ * Current planetary hour with real-time data
+ */
+export interface CurrentPlanetaryHour {
+  planet: Planet;
+  planetArabic: string;
+  element: ElementType;
+  startTime: Date;
+  endTime: Date;
+  isCurrent: boolean;
+}
+
+/**
+ * Element alignment result
+ */
+export interface ElementAlignment {
+  userElement: ElementType;
+  hourElement: ElementType;
+  quality: AlignmentQuality;
+  qualityArabic: string;
+  harmonyScore: number;
+}
+
+/**
+ * Time window information
+ */
+export interface TimeWindow {
+  closesIn: string;
+  closesInMs: number;
+  closesInMinutes: number;
+  nextWindow: Date | null;
+  nextWindowIn: string;
+  urgency: UrgencyLevel;
+}
+
+/**
+ * Action button configuration
+ */
+export interface ActionButton {
+  icon: string;
+  label: string;
+  action: ActionType;
+  priority: 'primary' | 'secondary' | 'tertiary';
+}
+
+/**
+ * Element-specific guidance
+ */
+export interface ElementGuidance {
+  bestFor: string[];
+  avoid: string[];
+}
+
+/**
+ * Planet to Element mapping
+ */
+const PLANET_ELEMENT_MAP: Record<Planet, ElementType> = {
+  Sun: 'Fire',
+  Mars: 'Fire',
+  Moon: 'Water',
+  Venus: 'Water',
+  Mercury: 'Air',
+  Jupiter: 'Air',
+  Saturn: 'Earth'
+};
+
+/**
+ * Planet Arabic names
+ */
+const PLANET_ARABIC: Record<Planet, string> = {
+  Sun: 'الشمس',
+  Moon: 'القمر',
+  Mars: 'المريخ',
+  Mercury: 'عطارد',
+  Jupiter: 'المشتري',
+  Venus: 'الزهرة',
+  Saturn: 'زحل'
+};
+
+/**
+ * Get current planetary hour with element information
+ */
+export function getCurrentPlanetaryHour(date: Date = new Date()): CurrentPlanetaryHour {
+  const planetaryData = calculatePlanetaryHour(date);
+  const element = PLANET_ELEMENT_MAP[planetaryData.planet];
+  
+  // Calculate hour boundaries (simplified - 1 hour blocks)
+  const currentHour = date.getHours();
+  const startTime = new Date(date);
+  startTime.setHours(currentHour, 0, 0, 0);
+  
+  const endTime = new Date(date);
+  endTime.setHours(currentHour + 1, 0, 0, 0);
+  
+  return {
+    planet: planetaryData.planet,
+    planetArabic: PLANET_ARABIC[planetaryData.planet],
+    element,
+    startTime,
+    endTime,
+    isCurrent: true
+  };
+}
+
+/**
+ * Detect alignment quality between user element and hour element
+ */
+export function detectAlignment(
+  userElement: ElementType,
+  hourElement: ElementType
+): ElementAlignment {
+  // Perfect - Same element
+  if (userElement === hourElement) {
+    return {
+      userElement,
+      hourElement,
+      quality: 'perfect',
+      qualityArabic: 'اتصال تام',
+      harmonyScore: 100
+    };
+  }
+  
+  // Strong - Compatible elements (from ELEMENT_RELATIONS)
+  const compatible: Record<ElementType, ElementType> = {
+    Fire: 'Air',
+    Air: 'Fire',
+    Water: 'Earth',
+    Earth: 'Water'
+  };
+  
+  if (compatible[userElement] === hourElement) {
+    return {
+      userElement,
+      hourElement,
+      quality: 'strong',
+      qualityArabic: 'اتصال قوي',
+      harmonyScore: 75
+    };
+  }
+  
+  // Opposing - Conflicting elements
+  const opposing: Record<ElementType, ElementType> = {
+    Fire: 'Water',
+    Water: 'Fire',
+    Air: 'Earth',
+    Earth: 'Air'
+  };
+  
+  if (opposing[userElement] === hourElement) {
+    return {
+      userElement,
+      hourElement,
+      quality: 'opposing',
+      qualityArabic: 'اتصال ضعيف',
+      harmonyScore: 25
+    };
+  }
+  
+  // Moderate - Neutral
+  return {
+    userElement,
+    hourElement,
+    quality: 'moderate',
+    qualityArabic: 'اتصال متوسط',
+    harmonyScore: 50
+  };
+}
+
+/**
+ * Calculate time window information
+ */
+export function calculateTimeWindow(
+  currentHour: CurrentPlanetaryHour,
+  userElement: ElementType
+): TimeWindow {
+  const now = new Date();
+  const closesInMs = currentHour.endTime.getTime() - now.getTime();
+  const closesInMinutes = Math.floor(closesInMs / 60000);
+  
+  // Format closing time
+  let closesIn: string;
+  if (closesInMinutes < 1) {
+    closesIn = 'less than 1 minute';
+  } else if (closesInMinutes === 1) {
+    closesIn = '1 minute';
+  } else if (closesInMinutes < 60) {
+    closesIn = `${closesInMinutes} minutes`;
+  } else {
+    const hours = Math.floor(closesInMinutes / 60);
+    const mins = closesInMinutes % 60;
+    closesIn = hours === 1 ? '1 hour' : `${hours} hours`;
+    if (mins > 0) closesIn += ` ${mins} min`;
+  }
+  
+  // Find next matching window (simplified - next occurrence of compatible element)
+  // In a full implementation, this would scan through all 24 planetary hours
+  const hoursUntilNext = findNextCompatibleHour(userElement, now);
+  const nextWindow = hoursUntilNext > 0 ? new Date(now.getTime() + hoursUntilNext * 60 * 60 * 1000) : null;
+  
+  let nextWindowIn = '';
+  if (nextWindow) {
+    if (hoursUntilNext < 1) {
+      nextWindowIn = 'less than 1 hour';
+    } else if (hoursUntilNext === 1) {
+      nextWindowIn = '1 hour';
+    } else if (hoursUntilNext < 24) {
+      const hour = nextWindow.getHours();
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      const displayHour = hour % 12 || 12;
+      nextWindowIn = `Today at ${displayHour}:00 ${ampm} (${Math.floor(hoursUntilNext)} hrs)`;
+    } else {
+      nextWindowIn = 'Tomorrow';
+    }
+  }
+  
+  // Calculate urgency
+  let urgency: UrgencyLevel;
+  if (closesInMinutes <= 15) urgency = 'high';
+  else if (closesInMinutes <= 45) urgency = 'medium';
+  else urgency = 'low';
+  
+  return {
+    closesIn,
+    closesInMs,
+    closesInMinutes,
+    nextWindow,
+    nextWindowIn,
+    urgency
+  };
+}
+
+/**
+ * Find next compatible hour (simplified estimation)
+ */
+function findNextCompatibleHour(userElement: ElementType, now: Date): number {
+  // Simplified: estimate next compatible hour
+  // Fire/Air appear roughly every 3-4 hours, Water/Earth similar
+  const currentHour = now.getHours();
+  
+  // Rough planetary hour sequence (repeats every 7 hours)
+  const elementSequence: ElementType[] = ['Fire', 'Water', 'Air', 'Earth', 'Earth', 'Air', 'Water'];
+  const currentIndex = currentHour % 7;
+  
+  for (let i = 1; i <= 24; i++) {
+    const checkIndex = (currentIndex + i) % 7;
+    const element = elementSequence[checkIndex];
+    
+    if (element === userElement || isElementCompatible(userElement, element)) {
+      return i;
+    }
+  }
+  
+  return 4; // Default fallback
+}
+
+/**
+ * Check if two elements are compatible
+ */
+function isElementCompatible(element1: ElementType, element2: ElementType): boolean {
+  const compatible: Record<ElementType, ElementType> = {
+    Fire: 'Air',
+    Air: 'Fire',
+    Water: 'Earth',
+    Earth: 'Water'
+  };
+  return compatible[element1] === element2;
+}
+
+/**
+ * Generate action buttons based on alignment
+ */
+export function generateActionButtons(
+  alignment: ElementAlignment,
+  timeWindow: TimeWindow
+): ActionButton[] {
+  // HIGH ALIGNMENT (Perfect or Strong)
+  if (alignment.quality === 'perfect' || alignment.quality === 'strong') {
+    return [
+      {
+        icon: '🚀',
+        label: 'Start Important Task',
+        action: 'start',
+        priority: 'primary'
+      },
+      {
+        icon: '📞',
+        label: 'Make Difficult Call',
+        action: 'start',
+        priority: 'primary'
+      },
+      {
+        icon: '✍️',
+        label: 'Send Critical Email',
+        action: 'start',
+        priority: 'secondary'
+      },
+      {
+        icon: '📅',
+        label: 'Schedule for Later',
+        action: 'schedule',
+        priority: 'tertiary'
+      }
+    ];
+  }
+  
+  // LOW ALIGNMENT (Opposing or Weak)
+  if (alignment.quality === 'opposing' || alignment.quality === 'weak') {
+    return [
+      {
+        icon: '⏸️',
+        label: 'Rest & Reflect',
+        action: 'rest',
+        priority: 'primary'
+      },
+      {
+        icon: '📖',
+        label: 'Plan & Prepare',
+        action: 'plan',
+        priority: 'secondary'
+      },
+      {
+        icon: '⏭️',
+        label: `Wait for ${alignment.userElement} (${timeWindow.nextWindowIn})`,
+        action: 'wait',
+        priority: 'secondary'
+      }
+    ];
+  }
+  
+  // MODERATE ALIGNMENT
+  return [
+    {
+      icon: '📝',
+      label: 'Handle Routine Tasks',
+      action: 'start',
+      priority: 'primary'
+    },
+    {
+      icon: '🔄',
+      label: 'Continue Ongoing Work',
+      action: 'start',
+      priority: 'secondary'
+    },
+    {
+      icon: '⏭️',
+      label: 'Wait for Better Timing',
+      action: 'wait',
+      priority: 'tertiary'
+    }
+  ];
+}
+
+/**
+ * Element-specific guidance for optimal actions
+ */
+export const ELEMENT_GUIDANCE_MAP: Record<ElementType, ElementGuidance> = {
+  Fire: {
+    bestFor: [
+      'Launch new projects',
+      'Make important decisions',
+      'Have courage-requiring conversations',
+      'Take bold action',
+      'Lead and inspire others'
+    ],
+    avoid: [
+      'Emotional processing',
+      'Detailed planning',
+      'Slow, methodical work'
+    ]
+  },
+  
+  Air: {
+    bestFor: [
+      'Communicate and network',
+      'Learn new concepts',
+      'Brainstorm ideas',
+      'Write and articulate',
+      'Teach and share knowledge'
+    ],
+    avoid: [
+      'Heavy physical work',
+      'Emotional depth work',
+      'Long-term commitments'
+    ]
+  },
+  
+  Water: {
+    bestFor: [
+      'Emotional processing',
+      'Deep reflection',
+      'Healing conversations',
+      'Intuitive work',
+      'Creative flow'
+    ],
+    avoid: [
+      'Quick decisions',
+      'Confrontations',
+      'Aggressive action'
+    ]
+  },
+  
+  Earth: {
+    bestFor: [
+      'Build and organize',
+      'Make commitments',
+      'Complete projects',
+      'Financial planning',
+      'Physical work'
+    ],
+    avoid: [
+      'Rapid changes',
+      'Impulsive decisions',
+      'Abstract theorizing'
+    ]
+  }
+};
+
+/**
+ * Get element Arabic name
+ */
+export function getElementArabicName(element: ElementType): string {
+  const names: Record<ElementType, string> = {
+    Fire: 'نار',
+    Water: 'ماء',
+    Air: 'هواء',
+    Earth: 'تراب'
+  };
+  return names[element];
 }
 
 /**
