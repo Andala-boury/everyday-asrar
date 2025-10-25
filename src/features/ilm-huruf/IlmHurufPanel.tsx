@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { BalanceMeter } from '../../components/BalanceMeter';
 import type { ElementType } from '../../components/BalanceMeter';
+import { HarmonyTooltip, type HarmonyBreakdown } from '../../components/HarmonyTooltip';
 import {
   analyzeNameDestiny,
   analyzeCompatibility,
@@ -23,6 +24,7 @@ import {
   calculateHarmonyType,
   calculateDominantForce,
   getBalanceTip,
+  calculateHarmonyBreakdown,
   type UserProfile,
   type WeeklySummary as WeeklySummaryType,
   type DailyReading,
@@ -691,9 +693,22 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 <div className="mb-2">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs text-slate-600 dark:text-slate-400">Harmony</span>
-                    <span className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                      {day.harmony_score}/10
-                    </span>
+                    <div className="flex items-center">
+                      <span className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                        {day.harmony_score}/10
+                      </span>
+                      <HarmonyTooltip
+                        breakdown={calculateHarmonyBreakdown(
+                          day.day_planet,
+                          profile.element,
+                          profile.kawkab,
+                          day.ruh_phase,
+                          profile.ruh,
+                          `${day.day_planet} day`
+                        ) as HarmonyBreakdown}
+                        context="weekly"
+                      />
+                    </div>
                   </div>
                   <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                     <div
@@ -899,7 +914,22 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-4xl font-bold">{day.harmony_score}</div>
+                    <div className="flex items-center justify-end gap-1">
+                      <div className="text-4xl font-bold">{day.harmony_score}</div>
+                      <div className="self-start mt-2">
+                        <HarmonyTooltip
+                          breakdown={calculateHarmonyBreakdown(
+                            day.day_planet,
+                            profile.element,
+                            profile.kawkab,
+                            day.ruh_phase,
+                            profile.ruh,
+                            `${day.day_planet} day`
+                          ) as HarmonyBreakdown}
+                          context="weekly"
+                        />
+                      </div>
+                    </div>
                     <div className="text-xs opacity-90">/ 10</div>
                   </div>
                 </div>
@@ -1700,8 +1730,43 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                 <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
                   {todayReading.restLevel === 'deep' ? 'Deep Rest Needed Today' : 'Today is a Rest Day'}
                 </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                  Harmony: {todayReading.harmony_score}/10 • {todayReading.day_planet} energy • {todayReading.weekday}
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 flex items-center gap-1">
+                  <span>Harmony: {todayReading.harmony_score}/10</span>
+                  {birthDate && name && (
+                    <HarmonyTooltip
+                      breakdown={(() => {
+                        try {
+                          const tempProfile = calculateUserProfile(name, new Date(birthDate), undefined, abjad);
+                          return calculateHarmonyBreakdown(
+                            todayReading.day_planet,
+                            tempProfile.element,
+                            tempProfile.kawkab,
+                            todayReading.ruh_phase,
+                            tempProfile.ruh,
+                            `${todayReading.day_planet} energy`
+                          ) as HarmonyBreakdown;
+                        } catch {
+                          // Fallback if profile calculation fails
+                          return {
+                            score: todayReading.harmony_score,
+                            userElement: 'Fire' as ElementType,
+                            contextElement: 'Fire' as ElementType,
+                            contextLabel: `${todayReading.day_planet} energy`,
+                            ruhPhase: todayReading.ruh_phase,
+                            connectionType: 'weak' as const,
+                            elementMatch: 25,
+                            planetMatch: 50,
+                            ruhImpact: 50
+                          };
+                        }
+                      })()}
+                      context="daily"
+                    />
+                  )}
+                  <span className="mx-1">•</span>
+                  <span>{todayReading.day_planet} energy</span>
+                  <span className="mx-1">•</span>
+                  <span>{todayReading.weekday}</span>
                 </p>
               </div>
             </div>

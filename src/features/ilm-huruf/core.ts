@@ -1359,6 +1359,124 @@ function getScoreBand(score: number): 'High' | 'Moderate' | 'Low' {
 }
 
 /**
+ * Calculate harmony breakdown for educational tooltips (Lesson 29)
+ * Returns detailed breakdown of why harmony is high/low
+ */
+export function calculateHarmonyBreakdown(
+  dayPlanet: Planet,
+  userElement: ElementType,
+  userKawkab: Planet,
+  ruhPhase: number,
+  userRuh: number,
+  contextLabel: string
+): {
+  score: number;
+  userElement: ElementType;
+  contextElement: ElementType;
+  contextLabel: string;
+  ruhPhase: number;
+  connectionType: 'perfect' | 'strong' | 'moderate' | 'weak';
+  elementMatch: number;
+  planetMatch: number;
+  ruhImpact: number;
+} {
+  // Get planet's element
+  const dayElement = getPlanetElement(dayPlanet);
+  
+  // Element match calculation (40% weight)
+  let elementMatchScore = 0;
+  if (userElement === dayElement) {
+    elementMatchScore = 100; // Perfect - Same element
+  } else if (
+    (userElement === 'Fire' && dayElement === 'Air') ||
+    (userElement === 'Air' && dayElement === 'Fire') ||
+    (userElement === 'Water' && dayElement === 'Earth') ||
+    (userElement === 'Earth' && dayElement === 'Water')
+  ) {
+    elementMatchScore = 75; // Strong - Compatible
+  } else if (
+    (userElement === 'Fire' && dayElement === 'Water') ||
+    (userElement === 'Water' && dayElement === 'Fire') ||
+    (userElement === 'Air' && dayElement === 'Earth') ||
+    (userElement === 'Earth' && dayElement === 'Air')
+  ) {
+    elementMatchScore = 25; // Weak - Opposing
+  } else {
+    elementMatchScore = 50; // Moderate - Neutral
+  }
+  
+  // Planet match calculation (35% weight)
+  let planetMatchScore = 0;
+  if (dayPlanet === userKawkab) {
+    planetMatchScore = 100; // Same planet
+  } else if (PLANET_FRIENDSHIPS[userKawkab]?.includes(dayPlanet)) {
+    planetMatchScore = 75; // Friendly planet
+  } else {
+    planetMatchScore = 50; // Neutral
+  }
+  
+  // Rūḥ phase impact (25% weight)
+  const phaseGroup = getRuhPhaseGroup(ruhPhase);
+  const ruhGroup = getRuhPhaseGroup(userRuh);
+  let ruhImpactScore = 0;
+  
+  // Yang phases (1, 3, 5, 7) stronger
+  const isYangPhase = [1, 3, 5, 7].includes(ruhPhase);
+  
+  if (phaseGroup === ruhGroup) {
+    ruhImpactScore = isYangPhase ? 100 : 85;
+  } else if (phaseGroup === 'Begin' && ['Sun', 'Mars', 'Mercury'].includes(dayPlanet)) {
+    ruhImpactScore = 80;
+  } else if (phaseGroup === 'Build' && ['Saturn', 'Jupiter', 'Mercury'].includes(dayPlanet)) {
+    ruhImpactScore = 75;
+  } else if (phaseGroup === 'Complete' && ['Moon', 'Venus', 'Saturn'].includes(dayPlanet)) {
+    ruhImpactScore = 75;
+  } else {
+    ruhImpactScore = 50;
+  }
+  
+  // Overall harmony score (weighted average)
+  const overallScore = Math.round(
+    (elementMatchScore * 0.4) + (planetMatchScore * 0.35) + (ruhImpactScore * 0.25)
+  );
+  
+  // Determine connection type
+  let connectionType: 'perfect' | 'strong' | 'moderate' | 'weak';
+  if (overallScore >= 90) connectionType = 'perfect';
+  else if (overallScore >= 70) connectionType = 'strong';
+  else if (overallScore >= 50) connectionType = 'moderate';
+  else connectionType = 'weak';
+  
+  return {
+    score: overallScore,
+    userElement,
+    contextElement: dayElement,
+    contextLabel,
+    ruhPhase,
+    connectionType,
+    elementMatch: elementMatchScore,
+    planetMatch: planetMatchScore,
+    ruhImpact: ruhImpactScore
+  };
+}
+
+/**
+ * Helper function to get element for a planet
+ */
+function getPlanetElement(planet: Planet): ElementType {
+  const planetElements: Record<Planet, ElementType> = {
+    'Sun': 'Fire',
+    'Moon': 'Water',
+    'Mars': 'Fire',
+    'Mercury': 'Air',
+    'Jupiter': 'Air',
+    'Venus': 'Water',
+    'Saturn': 'Earth'
+  };
+  return planetElements[planet];
+}
+
+/**
  * Generate daily tips based on planet-specific energies
  * Each planet gets unique, actionable guidance for daily planning
  */
