@@ -1,9 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Element, UserLocation } from '../types/planetary';
+import { Element, UserLocation, AccuratePlanetaryHour } from '../types/planetary';
 import { getUserLocation, saveLocation, loadLocation } from '../utils/location';
-import { MapPin, CheckCircle, AlertTriangle } from 'lucide-react';
+import { 
+  calculateAccuratePlanetaryHours, 
+  getCurrentPlanetaryHour 
+} from '../utils/planetaryHours';
+import { MapPin, CheckCircle, AlertTriangle, Clock } from 'lucide-react';
 
 interface ActNowButtonsProps {
   userElement: Element;
@@ -11,9 +15,11 @@ interface ActNowButtonsProps {
 
 export function ActNowButtons({ userElement }: ActNowButtonsProps) {
   const [location, setLocation] = useState<UserLocation | null>(null);
+  const [planetaryHours, setPlanetaryHours] = useState<AccuratePlanetaryHour[]>([]);
+  const [currentHour, setCurrentHour] = useState<AccuratePlanetaryHour | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Initialize location
+  // Initialize location and calculate hours
   useEffect(() => {
     async function initialize() {
       setIsLoading(true);
@@ -28,11 +34,43 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
       }
       
       setLocation(loc);
+      
+      // Calculate planetary hours
+      const hours = calculateAccuratePlanetaryHours(
+        new Date(),
+        loc.latitude,
+        loc.longitude
+      );
+      setPlanetaryHours(hours);
+      
+      // Get current hour
+      const current = getCurrentPlanetaryHour(hours);
+      setCurrentHour(current);
+      
       setIsLoading(false);
     }
     
     initialize();
   }, []);
+  
+  // Auto-refresh every minute
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!location) return;
+      
+      const hours = calculateAccuratePlanetaryHours(
+        new Date(),
+        location.latitude,
+        location.longitude
+      );
+      setPlanetaryHours(hours);
+      
+      const current = getCurrentPlanetaryHour(hours);
+      setCurrentHour(current);
+    }, 60000); // Every 60 seconds
+    
+    return () => clearInterval(interval);
+  }, [location]);
   
   // Request new location
   async function requestLocationUpdate() {
@@ -40,6 +78,18 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
     const loc = await getUserLocation();
     saveLocation(loc);
     setLocation(loc);
+    
+    // Recalculate with new location
+    const hours = calculateAccuratePlanetaryHours(
+      new Date(),
+      loc.latitude,
+      loc.longitude
+    );
+    setPlanetaryHours(hours);
+    
+    const current = getCurrentPlanetaryHour(hours);
+    setCurrentHour(current);
+    
     setIsLoading(false);
   }
   
@@ -51,11 +101,11 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
     );
   }
   
-  if (!location) {
+  if (!location || !currentHour) {
     return (
       <div className="p-6 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200">
         <p className="text-amber-900 dark:text-amber-100">
-          Unable to detect location. Please try again.
+          Unable to calculate planetary hours. Please try again.
         </p>
       </div>
     );
@@ -69,13 +119,23 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
         onRequestUpdate={requestLocationUpdate}
       />
       
+      {/* Current Hour Display */}
+      <CurrentHourDisplay 
+        currentHour={currentHour}
+        userElement={userElement}
+        location={location}
+      />
+      
+      {/* Debug: Show all hours (remove this later) */}
+      <DebugHoursDisplay hours={planetaryHours} />
+      
       {/* Placeholder for next parts */}
       <div className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg">
         <p className="text-gray-700 dark:text-gray-300">
-          ✅ Part 1 Complete: Location detection working!
+          ✅ Part 2 Complete: Planetary hours calculating!
         </p>
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-          Next: Implement Part 2 (Planetary Hour Calculation)
+          Next: Implement Part 3 (Element Alignment & Action Buttons)
         </p>
       </div>
     </div>
@@ -111,5 +171,95 @@ function LocationSection({
         📍 {location.isAccurate ? 'Update' : 'Enable'} Location
       </button>
     </div>
+  );
+}
+
+// Current Hour Display
+function CurrentHourDisplay({ 
+  currentHour,
+  userElement,
+  location
+}: { 
+  currentHour: AccuratePlanetaryHour;
+  userElement: Element;
+  location: UserLocation;
+}) {
+  const elementEmoji = {
+    fire: '🔥',
+    water: '💧',
+    air: '💨',
+    earth: '🌍'
+  };
+  
+  const timeStr = currentHour.startTime.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  }) + ' - ' + currentHour.endTime.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+  
+  return (
+    <div className="p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl text-white shadow-lg">
+      <div className="flex items-center gap-2 mb-4">
+        <Clock className="h-6 w-6" />
+        <h3 className="text-xl font-bold">Current Planetary Hour</h3>
+      </div>
+      
+      <div className="space-y-2">
+        <p className="text-lg">
+          <strong>{currentHour.planet.name}</strong> ({currentHour.planet.nameArabic})
+        </p>
+        <p className="text-sm opacity-90">
+          {timeStr} • {currentHour.durationMinutes} minutes
+        </p>
+        <p className="text-base">
+          Element: {elementEmoji[currentHour.planet.element]} {currentHour.planet.element.charAt(0).toUpperCase() + currentHour.planet.element.slice(1)} ({currentHour.planet.elementArabic})
+        </p>
+        <p className="text-sm opacity-75">
+          {currentHour.isDayHour ? '☀️ Day Hour' : '🌙 Night Hour'}
+        </p>
+      </div>
+      
+      <div className="mt-4 pt-4 border-t border-white/20">
+        <p className="text-sm opacity-90">
+          Your Element: {elementEmoji[userElement]} {userElement.charAt(0).toUpperCase() + userElement.slice(1)}
+        </p>
+        <p className="text-xs opacity-75 mt-1">
+          {location.isAccurate ? '✅ Using accurate location-based calculation' : '⚠️ Using approximate timing'}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Debug Display (Remove this after testing)
+function DebugHoursDisplay({ hours }: { hours: AccuratePlanetaryHour[] }) {
+  return (
+    <details className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+      <summary className="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+        🔍 Debug: View All 24 Hours
+      </summary>
+      <div className="mt-4 space-y-2 max-h-96 overflow-y-auto">
+        {hours.map((hour, index) => (
+          <div 
+            key={index}
+            className={`p-2 rounded text-xs ${
+              hour.isCurrent 
+                ? 'bg-indigo-100 dark:bg-indigo-900/30 border-2 border-indigo-500' 
+                : 'bg-white dark:bg-gray-700'
+            }`}
+          >
+            <strong>{hour.planet.name}</strong> ({hour.planet.element}) • 
+            {hour.startTime.toLocaleTimeString()} - {hour.endTime.toLocaleTimeString()} • 
+            {hour.durationMinutes} min • 
+            {hour.isDayHour ? '☀️' : '🌙'}
+            {hour.isCurrent && ' ← CURRENT'}
+          </div>
+        ))}
+      </div>
+    </details>
   );
 }
