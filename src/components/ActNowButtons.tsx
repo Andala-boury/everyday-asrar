@@ -202,32 +202,32 @@ function CurrentHourDisplay({
   });
   
   return (
-    <div className="p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl text-white shadow-lg">
+    <div className="p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg" style={{ color: 'white' }}>
       <div className="flex items-center gap-2 mb-4">
-        <Clock className="h-6 w-6" />
-        <h3 className="text-xl font-bold">Current Planetary Hour</h3>
+        <Clock className="h-6 w-6 text-white" />
+        <h3 className="text-xl font-bold text-white">Current Planetary Hour</h3>
       </div>
       
-      <div className="space-y-2">
-        <p className="text-lg">
+      <div className="space-y-2 text-white">
+        <p className="text-lg text-white">
           <strong>{currentHour.planet.name}</strong> ({currentHour.planet.nameArabic})
         </p>
-        <p className="text-sm opacity-90">
+        <p className="text-sm text-white" style={{ opacity: 0.9 }}>
           {timeStr} • {currentHour.durationMinutes} minutes
         </p>
-        <p className="text-base">
+        <p className="text-base text-white">
           Element: {elementEmoji[currentHour.planet.element]} {currentHour.planet.element.charAt(0).toUpperCase() + currentHour.planet.element.slice(1)} ({currentHour.planet.elementArabic})
         </p>
-        <p className="text-sm opacity-75">
+        <p className="text-sm text-white" style={{ opacity: 0.75 }}>
           {currentHour.isDayHour ? '☀️ Day Hour' : '🌙 Night Hour'}
         </p>
       </div>
       
       <div className="mt-4 pt-4 border-t border-white/20">
-        <p className="text-sm opacity-90">
+        <p className="text-sm text-white" style={{ opacity: 0.9 }}>
           Your Element: {elementEmoji[userElement]} {userElement.charAt(0).toUpperCase() + userElement.slice(1)}
         </p>
-        <p className="text-xs opacity-75 mt-1">
+        <p className="text-xs text-white" style={{ opacity: 0.75 }}>
           {location.isAccurate ? '✅ Using accurate location-based calculation' : '⚠️ Using approximate timing'}
         </p>
       </div>
@@ -239,14 +239,14 @@ function CurrentHourDisplay({
 function DebugHoursDisplay({ hours }: { hours: AccuratePlanetaryHour[] }) {
   return (
     <details className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-      <summary className="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+      <summary className="cursor-pointer text-sm font-medium text-gray-900 dark:text-gray-300">
         🔍 Debug: View All 24 Hours
       </summary>
       <div className="mt-4 space-y-2 max-h-96 overflow-y-auto">
         {hours.map((hour, index) => (
           <div 
             key={index}
-            className={`p-2 rounded text-xs ${
+            className={`p-2 rounded text-xs text-gray-900 dark:text-gray-100 ${
               hour.isCurrent 
                 ? 'bg-indigo-100 dark:bg-indigo-900/30 border-2 border-indigo-500' 
                 : 'bg-white dark:bg-gray-700'
