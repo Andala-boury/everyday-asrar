@@ -1,0 +1,1 @@
+export { CompatibilityPanel } from './CompatibilityPanel';

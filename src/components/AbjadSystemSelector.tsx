@@ -4,8 +4,35 @@ import React from 'react';
 import { useAbjad } from '../contexts/AbjadContext';
 import { Globe2 } from 'lucide-react';
 
-export function AbjadSystemSelector() {
+export function AbjadSystemSelector({ compact = false }: { compact?: boolean } = {}) {
   const { system, setSystem } = useAbjad();
+
+  if (compact) {
+    return (
+      <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 rounded-lg p-2">
+        <button
+          onClick={() => setSystem('Maghribi')}
+          className={`px-3 py-1 rounded text-xs font-medium transition-all ${
+            system === 'Maghribi'
+              ? 'bg-indigo-600 text-white'
+              : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+          }`}
+        >
+          Maghribi
+        </button>
+        <button
+          onClick={() => setSystem('Mashriqi')}
+          className={`px-3 py-1 rounded text-xs font-medium transition-all ${
+            system === 'Mashriqi'
+              ? 'bg-indigo-600 text-white'
+              : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+          }`}
+        >
+          Mashriqi
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-lg p-4 border border-indigo-200 dark:border-indigo-800">

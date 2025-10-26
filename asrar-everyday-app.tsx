@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { Calculator, Book, TrendingUp, Moon, Sun, Info, Sparkles, Flame, Droplet, Wind, Mountain, History, Star, GitCompare, Calendar, Trash2, X, Copy, CheckCircle, AlertTriangle, Zap, Compass, Keyboard } from 'lucide-react';
+import { Calculator, Book, TrendingUp, Moon, Sun, Info, Sparkles, Flame, Droplet, Wind, Mountain, History, Star, GitCompare, Calendar, Trash2, X, Copy, CheckCircle, AlertTriangle, Zap, Compass, Keyboard, Heart } from 'lucide-react';
 import { transliterateLatinToArabic } from './src/lib/text-normalize';
 import { HadadSummaryPanel } from './src/components/hadad-summary';
 import { IlmHurufPanel } from './src/features/ilm-huruf';
+import { CompatibilityPanel } from './src/features/compatibility';
 import { LETTER_ELEMENTS, digitalRoot as calcDigitalRoot, hadathRemainder as calcHadathRemainder, hadathToElement, nearestSacred } from './src/components/hadad-summary/hadad-core';
 import type { AbjadAudit, AuditStep, ElementType, SacredResonance } from './src/components/hadad-summary/types';
 import { useAbjad } from './src/contexts/AbjadContext';
@@ -822,6 +823,7 @@ export default function AsrarEveryday() {
   const [showHistory, setShowHistory] = useState(false);
   const [showComparison, setShowComparison] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
+  const [showCompatibility, setShowCompatibility] = useState(false);
   
   // Helper function for element analysis
   const analyzeElements = (text: string) => {
@@ -982,7 +984,19 @@ export default function AsrarEveryday() {
               </div>
             </div>
             
+            {/* Compact Abjad System Selector */}
+            <div className="flex-shrink-0">
+              <AbjadSystemSelector compact={true} />
+            </div>
+            
             <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowCompatibility(true)}
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                title="Relationship Compatibility"
+              >
+                <Heart className="w-5 h-5" />
+              </button>
               <button
                 onClick={() => setShowComparison(true)}
                 className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
@@ -1016,16 +1030,6 @@ export default function AsrarEveryday() {
         {/* Main Content */}
         <main className="max-w-6xl mx-auto px-4 py-8">
           {showDisclaimer && <DisclaimerBanner onDismiss={() => setShowDisclaimer(false)} />}
-          
-          {/* Daily Reflection */}
-          <div className="mb-8">
-            <DailyReflectionCard />
-          </div>
-          
-          {/* Abjad System Selector */}
-          <div className="mb-8">
-            <AbjadSystemSelector />
-          </div>
           
           {/* View Mode Tabs */}
           <div className="mb-8">
@@ -1061,9 +1065,6 @@ export default function AsrarEveryday() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Main Content Area */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Abjad System Selector */}
-              <AbjadSystemSelector />
-              
               {/* Input Section */}
               <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
             <h2 className="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
@@ -1246,6 +1247,12 @@ export default function AsrarEveryday() {
         
         {/* Modals */}
         {showComparison && <ComparisonMode onClose={() => setShowComparison(false)} abjad={abjad} analyzeElements={analyzeElements} />}
+        
+        {showCompatibility && (
+          <div className="fixed inset-0 bg-black/50 z-50 overflow-y-auto">
+            <CompatibilityPanel onBack={() => setShowCompatibility(false)} />
+          </div>
+        )}
         
         {/* Footer */}
         <footer className="border-t border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm mt-12">

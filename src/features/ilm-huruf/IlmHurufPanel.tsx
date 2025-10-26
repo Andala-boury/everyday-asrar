@@ -57,6 +57,9 @@ import { transliterateLatinToArabic } from '../../lib/text-normalize';
 import { ArabicKeyboard } from '../../components/ArabicKeyboard';
 import { useAbjad } from '../../contexts/AbjadContext';
 import { AbjadSystemSelector } from '../../components/AbjadSystemSelector';
+import { analyzeRelationshipCompatibility, getElementFromAbjadTotal } from '../../utils/relationshipCompatibility';
+import type { RelationshipCompatibility } from '../../types/compatibility';
+import { CompatibilityGauge } from '../../components/CompatibilityGauge';
 
 /**
  * Get current day's element based on planetary day assignment
@@ -227,7 +230,30 @@ export function IlmHurufPanel() {
         
         setResults(result);
       } else if (mode === 'compatibility' && name && name2) {
-        const result = analyzeCompatibility(name, name2, abjad);
+        // Calculate Abjad totals
+        const calculateAbjadTotal = (text: string, abjadMap: Record<string, number>): number => {
+          const normalized = text.replace(/[ًٌٍَُِّْ\s]/g, '');
+          return [...normalized].reduce((sum, char) => sum + (abjadMap[char] || 0), 0);
+        };
+        
+        const person1Total = calculateAbjadTotal(name, abjad);
+        const person2Total = calculateAbjadTotal(name2, abjad);
+        
+        // Determine elements
+        const person1Element = getElementFromAbjadTotal(person1Total);
+        const person2Element = getElementFromAbjadTotal(person2Total);
+        
+        // Use new three-method analysis
+        const result = analyzeRelationshipCompatibility(
+          name,
+          name,
+          person1Total,
+          person1Element,
+          name2,
+          name2,
+          person2Total,
+          person2Element
+        );
         setResults(result);
       } else if (mode === 'life-path' && birthDate) {
         const result = calculateLifePath(new Date(birthDate));
@@ -267,9 +293,6 @@ export function IlmHurufPanel() {
 
   return (
     <div className="space-y-6">
-      {/* Abjad System Selector */}
-      <AbjadSystemSelector />
-      
       {/* Mode Selection */}
       <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6">
         <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
@@ -1898,7 +1921,9 @@ function DestinyResults({ results }: { results: any }) {
 }
 
 function CompatibilityResults({ results }: { results: any }) {
-  // Safety check
+  // Check if it's the new RelationshipCompatibility format
+  const isNewFormat = results?.mode === 'relationship' && results?.methods;
+  
   if (!results || !results.person1 || !results.person2) {
     return (
       <div className="text-center text-slate-500 dark:text-slate-400 py-8">
@@ -1907,6 +1932,144 @@ function CompatibilityResults({ results }: { results: any }) {
     );
   }
 
+  // New format with three methods
+  if (isNewFormat) {
+    const { person1, person2, methods, overallScore, overallQuality, summary, recommendations } = results as RelationshipCompatibility;
+    
+    const qualityColors: Record<string, string> = {
+      'excellent': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+      'very-good': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+      'good': 'bg-sky-100 text-sky-800 dark:bg-sky-900/30 dark:text-sky-400',
+      'moderate': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
+      'challenging': 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'
+    };
+    
+    return (
+      <div className="space-y-6">
+        {/* Overall Score */}
+        <div className="flex flex-col items-center py-6 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20 rounded-lg">
+          <CompatibilityGauge 
+            score={overallScore} 
+            size="lg"
+            label="Overall Compatibility"
+          />
+          <div className={`mt-4 px-4 py-2 rounded-full font-semibold ${qualityColors[overallQuality] || qualityColors['moderate']}`}>
+            {overallQuality.toUpperCase().replace('-', ' ')}
+          </div>
+        </div>
+
+        {/* Summary */}
+        <div className="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
+          <div className="flex items-start gap-2">
+            <Info className="w-5 h-5 text-indigo-500 flex-shrink-0 mt-0.5" />
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+              {summary}
+            </p>
+          </div>
+        </div>
+
+        {/* Three Methods */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 text-center">
+            Three Analysis Methods
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Spiritual-Destiny */}
+            <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg space-y-3">
+              <div className="flex items-center justify-center">
+                <CompatibilityGauge 
+                  score={methods.spiritualDestiny.score}
+                  size="md"
+                  color={methods.spiritualDestiny.color === 'green' ? '#10b981' : 
+                         methods.spiritualDestiny.color === 'blue' ? '#3b82f6' :
+                         methods.spiritualDestiny.color === 'yellow' ? '#eab308' :
+                         methods.spiritualDestiny.color === 'purple' ? '#a855f7' : '#f97316'}
+                />
+              </div>
+              <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
+                🌙 Spiritual Destiny
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                Remainder: {methods.spiritualDestiny.remainder}
+              </p>
+              <p className="text-xs text-gray-700 dark:text-gray-300">
+                {methods.spiritualDestiny.description}
+              </p>
+            </div>
+
+            {/* Elemental-Temperament */}
+            <div className="p-4 bg-cyan-50 dark:bg-cyan-950/20 rounded-lg space-y-3">
+              <div className="flex items-center justify-center">
+                <CompatibilityGauge 
+                  score={methods.elementalTemperament.score}
+                  size="md"
+                  color={methods.elementalTemperament.color === 'red' ? '#ef4444' :
+                         methods.elementalTemperament.color === 'blue' ? '#3b82f6' :
+                         methods.elementalTemperament.color === 'cyan' ? '#06b6d4' : '#10b981'}
+                />
+              </div>
+              <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
+                🌊 Elemental Temperament
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                Element: {methods.elementalTemperament.sharedElement}
+              </p>
+              <p className="text-xs text-gray-700 dark:text-gray-300">
+                {methods.elementalTemperament.description}
+              </p>
+            </div>
+
+            {/* Planetary-Cosmic */}
+            <div className="p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-lg space-y-3">
+              <div className="flex items-center justify-center">
+                <CompatibilityGauge 
+                  score={methods.planetaryCosmic.score}
+                  size="md"
+                  color={methods.planetaryCosmic.color === 'green' ? '#10b981' :
+                         methods.planetaryCosmic.color === 'blue' ? '#3b82f6' :
+                         methods.planetaryCosmic.color === 'yellow' ? '#eab308' : '#f97316'}
+                />
+              </div>
+              <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
+                ⭐ Planetary Cosmic
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                {methods.planetaryCosmic.person1Planet.name} × {methods.planetaryCosmic.person2Planet.name}
+              </p>
+              <p className="text-xs text-gray-700 dark:text-gray-300">
+                {methods.planetaryCosmic.description}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Recommendations */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-yellow-500" />
+            <h3 className="font-bold text-gray-900 dark:text-gray-100">
+              Recommendations
+            </h3>
+          </div>
+          
+          <ul className="space-y-2">
+            {recommendations.map((rec, idx) => (
+              <li 
+                key={idx}
+                className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg"
+              >
+                <span className="text-amber-600 dark:text-amber-400 font-bold">•</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">{rec}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  // Old format (fallback)
   const harmonyColor = results.harmonyScore >= 75 ? 'text-green-600' : results.harmonyScore >= 50 ? 'text-amber-600' : 'text-red-600';
   const harmonyBg = results.harmonyScore >= 75 ? 'bg-green-50 dark:bg-green-900/20' : results.harmonyScore >= 50 ? 'bg-amber-50 dark:bg-amber-900/20' : 'bg-red-50 dark:bg-red-900/20';
   
