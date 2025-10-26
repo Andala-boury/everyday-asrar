@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Element, UserLocation, AccuratePlanetaryHour, ElementAlignment, TimeWindow, ActionButton } from '../types/planetary';
 import { getUserLocation, saveLocation, loadLocation } from '../utils/location';
 import { 
@@ -9,6 +9,7 @@ import {
 } from '../utils/planetaryHours';
 import { analyzeAlignment, calculateTimeWindow } from '../utils/alignment';
 import { generateActionButtons, getGuidanceForAlignment } from '../utils/actionButtons';
+import { needsRecalculation } from '../utils/timeHelpers';
 import { MapPin, CheckCircle, AlertTriangle, Clock, Calendar } from 'lucide-react';
 import { DisclaimerSection } from './DisclaimerSection';
 import { AccuracyIndicator } from './AccuracyIndicator';
@@ -24,88 +25,100 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
   const [alignment, setAlignment] = useState<ElementAlignment | null>(null);
   const [timeWindow, setTimeWindow] = useState<TimeWindow | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [lastCalculation, setLastCalculation] = useState<Date>(new Date());
   
   // Initialize location and calculate hours
   useEffect(() => {
     async function initialize() {
       setIsLoading(true);
+      setError(null);
+      
       try {
         // Try to load saved location
         let loc = loadLocation();
         
         // If no saved location, request it
         if (!loc) {
-          console.log('No saved location, requesting from browser...');
           loc = await getUserLocation();
-          console.log('Got location:', loc);
           if (loc) {
             saveLocation(loc);
           }
         }
         
         if (!loc) {
-          console.error('Failed to get location');
-          // Use Mecca as ultimate fallback
-          loc = {
-            latitude: 21.4225,
-            longitude: 39.8262,
-            cityName: 'Mecca (Fallback)',
-            isAccurate: false
-          };
+          throw new Error('Could not determine your location. Using Mecca as fallback.');
         }
         
         setLocation(loc);
         
         // Calculate planetary hours
-        console.log('Calculating hours with location:', loc);
         const hours = calculateAccuratePlanetaryHours(
           new Date(),
           loc.latitude,
           loc.longitude
         );
-        console.log('Calculated hours:', hours);
+        
+        if (!hours || hours.length === 0) {
+          throw new Error('Failed to calculate planetary hours for your location');
+        }
+        
         setPlanetaryHours(hours);
         
         // Get current hour
         const current = getCurrentPlanetaryHour(hours);
-        console.log('Current hour:', current);
-        setCurrentHour(current);
-        
-        // Calculate alignment if we have current hour
-        if (current) {
-          const align = analyzeAlignment(userElement, current.planet.element);
-          setAlignment(align);
-          
-          const window = calculateTimeWindow(current, userElement, hours);
-          setTimeWindow(window);
+        if (!current) {
+          throw new Error('Unable to determine current planetary hour');
         }
         
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error in initialize:', error);
-        // Use Mecca as fallback
-        const fallbackLoc = {
-          latitude: 21.4225,
-          longitude: 39.8262,
-          cityName: 'Mecca (Fallback)',
-          isAccurate: false
-        };
-        setLocation(fallbackLoc);
-        const hours = calculateAccuratePlanetaryHours(
-          new Date(),
-          fallbackLoc.latitude,
-          fallbackLoc.longitude
-        );
-        setPlanetaryHours(hours);
-        setCurrentHour(getCurrentPlanetaryHour(hours));
+        setCurrentHour(current);
         
-        const current = getCurrentPlanetaryHour(hours);
-        if (current) {
-          const align = analyzeAlignment(userElement, current.planet.element);
-          setAlignment(align);
+        // Calculate alignment
+        const align = analyzeAlignment(userElement, current.planet.element);
+        setAlignment(align);
+        
+        // Calculate time window
+        const window = calculateTimeWindow(current, userElement, hours);
+        setTimeWindow(window);
+        
+        setLastUpdated(new Date());
+        setLastCalculation(new Date());
+        setIsLoading(false);
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load guidance';
+        setError(errorMessage);
+        
+        // Try fallback to Mecca
+        try {
+          const fallbackLoc = {
+            latitude: 21.4225,
+            longitude: 39.8262,
+            cityName: 'Mecca (Fallback)',
+            isAccurate: false
+          };
+          setLocation(fallbackLoc);
           
-          const window = calculateTimeWindow(current, userElement, hours);
-          setTimeWindow(window);
+          const hours = calculateAccuratePlanetaryHours(
+            new Date(),
+            fallbackLoc.latitude,
+            fallbackLoc.longitude
+          );
+          
+          if (hours && hours.length > 0) {
+            setPlanetaryHours(hours);
+            const current = getCurrentPlanetaryHour(hours);
+            if (current) {
+              setCurrentHour(current);
+              const align = analyzeAlignment(userElement, current.planet.element);
+              setAlignment(align);
+              const window = calculateTimeWindow(current, userElement, hours);
+              setTimeWindow(window);
+              setError(null); // Clear error if fallback succeeds
+            }
+          }
+        } catch (fallbackErr) {
+          // Fallback also failed
         }
         
         setIsLoading(false);
@@ -113,34 +126,41 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
     }
     
     initialize();
-  }, []);
+  }, [userElement]);
   
   // Auto-refresh every minute
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!location) return;
+      if (!location || planetaryHours.length === 0) return;
       
-      const hours = calculateAccuratePlanetaryHours(
-        new Date(),
-        location.latitude,
-        location.longitude
-      );
-      setPlanetaryHours(hours);
+      // Check if we need full recalculation (date changed or 1+ hour passed)
+      if (needsRecalculation(lastCalculation)) {
+        const hours = calculateAccuratePlanetaryHours(
+          new Date(),
+          location.latitude,
+          location.longitude
+        );
+        setPlanetaryHours(hours);
+        setLastCalculation(new Date());
+      }
       
-      const current = getCurrentPlanetaryHour(hours);
+      // Always update current hour
+      const current = getCurrentPlanetaryHour(planetaryHours);
       setCurrentHour(current);
       
       if (current) {
         const align = analyzeAlignment(userElement, current.planet.element);
         setAlignment(align);
         
-        const window = calculateTimeWindow(current, userElement, hours);
+        const window = calculateTimeWindow(current, userElement, planetaryHours);
         setTimeWindow(window);
       }
+      
+      setLastUpdated(new Date());
     }, 60000); // Every 60 seconds
     
     return () => clearInterval(interval);
-  }, [location, userElement]);
+  }, [location, userElement, lastCalculation, planetaryHours]);
   
   // Request new location
   async function requestLocationUpdate() {
@@ -167,7 +187,32 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
     return (
       <div className="flex flex-col items-center justify-center p-12 gap-4">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-        <p className="text-sm text-gray-600">Loading planetary hours...</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Loading planetary hours...</p>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="p-6 bg-red-50 dark:bg-red-900/20 rounded-lg border-2 border-red-500">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold text-red-900 dark:text-red-100 mb-2">
+              Unable to Load Guidance
+            </p>
+            <p className="text-sm text-red-800 dark:text-red-200 mb-4">
+              {error}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors"
+              aria-label="Reload page to try again"
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -221,8 +266,16 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
     );
   }
   
-  const actionButtons = generateActionButtons(alignment, timeWindow, userElement);
-  const guidance = getGuidanceForAlignment(alignment, userElement, currentHour.planet.element);
+  // Memoize expensive calculations
+  const actionButtons = useMemo(() => 
+    generateActionButtons(alignment, timeWindow, userElement),
+    [alignment, timeWindow, userElement]
+  );
+  
+  const guidance = useMemo(() => 
+    getGuidanceForAlignment(alignment, userElement, currentHour.planet.element),
+    [alignment, currentHour, userElement]
+  );
   
   return (
     <div className="space-y-6">
@@ -276,6 +329,24 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
           isAccurateLocation={location.isAccurate} 
           onRequestUpdate={requestLocationUpdate}
         />
+      </div>
+      
+      {/* Final Summary Component */}
+      <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg border border-purple-200 dark:border-purple-800 transition-all duration-300">
+        <p className="text-center text-xs sm:text-sm text-purple-900 dark:text-purple-100">
+          ✨ <strong>Act Now</strong> uses traditional wisdom to help you choose the right moment. 
+          Trust your judgment and use this as one tool among many.
+        </p>
+      </div>
+      
+      {/* Last Updated Timestamp */}
+      <div className="text-center text-xs text-gray-500 dark:text-gray-400 pt-2">
+        Last updated: {lastUpdated.toLocaleTimeString('en-US', { 
+          hour: 'numeric', 
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true 
+        })}
       </div>
     </div>
   );
@@ -349,8 +420,13 @@ function StatusBanner({
   const elementEmoji = { fire: '🔥', water: '💧', air: '💨', earth: '🌍' };
   
   return (
-    <div className={`${bgGradient} rounded-xl p-4 sm:p-6 text-black dark:text-white shadow-lg transition-all duration-300`}>
-      <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{statusMessage}</h2>
+    <div 
+      className={`${bgGradient} rounded-xl p-4 sm:p-6 text-black dark:text-white shadow-lg transition-all duration-300`}
+      role="alert"
+      aria-live="polite"
+      aria-label={`Current alignment: ${alignment.qualityDescription}`}
+    >
+      <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4">{statusMessage}</h2>
       
       <div className="space-y-2 text-black dark:text-white">
         <p className="text-xs sm:text-sm">
@@ -397,8 +473,13 @@ function CountdownTimer({
   const showWarning = urgency === 'high' && (alignment.quality === 'perfect' || alignment.quality === 'strong');
   
   return (
-    <div className={`flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 ${urgencyColors[urgency]}`}>
-      <Clock className={`h-5 sm:h-6 w-5 sm:w-6 flex-shrink-0 ${urgency === 'high' ? 'animate-pulse' : ''}`} />
+    <div 
+      className={`flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 ${urgencyColors[urgency]}`}
+      role="timer"
+      aria-live="assertive"
+      aria-label={`Window closes in ${closesIn}`}
+    >
+      <Clock className={`h-5 sm:h-6 w-5 sm:w-6 flex-shrink-0 ${urgency === 'high' ? 'animate-pulse' : ''}`} aria-hidden="true" />
       <div className="flex-1 min-w-0">
         <p className="font-semibold text-sm sm:text-base">
           {urgency === 'high' && '⚠️ '} 
@@ -448,15 +529,16 @@ function ActionButtonComponent({
   alignment: ElementAlignment;
 }) {
   const [isClicked, setIsClicked] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const isPrimary = button.priority === 'primary';
   const isHighAlignment = alignment.quality === 'perfect' || alignment.quality === 'strong';
   
   let buttonClass = '';
   
   if (isPrimary && isHighAlignment) {
-    buttonClass = 'w-full py-3 sm:py-4 px-5 sm:px-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-lg rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200';
+    buttonClass = 'w-full py-3 sm:py-4 px-5 sm:px-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-base sm:text-lg rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200';
   } else if (isPrimary) {
-    buttonClass = 'w-full py-3 sm:py-4 px-5 sm:px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 font-semibold text-lg rounded-lg border-2 border-gray-300 dark:border-gray-600 transition-all duration-200';
+    buttonClass = 'w-full py-3 sm:py-4 px-5 sm:px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 font-semibold text-base sm:text-lg rounded-lg border-2 border-gray-300 dark:border-gray-600 transition-all duration-200';
   } else if (button.priority === 'secondary') {
     buttonClass = 'w-full py-2 sm:py-3 px-4 sm:px-5 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 dark:text-gray-200 font-medium rounded-lg shadow hover:shadow-md transition-all duration-200';
   } else {
@@ -470,12 +552,16 @@ function ActionButtonComponent({
   
   return (
     <button 
-      className={`${buttonClass} ${isClicked ? 'scale-95' : ''} flex items-center justify-center gap-2 sm:gap-3`}
+      className={`${buttonClass} ${isClicked ? 'scale-95' : ''} ${isFocused ? 'ring-4 ring-blue-500 ring-opacity-50' : ''} flex items-center justify-center gap-2 sm:gap-3`}
       onClick={handleClick}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      tabIndex={0}
+      aria-label={`${button.label} - ${button.priority} action`}
     >
-      <span className="text-xl sm:text-2xl">{button.icon}</span>
+      <span className="text-xl sm:text-2xl" aria-hidden="true">{button.icon}</span>
       <span>{button.label}</span>
-      {isClicked && <span className="text-sm">✓</span>}
+      {isClicked && <span className="text-sm" aria-hidden="true">✓</span>}
     </button>
   );
 }
@@ -501,7 +587,7 @@ function NextWindowSection({
   return (
     <div className="p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-2 border-blue-500 transition-all duration-300">
       <div className="flex items-start gap-2 sm:gap-3">
-        <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+        <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
         <div>
           <p className="text-xs sm:text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">
             📍 Next {elementEmoji[userElement]} {userElement.charAt(0).toUpperCase() + userElement.slice(1)} window:
