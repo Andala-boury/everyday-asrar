@@ -10,6 +10,8 @@ import {
 import { analyzeAlignment, calculateTimeWindow } from '../utils/alignment';
 import { generateActionButtons, getGuidanceForAlignment } from '../utils/actionButtons';
 import { MapPin, CheckCircle, AlertTriangle, Clock, Calendar } from 'lucide-react';
+import { DisclaimerSection } from './DisclaimerSection';
+import { AccuracyIndicator } from './AccuracyIndicator';
 
 interface ActNowButtonsProps {
   userElement: Element;
@@ -205,7 +207,6 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
         <p className="text-amber-800 dark:text-amber-200 text-sm mt-2">
           Unable to find current planetary hour. Check console for time range info.
         </p>
-        <DebugHoursDisplay hours={planetaryHours} />
       </div>
     );
   }
@@ -225,6 +226,9 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
   
   return (
     <div className="space-y-6">
+      {/* Disclaimer Section - NEW */}
+      <DisclaimerSection isAccurateLocation={location.isAccurate} />
+      
       {/* Location Section */}
       <LocationSection 
         location={location}
@@ -236,6 +240,7 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
         alignment={alignment}
         currentHour={currentHour}
         userElement={userElement}
+        location={location}
       />
       
       {/* Countdown Timer */}
@@ -265,17 +270,12 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
         alignment={alignment}
       />
       
-      {/* Debug: Show all hours */}
-      <DebugHoursDisplay hours={planetaryHours} />
-      
-      {/* Success Message */}
-      <div className="p-6 bg-green-50 dark:bg-green-900/30 rounded-lg border-2 border-green-500">
-        <p className="text-green-900 dark:text-green-100 font-bold text-lg">
-          ✅ Part 3 Complete: Action buttons working!
-        </p>
-        <p className="text-base text-green-800 dark:text-green-200 mt-2">
-          Next: Part 4 (Disclaimers & Polish)
-        </p>
+      {/* Accuracy Indicator at bottom - NEW */}
+      <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+        <AccuracyIndicator 
+          isAccurateLocation={location.isAccurate} 
+          onRequestUpdate={requestLocationUpdate}
+        />
       </div>
     </div>
   );
@@ -290,22 +290,22 @@ function LocationSection({
   onRequestUpdate: () => void;
 }) {
   return (
-    <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-      <div className="flex items-center gap-2 text-sm">
-        <MapPin className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800 transition-all duration-300">
+      <div className="flex items-center gap-2 text-xs sm:text-sm">
+        <MapPin className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
         <span className="text-blue-900 dark:text-blue-100">
           Location: {location.cityName}
         </span>
         {location.isAccurate && (
-          <CheckCircle className="h-4 w-4 text-green-500" />
+          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
         )}
         {!location.isAccurate && (
-          <AlertTriangle className="h-4 w-4 text-amber-500" />
+          <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />
         )}
       </div>
       <button 
         onClick={onRequestUpdate}
-        className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline font-medium"
+        className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline font-medium whitespace-nowrap"
       >
         📍 {location.isAccurate ? 'Update' : 'Enable'} Location
       </button>
@@ -317,11 +317,13 @@ function LocationSection({
 function StatusBanner({ 
   alignment, 
   currentHour, 
-  userElement 
+  userElement,
+  location
 }: { 
   alignment: ElementAlignment;
   currentHour: AccuratePlanetaryHour;
   userElement: Element;
+  location: UserLocation;
 }) {
   const gradients = {
     perfect: 'bg-gradient-to-r from-green-500 to-emerald-600',
@@ -347,18 +349,29 @@ function StatusBanner({
   const elementEmoji = { fire: '🔥', water: '💧', air: '💨', earth: '🌍' };
   
   return (
-    <div className={`${bgGradient} rounded-xl p-6 text-white shadow-lg`}>
-      <h2 className="text-2xl font-bold mb-4">{statusMessage}</h2>
+    <div className={`${bgGradient} rounded-xl p-4 sm:p-6 text-black dark:text-white shadow-lg transition-all duration-300`}>
+      <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{statusMessage}</h2>
       
-      <div className="space-y-2 text-white">
-        <p className="text-sm">
+      <div className="space-y-2 text-black dark:text-white">
+        <p className="text-xs sm:text-sm">
+          <strong>Current Hour:</strong> {currentHour.planet.name} ({currentHour.planet.nameArabic})
+        </p>
+        <p className="text-xs sm:text-sm">
           <strong>Your Element:</strong> {elementEmoji[userElement]} {userElement.charAt(0).toUpperCase() + userElement.slice(1)}
         </p>
-        <p className="text-sm">
-          <strong>Current Hour Element:</strong> {elementEmoji[currentHour.planet.element]} {currentHour.planet.element.charAt(0).toUpperCase() + currentHour.planet.element.slice(1)}
+        <p className="text-xs sm:text-sm">
+          <strong>Hour Element:</strong> {elementEmoji[currentHour.planet.element]} {currentHour.planet.element.charAt(0).toUpperCase() + currentHour.planet.element.slice(1)}
         </p>
-        <p className="text-base font-semibold mt-3">
+        <p className="text-sm sm:text-base font-semibold mt-3">
           = {alignment.qualityDescription} ({alignment.qualityArabic})
+        </p>
+        
+        {/* Time info */}
+        <p className="text-xs opacity-75 mt-2 pt-2 border-t border-white/20">
+          {currentHour.startTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} - 
+          {currentHour.endTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} • 
+          {currentHour.durationMinutes} minutes • 
+          {currentHour.isDayHour ? '☀️ Day Hour' : '🌙 Night Hour'}
         </p>
       </div>
     </div>
@@ -378,22 +391,27 @@ function CountdownTimer({
   const urgencyColors = {
     high: 'bg-red-50 dark:bg-red-900/20 border-red-500 text-red-900 dark:text-red-100',
     medium: 'bg-orange-50 dark:bg-orange-900/20 border-orange-500 text-orange-900 dark:text-orange-100',
-    low: 'bg-gray-50 dark:bg-gray-800/20 border-gray-300 text-gray-900 dark:text-gray-100'
+    low: 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 text-blue-900 dark:text-blue-100'
   };
   
   const showWarning = urgency === 'high' && (alignment.quality === 'perfect' || alignment.quality === 'strong');
   
   return (
-    <div className={`flex items-center gap-3 p-4 rounded-lg border-2 ${urgencyColors[urgency]}`}>
-      <Clock className={`h-5 w-5 ${urgency === 'high' ? 'animate-pulse' : ''}`} />
-      <div className="flex-1">
-        <p className="font-medium">
+    <div className={`flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 ${urgencyColors[urgency]}`}>
+      <Clock className={`h-5 sm:h-6 w-5 sm:w-6 flex-shrink-0 ${urgency === 'high' ? 'animate-pulse' : ''}`} />
+      <div className="flex-1 min-w-0">
+        <p className="font-semibold text-sm sm:text-base">
           {urgency === 'high' && '⚠️ '} 
-          Window closes in: <span className="text-lg font-bold">{closesIn}</span>
+          Window closes in: <span className="text-lg sm:text-xl font-bold">{closesIn}</span>
         </p>
         {showWarning && (
-          <p className="text-sm font-semibold mt-1">
-            ACT NOW! Optimal time ending soon.
+          <p className="text-xs sm:text-sm font-semibold mt-1 animate-pulse">
+            🔥 ACT NOW! Optimal time ending soon.
+          </p>
+        )}
+        {urgency === 'low' && (
+          <p className="text-xs sm:text-sm mt-1 opacity-75">
+            Plenty of time remaining in this window
           </p>
         )}
       </div>
@@ -410,7 +428,7 @@ function ActionButtonsSection({
   alignment: ElementAlignment;
 }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 transition-all duration-300">
       {buttons.map((button, index) => (
         <ActionButtonComponent 
           key={index}
@@ -429,25 +447,35 @@ function ActionButtonComponent({
   button: ActionButton;
   alignment: ElementAlignment;
 }) {
+  const [isClicked, setIsClicked] = useState(false);
   const isPrimary = button.priority === 'primary';
   const isHighAlignment = alignment.quality === 'perfect' || alignment.quality === 'strong';
   
   let buttonClass = '';
   
   if (isPrimary && isHighAlignment) {
-    buttonClass = 'w-full py-4 px-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-lg rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200';
+    buttonClass = 'w-full py-3 sm:py-4 px-5 sm:px-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-lg rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200';
   } else if (isPrimary) {
-    buttonClass = 'w-full py-4 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 font-semibold text-lg rounded-lg border-2 border-gray-300 dark:border-gray-600 transition-all duration-200';
+    buttonClass = 'w-full py-3 sm:py-4 px-5 sm:px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 font-semibold text-lg rounded-lg border-2 border-gray-300 dark:border-gray-600 transition-all duration-200';
   } else if (button.priority === 'secondary') {
-    buttonClass = 'w-full py-3 px-5 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 dark:text-gray-200 font-medium rounded-lg shadow hover:shadow-md transition-all duration-200';
+    buttonClass = 'w-full py-2 sm:py-3 px-4 sm:px-5 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 dark:text-gray-200 font-medium rounded-lg shadow hover:shadow-md transition-all duration-200';
   } else {
-    buttonClass = 'w-full py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 font-normal text-sm rounded-lg transition-all duration-200';
+    buttonClass = 'w-full py-2 px-3 sm:px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 font-normal text-sm rounded-lg transition-all duration-200';
   }
   
+  const handleClick = () => {
+    setIsClicked(true);
+    setTimeout(() => setIsClicked(false), 1000);
+  };
+  
   return (
-    <button className={`${buttonClass} flex items-center justify-center gap-3`}>
-      <span className="text-2xl">{button.icon}</span>
+    <button 
+      className={`${buttonClass} ${isClicked ? 'scale-95' : ''} flex items-center justify-center gap-2 sm:gap-3`}
+      onClick={handleClick}
+    >
+      <span className="text-xl sm:text-2xl">{button.icon}</span>
       <span>{button.label}</span>
+      {isClicked && <span className="text-sm">✓</span>}
     </button>
   );
 }
@@ -471,17 +499,17 @@ function NextWindowSection({
   const elementEmoji = { fire: '🔥', water: '💧', air: '💨', earth: '🌍' };
   
   return (
-    <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-2 border-blue-500">
-      <div className="flex items-start gap-3">
+    <div className="p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-2 border-blue-500 transition-all duration-300">
+      <div className="flex items-start gap-2 sm:gap-3">
         <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
         <div>
-          <p className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">
+          <p className="text-xs sm:text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">
             📍 Next {elementEmoji[userElement]} {userElement.charAt(0).toUpperCase() + userElement.slice(1)} window:
           </p>
-          <p className="text-base font-bold text-blue-800 dark:text-blue-200">
+          <p className="text-sm sm:text-base font-bold text-blue-800 dark:text-blue-200">
             {nextWindow.planet.name} Hour • {timeStr}
           </p>
-          <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+          <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-300 mt-1">
             Starting in {timeUntil}
           </p>
         </div>
@@ -501,26 +529,26 @@ function GuidanceSection({
   const isHighAlignment = alignment.quality === 'perfect' || alignment.quality === 'strong';
   
   return (
-    <div className={`p-4 rounded-lg border-2 ${
+    <div className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 ${
       isHighAlignment 
         ? 'bg-green-50 dark:bg-green-900/20 border-green-500'
         : 'bg-gray-50 dark:bg-gray-800/20 border-gray-300'
     }`}>
-      <p className={`font-semibold mb-3 ${
+      <p className={`font-semibold mb-3 text-sm sm:text-base ${
         isHighAlignment 
           ? 'text-green-900 dark:text-green-100'
           : 'text-gray-900 dark:text-gray-100'
       }`}>
         💡 {isHighAlignment ? 'Best for right now:' : 'Use this time for:'}
       </p>
-      <ul className={`space-y-1 text-sm ${
+      <ul className={`space-y-1 text-xs sm:text-sm ${
         isHighAlignment 
           ? 'text-green-800 dark:text-green-200'
           : 'text-gray-700 dark:text-gray-300'
       }`}>
         {guidance.map((item, index) => (
           <li key={index} className="flex items-start gap-2">
-            <span className="mt-0.5">•</span>
+            <span className="mt-0.5 flex-shrink-0">•</span>
             <span>{item}</span>
           </li>
         ))}
@@ -529,31 +557,3 @@ function GuidanceSection({
   );
 }
 
-// Debug Display - FIXED COLORS
-function DebugHoursDisplay({ hours }: { hours: AccuratePlanetaryHour[] }) {
-  return (
-    <details className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-      <summary className="cursor-pointer text-sm font-medium text-gray-900 dark:text-gray-100">
-        🔍 Debug: View All 24 Hours
-      </summary>
-      <div className="mt-4 space-y-2 max-h-96 overflow-y-auto">
-        {hours.map((hour, index) => (
-          <div 
-            key={index}
-            className={`p-2 rounded text-xs ${
-              hour.isCurrent 
-                ? 'bg-indigo-100 dark:bg-indigo-900/30 border-2 border-indigo-500 text-gray-900 dark:text-gray-100' 
-                : 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'
-            }`}
-          >
-            <strong>{hour.planet.name}</strong> ({hour.planet.element}) • 
-            {hour.startTime.toLocaleTimeString()} - {hour.endTime.toLocaleTimeString()} • 
-            {hour.durationMinutes} min • 
-            {hour.isDayHour ? '☀️' : '🌙'}
-            {hour.isCurrent && ' ← CURRENT'}
-          </div>
-        ))}
-      </div>
-    </details>
-  );
-}
