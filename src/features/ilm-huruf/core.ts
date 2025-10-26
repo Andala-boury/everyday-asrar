@@ -2875,11 +2875,11 @@ function generateColorRecommendations(
  */
 function generateEnergyMessage(score: number, userElement: ElementType2, dailyElement: ElementType2): string {
   if (score >= 80) {
-    return `✨ EXCELLENT DAY FOR YOU! Your ${userElement} energy aligns beautifully with today's ${dailyElement} influence.`;
+    return `Your ${userElement} nature and today's ${dailyElement} energy understand each other well. It's a good day for you.`;
   } else if (score >= 60) {
-    return `🌟 BALANCED DAY. Your ${userElement} element finds neutral ground with today's ${dailyElement} energy. Stay centered.`;
+    return `Your ${userElement} nature is getting along with today's ${dailyElement} energy. Keep yourself balanced and calm.`;
   } else {
-    return `⚡ CHALLENGING DAY AHEAD. Today's ${dailyElement} energy challenges your ${userElement} nature. Use earth tones to ground and stabilize.`;
+    return `Today's ${dailyElement} energy is different from your ${userElement} nature. Stay grounded and centered.`;
   }
 }
 
@@ -2890,46 +2890,46 @@ function generatePracticalTips(userElement: ElementType2, dailyElement: ElementT
   if (score >= 80) {
     const tips: Record<ElementType2, Record<ElementType2, string[]>> = {
       Fire: {
-        Fire: ['Wear red or orange to amplify your power', 'Add gold accessories for extra shine', 'Choose warm tones throughout'],
-        Air: ['Red shirt with gold accents', 'Combine fire and air tones for dynamic energy', 'Yellow accessories with red base'],
+        Fire: ['Wear reds and oranges - bright and bold', 'Add gold jewelry or accessories', 'You\'ll feel extra energized today'],
+        Air: ['Red or orange shirt, gold accents', 'Mix warm and light colors together', 'Great day for meetings and new things'],
         Water: [],
         Earth: []
       },
       Water: {
         Fire: [],
         Air: [],
-        Water: ['Wear blue or turquoise throughout', 'Add silver jewelry', 'Choose cool water tones'],
-        Earth: ['Blue shirt with green or brown accents', 'Combine water and earth for grounding flow', 'Turquoise with earth tone accessories']
+        Water: ['Wear blues or turquoise today', 'Silver jewelry would be nice', 'Calming colors for a smooth day'],
+        Earth: ['Blue top with green or brown bottom', 'Mix blue with earth colors', 'Peaceful and grounded feeling']
       },
       Air: {
-        Fire: ['Yellow and orange combination', 'Gold with warm accents', 'Bright and energizing palette'],
-        Air: ['Wear yellow and gold', 'Keep it bright and airy', 'Light colors dominate'],
+        Fire: ['Yellow or orange combinations', 'Wear gold or warm colors', 'Energetic and clear-headed day'],
+        Air: ['Bright yellows and golds work well', 'Light and airy colors', 'Perfect for thinking and talking'],
         Water: [],
         Earth: []
       },
       Earth: {
         Fire: [],
         Air: [],
-        Water: ['Green with blue accents', 'Earth and water blend', 'Brown with turquoise touches'],
-        Earth: ['Wear green or brown throughout', 'Add tan accessories', 'Keep it natural and grounded']
+        Water: ['Green with some blue touches', 'Brown and turquoise together', 'Calm and flowing energy'],
+        Earth: ['Greens and browns are your friends', 'Add some tan or beige', 'Strong, grounded, natural']
       }
     };
     
-    return tips[userElement]?.[dailyElement] || ['Wear your favorite colors with confidence', 'Trust your instincts today'];
+    return tips[userElement]?.[dailyElement] || ['Wear colors that make you happy', 'You\'ll feel good today'];
   } else if (score >= 60) {
     return [
-      'Stay centered in your natural colors',
-      'Add neutral grey or beige for balance',
-      'Mix white with your element color',
-      'Avoid too much of any single intense color'
+      'Stick with your favorite colors - your natural choice',
+      'Add grey or beige if you need to feel more calm',
+      'Simple, neutral colors work best',
+      'Don\'t wear too much bright color today'
     ];
   } else {
     return [
-      'Wear grounding earth tones (brown, green, beige)',
-      'Add a small touch of your element color for personal strength',
-      'Layer neutral colors for stability',
-      'Include natural fibers (cotton, linen) in clothing',
-      'Keep green plants nearby for grounding energy'
+      'Wear earth colors - brown, green, or beige',
+      'Add just a touch of your favorite color for strength',
+      'Keep colors simple and natural today',
+      'Wear natural fabrics like cotton if you can',
+      'The color of the earth will help steady you'
     ];
   }
 }
@@ -2941,13 +2941,13 @@ function generateBestEnergyTimes(dayOfWeek: number): string[] {
   const ruler = DAILY_PLANET_RULERS[dayOfWeek];
   
   const times: Record<string, string[]> = {
-    'Sun': ['Morning (5-7 AM): Peak energy', 'Noon (11 AM-1 PM): Strong', 'Evening: Moderate'],
-    'Moon': ['Evening (6-9 PM): Peak energy', 'Night (9 PM-12 AM): Strong', 'Morning: Moderate'],
-    'Mars': ['Morning (5-7 AM): Peak energy', 'Afternoon (2-4 PM): Strong', 'Evening: Moderate'],
-    'Mercury': ['Morning (4-6 AM): Peak energy', 'Midday (10 AM-12 PM): Strong', 'Afternoon: Moderate'],
-    'Jupiter': ['Morning (5-7 AM): Peak energy', 'Noon (11 AM-1 PM): Strong', 'Evening (6-8 PM): Good'],
-    'Venus': ['Morning (4-6 AM): Good', 'Afternoon (3-5 PM): Peak energy', 'Evening: Strong'],
-    'Saturn': ['Early morning (3-5 AM): Peak', 'Evening (5-7 PM): Strong', 'Night: Moderate']
+    'Sun': ['Morning (5-7 AM): Best time', 'Around noon: Strong', 'Evening: Getting weaker'],
+    'Moon': ['Evening (6-9 PM): Best time', 'Late night: Strong', 'Morning: Weaker'],
+    'Mars': ['Morning (5-7 AM): Best time', 'Afternoon (2-4 PM): Good', 'Evening: Okay'],
+    'Mercury': ['Early morning (4-6 AM): Best', 'Mid-morning (10 AM): Good', 'Afternoon: Okay'],
+    'Jupiter': ['Morning (5-7 AM): Best', 'Around noon: Strong', 'Evening (6-8 PM): Good'],
+    'Venus': ['Early morning: Okay', 'Afternoon (3-5 PM): Best', 'Evening: Strong'],
+    'Saturn': ['Before sunrise (3-5 AM): Best', 'Evening (5-7 PM): Good', 'Night: Okay']
   };
   
   return times[ruler.planet] || ['Morning: Good', 'Afternoon: Strong', 'Evening: Moderate'];

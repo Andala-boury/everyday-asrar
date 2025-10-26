@@ -11,7 +11,6 @@ import { BalanceMeter } from '../../components/BalanceMeter';
 import type { ElementType } from '../../components/BalanceMeter';
 import { HarmonyTooltip, type HarmonyBreakdown } from '../../components/HarmonyTooltip';
 import { ActNowButtons } from '../../components/ActNowButtons';
-import { ColorGuidanceCard } from '../../components/ColorGuidanceCard';
 import { DailyColorGuidanceCard } from '../../components/DailyColorGuidanceCard';
 import {
   analyzeNameDestiny,
@@ -47,7 +46,6 @@ import {
   generateActionButtons,
   ELEMENT_GUIDANCE_MAP,
   getElementArabicName,
-  calculateColorGuidance,
   calculateDailyColorGuidance,
   type CurrentPlanetaryHour,
   type ElementAlignment,
@@ -2385,7 +2383,6 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
   const [timeWindow, setTimeWindow] = useState<TimeWindow | null>(null);
   const [actionButtons, setActionButtons] = useState<ActionButton[]>([]);
   const [userElement, setUserElement] = useState<ElementType | null>(null);
-  const [colorGuidance, setColorGuidance] = useState<any>(null);
   const [dailyColorGuidance, setDailyColorGuidance] = useState<DailyColorGuidance | null>(null);
   const [todayReading, setTodayReading] = useState<DailyReading | null>(null);
   
@@ -2433,10 +2430,6 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           const tempProfile = calculateUserProfile(name, birthDate ? new Date(birthDate) : undefined, undefined, abjad);
           calculatedElement = tempProfile.element;
           setUserElement(calculatedElement);
-          
-          // Calculate color guidance based on user's element
-          const guidance = calculateColorGuidance(calculatedElement as ElementType2);
-          setColorGuidance(guidance);
           
           // Calculate DAILY color guidance
           const dailyGuidance = calculateDailyColorGuidance(calculatedElement as ElementType2);
@@ -2770,9 +2763,6 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           </div>
         )}
       </div>
-
-      {/* Daily Color Guidance */}
-      {colorGuidance && <ColorGuidanceCard guidance={colorGuidance} />}
 
       {/* Personal Year */}
       {personalYear && (
