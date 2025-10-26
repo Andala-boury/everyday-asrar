@@ -2057,23 +2057,11 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
   const [timeWindow, setTimeWindow] = useState<TimeWindow | null>(null);
   const [actionButtons, setActionButtons] = useState<ActionButton[]>([]);
   const [userElement, setUserElement] = useState<ElementType | null>(null);
+  const [todayReading, setTodayReading] = useState<DailyReading | null>(null);
   
-  // Get today's rest status
+  // Get today's info
   const today = new Date();
   const todayWeekday = today.toLocaleDateString('en-US', { weekday: 'long' });
-  let todayReading: DailyReading | null = null;
-  
-  // Calculate today's reading if we have a birth date and name
-  if (birthDate && name) {
-    try {
-      // Generate a profile for today's reading
-      const tempProfile = calculateUserProfile(name, new Date(birthDate), undefined, abjad);
-      const weeklySummary = generateWeeklySummary(tempProfile, today);
-      todayReading = weeklySummary.days.find(d => d.weekday === todayWeekday) || null;
-    } catch (e) {
-      console.error('Error calculating today\'s reading:', e);
-    }
-  }
   
   // Check sessionStorage for dismissal
   useEffect(() => {
@@ -2085,6 +2073,21 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
       setRestAlertDismissed(true);
     }
   }, []);
+  
+  // Calculate today's reading if we have a birth date and name
+  useEffect(() => {
+    if (birthDate && name) {
+      try {
+        // Generate a profile for today's reading
+        const tempProfile = calculateUserProfile(name, new Date(birthDate), undefined, abjad);
+        const weeklySummary = generateWeeklySummary(tempProfile, today);
+        setTodayReading(weeklySummary.days.find(d => d.weekday === todayWeekday) || null);
+      } catch (e) {
+        console.error('Error calculating today\'s reading:', e);
+        setTodayReading(null);
+      }
+    }
+  }, [birthDate, name, abjad, todayWeekday]);
   
   // Real-time updates for Act Now feature
   useEffect(() => {
@@ -2110,7 +2113,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
       setCurrentHour(hour);
       
       // Calculate alignment and actions if we have user element
-      if (calculatedElement) {
+      if (calculatedElement && hour) {
         const align = detectAlignment(calculatedElement, hour.element);
         const window = calculateTimeWindow(hour, calculatedElement);
         const buttons = generateActionButtons(align, window);
