@@ -2487,3 +2487,512 @@ export function generateWeeklySummary(
     focus_day: focusDay.date
   };
 }
+
+// ============================================================================
+// DAILY COLOR GUIDANCE
+// ============================================================================
+
+export type ElementType2 = 'Fire' | 'Water' | 'Air' | 'Earth';
+
+export interface ElementColorMapping {
+  primary: string;
+  accent: string;
+  avoid: string;
+}
+
+export const ELEMENT_COLORS: Record<ElementType2, { colors: string[]; hex: string[] }> = {
+  Fire: { 
+    colors: ['Red', 'Orange', 'Gold'], 
+    hex: ['#dc2626', '#f97316', '#fbbf24'] 
+  },
+  Water: { 
+    colors: ['Blue', 'Turquoise', 'Silver'], 
+    hex: ['#2563eb', '#14b8a6', '#d1d5db'] 
+  },
+  Air: { 
+    colors: ['Yellow', 'White', 'Light Blue'], 
+    hex: ['#fbbf24', '#ffffff', '#93c5fd'] 
+  },
+  Earth: { 
+    colors: ['Green', 'Brown', 'Beige'], 
+    hex: ['#22c55e', '#92400e', '#d2b48c'] 
+  }
+};
+
+/**
+ * Determines harmony between two elements
+ * Fire harmonizes with Air
+ * Water harmonizes with Earth
+ * Fire opposes Water
+ * Air opposes Earth
+ */
+function getElementHarmony(userElement: ElementType2, dayElement: ElementType2): 'harmonious' | 'opposing' | 'neutral' {
+  if (userElement === dayElement) return 'harmonious';
+  
+  const harmonies = {
+    Fire: { harmonious: ['Air', 'Fire'], opposing: ['Water'] },
+    Water: { harmonious: ['Earth', 'Water'], opposing: ['Fire'] },
+    Air: { harmonious: ['Fire', 'Air'], opposing: ['Earth'] },
+    Earth: { harmonious: ['Water', 'Earth'], opposing: ['Air'] }
+  };
+  
+  const { harmonious, opposing } = harmonies[userElement];
+  if (harmonious.includes(dayElement)) return 'harmonious';
+  if (opposing.includes(dayElement)) return 'opposing';
+  return 'neutral';
+}
+
+/**
+ * Get complementary element (for accent colors when not harmonious)
+ */
+function getComplementaryElement(element: ElementType2): ElementType2 {
+  const complements: Record<ElementType2, ElementType2> = {
+    Fire: 'Air',
+    Air: 'Fire',
+    Water: 'Earth',
+    Earth: 'Water'
+  };
+  return complements[element];
+}
+
+export interface ColorGuidance {
+  userElement: ElementType2;
+  dayElement: ElementType2;
+  harmony: 'harmonious' | 'opposing' | 'neutral';
+  primaryColors: { name: string; hex: string }[];
+  accentColors: { name: string; hex: string }[];
+  avoidColors: { name: string; hex: string }[];
+  explanation: string;
+  tip: string;
+}
+
+/**
+ * Calculate daily color guidance based on user element and current day
+ */
+export function calculateColorGuidance(userElement: ElementType2): ColorGuidance {
+  // Get current day's element
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const dayElements: ElementType2[] = ['Fire', 'Water', 'Fire', 'Air', 'Water', 'Air', 'Earth'];
+  const dayElement = dayElements[dayOfWeek];
+  
+  const harmony = getElementHarmony(userElement, dayElement);
+  
+  // Primary colors are always from user's element
+  const primaryColorsData = ELEMENT_COLORS[userElement];
+  const primaryColors = primaryColorsData.colors.map((name, idx) => ({
+    name,
+    hex: primaryColorsData.hex[idx]
+  }));
+  
+  // Accent colors depend on harmony
+  let accentColors: { name: string; hex: string }[] = [];
+  let avoidColors: { name: string; hex: string }[] = [];
+  let explanation = '';
+  let tip = '';
+  
+  if (harmony === 'harmonious') {
+    // Use day's element for accent
+    const dayColorsData = ELEMENT_COLORS[dayElement];
+    accentColors = dayColorsData.colors.map((name, idx) => ({
+      name,
+      hex: dayColorsData.hex[idx]
+    }));
+    
+    const dayNames = { Fire: 'Fire', Water: 'Water', Air: 'Air', Earth: 'Earth' };
+    explanation = `Your ${userElement} element harmonizes beautifully with today\'s ${dayElement} energy.`;
+    
+    const tips: Record<ElementType2, Record<ElementType2, string>> = {
+      Fire: {
+        Fire: 'Wear red, orange, or gold to amplify today\'s fiery energy.',
+        Air: 'Combine red and yellow - a red shirt with golden accessories works great.',
+        Water: '',
+        Earth: ''
+      },
+      Water: {
+        Water: 'Wear blue, turquoise, or silver to deepen today\'s flow.',
+        Earth: 'Pair blue with green or brown - turquoise accents on earth tones.',
+        Fire: '',
+        Air: ''
+      },
+      Air: {
+        Air: 'Wear yellow, white, or light blue for clarity and lightness.',
+        Fire: 'Combine yellow with red - light colors with warm touches.',
+        Water: '',
+        Earth: ''
+      },
+      Earth: {
+        Earth: 'Wear green, brown, or beige to ground today\'s energy.',
+        Water: 'Pair green with blue - earthy tones with water accents.',
+        Fire: '',
+        Air: ''
+      }
+    };
+    
+    tip = tips[userElement][dayElement] || 'Blend your colors with today\'s element for enhanced harmony.';
+  } else if (harmony === 'opposing') {
+    // Avoid day's element, suggest complementary instead
+    const dayColorsData = ELEMENT_COLORS[dayElement];
+    avoidColors = dayColorsData.colors.map((name, idx) => ({
+      name,
+      hex: dayColorsData.hex[idx]
+    }));
+    
+    const complementary = getComplementaryElement(userElement);
+    const complimentaryColorsData = ELEMENT_COLORS[complementary];
+    accentColors = complimentaryColorsData.colors.map((name, idx) => ({
+      name,
+      hex: complimentaryColorsData.hex[idx]
+    }));
+    
+    explanation = `Today's ${dayElement} energy may challenge your ${userElement} nature. Wear your element colors for balance.`;
+    tip = `Stick with your ${userElement} tones. If you need variety, add ${complementary.toLowerCase()} accents to stay grounded.`;
+  } else {
+    // Neutral - just stick with user's element
+    explanation = `Today's ${dayElement} energy is neutral to your ${userElement} nature. Your element colors remain your best choice.`;
+    tip = `Wear your favorite ${userElement.toLowerCase()} colors today – they'll serve you well.`;
+  }
+  
+  return {
+    userElement,
+    dayElement,
+    harmony,
+    primaryColors,
+    accentColors,
+    avoidColors,
+    explanation,
+    tip
+  };
+}
+
+// ============================================================================
+// DAILY COLOR GUIDANCE (FULL DAY DOMINANT ELEMENT)
+// ============================================================================
+
+export type HarmonyLevel = 'excellent' | 'good' | 'neutral' | 'challenging';
+
+export interface DailyColorGuidance {
+  date: string;
+  userElement: ElementType2;
+  dayRulerElement: ElementType2;
+  mostActiveElement: ElementType2;
+  dailyDominantElement: ElementType2;
+  harmonyScore: number;
+  harmonyLevel: HarmonyLevel;
+  primaryColor: { name: string; hex: string };
+  secondaryColor: { name: string; hex: string };
+  accentColor: { name: string; hex: string };
+  avoidColors: { name: string; hex: string }[];
+  energyMessage: string;
+  practicalTips: string[];
+  bestEnergyTimes: string[];
+  harmonyBreakdown: string;
+}
+
+const DAILY_PLANET_RULERS: Record<number, { planet: string; element: ElementType2 }> = {
+  0: { planet: 'Sun', element: 'Fire' },      // Sunday
+  1: { planet: 'Moon', element: 'Water' },    // Monday
+  2: { planet: 'Mars', element: 'Fire' },     // Tuesday
+  3: { planet: 'Mercury', element: 'Air' },   // Wednesday
+  4: { planet: 'Jupiter', element: 'Water' }, // Thursday
+  5: { planet: 'Venus', element: 'Earth' },   // Friday
+  6: { planet: 'Saturn', element: 'Earth' }   // Saturday
+};
+
+const PLANET_TO_ELEMENT: Record<string, ElementType2> = {
+  'Sun': 'Fire',
+  'Moon': 'Water',
+  'Mars': 'Fire',
+  'Mercury': 'Air',
+  'Jupiter': 'Water',
+  'Venus': 'Earth',
+  'Saturn': 'Earth'
+};
+
+/**
+ * Count planetary hours by element for a given day
+ * Each day has 12 daylight and 12 night hours = 24 total
+ */
+function countElementHours(dayOfWeek: number): Record<ElementType2, number> {
+  const counts: Record<ElementType2, number> = { Fire: 0, Water: 0, Air: 0, Earth: 0 };
+  
+  // Planetary hours sequence: Sun, Venus, Mercury, Moon, Saturn, Jupiter, Mars (repeats)
+  const sequence: ElementType2[] = ['Fire', 'Earth', 'Air', 'Water', 'Earth', 'Water', 'Fire'];
+  
+  // Count 24 hours (12 day + 12 night, same sequence)
+  for (let i = 0; i < 24; i++) {
+    const planetIndex = i % 7;
+    const element = sequence[planetIndex];
+    counts[element]++;
+  }
+  
+  return counts;
+}
+
+/**
+ * Get the most active element for the day
+ */
+function getMostActiveElement(dayOfWeek: number): ElementType2 {
+  const counts = countElementHours(dayOfWeek);
+  let maxCount = 0;
+  let mostActive: ElementType2 = 'Earth';
+  
+  for (const [element, count] of Object.entries(counts)) {
+    if (count > maxCount) {
+      maxCount = count;
+      mostActive = element as ElementType2;
+    }
+  }
+  
+  return mostActive;
+}
+
+/**
+ * Calculate daily dominant element: combination of day ruler + most active
+ */
+function calculateDailyDominantElement(dayOfWeek: number): {
+  ruler: ElementType2;
+  mostActive: ElementType2;
+  dominant: ElementType2;
+} {
+  const ruler = DAILY_PLANET_RULERS[dayOfWeek].element;
+  const mostActive = getMostActiveElement(dayOfWeek);
+  
+  // Dominant = ruler (primary influence)
+  // Most active acts as secondary support
+  const dominant = ruler;
+  
+  return { ruler, mostActive, dominant };
+}
+
+/**
+ * Calculate harmony score between user and daily dominant elements
+ */
+function calculateHarmonyScore(userElement: ElementType2, dailyElement: ElementType2): { score: number; level: HarmonyLevel } {
+  if (userElement === dailyElement) {
+    return { score: 90, level: 'good' };
+  }
+  
+  // Harmonious pairs: Fire+Air, Water+Earth
+  const harmonious = [
+    ['Fire', 'Air'],
+    ['Air', 'Fire'],
+    ['Water', 'Earth'],
+    ['Earth', 'Water']
+  ];
+  
+  if (harmonious.some(pair => pair[0] === userElement && pair[1] === dailyElement)) {
+    return { score: 100, level: 'excellent' };
+  }
+  
+  // Neutral pairs: Fire+Earth, Water+Air
+  const neutral = [
+    ['Fire', 'Earth'],
+    ['Earth', 'Fire'],
+    ['Water', 'Air'],
+    ['Air', 'Water']
+  ];
+  
+  if (neutral.some(pair => pair[0] === userElement && pair[1] === dailyElement)) {
+    return { score: 70, level: 'neutral' };
+  }
+  
+  // Opposing: Fire+Water, Air+Earth
+  return { score: 40, level: 'challenging' };
+}
+
+const COLOR_PALETTES: Record<ElementType2, { primary: { name: string; hex: string }; secondary: { name: string; hex: string }; accent: { name: string; hex: string } }> = {
+  Fire: {
+    primary: { name: 'Crimson Red', hex: '#DC143C' },
+    secondary: { name: 'Orange', hex: '#FF4500' },
+    accent: { name: 'Gold', hex: '#FFD700' }
+  },
+  Water: {
+    primary: { name: 'Dodger Blue', hex: '#1E90FF' },
+    secondary: { name: 'Royal Blue', hex: '#4169E1' },
+    accent: { name: 'Turquoise', hex: '#40E0D0' }
+  },
+  Air: {
+    primary: { name: 'Gold Yellow', hex: '#FFD700' },
+    secondary: { name: 'Khaki', hex: '#F0E68C' },
+    accent: { name: 'Lemon', hex: '#FFFACD' }
+  },
+  Earth: {
+    primary: { name: 'Forest Green', hex: '#228B22' },
+    secondary: { name: 'Saddle Brown', hex: '#8B4513' },
+    accent: { name: 'Tan', hex: '#D2B48C' }
+  }
+};
+
+const NEUTRAL_PALETTE = {
+  primary: { name: 'Burlywood', hex: '#8B7355' },
+  secondary: { name: 'Light Grey', hex: '#D3D3D3' },
+  accent: { name: 'Beige', hex: '#F5F5DC' }
+};
+
+/**
+ * Generate color recommendations based on harmony score
+ */
+function generateColorRecommendations(
+  userElement: ElementType2,
+  dailyElement: ElementType2,
+  score: number
+): { primary: { name: string; hex: string }; secondary: { name: string; hex: string }; accent: { name: string; hex: string }; avoid: { name: string; hex: string }[] } {
+  
+  if (score >= 80) {
+    // Good day: user colors + daily accent
+    return {
+      primary: COLOR_PALETTES[userElement].primary,
+      secondary: COLOR_PALETTES[userElement].secondary,
+      accent: COLOR_PALETTES[dailyElement].accent,
+      avoid: []
+    };
+  } else if (score >= 60) {
+    // Neutral day: user colors + neutral accents
+    return {
+      primary: COLOR_PALETTES[userElement].primary,
+      secondary: NEUTRAL_PALETTE.secondary,
+      accent: NEUTRAL_PALETTE.accent,
+      avoid: []
+    };
+  } else {
+    // Challenging day: ground with earth tones + touch of user
+    const opposingElement = userElement === 'Fire' ? 'Water' :
+                           userElement === 'Water' ? 'Fire' :
+                           userElement === 'Air' ? 'Earth' : 'Air';
+    
+    return {
+      primary: NEUTRAL_PALETTE.primary,
+      secondary: COLOR_PALETTES['Earth'].secondary,
+      accent: COLOR_PALETTES[userElement].accent,
+      avoid: [COLOR_PALETTES[opposingElement].primary]
+    };
+  }
+}
+
+/**
+ * Generate energy message based on score
+ */
+function generateEnergyMessage(score: number, userElement: ElementType2, dailyElement: ElementType2): string {
+  if (score >= 80) {
+    return `✨ EXCELLENT DAY FOR YOU! Your ${userElement} energy aligns beautifully with today's ${dailyElement} influence.`;
+  } else if (score >= 60) {
+    return `🌟 BALANCED DAY. Your ${userElement} element finds neutral ground with today's ${dailyElement} energy. Stay centered.`;
+  } else {
+    return `⚡ CHALLENGING DAY AHEAD. Today's ${dailyElement} energy challenges your ${userElement} nature. Use earth tones to ground and stabilize.`;
+  }
+}
+
+/**
+ * Generate practical tips based on colors and harmony level
+ */
+function generatePracticalTips(userElement: ElementType2, dailyElement: ElementType2, score: number): string[] {
+  if (score >= 80) {
+    const tips: Record<ElementType2, Record<ElementType2, string[]>> = {
+      Fire: {
+        Fire: ['Wear red or orange to amplify your power', 'Add gold accessories for extra shine', 'Choose warm tones throughout'],
+        Air: ['Red shirt with gold accents', 'Combine fire and air tones for dynamic energy', 'Yellow accessories with red base'],
+        Water: [],
+        Earth: []
+      },
+      Water: {
+        Fire: [],
+        Air: [],
+        Water: ['Wear blue or turquoise throughout', 'Add silver jewelry', 'Choose cool water tones'],
+        Earth: ['Blue shirt with green or brown accents', 'Combine water and earth for grounding flow', 'Turquoise with earth tone accessories']
+      },
+      Air: {
+        Fire: ['Yellow and orange combination', 'Gold with warm accents', 'Bright and energizing palette'],
+        Air: ['Wear yellow and gold', 'Keep it bright and airy', 'Light colors dominate'],
+        Water: [],
+        Earth: []
+      },
+      Earth: {
+        Fire: [],
+        Air: [],
+        Water: ['Green with blue accents', 'Earth and water blend', 'Brown with turquoise touches'],
+        Earth: ['Wear green or brown throughout', 'Add tan accessories', 'Keep it natural and grounded']
+      }
+    };
+    
+    return tips[userElement]?.[dailyElement] || ['Wear your favorite colors with confidence', 'Trust your instincts today'];
+  } else if (score >= 60) {
+    return [
+      'Stay centered in your natural colors',
+      'Add neutral grey or beige for balance',
+      'Mix white with your element color',
+      'Avoid too much of any single intense color'
+    ];
+  } else {
+    return [
+      'Wear grounding earth tones (brown, green, beige)',
+      'Add a small touch of your element color for personal strength',
+      'Layer neutral colors for stability',
+      'Include natural fibers (cotton, linen) in clothing',
+      'Keep green plants nearby for grounding energy'
+    ];
+  }
+}
+
+/**
+ * Generate best energy times for the day
+ */
+function generateBestEnergyTimes(dayOfWeek: number): string[] {
+  const ruler = DAILY_PLANET_RULERS[dayOfWeek];
+  
+  const times: Record<string, string[]> = {
+    'Sun': ['Morning (5-7 AM): Peak energy', 'Noon (11 AM-1 PM): Strong', 'Evening: Moderate'],
+    'Moon': ['Evening (6-9 PM): Peak energy', 'Night (9 PM-12 AM): Strong', 'Morning: Moderate'],
+    'Mars': ['Morning (5-7 AM): Peak energy', 'Afternoon (2-4 PM): Strong', 'Evening: Moderate'],
+    'Mercury': ['Morning (4-6 AM): Peak energy', 'Midday (10 AM-12 PM): Strong', 'Afternoon: Moderate'],
+    'Jupiter': ['Morning (5-7 AM): Peak energy', 'Noon (11 AM-1 PM): Strong', 'Evening (6-8 PM): Good'],
+    'Venus': ['Morning (4-6 AM): Good', 'Afternoon (3-5 PM): Peak energy', 'Evening: Strong'],
+    'Saturn': ['Early morning (3-5 AM): Peak', 'Evening (5-7 PM): Strong', 'Night: Moderate']
+  };
+  
+  return times[ruler.planet] || ['Morning: Good', 'Afternoon: Strong', 'Evening: Moderate'];
+}
+
+/**
+ * Calculate daily color guidance for the entire day
+ */
+export function calculateDailyColorGuidance(userElement: ElementType2): DailyColorGuidance {
+  const now = new Date();
+  const dayOfWeek = now.getDay();
+  const dateStr = now.toISOString().split('T')[0];
+  
+  // Step 1-3: Get daily dominant element
+  const { ruler, mostActive, dominant } = calculateDailyDominantElement(dayOfWeek);
+  
+  // Step 4: Calculate harmony
+  const { score, level } = calculateHarmonyScore(userElement, dominant);
+  
+  // Generate colors
+  const colors = generateColorRecommendations(userElement, dominant, score);
+  
+  // Generate messages and tips
+  const energyMessage = generateEnergyMessage(score, userElement, dominant);
+  const practicalTips = generatePracticalTips(userElement, dominant, score);
+  const bestEnergyTimes = generateBestEnergyTimes(dayOfWeek);
+  
+  // Breakdown explanation
+  const harmonyBreakdown = `Day Ruler: ${ruler} | Most Active: ${mostActive} | Dominant: ${dominant} | Harmony: ${score}%`;
+  
+  return {
+    date: dateStr,
+    userElement,
+    dayRulerElement: ruler,
+    mostActiveElement: mostActive,
+    dailyDominantElement: dominant,
+    harmonyScore: score,
+    harmonyLevel: level,
+    primaryColor: colors.primary,
+    secondaryColor: colors.secondary,
+    accentColor: colors.accent,
+    avoidColors: colors.avoid,
+    energyMessage,
+    practicalTips,
+    bestEnergyTimes,
+    harmonyBreakdown
+  };
+}

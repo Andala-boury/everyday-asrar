@@ -11,6 +11,8 @@ import { BalanceMeter } from '../../components/BalanceMeter';
 import type { ElementType } from '../../components/BalanceMeter';
 import { HarmonyTooltip, type HarmonyBreakdown } from '../../components/HarmonyTooltip';
 import { ActNowButtons } from '../../components/ActNowButtons';
+import { ColorGuidanceCard } from '../../components/ColorGuidanceCard';
+import { DailyColorGuidanceCard } from '../../components/DailyColorGuidanceCard';
 import {
   analyzeNameDestiny,
   analyzeCompatibility,
@@ -45,11 +47,15 @@ import {
   generateActionButtons,
   ELEMENT_GUIDANCE_MAP,
   getElementArabicName,
+  calculateColorGuidance,
+  calculateDailyColorGuidance,
   type CurrentPlanetaryHour,
   type ElementAlignment,
   type TimeWindow,
   type ActionButton,
-  type AlignmentQuality
+  type AlignmentQuality,
+  type ElementType2,
+  type DailyColorGuidance
 } from './core';
 import { getQuranResonanceMessage } from './quranResonance';
 import { fetchQuranVerse, type VerseText } from './quranApi';
@@ -60,6 +66,23 @@ import { AbjadSystemSelector } from '../../components/AbjadSystemSelector';
 import { analyzeRelationshipCompatibility, getElementFromAbjadTotal } from '../../utils/relationshipCompatibility';
 import type { RelationshipCompatibility } from '../../types/compatibility';
 import { CompatibilityGauge } from '../../components/CompatibilityGauge';
+import { EnhancedLifePathView } from '../../components/EnhancedLifePathView';
+import {
+  calculateEnhancedLifePath,
+  calculateLifePathNumber,
+  calculateSoulUrgeNumber,
+  calculatePersonalityNumber,
+  calculateDestinyNumber,
+  calculateLifeCycle,
+  calculatePersonalYear as calculatePersonalYearEnhanced,
+  calculatePersonalMonth,
+  detectKarmicDebts,
+  detectSacredNumbers,
+  calculatePinnaclesAndChallenges,
+  type EnhancedLifePathResult,
+  type LifeCycleAnalysis,
+  type PinnacleChallenge
+} from '../../utils/enhancedLifePath';
 
 /**
  * Get current day's element based on planetary day assignment
@@ -255,8 +278,8 @@ export function IlmHurufPanel() {
           person2Element
         );
         setResults(result);
-      } else if (mode === 'life-path' && birthDate) {
-        const result = calculateLifePath(new Date(birthDate));
+      } else if (mode === 'life-path' && birthDate && name) {
+        const result = calculateEnhancedLifePath(name, new Date(birthDate));
         setResults(result);
       } else if (mode === 'timing') {
         const now = new Date();
@@ -377,7 +400,7 @@ export function IlmHurufPanel() {
         </h3>
         
         <div className="space-y-4">
-          {(mode === 'destiny' || mode === 'compatibility' || mode === 'weekly') && (
+          {(mode === 'destiny' || mode === 'compatibility' || mode === 'weekly' || mode === 'life-path') && (
             <div className="space-y-3">
               {/* Latin Input */}
               <div>
@@ -1495,7 +1518,7 @@ function DestinyResults({ results }: { results: any }) {
   return (
     <div className="space-y-6">
       {/* Main Destiny */}
-      <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl p-6 text-white shadow-xl">
+      <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl p-6 text-black shadow-xl">
         <div className="text-center">
           <div className="text-6xl font-bold mb-2">{results.saghir}</div>
           <div className="text-2xl font-bold mb-2">{station.name}</div>
@@ -1507,13 +1530,13 @@ function DestinyResults({ results }: { results: any }) {
       {/* Kabir & Hadath */}
       <div className="grid md:grid-cols-2 gap-4">
         <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-          <div className="text-sm text-slate-600 dark:text-slate-400">Kabīr (Grand Total)</div>
-          <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{results.kabir}</div>
+          <div className="text-sm text-black dark:text-slate-400">Kabīr (Grand Total)</div>
+          <div className="text-3xl font-bold text-black dark:text-purple-400">{results.kabir}</div>
         </div>
         
         <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-          <div className="text-sm text-slate-600 dark:text-slate-400">Ḥadath (Element)</div>
-          <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{results.hadath}</div>
+          <div className="text-sm text-black dark:text-slate-400">Ḥadath (Element)</div>
+          <div className="text-3xl font-bold text-black dark:text-blue-400">{results.hadath}</div>
         </div>
       </div>
 
@@ -1573,7 +1596,7 @@ function DestinyResults({ results }: { results: any }) {
                   <p className="text-base text-black dark:text-slate-300 leading-relaxed mb-2">
                     {verseText.translation}
                   </p>
-                  <p className="text-xs text-gray-600 dark:text-slate-500 italic">
+                  <p className="text-xs text-black dark:text-slate-500 italic">
                     — {verseText.translationName}
                   </p>
                 </div>
@@ -1605,7 +1628,7 @@ function DestinyResults({ results }: { results: any }) {
       {/* Spiritual Origin - Mother's Name Analysis */}
       {results.motherAnalysis && (
         <div className="bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-xl border border-rose-200 dark:border-rose-800 p-6 shadow-lg">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-slate-900 dark:text-slate-100">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-black dark:text-slate-100">
             <Heart className="h-5 w-5 text-rose-500" />
             Your Spiritual Origin
             <span className="text-sm font-normal text-slate-600 dark:text-slate-400">
@@ -1634,7 +1657,7 @@ function DestinyResults({ results }: { results: any }) {
             
             {/* Element Inheritance Comparison */}
             <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-rose-200 dark:border-rose-700">
-              <p className="text-sm font-medium mb-3 text-slate-700 dark:text-slate-300">
+              <p className="text-sm font-medium mb-3 text-black dark:text-slate-300">
                 Element Inheritance:
               </p>
               <div className="flex items-center gap-4">
@@ -1664,11 +1687,11 @@ function DestinyResults({ results }: { results: any }) {
             
             {/* Inheritance Insight */}
             <div className="p-4 bg-gradient-to-br from-white to-rose-50 dark:from-slate-800 dark:to-rose-900/10 rounded-lg border border-rose-200 dark:border-rose-700">
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-2">
+              <p className="text-sm font-semibold text-black dark:text-slate-100 mb-2 flex items-center gap-2">
                 <Lightbulb className="h-4 w-4 text-amber-500" />
                 Insight:
               </p>
-              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+              <p className="text-sm text-black dark:text-slate-300 leading-relaxed">
                 {(() => {
                   // Calculate user's element and generate insight
                   const userHadath = results.hadath;
@@ -1691,7 +1714,7 @@ function DestinyResults({ results }: { results: any }) {
       {/* Letter Geometry Visualization */}
       {results.geometry && (
         <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl shadow-md border border-indigo-200 dark:border-indigo-800 p-6">
-          <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h3 className="text-lg font-bold mb-4 text-black dark:text-slate-100 flex items-center gap-2">
             <Compass className="w-5 h-5 text-indigo-500" />
             📐 Letter Geometry (Handasa al-Ḥurūf - هندسة الحروف)
           </h3>
@@ -1701,7 +1724,7 @@ function DestinyResults({ results }: { results: any }) {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <ArrowUp className="w-4 h-4 text-blue-600" />
-                <span className="text-sm font-bold uppercase text-indigo-700 dark:text-indigo-300">
+                <span className="text-sm font-bold uppercase text-black dark:text-indigo-300">
                   {GEOMETRY_NAMES.vertical.en} ({GEOMETRY_NAMES.vertical.transliteration} - {GEOMETRY_NAMES.vertical.ar})
                   <span className="ml-2 text-xs font-normal">({results.geometry.vertical.count} letters)</span>
                 </span>
@@ -1719,7 +1742,7 @@ function DestinyResults({ results }: { results: any }) {
                       </span>
                     ))}
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-black dark:text-gray-400">
                     {GEOMETRY_KEYWORDS.vertical.join(' • ')}
                   </p>
                 </>
@@ -1734,7 +1757,7 @@ function DestinyResults({ results }: { results: any }) {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Circle className="w-4 h-4 text-rose-600" />
-                <span className="text-sm font-bold uppercase text-indigo-700 dark:text-indigo-300">
+                <span className="text-sm font-bold uppercase text-black dark:text-indigo-300">
                   {GEOMETRY_NAMES.round.en} ({GEOMETRY_NAMES.round.transliteration} - {GEOMETRY_NAMES.round.ar})
                   <span className="ml-2 text-xs font-normal">({results.geometry.round.count} letters)</span>
                 </span>
@@ -1752,7 +1775,7 @@ function DestinyResults({ results }: { results: any }) {
                       </span>
                     ))}
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-black dark:text-gray-400">
                     {GEOMETRY_KEYWORDS.round.join(' • ')}
                   </p>
                 </>
@@ -1767,7 +1790,7 @@ function DestinyResults({ results }: { results: any }) {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Minus className="w-4 h-4 text-amber-700" />
-                <span className="text-sm font-bold uppercase text-indigo-700 dark:text-indigo-300">
+                <span className="text-sm font-bold uppercase text-black dark:text-indigo-300">
                   {GEOMETRY_NAMES.flat.en} ({GEOMETRY_NAMES.flat.transliteration} - {GEOMETRY_NAMES.flat.ar})
                   <span className="ml-2 text-xs font-normal">({results.geometry.flat.count} letters)</span>
                 </span>
@@ -1785,12 +1808,12 @@ function DestinyResults({ results }: { results: any }) {
                       </span>
                     ))}
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-black dark:text-gray-400">
                     {GEOMETRY_KEYWORDS.flat.join(' • ')}
                   </p>
                 </>
               ) : (
-                <p className="text-sm text-gray-500 dark:text-gray-500 italic">None in your name</p>
+                <p className="text-sm text-black dark:text-gray-500 italic">None in your name</p>
               )}
             </div>
 
@@ -1800,7 +1823,7 @@ function DestinyResults({ results }: { results: any }) {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="w-4 h-4 text-orange-600" />
-                <span className="text-sm font-bold uppercase text-indigo-700 dark:text-indigo-300">
+                <span className="text-sm font-bold uppercase text-black dark:text-indigo-300">
                   {GEOMETRY_NAMES.angular.en} ({GEOMETRY_NAMES.angular.transliteration} - {GEOMETRY_NAMES.angular.ar})
                   <span className="ml-2 text-xs font-normal">({results.geometry.angular.count} letters)</span>
                 </span>
@@ -1818,12 +1841,12 @@ function DestinyResults({ results }: { results: any }) {
                       </span>
                     ))}
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-black dark:text-gray-400">
                     {GEOMETRY_KEYWORDS.angular.join(' • ')}
                   </p>
                 </>
               ) : (
-                <p className="text-sm text-gray-500 dark:text-gray-500 italic">None in your name</p>
+                <p className="text-sm text-black dark:text-gray-500 italic">None in your name</p>
               )}
             </div>
 
@@ -1832,10 +1855,10 @@ function DestinyResults({ results }: { results: any }) {
               <div className="flex items-start gap-2">
                 <Lightbulb className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <div className="font-bold text-indigo-900 dark:text-indigo-200 mb-2">
+                  <div className="font-bold text-black dark:text-indigo-200 mb-2">
                     💡 Your Geometric Profile
                   </div>
-                  <p className="text-sm text-indigo-800 dark:text-indigo-300 leading-relaxed">
+                  <p className="text-sm text-black dark:text-indigo-300 leading-relaxed">
                     {results.geometry.profile}
                   </p>
                 </div>
@@ -1847,35 +1870,35 @@ function DestinyResults({ results }: { results: any }) {
 
       {/* Soul Triad */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
-        <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
+        <h3 className="text-lg font-bold mb-4 text-black dark:text-slate-100 flex items-center gap-2">
           <Target className="w-5 h-5 text-purple-500" />
           Your Soul Triad
         </h3>
         
         <div className="space-y-4">
           <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-            <div className="font-bold text-purple-700 dark:text-purple-300 mb-1">
+            <div className="font-bold text-black dark:text-purple-300 mb-1">
               Life Destiny ({results.saghir})
             </div>
-            <div className="text-sm text-slate-700 dark:text-slate-300">
+            <div className="text-sm text-black dark:text-slate-300">
               {station.quality}
             </div>
           </div>
           
           <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            <div className="font-bold text-blue-700 dark:text-blue-300 mb-1">
+            <div className="font-bold text-black dark:text-blue-300 mb-1">
               Soul Urge ({results.soulUrge?.name})
             </div>
-            <div className="text-sm text-slate-700 dark:text-slate-300">
+            <div className="text-sm text-black dark:text-slate-300">
               {results.soulUrge?.quality}
             </div>
           </div>
           
           <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-            <div className="font-bold text-green-700 dark:text-green-300 mb-1">
+            <div className="font-bold text-black dark:text-green-300 mb-1">
               Outer Personality ({results.personality?.name})
             </div>
-            <div className="text-sm text-slate-700 dark:text-slate-300">
+            <div className="text-sm text-black dark:text-slate-300">
               {results.personality?.quality}
             </div>
           </div>
@@ -2153,58 +2176,200 @@ function CompatibilityResults({ results }: { results: any }) {
   );
 }
 
-function LifePathResults({ results }: { results: any }) {
-  const station = results.station;
-  
-  if (!station) {
-    return (
-      <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
-        <p className="text-red-800 dark:text-red-200">
-          Unable to calculate life path. Please check your birth date.
-        </p>
-      </div>
-    );
-  }
+function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
+  const {
+    lifePathNumber,
+    soulUrgeNumber,
+    personalityNumber,
+    destinyNumber,
+    personalYear,
+    personalMonth,
+    cycle,
+    karmicDebts,
+    sacredNumbers,
+    pinnaclesAndChallenges
+  } = results;
   
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl p-6 text-white shadow-xl">
-        <div className="text-center">
-          <Compass className="w-16 h-16 mx-auto mb-4 opacity-90" />
-          <div className="text-6xl font-bold mb-2">{results.number}</div>
-          <div className="text-2xl font-bold mb-2">{station.name}</div>
-          <div className="text-xl opacity-90 mb-4 font-arabic">{station.arabic}</div>
-          <div className="text-lg opacity-90">{results.interpretation}</div>
+      {/* Core Numbers Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg p-4 text-black shadow-lg">
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">Life Path</div>
+          <div className="text-4xl font-bold text-black">{lifePathNumber}</div>
+          <div className="text-xs text-black opacity-75 mt-2">Your Soul's Purpose</div>
+        </div>
+        
+        <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg p-4 text-black shadow-lg">
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">Soul Urge</div>
+          <div className="text-4xl font-bold text-black">{soulUrgeNumber}</div>
+          <div className="text-xs text-black opacity-75 mt-2">Inner Desire</div>
+        </div>
+        
+        <div className="bg-gradient-to-br from-pink-400 to-pink-600 rounded-lg p-4 text-black shadow-lg">
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">Personality</div>
+          <div className="text-4xl font-bold text-black">{personalityNumber}</div>
+          <div className="text-xs text-black opacity-75 mt-2">Outer Expression</div>
+        </div>
+        
+        <div className="bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg p-4 text-black shadow-lg">
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">Destiny</div>
+          <div className="text-4xl font-bold text-black">{destinyNumber}</div>
+          <div className="text-xs text-black opacity-75 mt-2">Life Mission</div>
         </div>
       </div>
 
+      {/* Current Life Cycle */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
-        <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">
-          Your Life Journey
+        <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          Current Life Cycle
         </h3>
         
-        <div className="space-y-4">
+        <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Soul Quality:</div>
-            <p className="text-slate-700 dark:text-slate-300">{station.quality}</p>
+            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Life Cycle</div>
+            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+              {cycle.cycleNumber} — {cycle.cycleStage}
+            </div>
+            <div className="text-slate-700 dark:text-slate-300 mb-4">
+              <span className="font-semibold">Year {cycle.positionInCycle}/9:</span> {cycle.yearTheme}
+            </div>
+            <div className="bg-blue-50 dark:bg-blue-900/30 rounded p-3">
+              <div className="text-sm text-slate-700 dark:text-slate-300">
+                {cycle.focus.join(' • ')}
+              </div>
+            </div>
           </div>
           
           <div>
-            <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Life Practice:</div>
-            <p className="text-slate-700 dark:text-slate-300">{station.practice}</p>
-          </div>
-          
-          <div>
-            <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Divine Guidance:</div>
-            <p className="text-slate-700 dark:text-slate-300 italic">{station.verse}</p>
-          </div>
-          
-          <div>
-            <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Practical Path:</div>
-            <p className="text-slate-700 dark:text-slate-300">{station.practical}</p>
+            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Age</div>
+            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+              {cycle.age} years old
+            </div>
+            
+            <div>
+              <div className="text-sm text-slate-600 dark:text-slate-400 mb-2">Personal Year & Month</div>
+              <div className="flex gap-4">
+                <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 flex-1 text-center">
+                  <div className="text-xs text-slate-600 dark:text-slate-400">Personal Year</div>
+                  <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">{personalYear}</div>
+                </div>
+                <div className="bg-purple-50 dark:bg-purple-900/30 rounded p-3 flex-1 text-center">
+                  <div className="text-xs text-slate-600 dark:text-slate-400">Personal Month</div>
+                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{personalMonth}</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Pinnacles and Challenges */}
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
+        <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <Target className="w-5 h-5 text-green-600 dark:text-green-400" />
+          Pinnacles & Challenges
+        </h3>
+        
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Pinnacles (Strengths)</h4>
+            <div className="space-y-2">
+              <div className="flex justify-between bg-green-50 dark:bg-green-900/30 rounded p-2">
+                <span className="text-sm">Pinnacle 1:</span>
+                <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle1}</span>
+              </div>
+              <div className="flex justify-between bg-green-50 dark:bg-green-900/30 rounded p-2">
+                <span className="text-sm">Pinnacle 2:</span>
+                <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle2}</span>
+              </div>
+              <div className="flex justify-between bg-green-50 dark:bg-green-900/30 rounded p-2">
+                <span className="text-sm">Pinnacle 3:</span>
+                <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle3}</span>
+              </div>
+              <div className="flex justify-between bg-green-50 dark:bg-green-900/30 rounded p-2">
+                <span className="text-sm">Pinnacle 4:</span>
+                <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle4}</span>
+              </div>
+              <div className="flex justify-between bg-emerald-200 dark:bg-emerald-900/50 rounded p-2 mt-2 font-bold">
+                <span className="text-sm">Current:</span>
+                <span className="text-emerald-700 dark:text-emerald-300">{pinnaclesAndChallenges.currentPinnacle}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Challenges (Growth Areas)</h4>
+            <div className="space-y-2">
+              <div className="flex justify-between bg-amber-50 dark:bg-amber-900/30 rounded p-2">
+                <span className="text-sm">Challenge 1:</span>
+                <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge1}</span>
+              </div>
+              <div className="flex justify-between bg-amber-50 dark:bg-amber-900/30 rounded p-2">
+                <span className="text-sm">Challenge 2:</span>
+                <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge2}</span>
+              </div>
+              <div className="flex justify-between bg-amber-50 dark:bg-amber-900/30 rounded p-2">
+                <span className="text-sm">Challenge 3:</span>
+                <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge3}</span>
+              </div>
+              <div className="flex justify-between bg-amber-50 dark:bg-amber-900/30 rounded p-2">
+                <span className="text-sm">Challenge 4:</span>
+                <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge4}</span>
+              </div>
+              <div className="flex justify-between bg-orange-200 dark:bg-orange-900/50 rounded p-2 mt-2 font-bold">
+                <span className="text-sm">Current:</span>
+                <span className="text-orange-700 dark:text-orange-300">{pinnaclesAndChallenges.currentChallenge}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Special Numbers */}
+      {(karmicDebts.length > 0 || sacredNumbers.length > 0) && (
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
+          <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            Special Numbers
+          </h3>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {karmicDebts.length > 0 && (
+              <div>
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Karmic Debts</h4>
+                <div className="flex flex-wrap gap-2">
+                  {karmicDebts.map((debt) => (
+                    <div key={debt} className="bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 rounded-full px-4 py-2 text-sm font-semibold">
+                      {debt}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                  Represent lessons to be learned
+                </p>
+              </div>
+            )}
+            
+            {sacredNumbers.length > 0 && (
+              <div>
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Sacred Numbers</h4>
+                <div className="flex flex-wrap gap-2">
+                  {sacredNumbers.map((sacred) => (
+                    <div key={sacred} className="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 rounded-full px-4 py-2 text-sm font-semibold">
+                      {sacred}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                  Connected to Islamic spiritual tradition
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -2220,6 +2385,8 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
   const [timeWindow, setTimeWindow] = useState<TimeWindow | null>(null);
   const [actionButtons, setActionButtons] = useState<ActionButton[]>([]);
   const [userElement, setUserElement] = useState<ElementType | null>(null);
+  const [colorGuidance, setColorGuidance] = useState<any>(null);
+  const [dailyColorGuidance, setDailyColorGuidance] = useState<DailyColorGuidance | null>(null);
   const [todayReading, setTodayReading] = useState<DailyReading | null>(null);
   
   // Get today's info
@@ -2266,6 +2433,14 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           const tempProfile = calculateUserProfile(name, birthDate ? new Date(birthDate) : undefined, undefined, abjad);
           calculatedElement = tempProfile.element;
           setUserElement(calculatedElement);
+          
+          // Calculate color guidance based on user's element
+          const guidance = calculateColorGuidance(calculatedElement as ElementType2);
+          setColorGuidance(guidance);
+          
+          // Calculate DAILY color guidance
+          const dailyGuidance = calculateDailyColorGuidance(calculatedElement as ElementType2);
+          setDailyColorGuidance(dailyGuidance);
         } catch (e) {
           console.error('Error calculating user element:', e);
         }
@@ -2460,6 +2635,9 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
         </div>
       )}
       
+      {/* Daily Color Guidance - Positioned before hourly planetary info */}
+      {dailyColorGuidance && <DailyColorGuidanceCard guidance={dailyColorGuidance} />}
+      
       {/* Act Now - Real-Time Planetary Hour */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
@@ -2592,6 +2770,9 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           </div>
         )}
       </div>
+
+      {/* Daily Color Guidance */}
+      {colorGuidance && <ColorGuidanceCard guidance={colorGuidance} />}
 
       {/* Personal Year */}
       {personalYear && (
