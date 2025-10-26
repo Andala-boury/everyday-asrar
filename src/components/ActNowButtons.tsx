@@ -103,7 +103,7 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
   
   if (!location || !currentHour) {
     return (
-      <div className="p-6 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200">
+      <div className="p-6 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
         <p className="text-amber-900 dark:text-amber-100">
           Unable to calculate planetary hours. Please try again.
         </p>
@@ -130,11 +130,11 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
       <DebugHoursDisplay hours={planetaryHours} />
       
       {/* Placeholder for next parts */}
-      <div className="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg">
-        <p className="text-gray-700 dark:text-gray-300">
+      <div className="p-6 bg-green-50 dark:bg-green-900/30 rounded-lg border-2 border-green-500">
+        <p className="text-green-900 dark:text-green-100 font-bold text-lg">
           ✅ Part 2 Complete: Planetary hours calculating!
         </p>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+        <p className="text-base text-green-800 dark:text-green-200 mt-2">
           Next: Implement Part 3 (Element Alignment & Action Buttons)
         </p>
       </div>
@@ -174,7 +174,7 @@ function LocationSection({
   );
 }
 
-// Current Hour Display
+// Current Hour Display - SOLID BACKGROUND VERSION
 function CurrentHourDisplay({ 
   currentHour,
   userElement,
@@ -202,32 +202,32 @@ function CurrentHourDisplay({
   });
   
   return (
-    <div className="p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg" style={{ color: 'white' }}>
+    <div className="p-6 bg-indigo-600 dark:bg-indigo-700 rounded-xl shadow-lg border-2 border-indigo-500">
       <div className="flex items-center gap-2 mb-4">
         <Clock className="h-6 w-6 text-white" />
         <h3 className="text-xl font-bold text-white">Current Planetary Hour</h3>
       </div>
       
-      <div className="space-y-2 text-white">
+      <div className="space-y-2">
         <p className="text-lg text-white">
           <strong>{currentHour.planet.name}</strong> ({currentHour.planet.nameArabic})
         </p>
-        <p className="text-sm text-white" style={{ opacity: 0.9 }}>
+        <p className="text-sm text-white">
           {timeStr} • {currentHour.durationMinutes} minutes
         </p>
         <p className="text-base text-white">
           Element: {elementEmoji[currentHour.planet.element]} {currentHour.planet.element.charAt(0).toUpperCase() + currentHour.planet.element.slice(1)} ({currentHour.planet.elementArabic})
         </p>
-        <p className="text-sm text-white" style={{ opacity: 0.75 }}>
+        <p className="text-sm text-white">
           {currentHour.isDayHour ? '☀️ Day Hour' : '🌙 Night Hour'}
         </p>
       </div>
       
-      <div className="mt-4 pt-4 border-t border-white/20">
-        <p className="text-sm text-white" style={{ opacity: 0.9 }}>
+      <div className="mt-4 pt-4 border-t-2 border-indigo-400">
+        <p className="text-sm text-white">
           Your Element: {elementEmoji[userElement]} {userElement.charAt(0).toUpperCase() + userElement.slice(1)}
         </p>
-        <p className="text-xs text-white" style={{ opacity: 0.75 }}>
+        <p className="text-xs text-white mt-1">
           {location.isAccurate ? '✅ Using accurate location-based calculation' : '⚠️ Using approximate timing'}
         </p>
       </div>
@@ -235,28 +235,35 @@ function CurrentHourDisplay({
   );
 }
 
-// Debug Display (Remove this after testing)
+// Debug Display - BETTER CONTRAST
 function DebugHoursDisplay({ hours }: { hours: AccuratePlanetaryHour[] }) {
   return (
-    <details className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-      <summary className="cursor-pointer text-sm font-medium text-gray-900 dark:text-gray-300">
-        🔍 Debug: View All 24 Hours
+    <details className="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-300 dark:border-gray-600 shadow">
+      <summary className="cursor-pointer text-base font-semibold text-gray-900 dark:text-white">
+        🔍 Debug: View All 24 Hours (Click to expand)
       </summary>
       <div className="mt-4 space-y-2 max-h-96 overflow-y-auto">
         {hours.map((hour, index) => (
           <div 
             key={index}
-            className={`p-2 rounded text-xs text-gray-900 dark:text-gray-100 ${
+            className={`p-3 rounded-lg text-sm font-medium border-2 ${
               hour.isCurrent 
-                ? 'bg-indigo-100 dark:bg-indigo-900/30 border-2 border-indigo-500' 
-                : 'bg-white dark:bg-gray-700'
+                ? 'bg-indigo-100 dark:bg-indigo-900 border-indigo-600 text-gray-900 dark:text-white' 
+                : 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white'
             }`}
           >
-            <strong>{hour.planet.name}</strong> ({hour.planet.element}) • 
-            {hour.startTime.toLocaleTimeString()} - {hour.endTime.toLocaleTimeString()} • 
-            {hour.durationMinutes} min • 
-            {hour.isDayHour ? '☀️' : '🌙'}
-            {hour.isCurrent && ' ← CURRENT'}
+            <div className="flex items-center justify-between">
+              <div>
+                <strong>{hour.planet.name}</strong> ({hour.planet.element})
+              </div>
+              <div>
+                {hour.isDayHour ? '☀️ Day' : '🌙 Night'}
+                {hour.isCurrent && ' ← NOW'}
+              </div>
+            </div>
+            <div className="text-xs mt-1 opacity-75">
+              {hour.startTime.toLocaleTimeString()} - {hour.endTime.toLocaleTimeString()} • {hour.durationMinutes} min
+            </div>
           </div>
         ))}
       </div>
