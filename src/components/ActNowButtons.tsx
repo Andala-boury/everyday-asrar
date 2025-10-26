@@ -266,7 +266,7 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
     );
   }
   
-  // Memoize expensive calculations
+  // All guard checks passed - NOW safe to compute memoized values
   const actionButtons = useMemo(() => 
     generateActionButtons(alignment, timeWindow, userElement),
     [alignment, timeWindow, userElement]
