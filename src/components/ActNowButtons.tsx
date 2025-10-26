@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Element, UserLocation, AccuratePlanetaryHour, ElementAlignment, TimeWindow, ActionButton } from '../types/planetary';
 import { getUserLocation, saveLocation, loadLocation } from '../utils/location';
 import { 
@@ -266,16 +266,9 @@ export function ActNowButtons({ userElement }: ActNowButtonsProps) {
     );
   }
   
-  // All guard checks passed - NOW safe to compute memoized values
-  const actionButtons = useMemo(() => 
-    generateActionButtons(alignment, timeWindow, userElement),
-    [alignment, timeWindow, userElement]
-  );
-  
-  const guidance = useMemo(() => 
-    getGuidanceForAlignment(alignment, userElement, currentHour.planet.element),
-    [alignment, currentHour, userElement]
-  );
+  // Compute values directly without useMemo
+  const actionButtons = generateActionButtons(alignment, timeWindow, userElement);
+  const guidance = getGuidanceForAlignment(alignment, userElement, currentHour.planet.element);
   
   return (
     <div className="space-y-6">
