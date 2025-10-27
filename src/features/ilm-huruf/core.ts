@@ -1,6 +1,6 @@
 /**
  * ʿIlm al-Ḥurūf (Science of Letters) - Core Calculations
- * Based on the tradition of Imam al-Būnī and classical masters
+ * Based on classical Islamic traditions and scholarly teachings
  */
 
 import { digitalRoot, hadathRemainder } from '../../components/hadad-summary/hadad-core';
@@ -8,7 +8,7 @@ import { ABJAD_MAGHRIBI } from '../../contexts/AbjadContext';
 import { computeQuranResonance, type QuranResonance } from './quranResonance';
 
 // ============================================================================
-// CLASSICAL LETTER SCIENCE - Al-Būnī's Methodology
+// CLASSICAL LETTER SCIENCE - Core Methodology
 // ============================================================================
 
 /**

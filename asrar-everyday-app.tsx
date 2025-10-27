@@ -1054,7 +1054,7 @@ export default function AsrarEveryday() {
                 }`}
               >
                 <Compass className="w-5 h-5 inline mr-2" />
-                Life Guidance (Al-Būnī)
+                Life Guidance
               </button>
             </div>
           </div>

@@ -85,7 +85,7 @@ import {
 /**
  * Get current day's element based on planetary day assignment
  * Sun=Fire, Mon=Water, Tue=Fire, Wed=Air, Thu=Water, Fri=Air, Sat=Earth
- * Based on classical planetary day rulership from Al-Būnī tradition
+ * Based on classical planetary day rulership
  */
 function getCurrentDayElement(): ElementType {
   const today = new Date();
@@ -321,7 +321,7 @@ export function IlmHurufPanel() {
           ʿIlm al-Ḥurūf - Practical Life Guidance
         </h2>
         <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-          Following the tradition of Imam al-Būnī • Reflective guidance to plan your week
+          Reflective guidance to plan your week
         </p>
         
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -329,8 +329,8 @@ export function IlmHurufPanel() {
             onClick={() => setMode('weekly')}
             className={`p-4 rounded-lg border-2 transition-all ${
               mode === 'weekly'
-                ? 'border-green-500 bg-green-50 dark:bg-green-900/30'
-                : 'border-slate-200 dark:border-slate-700 hover:border-green-300'
+                ? 'border-green-500 bg-green-50 dark:bg-green-900/30 text-black dark:text-white'
+                : 'border-slate-200 dark:border-slate-700 text-black dark:text-white hover:border-green-300'
             }`}
           >
             <Calendar className="w-5 h-5 mx-auto mb-2 text-green-500" />
@@ -341,8 +341,8 @@ export function IlmHurufPanel() {
             onClick={() => setMode('destiny')}
             className={`p-4 rounded-lg border-2 transition-all ${
               mode === 'destiny'
-                ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30'
-                : 'border-slate-200 dark:border-slate-700 hover:border-purple-300'
+                ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30 text-black dark:text-white'
+                : 'border-slate-200 dark:border-slate-700 text-black dark:text-white hover:border-purple-300'
             }`}
           >
             <Target className="w-5 h-5 mx-auto mb-2 text-purple-500" />
@@ -353,8 +353,8 @@ export function IlmHurufPanel() {
             onClick={() => setMode('compatibility')}
             className={`p-4 rounded-lg border-2 transition-all ${
               mode === 'compatibility'
-                ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30'
-                : 'border-slate-200 dark:border-slate-700 hover:border-pink-300'
+                ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-black dark:text-white'
+                : 'border-slate-200 dark:border-slate-700 text-black dark:text-white hover:border-pink-300'
             }`}
           >
             <Users className="w-5 h-5 mx-auto mb-2 text-pink-500" />
@@ -365,8 +365,8 @@ export function IlmHurufPanel() {
             onClick={() => setMode('life-path')}
             className={`p-4 rounded-lg border-2 transition-all ${
               mode === 'life-path'
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
-                : 'border-slate-200 dark:border-slate-700 hover:border-blue-300'
+                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-black dark:text-white'
+                : 'border-slate-200 dark:border-slate-700 text-black dark:text-white hover:border-blue-300'
             }`}
           >
             <Compass className="w-5 h-5 mx-auto mb-2 text-blue-500" />
@@ -377,8 +377,8 @@ export function IlmHurufPanel() {
             onClick={() => setMode('timing')}
             className={`p-4 rounded-lg border-2 transition-all ${
               mode === 'timing'
-                ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/30'
-                : 'border-slate-200 dark:border-slate-700 hover:border-amber-300'
+                ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/30 text-black dark:text-white'
+                : 'border-slate-200 dark:border-slate-700 text-black dark:text-white hover:border-amber-300'
             }`}
           >
             <Clock className="w-5 h-5 mx-auto mb-2 text-amber-500" />
@@ -814,8 +814,8 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
           Your Spiritual Profile
         </h3>
         <div className="flex flex-wrap gap-3">
-          <div className="px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900/40 border border-purple-300 dark:border-purple-700">
-            <span className="text-sm font-medium text-purple-900 dark:text-purple-200">
+          <div className="px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900/40 border border-purple-300 dark:border-purple-700 text-black dark:text-white">
+            <span className="text-sm font-medium">
               Rūḥ: {profile.ruh}
             </span>
           </div>
@@ -833,7 +833,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
         </div>
       </div>
 
-      {/* Balance Meter - Al-Būnī's Mīzān Concept */}
+      {/* Balance Meter - Energy Harmony */}
       <BalanceMeter 
         userElement={profile.element as ElementType} 
         currentDayElement={getCurrentDayElement()} 
@@ -2187,53 +2187,130 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
     sacredNumbers,
     pinnaclesAndChallenges
   } = results;
+
+  // Real-life explanations for core numbers
+  const numberExplanations: Record<number, { title: string; meaning: string }> = {
+    1: { title: "The Leader", meaning: "You're naturally independent and drive to create new things. You prefer making decisions yourself." },
+    2: { title: "The Peacemaker", meaning: "You're great at bringing people together and finding harmony. You're sensitive to others' feelings." },
+    3: { title: "The Creator", meaning: "You express yourself easily and bring joy wherever you go. Communication is your strength." },
+    4: { title: "The Builder", meaning: "You're reliable and practical. You build solid foundations in everything you do." },
+    5: { title: "The Explorer", meaning: "You love freedom and variety. You adapt quickly and learn from diverse experiences." },
+    6: { title: "The Caregiver", meaning: "You're responsible and naturally want to help others. Family and service matter deeply to you." },
+    7: { title: "The Thinker", meaning: "You're analytical and spiritual. You seek deeper understanding in life's mysteries." },
+    8: { title: "The Achiever", meaning: "You're ambitious and focused on success. You have strong business and leadership abilities." },
+    9: { title: "The Humanitarian", meaning: "You care about the world and want to make a positive difference. Compassion guides you." },
+    11: { title: "The Visionary", meaning: "You see beyond ordinary things. You inspire others and carry spiritual messages." },
+    22: { title: "The Master Builder", meaning: "You have big ambitions to create something lasting. You turn dreams into reality on a large scale." }
+  };
   
   return (
     <div className="space-y-6">
-      {/* Core Numbers Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg p-4 text-black shadow-lg">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">Life Path</div>
-          <div className="text-4xl font-bold text-black">{lifePathNumber}</div>
-          <div className="text-xs text-black opacity-75 mt-2">Your Soul's Purpose</div>
-        </div>
+      {/* Introduction Section */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">Your Life Numbers</h3>
+        <p className="text-sm text-slate-700 dark:text-slate-300 mb-4">
+          These four numbers reveal your core personality, inner desires, how others see you, and your life's purpose. Think of them as the main traits that shape who you are and the path you're meant to walk.
+        </p>
         
-        <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg p-4 text-black shadow-lg">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">Soul Urge</div>
-          <div className="text-4xl font-bold text-black">{soulUrgeNumber}</div>
-          <div className="text-xs text-black opacity-75 mt-2">Inner Desire</div>
+        <div className="grid md:grid-cols-2 gap-3 text-xs">
+          <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-blue-500">
+            <span className="font-semibold text-slate-900 dark:text-slate-100">Life Path:</span>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">Your core talents & natural strengths. The abilities you're born with.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-purple-500">
+            <span className="font-semibold text-slate-900 dark:text-slate-100">Soul Urge:</span>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">What truly makes you happy. Your deepest desires & inner fulfillment.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-pink-500">
+            <span className="font-semibold text-slate-900 dark:text-slate-100">Personality:</span>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">The impression you give. How people see & experience you at first.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-amber-500">
+            <span className="font-semibold text-slate-900 dark:text-slate-100">Destiny:</span>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">Your life purpose & what you're meant to achieve. Your ultimate goal.</p>
+          </div>
         </div>
-        
-        <div className="bg-gradient-to-br from-pink-400 to-pink-600 rounded-lg p-4 text-black shadow-lg">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">Personality</div>
-          <div className="text-4xl font-bold text-black">{personalityNumber}</div>
-          <div className="text-xs text-black opacity-75 mt-2">Outer Expression</div>
+      </div>
+
+      {/* Core Numbers Grid with Explanations */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Life Path Number */}
+        <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg p-5 text-black shadow-lg border-2 border-blue-700">
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">LIFE PATH NUMBER</div>
+          <div className="text-4xl font-bold text-black mb-2">{lifePathNumber}</div>
+          <div className="text-xs text-black opacity-75 mb-3 font-semibold">
+            {numberExplanations[lifePathNumber as keyof typeof numberExplanations]?.title || "Your Core Path"}
+          </div>
+          <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
+            {numberExplanations[lifePathNumber as keyof typeof numberExplanations]?.meaning || "This is your main life purpose and natural talents."}
+          </p>
+          <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
+            <span className="font-semibold">What it means:</span> This is your natural talent and life direction. It shows what you're good at and what comes naturally to you.
+          </div>
         </div>
-        
-        <div className="bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg p-4 text-black shadow-lg">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">Destiny</div>
-          <div className="text-4xl font-bold text-black">{destinyNumber}</div>
-          <div className="text-xs text-black opacity-75 mt-2">Life Mission</div>
+
+        {/* Soul Urge Number */}
+        <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg p-5 text-black shadow-lg border-2 border-purple-700">
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">SOUL URGE NUMBER</div>
+          <div className="text-4xl font-bold text-black mb-2">{soulUrgeNumber}</div>
+          <div className="text-xs text-black opacity-75 mb-3 font-semibold">What You Truly Want</div>
+          <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
+            This reveals your deepest desires and what makes you feel fulfilled. It's what your heart is always pushing you toward — your true inner calling.
+          </p>
+          <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
+            <span className="font-semibold">What it means:</span> Your inner motivation. What you're seeking in life and what brings you real joy & satisfaction.
+          </div>
+        </div>
+
+        {/* Personality Number */}
+        <div className="bg-gradient-to-br from-pink-400 to-pink-600 rounded-lg p-5 text-black shadow-lg border-2 border-pink-700">
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">PERSONALITY NUMBER</div>
+          <div className="text-4xl font-bold text-black mb-2">{personalityNumber}</div>
+          <div className="text-xs text-black opacity-75 mb-3 font-semibold">How People See You</div>
+          <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
+            This is the impression you make when people meet you — your external personality, your style, and the first energy people sense from you.
+          </p>
+          <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
+            <span className="font-semibold">What it means:</span> Your public face. How you appear to others & the energy you give off when you walk into a room.
+          </div>
+        </div>
+
+        {/* Destiny Number */}
+        <div className="bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg p-5 text-black shadow-lg border-2 border-amber-700">
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">DESTINY NUMBER</div>
+          <div className="text-4xl font-bold text-black mb-2">{destinyNumber}</div>
+          <div className="text-xs text-black opacity-75 mb-3 font-semibold">Your Life Mission</div>
+          <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
+            This is what you're meant to achieve and contribute to the world. It's your ultimate life purpose and the legacy you're meant to leave.
+          </p>
+          <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
+            <span className="font-semibold">What it means:</span> Your life purpose & ultimate goal. What you're meant to accomplish and give to the world.
+          </div>
         </div>
       </div>
 
       {/* Current Life Cycle */}
+      {cycle && (
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
           <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-          Current Life Cycle
+          Where You Are Right Now
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Life Cycle</div>
+            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Current Life Phase</div>
             <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
-              {cycle.cycleNumber} — {cycle.cycleStage}
+              Phase {cycle.cycleNumber} of 9
             </div>
-            <div className="text-slate-700 dark:text-slate-300 mb-4">
-              <span className="font-semibold">Year {cycle.positionInCycle}/9:</span> {cycle.yearTheme}
+            <div className="text-slate-700 dark:text-slate-300 mb-3">
+              <span className="font-semibold">{cycle.cycleStage}</span>
             </div>
-            <div className="bg-blue-50 dark:bg-blue-900/30 rounded p-3">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+              Year {cycle.positionInCycle}/9: <span className="font-semibold">{cycle.yearTheme}</span>
+            </p>
+            <div className="bg-blue-50 dark:bg-blue-900/30 rounded p-3 border-l-4 border-blue-500">
+              <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Focus Areas:</div>
               <div className="text-sm text-slate-700 dark:text-slate-300">
                 {cycle.focus.join(' • ')}
               </div>
@@ -2241,85 +2318,106 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
           </div>
           
           <div>
-            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Age</div>
+            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Your Age</div>
             <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-              {cycle.age} years old
+              {cycle.age} years
             </div>
             
             <div>
-              <div className="text-sm text-slate-600 dark:text-slate-400 mb-2">Personal Year & Month</div>
-              <div className="flex gap-4">
-                <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 flex-1 text-center">
-                  <div className="text-xs text-slate-600 dark:text-slate-400">Personal Year</div>
-                  <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">{personalYear}</div>
+              <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">This Year & Month's Energy</div>
+              <div className="flex gap-3">
+                <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 flex-1 border border-amber-200 dark:border-amber-800">
+                  <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold">Personal Year</div>
+                  <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">{personalYear}</div>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Overall energy</p>
                 </div>
-                <div className="bg-purple-50 dark:bg-purple-900/30 rounded p-3 flex-1 text-center">
-                  <div className="text-xs text-slate-600 dark:text-slate-400">Personal Month</div>
-                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{personalMonth}</div>
+                <div className="bg-purple-50 dark:bg-purple-900/30 rounded p-3 flex-1 border border-purple-200 dark:border-purple-800">
+                  <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold">Personal Month</div>
+                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{personalMonth}</div>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">This month's flow</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      )}
 
-      {/* Pinnacles and Challenges */}
+      {/* Strengths and Challenges */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
-        <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
+        <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-slate-100 flex items-center gap-2">
           <Target className="w-5 h-5 text-green-600 dark:text-green-400" />
-          Pinnacles & Challenges
+          Your Strengths & Growth Opportunities
         </h3>
+        
+        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 pb-3 border-b border-slate-200 dark:border-slate-700">
+          Each number from 1-9 represents different life qualities. Your strengths show what you naturally excel at. Growth areas show where you can develop further.
+        </p>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Pinnacles (Strengths)</h4>
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 text-green-700 dark:text-green-400">What You're Strong At</h4>
             <div className="space-y-2">
-              <div className="flex justify-between bg-green-50 dark:bg-green-900/30 rounded p-2">
-                <span className="text-sm">Pinnacle 1:</span>
+              <div className="bg-green-50 dark:bg-green-900/30 rounded p-3 border-l-4 border-green-500">
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Strength 1</div>
                 <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle1}</span>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">What makes you capable and reliable</p>
               </div>
-              <div className="flex justify-between bg-green-50 dark:bg-green-900/30 rounded p-2">
-                <span className="text-sm">Pinnacle 2:</span>
+              <div className="bg-green-50 dark:bg-green-900/30 rounded p-3 border-l-4 border-green-500">
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Strength 2</div>
                 <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle2}</span>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">What gives you an edge</p>
               </div>
-              <div className="flex justify-between bg-green-50 dark:bg-green-900/30 rounded p-2">
-                <span className="text-sm">Pinnacle 3:</span>
+              <div className="bg-green-50 dark:bg-green-900/30 rounded p-3 border-l-4 border-green-500">
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Strength 3</div>
                 <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle3}</span>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Your natural talent</p>
               </div>
-              <div className="flex justify-between bg-green-50 dark:bg-green-900/30 rounded p-2">
-                <span className="text-sm">Pinnacle 4:</span>
+              <div className="bg-green-50 dark:bg-green-900/30 rounded p-3 border-l-4 border-green-500">
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Strength 4</div>
                 <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle4}</span>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">What you excel at</p>
               </div>
-              <div className="flex justify-between bg-emerald-200 dark:bg-emerald-900/50 rounded p-2 mt-2 font-bold">
-                <span className="text-sm">Current:</span>
-                <span className="text-emerald-700 dark:text-emerald-300">{pinnaclesAndChallenges.currentPinnacle}</span>
+              {pinnaclesAndChallenges.currentPinnacle && (
+              <div className="bg-emerald-100 dark:bg-emerald-900/50 rounded p-3 mt-3 border-2 border-emerald-500">
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Right Now (Your Current Strength):</span>
+                <div className="text-emerald-700 dark:text-emerald-300 font-bold mt-1">{pinnaclesAndChallenges.currentPinnacle}</div>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">This is the main strength supporting you this season</p>
               </div>
+              )}
             </div>
           </div>
           
           <div>
-            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Challenges (Growth Areas)</h4>
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 text-amber-700 dark:text-amber-400">Where You Can Grow</h4>
             <div className="space-y-2">
-              <div className="flex justify-between bg-amber-50 dark:bg-amber-900/30 rounded p-2">
-                <span className="text-sm">Challenge 1:</span>
+              <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 border-l-4 border-amber-500">
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Growth Area 1</div>
                 <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge1}</span>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">A quality to develop</p>
               </div>
-              <div className="flex justify-between bg-amber-50 dark:bg-amber-900/30 rounded p-2">
-                <span className="text-sm">Challenge 2:</span>
+              <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 border-l-4 border-amber-500">
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Growth Area 2</div>
                 <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge2}</span>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">An area for improvement</p>
               </div>
-              <div className="flex justify-between bg-amber-50 dark:bg-amber-900/30 rounded p-2">
-                <span className="text-sm">Challenge 3:</span>
+              <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 border-l-4 border-amber-500">
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Growth Area 3</div>
                 <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge3}</span>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Something to work on</p>
               </div>
-              <div className="flex justify-between bg-amber-50 dark:bg-amber-900/30 rounded p-2">
-                <span className="text-sm">Challenge 4:</span>
+              <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 border-l-4 border-amber-500">
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Growth Area 4</div>
                 <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge4}</span>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">A key life lesson</p>
               </div>
-              <div className="flex justify-between bg-orange-200 dark:bg-orange-900/50 rounded p-2 mt-2 font-bold">
-                <span className="text-sm">Current:</span>
-                <span className="text-orange-700 dark:text-orange-300">{pinnaclesAndChallenges.currentChallenge}</span>
+              {pinnaclesAndChallenges.currentChallenge && (
+              <div className="bg-orange-100 dark:bg-orange-900/50 rounded p-3 mt-3 border-2 border-orange-500">
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Currently Working On (Your Main Focus):</span>
+                <div className="text-orange-700 dark:text-orange-300 font-bold mt-1">{pinnaclesAndChallenges.currentChallenge}</div>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">This is what life is teaching you right now—embrace it!</p>
               </div>
+              )}
             </div>
           </div>
         </div>
@@ -2330,39 +2428,39 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
           <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
-            Special Numbers
+            Special Numbers & Lessons
           </h3>
           
           <div className="grid md:grid-cols-2 gap-6">
             {karmicDebts.length > 0 && (
               <div>
-                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Karmic Debts</h4>
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Lessons to Learn</h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                  These numbers represent lessons your soul wants to learn in this lifetime. They're not obstacles — they're opportunities for growth.
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {karmicDebts.map((debt) => (
-                    <div key={debt} className="bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 rounded-full px-4 py-2 text-sm font-semibold">
+                    <div key={debt} className="bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 rounded-full px-4 py-2 text-sm font-semibold border border-red-300 dark:border-red-700">
                       {debt}
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
-                  Represent lessons to be learned
-                </p>
               </div>
             )}
             
             {sacredNumbers.length > 0 && (
               <div>
-                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Sacred Numbers</h4>
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Blessed Numbers</h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                  These are powerful numbers connected to spiritual tradition. They bring special blessings and spiritual protection to your life.
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {sacredNumbers.map((sacred) => (
-                    <div key={sacred} className="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 rounded-full px-4 py-2 text-sm font-semibold">
+                    <div key={sacred} className="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 rounded-full px-4 py-2 text-sm font-semibold border border-indigo-300 dark:border-indigo-700">
                       {sacred}
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
-                  Connected to Islamic spiritual tradition
-                </p>
               </div>
             )}
           </div>
