@@ -3,5 +3,9 @@
 import AsrarEveryday from '../asrar-everyday-app';
 
 export default function Home() {
-  return <AsrarEveryday />;
+  return (
+    <div className="min-h-screen">
+      <AsrarEveryday />
+    </div>
+  );
 }

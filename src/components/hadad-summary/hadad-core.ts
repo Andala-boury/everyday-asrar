@@ -13,11 +13,16 @@ export const ABJAD: Record<string, number> = {
 };
 
 export const LETTER_ELEMENTS: Record<string, ElementType> = {
+  // Fire (Hot & Dry) - 6 letters
   'ا': 'Fire', 'ه': 'Fire', 'ط': 'Fire', 'م': 'Fire', 'ف': 'Fire', 'ص': 'Fire',
-  'ب': 'Water', 'و': 'Water', 'ي': 'Water', 'ن': 'Water',
-  'ج': 'Air', 'ز': 'Air', 'ك': 'Air', 'س': 'Air', 'ق': 'Air', 'ش': 'Air',
-  'd': 'Earth', 'ل': 'Earth', 'ع': 'Earth', 'ر': 'Earth', 'ت': 'Earth', 
-  'ث': 'Earth', 'خ': 'Earth', 'ذ': 'Earth', 'ض': 'Earth', 'ظ': 'Earth', 'غ': 'Earth'
+  // Water (Cold & Wet) - 5 letters
+  'ب': 'Water', 'و': 'Water', 'ي': 'Water', 'ن': 'Water', 'ق': 'Water',
+  // Air (Hot & Wet) - 5 letters
+  'ج': 'Air', 'ز': 'Air', 'ك': 'Air', 'س': 'Air', 'ش': 'Air',
+  // Earth (Cold & Dry) - 12 letters (includes ح, ذ, ض, ظ, ث, خ corrections)
+  'د': 'Earth', 'ل': 'Earth', 'ع': 'Earth', 'ر': 'Earth', 'ت': 'Earth', 
+  'ث': 'Earth', 'خ': 'Earth', 'ذ': 'Earth', 'ض': 'Earth', 'ظ': 'Earth', 'غ': 'Earth',
+  'ح': 'Earth'  // CORRECTED: ح is Cold & Dry (Earth), not Hot & Wet (Air)
 };
 
 // ============================================================================

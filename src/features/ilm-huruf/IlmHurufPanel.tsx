@@ -865,6 +865,70 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
           Week at a Glance
         </h3>
         
+        {/* Week Summary - Best Days & Personal Year */}
+        <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 rounded-lg border border-green-200 dark:border-green-800">
+          <div className="grid md:grid-cols-3 gap-4">
+            {/* Best Day */}
+            <div>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">Peak Day This Week</p>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">⭐</span>
+                <div>
+                  {weeklySummary.days.find(d => d.date === weeklySummary.best_day) && (
+                    <>
+                      <div className="font-bold text-slate-900 dark:text-slate-100">
+                        {weeklySummary.days.find(d => d.date === weeklySummary.best_day)?.weekday}
+                      </div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400">
+                        Harmony: {weeklySummary.days.find(d => d.date === weeklySummary.best_day)?.harmony_score}/10
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Best for important initiatives</p>
+            </div>
+
+            {/* Focus Day */}
+            <div>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">Focus Day</p>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🎯</span>
+                <div>
+                  {weeklySummary.days.find(d => d.date === weeklySummary.focus_day) && (
+                    <>
+                      <div className="font-bold text-slate-900 dark:text-slate-100">
+                        {weeklySummary.days.find(d => d.date === weeklySummary.focus_day)?.weekday}
+                      </div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400">
+                        Planet: {weeklySummary.days.find(d => d.date === weeklySummary.focus_day)?.day_planet}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">For deep work & planning</p>
+            </div>
+
+            {/* Personal Year Influence */}
+            <div>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">Personal Year Cycle</p>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">📅</span>
+                <div>
+                  <div className="font-bold text-slate-900 dark:text-slate-100">
+                    Year {profile.personalYear}
+                  </div>
+                  <div className="text-sm text-slate-600 dark:text-slate-400">
+                    +{Math.round(((9 - (profile.personalYear || 1) + 1) / 9) * 100)}% boost
+                  </div>
+                </div>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Enhanced on compatible days</p>
+            </div>
+          </div>
+        </div>
+        
         <div className="grid grid-cols-2 md:grid-cols-7 gap-3">
           {weeklySummary.days.map((day) => {
             const isBest = day.date === weeklySummary.best_day;
@@ -1012,6 +1076,45 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
               </button>
             );
           })}
+        </div>
+        
+        {/* Energy Return Speeds Overview (Irtiṭāb) */}
+        <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-lg border border-blue-200 dark:border-blue-800">
+          <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
+            <span className="text-lg">⚡</span>
+            Energy Return Speeds This Week
+          </h4>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+            When actions manifest their results (classical concept: Irtiṭāb)
+          </p>
+          <div className="grid md:grid-cols-4 gap-3">
+            {(() => {
+              const speedCounts = {
+                instant: weeklySummary.days.filter(d => d.energyReturn.speed === 'instant').length,
+                quick: weeklySummary.days.filter(d => d.energyReturn.speed === 'quick').length,
+                gradual: weeklySummary.days.filter(d => d.energyReturn.speed === 'gradual').length,
+                delayed: weeklySummary.days.filter(d => d.energyReturn.speed === 'delayed').length,
+              };
+              return Object.entries(speedCounts).map(([speed, count]) => (
+                <div key={speed} className="bg-white dark:bg-slate-700/50 rounded-lg p-3 text-center">
+                  <div className="flex justify-center text-2xl mb-1">
+                    {speed === 'instant' && '⚡'}
+                    {speed === 'quick' && '💨'}
+                    {speed === 'gradual' && '🌊'}
+                    {speed === 'delayed' && '🌱'}
+                  </div>
+                  <div className="text-sm font-bold text-slate-900 dark:text-slate-100 capitalize">{speed}</div>
+                  <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">{count} day{count !== 1 ? 's' : ''}</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-500 mt-2">
+                    {speed === 'instant' && 'Same day'}
+                    {speed === 'quick' && 'Few hours'}
+                    {speed === 'gradual' && '2-3 days'}
+                    {speed === 'delayed' && '1-2 weeks'}
+                  </div>
+                </div>
+              ));
+            })()}
+          </div>
         </div>
         
         {/* Expandable Rest Signal Content */}
@@ -1479,23 +1582,32 @@ function DestinyResults({ results }: { results: any }) {
   // Fetch Quranic verse when quranResonance is available
   useEffect(() => {
     if (results?.quranResonance) {
-      console.log('Quranic Resonance:', results.quranResonance);
+      console.log('🕌 Fetching Quranic Resonance:', results.quranResonance);
       setLoadingVerse(true);
       setVerseError(null);
-      fetchQuranVerse(
-        results.quranResonance.surahNumber,
-        results.quranResonance.ayahNumber
-      )
-        .then(verse => {
-          console.log('Fetched verse:', verse);
+      setVerseText(null);
+      
+      const fetchVerse = async () => {
+        const verse = await fetchQuranVerse(
+          results.quranResonance.surahNumber,
+          results.quranResonance.ayahNumber
+        );
+        
+        if (verse) {
+          console.log('✅ Successfully fetched verse:', verse);
           setVerseText(verse);
-          setLoadingVerse(false);
-        })
-        .catch(err => {
-          console.error('Failed to fetch verse:', err);
-          setVerseError('Unable to load verse text. Please try again.');
-          setLoadingVerse(false);
-        });
+        } else {
+          console.warn('⚠️ Verse fetch returned null');
+          setVerseError('Unable to load verse at this moment. Please refresh or visit Quran.com directly.');
+        }
+        setLoadingVerse(false);
+      };
+      
+      fetchVerse().catch(err => {
+        console.error('❌ Error fetching verse:', err);
+        setVerseError('Unable to load verse text. Please try again.');
+        setLoadingVerse(false);
+      });
     }
   }, [results?.quranResonance]);
 
@@ -1567,37 +1679,56 @@ function DestinyResults({ results }: { results: any }) {
             
             {/* Verse Text Display */}
             {loadingVerse && (
-              <div className="text-center py-4">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
-                <p className="text-sm text-black dark:text-slate-400 mt-2">Loading verse...</p>
+              <div className="text-center py-8 bg-emerald-50 dark:bg-slate-700 rounded-lg">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-300 border-t-emerald-600"></div>
+                <p className="text-sm text-black dark:text-slate-300 mt-3 font-medium">Loading Qur'anic verse...</p>
               </div>
             )}
             
-            {verseError && !loadingVerse && (
-              <div className="text-center py-4">
-                <p className="text-sm text-red-600 dark:text-red-400">{verseError}</p>
+            {verseError && !loadingVerse && !verseText && (
+              <div className="text-center py-6 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-700">
+                <p className="text-sm text-amber-800 dark:text-amber-300">{verseError}</p>
+                <p className="text-xs text-amber-700 dark:text-amber-400 mt-2">
+                  The verse reference is valid (Surah {results.quranResonance.surahNumber}:{results.quranResonance.ayahNumber}), but we're having trouble fetching it.
+                </p>
               </div>
             )}
             
             {verseText && !loadingVerse && (
-              <div className="space-y-4 bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-emerald-200 dark:border-emerald-700">
+              <div className="space-y-4 bg-white dark:bg-slate-750 rounded-lg p-6 border-2 border-emerald-200 dark:border-emerald-700">
                 {/* Arabic Text */}
-                <div className="text-right">
-                  <p className="text-2xl leading-loose text-black dark:text-white font-semibold" 
-                     style={{ fontFamily: 'Amiri, serif', lineHeight: '2.2' }}>
-                    {verseText.arabic}
-                  </p>
-                </div>
+                {verseText.arabic && (
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Arabic Text</h4>
+                    <div className="text-right bg-gradient-to-l from-emerald-50 to-transparent dark:from-slate-800 dark:to-transparent rounded p-5 border-r-4 border-emerald-500">
+                      <p className="text-2xl leading-loose text-black dark:text-white font-semibold" 
+                         style={{ fontFamily: 'Amiri, Scheherazade, serif', lineHeight: '2.2', direction: 'rtl' }}>
+                        {verseText.arabic}
+                      </p>
+                    </div>
+                  </div>
+                )}
                 
                 {/* Translation */}
-                <div className="pt-3 border-t border-emerald-200 dark:border-emerald-700">
-                  <p className="text-base text-black dark:text-slate-300 leading-relaxed mb-2">
-                    {verseText.translation}
-                  </p>
-                  <p className="text-xs text-black dark:text-slate-500 italic">
-                    — {verseText.translationName}
-                  </p>
-                </div>
+                {verseText.translation && (
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">English Translation</h4>
+                    <div className="bg-gradient-to-r from-blue-50 to-transparent dark:from-blue-900/10 dark:to-transparent rounded p-5 border-l-4 border-blue-400">
+                      <p className="text-base text-black dark:text-slate-200 leading-relaxed mb-3">
+                        "{verseText.translation}"
+                      </p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 italic">
+                        — {verseText.translationName}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {!verseText && !loadingVerse && !verseError && (
+              <div className="text-center py-6 text-slate-500 dark:text-slate-400 text-sm">
+                <p>No verse data available for this resonance.</p>
               </div>
             )}
             

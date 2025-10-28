@@ -4,7 +4,7 @@
  */
 
 import { digitalRoot, hadathRemainder } from '../../components/hadad-summary/hadad-core';
-import { ABJAD_MAGHRIBI } from '../../contexts/AbjadContext';
+import { ABJAD_MAGHRIBI, validateAndWarnAboutHamza } from '../../contexts/AbjadContext';
 import { computeQuranResonance, type QuranResonance } from './quranResonance';
 
 // ============================================================================
@@ -18,6 +18,7 @@ export type Nature = 'Hot' | 'Cold' | 'Wet' | 'Dry';
 
 /**
  * Letter classification by nature (from Shams al-Maʿārif)
+ * CORRECTED: Classical mappings per Islamic tradition
  */
 export const LETTER_NATURES: Record<string, Nature[]> = {
   // Fire letters (Hot & Dry)
@@ -26,35 +27,35 @@ export const LETTER_NATURES: Record<string, Nature[]> = {
   'ط': ['Hot', 'Dry'],
   'م': ['Hot', 'Dry'],
   'ف': ['Hot', 'Dry'],
-  'ش': ['Hot', 'Dry'],
-  'ذ': ['Hot', 'Dry'],
-  
-  // Air letters (Hot & Wet)
-  'ب': ['Hot', 'Wet'],
-  'و': ['Hot', 'Wet'],
-  'ي': ['Hot', 'Wet'],
-  'ن': ['Hot', 'Wet'],
-  'ض': ['Hot', 'Wet'],
-  'ظ': ['Hot', 'Wet'],
-  'غ': ['Hot', 'Wet'],
+  'ص': ['Hot', 'Dry'],
   
   // Water letters (Cold & Wet)
-  'ج': ['Cold', 'Wet'],
-  'ز': ['Cold', 'Wet'],
-  'ك': ['Cold', 'Wet'],
-  'س': ['Cold', 'Wet'],
+  'ب': ['Cold', 'Wet'],
+  'و': ['Cold', 'Wet'],
+  'ي': ['Cold', 'Wet'],
+  'ن': ['Cold', 'Wet'],
   'ق': ['Cold', 'Wet'],
-  'ث': ['Cold', 'Wet'],
-  'خ': ['Cold', 'Wet'],
+  
+  // Air letters (Hot & Wet)
+  'ج': ['Hot', 'Wet'],
+  'ز': ['Hot', 'Wet'],
+  'ك': ['Hot', 'Wet'],
+  'س': ['Hot', 'Wet'],
+  'ش': ['Hot', 'Wet'],
   
   // Earth letters (Cold & Dry)
   'د': ['Cold', 'Dry'],
-  'ح': ['Cold', 'Dry'],
   'ل': ['Cold', 'Dry'],
   'ع': ['Cold', 'Dry'],
   'ر': ['Cold', 'Dry'],
-  'ص': ['Cold', 'Dry'],
-  'ت': ['Cold', 'Dry']
+  'ت': ['Cold', 'Dry'],
+  'ث': ['Cold', 'Dry'],
+  'خ': ['Cold', 'Dry'],
+  'ذ': ['Cold', 'Dry'],
+  'ض': ['Cold', 'Dry'],
+  'ظ': ['Cold', 'Dry'],
+  'غ': ['Cold', 'Dry'],
+  'ح': ['Cold', 'Dry']  // CORRECTED: ح is Cold & Dry (Earth), not Hot & Wet (Air)
 };
 
 /**
@@ -243,6 +244,9 @@ export function calculateLifePath(birthDate: Date): {
  * Name destiny - What your name reveals about your life purpose
  */
 export function analyzeNameDestiny(name: string, abjad: Record<string, number> = ABJAD_MAGHRIBI) {
+  // Check for hamza and warn if present
+  validateAndWarnAboutHamza(name);
+  
   const normalized = name.replace(/[ًٌٍَُِّْ]/g, '').replace(/\s+/g, '');
   const letters = [...normalized];
   
@@ -1087,6 +1091,31 @@ export function analyzeCompatibility(name1: string, name2: string, abjad: Record
   const destinyDiff = Math.abs(person1.saghir - person2.saghir);
   const soulDiff = Math.abs(person1.soulUrgeNumber - person2.soulUrgeNumber);
   
+  /**
+   * HARMONY SCORE FORMULA (0-100)
+   * 
+   * This formula is a MODERN INTERPRETATION combining classical Islamic numerology
+   * principles with relationship psychology insights. It is NOT a classical Islamic text formula.
+   * 
+   * Components:
+   * 1. Base Score: 100 (assumes neutral compatibility)
+   * 2. Destiny Number Compatibility: ±10 to ±20
+   *    - Identical destiny (diff = 0): +20 (natural alignment)
+   *    - Close destiny (diff ≤ 2): +10 (complementary)
+   *    - Opposing destiny (diff ≥ 4): -10 (challenging dynamics)
+   * 3. Soul Urge Compatibility: ±5 to ±15
+   *    - Identical soul urge (diff = 0): +15 (emotional alignment)
+   *    - Close soul urge (diff ≤ 2): +5 (natural understanding)
+   * 4. Special Numerological Pairings: +10 to +20
+   *    - Specific number combinations recognized in classical tradition
+   *    - Examples: 1-2 (Leader/Supporter), 4-8 (Builder/Achiever)
+   * 5. Final Range: 0-100 (clamped)
+   * 
+   * IMPORTANT DISCLAIMER:
+   * This score should NOT be used for making life-changing decisions alone.
+   * It is meant for self-reflection, entertainment, and gaining perspective.
+   * Real relationships depend on commitment, communication, effort, and divine will.
+   */
   // Calculate harmony score (0-100)
   let harmonyScore = 100;
   
@@ -1304,11 +1333,9 @@ export function getDailyDhikr(hadath: number): {
   return recommendations[element] || recommendations.Earth;
 }
 
-function hadathToElement(hadath: number): 'Fire' | 'Water' | 'Air' | 'Earth' {
-  if (hadath >= 1 && hadath <= 3) return 'Fire';
-  if (hadath >= 4 && hadath <= 6) return 'Water';
-  if (hadath >= 7 && hadath <= 9) return 'Air';
-  return 'Earth';
+function hadathToElement(hadath: 0 | 1 | 2 | 3): 'Fire' | 'Water' | 'Air' | 'Earth' {
+  const map = { 0: 'Earth', 1: 'Fire', 2: 'Water', 3: 'Air' } as const;
+  return map[hadath];
 }
 
 // ============================================================================
