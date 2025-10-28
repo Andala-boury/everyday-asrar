@@ -865,9 +865,9 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
           Week at a Glance
         </h3>
         
-        {/* Week Summary - Best Days & Personal Year */}
+        {/* Week Summary - Best Days */}
         <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 rounded-lg border border-green-200 dark:border-green-800">
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             {/* Best Day */}
             <div>
               <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">Peak Day This Week</p>
@@ -908,23 +908,6 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 </div>
               </div>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">For deep work & planning</p>
-            </div>
-
-            {/* Personal Year Influence */}
-            <div>
-              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">Personal Year Cycle</p>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">📅</span>
-                <div>
-                  <div className="font-bold text-slate-900 dark:text-slate-100">
-                    Year {profile.personalYear}
-                  </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">
-                    +{Math.round(((9 - (profile.personalYear || 1) + 1) / 9) * 100)}% boost
-                  </div>
-                </div>
-              </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Enhanced on compatible days</p>
             </div>
           </div>
         </div>
