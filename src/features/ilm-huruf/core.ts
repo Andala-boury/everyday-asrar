@@ -1297,7 +1297,7 @@ export function getDailyDhikr(hadath: number): {
   time: string;
   benefit: string;
 } {
-  const element = hadathToElement(hadath);
+  const element = hadathToElement((hadath % 4) as 0 | 1 | 2 | 3);
   
   const recommendations = {
     Fire: {
