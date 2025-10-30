@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { Calculator, Book, TrendingUp, Moon, Sun, Info, Sparkles, Flame, Droplet, Wind, Mountain, History, Star, GitCompare, Calendar, Trash2, X, Copy, CheckCircle, AlertTriangle, Zap, Compass, Keyboard, Heart } from 'lucide-react';
+import { Calculator, Book, TrendingUp, Moon, Sun, Info, Sparkles, Flame, Droplet, Wind, Mountain, History, Star, GitCompare, Calendar, Trash2, X, Copy, CheckCircle, AlertTriangle, Zap, Compass, Keyboard, Heart, ChevronUp, ChevronDown, HelpCircle, Menu } from 'lucide-react';
 import { transliterateLatinToArabic } from './src/lib/text-normalize';
 import { HadadSummaryPanel } from './src/components/hadad-summary';
 import { IlmHurufPanel } from './src/features/ilm-huruf';
 import { CompatibilityPanel } from './src/features/compatibility';
+import { OnboardingTutorial } from './src/components/OnboardingTutorial';
+import { MobileMenu } from './src/components/MobileMenu';
 import { LETTER_ELEMENTS, digitalRoot as calcDigitalRoot, hadathRemainder as calcHadathRemainder, hadathToElement, nearestSacred } from './src/components/hadad-summary/hadad-core';
 import type { AbjadAudit, AuditStep, ElementType, SacredResonance } from './src/components/hadad-summary/types';
 import { useAbjad } from './src/contexts/AbjadContext';
@@ -771,35 +773,71 @@ function ComparisonMode({ onClose, abjad, analyzeElements }: {
   );
 }
 
-function DailyReflectionCard() {
+function DailyReflectionCard({ isCollapsed, onToggleCollapse }: { isCollapsed: boolean; onToggleCollapse: () => void }) {
   const daily = getDailyReflection();
   
   return (
-    <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-6 border border-indigo-200 dark:border-indigo-800">
-      <div className="flex items-start gap-3 mb-4">
-        <Calendar className="w-6 h-6 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
-        <div className="flex-1">
-          <h3 className="text-lg font-bold text-indigo-900 dark:text-indigo-100 mb-1">Daily Reflection</h3>
-          <p className="text-xs text-indigo-600 dark:text-indigo-400">{daily.date}</p>
+    <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl border border-indigo-200 dark:border-indigo-800 overflow-hidden transition-all duration-300">
+      {/* Header - Always Visible */}
+      <div className="p-6 cursor-pointer hover:bg-indigo-100/50 dark:hover:bg-indigo-900/30 transition-colors" onClick={onToggleCollapse}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 flex-1">
+            {/* Pulse Animation Badge */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-indigo-400 rounded-full opacity-75 animate-pulse" style={{width: '24px', height: '24px'}}></div>
+              <Calendar className="w-6 h-6 text-indigo-600 dark:text-indigo-400 relative z-10" />
+            </div>
+            
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-bold text-indigo-900 dark:text-indigo-100">Today's Reflection</h3>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-600 text-white animate-pulse">
+                  Daily
+                </span>
+              </div>
+              {!isCollapsed && (
+                <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1">{daily.date}</p>
+              )}
+            </div>
+          </div>
+          
+          {/* Collapse Toggle Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleCollapse();
+            }}
+            className="p-2 hover:bg-indigo-200/50 dark:hover:bg-indigo-900/50 rounded-lg transition-colors flex-shrink-0 ml-2"
+            aria-label={isCollapsed ? "Expand reflection" : "Collapse reflection"}
+          >
+            {isCollapsed ? (
+              <ChevronDown className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            ) : (
+              <ChevronUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            )}
+          </button>
         </div>
       </div>
       
-      <div className="space-y-4">
-        <div className="bg-white/50 dark:bg-slate-800/50 rounded-lg p-4">
-          <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1">Verse of the Day</div>
-          <div className="text-sm font-medium mb-1">{daily.verse.text}</div>
-          <div className="text-xs text-slate-600 dark:text-slate-400">Quran {daily.verse.ref} • {daily.verse.context}</div>
-        </div>
-        
-        <div className="bg-white/50 dark:bg-slate-800/50 rounded-lg p-4">
-          <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1">Divine Name for Reflection</div>
-          <div className="flex items-baseline justify-between mb-1">
-            <span className="text-xl font-arabic" dir="rtl">{daily.name.arabic}</span>
-            <span className="text-xs text-slate-500">{daily.name.transliteration}</span>
+      {/* Collapsible Content */}
+      {!isCollapsed && (
+        <div className="px-6 pb-6 pt-0 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="bg-white/50 dark:bg-slate-800/50 rounded-lg p-4">
+            <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1">Verse of the Day</div>
+            <div className="text-sm font-medium mb-1">{daily.verse.text}</div>
+            <div className="text-xs text-slate-600 dark:text-slate-400">Quran {daily.verse.ref} • {daily.verse.context}</div>
           </div>
-          <div className="text-sm text-slate-600 dark:text-slate-400">{daily.name.meaning}</div>
+          
+          <div className="bg-white/50 dark:bg-slate-800/50 rounded-lg p-4">
+            <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1">Divine Name for Reflection</div>
+            <div className="flex items-baseline justify-between mb-1">
+              <span className="text-xl font-arabic" dir="rtl">{daily.name.arabic}</span>
+              <span className="text-xs text-slate-500">{daily.name.transliteration}</span>
+            </div>
+            <div className="text-sm text-slate-600 dark:text-slate-400">{daily.name.meaning}</div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -824,6 +862,48 @@ export default function AsrarEveryday() {
   const [showComparison, setShowComparison] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [showCompatibility, setShowCompatibility] = useState(false);
+  
+  // Daily Reflection State - initialize to false, set from localStorage in useEffect
+  const [isDailyReflectionCollapsed, setIsDailyReflectionCollapsed] = useState(false);
+  
+  // Load daily reflection preference from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('dailyReflectionCollapsed');
+      if (stored) {
+        setIsDailyReflectionCollapsed(JSON.parse(stored));
+      }
+    }
+  }, []);
+  
+  // Handle daily reflection collapse with localStorage
+  const handleToggleDailyReflection = () => {
+    setIsDailyReflectionCollapsed((prev: boolean) => {
+      const newValue = !prev;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('dailyReflectionCollapsed', JSON.stringify(newValue));
+      }
+      return newValue;
+    });
+  };
+
+  // Onboarding Tutorial State
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // Mobile Menu State
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+  // Initialize onboarding on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+      if (!hasSeenOnboarding) {
+        // Small delay for smoother UX
+        const timer = setTimeout(() => setShowOnboarding(true), 500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
   
   // Helper function for element analysis
   const analyzeElements = (text: string) => {
@@ -974,87 +1054,166 @@ export default function AsrarEveryday() {
     <div className={darkMode ? 'dark' : ''}>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors">
         {/* Header */}
-        <header className="border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
-          <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Sparkles className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-              <div>
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Asrār Everyday</h1>
-                <p className="text-xs text-slate-600 dark:text-slate-400">ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Explorer</p>
+        <header className="border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-40">
+          <div className="max-w-6xl mx-auto px-4 py-3 md:py-4">
+            {/* Mobile Header (< 768px) */}
+            <div className="flex md:hidden items-center justify-between">
+              {/* Logo & Title */}
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
+                <div className="min-w-0">
+                  <h1 className="text-lg md:text-2xl font-bold text-slate-900 dark:text-slate-100 truncate">Asrār</h1>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 truncate">ʿIlm al-Ḥurūf</p>
+                </div>
+              </div>
+
+              {/* Mobile Controls */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {/* Dark Mode Toggle */}
+                <button
+                  onClick={() => setDarkMode(!darkMode)}
+                  className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                  aria-label="Toggle dark mode"
+                >
+                  {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+
+                {/* History Button */}
+                <button
+                  onClick={() => setShowHistory(!showHistory)}
+                  className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors relative"
+                  title="View history"
+                >
+                  <History className="w-5 h-5" />
+                  {history.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-indigo-600 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                      {history.length > 9 ? '9+' : history.length}
+                    </span>
+                  )}
+                </button>
+
+                {/* Hamburger Menu */}
+                <button
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+                  className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                  aria-label="Open menu"
+                >
+                  <Menu className="w-5 h-5" />
+                </button>
               </div>
             </div>
-            
-            {/* Compact Abjad System Selector */}
-            <div className="flex-shrink-0">
-              <AbjadSystemSelector compact={true} />
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShowCompatibility(true)}
-                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                title="Relationship Compatibility"
-              >
-                <Heart className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => setShowComparison(true)}
-                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                title="Compare two names"
-              >
-                <GitCompare className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => setShowHistory(!showHistory)}
-                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors relative"
-                title="View history"
-              >
-                <History className="w-5 h-5" />
-                {history.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-indigo-600 text-white text-xs rounded-full flex items-center justify-center">
-                    {history.length > 9 ? '9+' : history.length}
-                  </span>
-                )}
-              </button>
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                aria-label="Toggle dark mode"
-              >
-                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </button>
+
+            {/* Tablet+ Header (>= 768px) */}
+            <div className="hidden md:flex items-center justify-between">
+              {/* Logo & Title */}
+              <div className="flex items-center gap-3">
+                <Sparkles className="w-8 h-8 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
+                <div>
+                  <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Asrār Everyday</h1>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Explorer</p>
+                </div>
+              </div>
+
+              {/* Abjad System Selector */}
+              <div className="flex-shrink-0">
+                <AbjadSystemSelector compact={true} />
+              </div>
+
+              {/* Desktop Controls */}
+              <div className="flex items-center gap-2">
+                {/* Help Button */}
+                <button
+                  onClick={() => setShowOnboarding(true)}
+                  className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors hidden lg:flex"
+                  title="Help & Tutorial"
+                >
+                  <HelpCircle className="w-5 h-5" />
+                </button>
+
+                {/* Compatibility Button */}
+                <button
+                  onClick={() => setShowCompatibility(true)}
+                  className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors hidden lg:flex"
+                  title="Relationship Compatibility"
+                >
+                  <Heart className="w-5 h-5" />
+                </button>
+
+                {/* Comparison Button */}
+                <button
+                  onClick={() => setShowComparison(true)}
+                  className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors hidden lg:flex"
+                  title="Compare two names"
+                >
+                  <GitCompare className="w-5 h-5" />
+                </button>
+
+                {/* History Button */}
+                <button
+                  onClick={() => setShowHistory(!showHistory)}
+                  className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors relative"
+                  title="View history"
+                >
+                  <History className="w-5 h-5" />
+                  {history.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-indigo-600 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                      {history.length > 9 ? '9+' : history.length}
+                    </span>
+                  )}
+                </button>
+
+                {/* Dark Mode Toggle */}
+                <button
+                  onClick={() => setDarkMode(!darkMode)}
+                  className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                  aria-label="Toggle dark mode"
+                >
+                  {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+              </div>
             </div>
           </div>
         </header>
         
         {/* Main Content */}
-        <main className="max-w-6xl mx-auto px-4 py-8">
-          {showDisclaimer && <DisclaimerBanner onDismiss={() => setShowDisclaimer(false)} />}
+        <main className="w-full mx-auto px-3 sm:px-4 py-6 sm:py-8">
+          <div className="max-w-6xl mx-auto">
+            {showDisclaimer && <DisclaimerBanner onDismiss={() => setShowDisclaimer(false)} />}
+            
+            {/* Daily Reflection - Prominent Banner */}
+            <div className="mb-6 sm:mb-8">
+              <DailyReflectionCard 
+                isCollapsed={isDailyReflectionCollapsed}
+              onToggleCollapse={handleToggleDailyReflection}
+            />
+          </div>
           
-          {/* View Mode Tabs */}
-          <div className="mb-8">
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-2 inline-flex gap-2">
+          {/* View Mode Tabs - Mobile Responsive */}
+          <div className="mb-6 sm:mb-8 overflow-x-auto">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-2 inline-flex gap-2 min-w-full sm:min-w-0">
               <button
                 onClick={() => setViewMode('calculator')}
-                className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all whitespace-nowrap text-sm sm:text-base ${
                   viewMode === 'calculator'
                     ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg'
                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
               >
-                <Calculator className="w-5 h-5 inline mr-2" />
-                Letter Calculator
+                <Calculator className="w-4 sm:w-5 h-4 sm:h-5 inline mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Letter Calculator</span>
+                <span className="sm:hidden">Calculate</span>
               </button>
               <button
                 onClick={() => setViewMode('guidance')}
-                className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all whitespace-nowrap text-sm sm:text-base ${
                   viewMode === 'guidance'
                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
               >
-                <Compass className="w-5 h-5 inline mr-2" />
-                Life Guidance
+                <Compass className="w-4 sm:w-5 h-4 sm:h-5 inline mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Life Guidance</span>
+                <span className="sm:hidden">Guidance</span>
               </button>
             </div>
           </div>
@@ -1062,19 +1221,19 @@ export default function AsrarEveryday() {
           {viewMode === 'guidance' ? (
             <IlmHurufPanel />
           ) : (
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Main Content Area */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* Input Section */}
-              <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
-            <h2 className="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <Calculator className="w-5 h-5" />
-              Calculate Letter Values
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+            {/* Main Content Area - Mobile Full Width, Desktop 2/3 */}
+            <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+              {/* Input Section - Mobile Optimized */}
+              <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Calculator className="w-5 h-5 flex-shrink-0" />
+              <span>Calculate Letter Values</span>
             </h2>
             
             <div className="space-y-4">
               <div>
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 gap-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                     Latin Text (English/French)
                   </label>
@@ -1084,8 +1243,8 @@ export default function AsrarEveryday() {
                   type="text"
                   value={latinInput}
                   onChange={(e) => handleLatinInput(e.target.value)}
-                  placeholder="e.g., Rahim, Musa, Latif, Allah"
-                  className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none transition-all"
+                  placeholder="e.g., Rahim, Musa, Latif"
+                  className="w-full px-3 sm:px-4 py-3 sm:py-4 text-base sm:text-lg rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none transition-all"
                 />
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   Auto-transliterates to Arabic • Supports EN/FR names
@@ -1101,20 +1260,21 @@ export default function AsrarEveryday() {
               </div>
               
               <div>
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 gap-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                     Arabic Text <span className="text-red-500">*</span>
                   </label>
                   <button
                     onClick={() => setShowKeyboard(!showKeyboard)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
                       showKeyboard
                         ? 'bg-indigo-600 text-white'
                         : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
                     }`}
                   >
                     <Keyboard className="w-4 h-4" />
-                    {showKeyboard ? 'Hide Keyboard' : 'Show Keyboard'}
+                    <span className="hidden sm:inline">{showKeyboard ? 'Hide' : 'Show'} Keyboard</span>
+                    <span className="sm:hidden">{showKeyboard ? '✕' : '⌨'}</span>
                   </button>
                 </div>
                 <input
@@ -1122,16 +1282,16 @@ export default function AsrarEveryday() {
                   value={arabicInput}
                   onChange={(e) => {
                     setArabicInput(e.target.value);
-                    setLatinInput(''); // Clear latin if user types Arabic directly
+                    setLatinInput('');
                   }}
                   onKeyPress={handleKeyPress}
                   placeholder="باكا"
                   dir="rtl"
-                  className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none transition-all text-2xl font-arabic"
+                  className="w-full px-3 sm:px-4 py-3 sm:py-4 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none transition-all text-2xl sm:text-3xl font-arabic"
                   style={{ fontFamily: "'Noto Naskh Arabic', 'Amiri', serif" }}
                 />
                 {showKeyboard && (
-                  <div className="mt-3">
+                  <div className="mt-3 overflow-x-auto">
                     <ArabicKeyboard 
                       onKeyPress={handleKeyboardPress}
                       onClose={() => setShowKeyboard(false)}
@@ -1168,7 +1328,7 @@ export default function AsrarEveryday() {
               <button
                 onClick={calculate}
                 disabled={!arabicInput.trim()}
-                className="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 px-4 sm:px-6 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 text-base sm:text-lg min-h-[44px]"
               >
                 <Sparkles className="w-5 h-5" />
                 Calculate
@@ -1176,13 +1336,13 @@ export default function AsrarEveryday() {
             </div>
           </div>
           
-          {/* Results */}
+          {/* Results - Mobile Responsive */}
           {result && (
-            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               {/* Hadad Summary Panel - Comprehensive Analysis */}
-              <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
-                <h2 className="text-2xl font-bold mb-6 text-slate-900 dark:text-slate-100">
-                  Complete Ḥadad Analysis for <span className="text-indigo-600 dark:text-indigo-400 font-arabic" dir="rtl">{result.arabic}</span>
+              <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-slate-900 dark:text-slate-100">
+                  Complete Ḥadad Analysis for <span className="text-indigo-600 dark:text-indigo-400 font-arabic text-xl sm:text-2xl" dir="rtl">{result.arabic}</span>
                 </h2>
                 
                 <HadadSummaryPanel
@@ -1199,10 +1359,10 @@ export default function AsrarEveryday() {
             </div>
           )}
           
-          {/* Welcome Message */}
+          {/* Welcome Message - Mobile Responsive */}
           {!result && (
-            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8 text-center">
-              <Sparkles className="w-16 h-16 mx-auto mb-4 text-indigo-600 dark:text-indigo-400" />
+            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 text-center">
+              <Sparkles className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4 text-indigo-600 dark:text-indigo-400" />
               <h2 className="text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100">Welcome to Asrār Everyday</h2>
               <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-6">
                 Explore the rich tradition of ʿIlm al-Ḥurūf (Science of Letters) and ʿIlm al-ʿAdad (Science of Numbers) through an intuitive, educational interface. 
@@ -1243,6 +1403,7 @@ export default function AsrarEveryday() {
             )}
           </div>
           )}
+          </div>
         </main>
         
         {/* Modals */}
@@ -1253,10 +1414,25 @@ export default function AsrarEveryday() {
             <CompatibilityPanel onBack={() => setShowCompatibility(false)} />
           </div>
         )}
+
+        {/* Onboarding Tutorial */}
+        <OnboardingTutorial 
+          isOpen={showOnboarding}
+          onClose={() => setShowOnboarding(false)}
+        />
+
+        {/* Mobile Menu - Clean & Minimal */}
+        <MobileMenu
+          isOpen={showMobileMenu}
+          onClose={() => setShowMobileMenu(false)}
+          onShowTutorial={() => setShowOnboarding(true)}
+          onShowHistory={() => setShowHistory(true)}
+          historyCount={history.length}
+        />
         
-        {/* Footer */}
+        {/* Footer - Mobile Responsive */}
         <footer className="border-t border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm mt-12">
-          <div className="max-w-6xl mx-auto px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-400">
+          <div className="max-w-6xl mx-auto px-3 sm:px-4 py-6 text-center text-xs sm:text-sm text-slate-600 dark:text-slate-400">
             <p className="mb-2">Built with Next.js, TypeScript, and Tailwind CSS</p>
             <p>For educational and cultural exploration only • Always consult qualified scholars for religious guidance</p>
           </div>
