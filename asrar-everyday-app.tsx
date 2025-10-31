@@ -893,9 +893,12 @@ export default function AsrarEveryday() {
   // Mobile Menu State
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  // Initialize onboarding on mount
+  // Initialize onboarding on mount and ensure menu is closed
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      // Ensure mobile menu starts closed
+      setShowMobileMenu(false);
+      
       const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
       if (!hasSeenOnboarding) {
         // Small delay for smoother UX
@@ -904,6 +907,27 @@ export default function AsrarEveryday() {
       }
     }
   }, []);
+
+  // Handle ESC key to close mobile menu and lock body scroll
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowMobileMenu(false);
+      }
+    };
+
+    // Lock body scroll when menu is open
+    if (showMobileMenu) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleEscape);
+      return () => {
+        window.removeEventListener('keydown', handleEscape);
+        document.body.style.overflow = 'unset';
+      };
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [showMobileMenu]);
   
   // Helper function for element analysis
   const analyzeElements = (text: string) => {
@@ -1094,8 +1118,8 @@ export default function AsrarEveryday() {
 
                 {/* Hamburger Menu */}
                 <button
-                  onClick={() => setShowMobileMenu(!showMobileMenu)}
-                  className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                  onClick={() => setShowMobileMenu(true)}
+                  className="flex md:hidden p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                   aria-label="Open menu"
                 >
                   <Menu className="w-5 h-5" />
@@ -1422,13 +1446,15 @@ export default function AsrarEveryday() {
         />
 
         {/* Mobile Menu - Clean & Minimal */}
-        <MobileMenu
-          isOpen={showMobileMenu}
-          onClose={() => setShowMobileMenu(false)}
-          onShowTutorial={() => setShowOnboarding(true)}
-          onShowHistory={() => setShowHistory(true)}
-          historyCount={history.length}
-        />
+        {showMobileMenu && (
+          <MobileMenu
+            isOpen={showMobileMenu}
+            onClose={() => setShowMobileMenu(false)}
+            onShowTutorial={() => setShowOnboarding(true)}
+            onShowHistory={() => setShowHistory(true)}
+            historyCount={history.length}
+          />
+        )}
         
         {/* Footer - Mobile Responsive */}
         <footer className="border-t border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm mt-12">
