@@ -1,8 +1,18 @@
 import './globals.css'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { AbjadProvider } from '../src/contexts/AbjadContext'
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://asrar-everyday.vercel.app'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#4f46e5' },
+    { media: '(prefers-color-scheme: dark)', color: '#312e81' },
+  ],
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -26,15 +36,6 @@ export const metadata: Metadata = {
     'jafr',
     'letter science',
     'number science',
-  ],
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#4f46e5' },
-    { media: '(prefers-color-scheme: dark)', color: '#312e81' },
   ],
   robots: {
     index: true,
