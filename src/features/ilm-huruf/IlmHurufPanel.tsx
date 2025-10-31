@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Sun, Moon, Star, Heart, BookOpen, Lightbulb, 
   Calendar, Clock, Compass, Users, Sparkles,
   TrendingUp, Target, MessageCircle, Home, Flame, Keyboard, ExternalLink,
-  Plus, Info, X, ArrowUp, Circle, Minus, Zap
+  Plus, Info, X, ArrowUp, Circle, Minus, Zap, CheckCircle2
 } from 'lucide-react';
 import { BalanceMeter } from '../../components/BalanceMeter';
 import type { ElementType } from '../../components/BalanceMeter';
@@ -144,10 +144,33 @@ export function IlmHurufPanel() {
   const [showMotherNameSection, setShowMotherNameSection] = useState(false);
   const [showMotherKeyboard, setShowMotherKeyboard] = useState(false);
 
+  // Refs for auto-scroll and animations
+  const formSectionRef = useRef<HTMLDivElement>(null);
+  const [highlightInput, setHighlightInput] = useState(false);
+
   // Clear results when mode changes to prevent showing stale data
   useEffect(() => {
     setResults(null);
   }, [mode]);
+
+  // Handle mode change with auto-scroll and highlight animation
+  const handleModeChange = (newMode: 'destiny' | 'compatibility' | 'timing' | 'life-path' | 'weekly') => {
+    setMode(newMode);
+    setHighlightInput(true);
+    
+    // Trigger smooth scroll to input section after brief delay
+    setTimeout(() => {
+      formSectionRef.current?.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start'
+      });
+    }, 100);
+    
+    // Remove highlight animation after it completes
+    setTimeout(() => {
+      setHighlightInput(false);
+    }, 2000);
+  };
 
   const handleLatinInput = (value: string, isFirstName: boolean = true) => {
     if (isFirstName) {
@@ -314,90 +337,167 @@ export function IlmHurufPanel() {
 
   return (
     <div className="space-y-6">
-      {/* Mode Selection */}
-      <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6">
-        <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-purple-500" />
+      {/* Mode Selection Header */}
+      <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-6 md:p-8 shadow-md">
+        <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-slate-100 flex items-center gap-3">
+          <Sparkles className="w-7 h-7 text-purple-500" />
           ʿIlm al-Ḥurūf - Practical Life Guidance
         </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-          Reflective guidance to plan your week
+        <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 mb-6">
+          Choose a guidance mode and discover insights tailored to your inquiry
         </p>
         
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        {/* Mode Selection Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {/* Weekly Mode */}
           <button
-            onClick={() => setMode('weekly')}
-            className={`p-4 rounded-lg border-2 transition-all ${
+            onClick={() => handleModeChange('weekly')}
+            className={`relative group p-4 md:p-5 rounded-xl border-2 transition-all duration-300 transform ${
               mode === 'weekly'
-                ? 'border-green-500 bg-green-50 dark:bg-green-900/30 text-black dark:text-white'
-                : 'border-slate-200 dark:border-slate-700 text-black dark:text-white hover:border-green-300'
+                ? 'border-green-500 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/40 dark:to-green-800/40 scale-105 shadow-xl ring-2 ring-green-500 ring-offset-2 dark:ring-offset-slate-900'
+                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-green-400 hover:shadow-lg hover:scale-102 hover:bg-green-50/50 dark:hover:bg-green-900/10'
             }`}
+            aria-pressed={mode === 'weekly'}
           >
-            <Calendar className="w-5 h-5 mx-auto mb-2 text-green-500" />
-            <div className="text-sm font-medium">Week at a Glance</div>
+            <div className="relative">
+              <Calendar className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'weekly' ? 'text-green-600' : 'text-green-500 group-hover:text-green-600'}`} />
+              <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'weekly' ? 'animate-scale-in' : ''}`}>
+                Week at a Glance
+              </div>
+              {mode === 'weekly' && (
+                <div className="absolute top-0 right-0 animate-scale-in">
+                  <CheckCircle2 className="w-4 h-4 text-green-600" />
+                </div>
+              )}
+            </div>
           </button>
           
+          {/* Destiny Mode */}
           <button
-            onClick={() => setMode('destiny')}
-            className={`p-4 rounded-lg border-2 transition-all ${
+            onClick={() => handleModeChange('destiny')}
+            className={`relative group p-4 md:p-5 rounded-xl border-2 transition-all duration-300 transform ${
               mode === 'destiny'
-                ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30 text-black dark:text-white'
-                : 'border-slate-200 dark:border-slate-700 text-black dark:text-white hover:border-purple-300'
+                ? 'border-purple-500 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/40 dark:to-purple-800/40 scale-105 shadow-xl ring-2 ring-purple-500 ring-offset-2 dark:ring-offset-slate-900'
+                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-purple-400 hover:shadow-lg hover:scale-102 hover:bg-purple-50/50 dark:hover:bg-purple-900/10'
             }`}
+            aria-pressed={mode === 'destiny'}
           >
-            <Target className="w-5 h-5 mx-auto mb-2 text-purple-500" />
-            <div className="text-sm font-medium">Name Destiny</div>
+            <div className="relative">
+              <Target className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'destiny' ? 'text-purple-600' : 'text-purple-500 group-hover:text-purple-600'}`} />
+              <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'destiny' ? 'animate-scale-in' : ''}`}>
+                Name Destiny
+              </div>
+              {mode === 'destiny' && (
+                <div className="absolute top-0 right-0 animate-scale-in">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600" />
+                </div>
+              )}
+            </div>
           </button>
           
+          {/* Compatibility Mode */}
           <button
-            onClick={() => setMode('compatibility')}
-            className={`p-4 rounded-lg border-2 transition-all ${
+            onClick={() => handleModeChange('compatibility')}
+            className={`relative group p-4 md:p-5 rounded-xl border-2 transition-all duration-300 transform ${
               mode === 'compatibility'
-                ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-black dark:text-white'
-                : 'border-slate-200 dark:border-slate-700 text-black dark:text-white hover:border-pink-300'
+                ? 'border-pink-500 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/40 dark:to-pink-800/40 scale-105 shadow-xl ring-2 ring-pink-500 ring-offset-2 dark:ring-offset-slate-900'
+                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-pink-400 hover:shadow-lg hover:scale-102 hover:bg-pink-50/50 dark:hover:bg-pink-900/10'
             }`}
+            aria-pressed={mode === 'compatibility'}
           >
-            <Users className="w-5 h-5 mx-auto mb-2 text-pink-500" />
-            <div className="text-sm font-medium">Compatibility</div>
+            <div className="relative">
+              <Users className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'compatibility' ? 'text-pink-600' : 'text-pink-500 group-hover:text-pink-600'}`} />
+              <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'compatibility' ? 'animate-scale-in' : ''}`}>
+                Compatibility
+              </div>
+              {mode === 'compatibility' && (
+                <div className="absolute top-0 right-0 animate-scale-in">
+                  <CheckCircle2 className="w-4 h-4 text-pink-600" />
+                </div>
+              )}
+            </div>
           </button>
           
+          {/* Life Path Mode */}
           <button
-            onClick={() => setMode('life-path')}
-            className={`p-4 rounded-lg border-2 transition-all ${
+            onClick={() => handleModeChange('life-path')}
+            className={`relative group p-4 md:p-5 rounded-xl border-2 transition-all duration-300 transform ${
               mode === 'life-path'
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-black dark:text-white'
-                : 'border-slate-200 dark:border-slate-700 text-black dark:text-white hover:border-blue-300'
+                ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/40 dark:to-blue-800/40 scale-105 shadow-xl ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-slate-900'
+                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-blue-400 hover:shadow-lg hover:scale-102 hover:bg-blue-50/50 dark:hover:bg-blue-900/10'
             }`}
+            aria-pressed={mode === 'life-path'}
           >
-            <Compass className="w-5 h-5 mx-auto mb-2 text-blue-500" />
-            <div className="text-sm font-medium">Life Path</div>
+            <div className="relative">
+              <Compass className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'life-path' ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
+              <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'life-path' ? 'animate-scale-in' : ''}`}>
+                Life Path
+              </div>
+              {mode === 'life-path' && (
+                <div className="absolute top-0 right-0 animate-scale-in">
+                  <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                </div>
+              )}
+            </div>
           </button>
           
+          {/* Divine Timing Mode */}
           <button
-            onClick={() => setMode('timing')}
-            className={`p-4 rounded-lg border-2 transition-all ${
+            onClick={() => handleModeChange('timing')}
+            className={`relative group p-4 md:p-5 rounded-xl border-2 transition-all duration-300 transform ${
               mode === 'timing'
-                ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/30 text-black dark:text-white'
-                : 'border-slate-200 dark:border-slate-700 text-black dark:text-white hover:border-amber-300'
+                ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/40 dark:to-amber-800/40 scale-105 shadow-xl ring-2 ring-amber-500 ring-offset-2 dark:ring-offset-slate-900'
+                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-amber-400 hover:shadow-lg hover:scale-102 hover:bg-amber-50/50 dark:hover:bg-amber-900/10'
             }`}
+            aria-pressed={mode === 'timing'}
           >
-            <Clock className="w-5 h-5 mx-auto mb-2 text-amber-500" />
-            <div className="text-sm font-medium">Divine Timing</div>
+            <div className="relative">
+              <Clock className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'timing' ? 'text-amber-600' : 'text-amber-500 group-hover:text-amber-600'}`} />
+              <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'timing' ? 'animate-scale-in' : ''}`}>
+                Divine Timing
+              </div>
+              {mode === 'timing' && (
+                <div className="absolute top-0 right-0 animate-scale-in">
+                  <CheckCircle2 className="w-4 h-4 text-amber-600" />
+                </div>
+              )}
+            </div>
           </button>
         </div>
       </div>
 
-      {/* Input Section */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
-        <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">
-          {mode === 'weekly' && 'Generate Your Week'}
-          {mode === 'destiny' && 'Enter Your Name'}
-          {mode === 'compatibility' && 'Enter Two Names'}
-          {mode === 'life-path' && 'Enter Your Birth Date'}
-          {mode === 'timing' && 'Current Planetary Hour'}
-        </h3>
+      {/* Input Section with Highlight Animation */}
+      <div 
+        ref={formSectionRef}
+        className={`bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 md:p-8 transition-all duration-300 ${
+          highlightInput ? 'animate-soft-highlight' : ''
+        }`}
+      >
+        <div className="mb-6 pb-6 border-b border-slate-200 dark:border-slate-700">
+          <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <span className={`inline-block w-2 h-2 rounded-full transition-colors ${
+              mode === 'weekly' ? 'bg-green-500' : 
+              mode === 'destiny' ? 'bg-purple-500' : 
+              mode === 'compatibility' ? 'bg-pink-500' : 
+              mode === 'life-path' ? 'bg-blue-500' : 
+              'bg-amber-500'
+            }`}></span>
+            {mode === 'weekly' && 'Generate Your Weekly Guidance'}
+            {mode === 'destiny' && 'Discover Your Name Destiny'}
+            {mode === 'compatibility' && 'Analyze Two Souls'}
+            {mode === 'life-path' && 'Calculate Your Life Path'}
+            {mode === 'timing' && 'Current Planetary Influence'}
+          </h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            {mode === 'weekly' && 'Reflective guidance mapped to planetary influences'}
+            {mode === 'destiny' && 'Discover the spiritual essence encoded in your name'}
+            {mode === 'compatibility' && 'Explore the harmony and potential between two individuals'}
+            {mode === 'life-path' && 'Understand the numerological significance of your birth path'}
+            {mode === 'timing' && 'Align your actions with celestial timings'}
+          </p>
+        </div>
         
-        <div className="space-y-4">
+        <div className="space-y-4 animate-slide-up">
           {(mode === 'destiny' || mode === 'compatibility' || mode === 'weekly' || mode === 'life-path') && (
             <div className="space-y-3">
               {/* Latin Input */}
