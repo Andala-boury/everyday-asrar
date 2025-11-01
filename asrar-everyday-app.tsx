@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { Calculator, Book, TrendingUp, Moon, Sun, Info, Sparkles, Flame, Droplet, Wind, Mountain, History, Star, GitCompare, Calendar, Trash2, X, Copy, CheckCircle, AlertTriangle, Zap, Compass, Keyboard, Heart, ChevronUp, ChevronDown, HelpCircle, Menu } from 'lucide-react';
+import { Calculator, Book, TrendingUp, Moon, Sun, Info, Sparkles, Flame, Droplet, Wind, Mountain, History, Star, GitCompare, Calendar, Trash2, X, Copy, CheckCircle, AlertTriangle, Zap, Compass, Keyboard, Heart, ChevronUp, ChevronDown, HelpCircle, Menu, Lightbulb, Waves } from 'lucide-react';
 import { transliterateLatinToArabic } from './src/lib/text-normalize';
 import { HadadSummaryPanel } from './src/components/hadad-summary';
 import { IlmHurufPanel } from './src/features/ilm-huruf';
@@ -1360,10 +1360,277 @@ export default function AsrarEveryday() {
             </div>
           </div>
           
-          {/* Results - Mobile Responsive */}
+          {/* Results - Mobile Responsive with Educational Interface */}
           {result && (
             <div className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              {/* Hadad Summary Panel - Comprehensive Analysis */}
+              
+              {/* 1. Educational Context Banner */}
+              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-xl p-4 sm:p-6 border border-indigo-200 dark:border-indigo-800">
+                <div className="flex items-start gap-3 mb-4">
+                  <Lightbulb className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-indigo-900 dark:text-indigo-100 mb-1">What You're About to Learn</h3>
+                    <p className="text-sm text-indigo-800 dark:text-indigo-200">Discover the numerological significance of your name through the traditional Islamic sciences</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="bg-white dark:bg-slate-800/50 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700">
+                    <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">🔢 Numerical Values</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">How each Arabic letter converts to sacred numbers</p>
+                  </div>
+                  <div className="bg-white dark:bg-slate-800/50 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700">
+                    <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">🌊 Elemental Forces</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">The four classical elements and your spiritual composition</p>
+                  </div>
+                  <div className="bg-white dark:bg-slate-800/50 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700">
+                    <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">✨ Hidden Patterns</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">Sacred connections and divine resonances in your numbers</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. Enhanced Key Metrics Cards with Tooltips */}
+              <div className="space-y-3">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                  Key Metrics
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Kabīr Card */}
+                  <div className="group relative bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/40 rounded-xl p-4 border border-blue-200 dark:border-blue-800 hover:shadow-lg transition-all duration-300 cursor-help">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide">Kabīr (Large)</span>
+                      <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="text-3xl font-bold text-blue-900 dark:text-blue-100 mb-1">{result.kabir}</div>
+                    <p className="text-xs text-blue-700 dark:text-blue-300">Total of all letter values</p>
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-10 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs rounded-lg px-3 py-2 whitespace-nowrap font-medium">
+                      Sum of Abjad values before reduction
+                    </div>
+                  </div>
+
+                  {/* Ṣaghīr Card */}
+                  <div className="group relative bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-900/40 rounded-xl p-4 border border-emerald-200 dark:border-emerald-800 hover:shadow-lg transition-all duration-300 cursor-help">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide">Ṣaghīr (Small)</span>
+                      <Info className="w-4 h-4 text-emerald-600 dark:text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="text-3xl font-bold text-emerald-900 dark:text-emerald-100 mb-1">{result.saghir}</div>
+                    <p className="text-xs text-emerald-700 dark:text-emerald-300">Digital root (1-9)</p>
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-10 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs rounded-lg px-3 py-2 whitespace-nowrap font-medium">
+                      Essence number - your core spiritual vibration
+                    </div>
+                  </div>
+
+                  {/* Ḥadath Card */}
+                  <div className="group relative bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-900/40 rounded-xl p-4 border border-amber-200 dark:border-amber-800 hover:shadow-lg transition-all duration-300 cursor-help">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="text-xs font-semibold text-amber-700 dark:text-amber-300 uppercase tracking-wide">Ḥadath (Cycle)</span>
+                      <Info className="w-4 h-4 text-amber-600 dark:text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="text-3xl font-bold text-amber-900 dark:text-amber-100 mb-1">{result.hadath}</div>
+                    <p className="text-xs text-amber-700 dark:text-amber-300">Remainder mod 4</p>
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-10 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs rounded-lg px-3 py-2 whitespace-nowrap font-medium">
+                      Cyclical pattern within four seasons of being
+                    </div>
+                  </div>
+
+                  {/* Rūḥ Ḥadad Card */}
+                  <div className="group relative bg-gradient-to-br from-rose-50 to-rose-100 dark:from-rose-900/20 dark:to-rose-900/40 rounded-xl p-4 border border-rose-200 dark:border-rose-800 hover:shadow-lg transition-all duration-300 cursor-help">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="text-xs font-semibold text-rose-700 dark:text-rose-300 uppercase tracking-wide">Rūḥ Ḥadad</span>
+                      <Info className="w-4 h-4 text-rose-600 dark:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="text-2xl font-bold text-rose-900 dark:text-rose-100 mb-1">{ELEMENT_INFO[result.hadathElement as ElementType].label}</div>
+                    <p className="text-xs text-rose-700 dark:text-rose-300">Spirit of the cycle</p>
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-10 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs rounded-lg px-3 py-2 whitespace-nowrap font-medium">
+                      Elemental nature of your cycle
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. Visual Calculation Breakdown */}
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 mb-4">
+                  <Calculator className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                  Step-by-Step Calculation
+                </h3>
+                <div className="space-y-4">
+                  {/* Step 1: Letter Values */}
+                  <div className="flex gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-sm flex-shrink-0">1</div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Letter Values</p>
+                      <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 text-sm font-arabic" dir="rtl">
+                        <div className="flex flex-wrap gap-2">
+                          {result.audit.steps.slice(0, 10).map((step: any, i: number) => (
+                            <span key={i} className={`px-2 py-1 rounded ${ELEMENT_INFO[step.element as ElementType]?.bg || 'bg-slate-200 dark:bg-slate-700'}`}>
+                              {step.letter}: {step.value}
+                            </span>
+                          ))}
+                          {result.audit.steps.length > 10 && <span className="text-slate-500">+{result.audit.steps.length - 10} more</span>}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Step 2: Sum */}
+                  <div className="flex gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-sm flex-shrink-0">2</div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Sum All Values</p>
+                      <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 text-sm">
+                        <p className="text-slate-600 dark:text-slate-400">Total Abjad Value: <span className="font-bold text-slate-900 dark:text-slate-100">{result.kabir}</span></p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Step 3: Digital Root */}
+                  <div className="flex gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-sm flex-shrink-0">3</div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Calculate Digital Root</p>
+                      <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 text-sm">
+                        <p className="text-slate-600 dark:text-slate-400">Reduce to single digit: <span className="font-bold text-slate-900 dark:text-slate-100">{result.saghir}</span></p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Step 4: Element Discovery */}
+                  <div className="flex gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-sm flex-shrink-0">4</div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Element Discovery</p>
+                      <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 text-sm">
+                        <p className="text-slate-600 dark:text-slate-400">Dominant element: <span className={`font-bold ${ELEMENT_INFO[result.dominant as ElementType].color}`}>{result.dominant}</span></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 4. Element Distribution */}
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 mb-4">
+                  <Waves className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                  Elemental Composition
+                </h3>
+                <div className="space-y-4">
+                  {Object.entries(result.counts).map(([element, count]) => {
+                    const total = Object.values(result.counts as Record<string, number>).reduce((a, b) => a + b, 0);
+                    const percentage = total > 0 ? Math.round((count as number / total) * 100) : 0;
+                    const info = ELEMENT_INFO[element as ElementType];
+                    const Icon = info.icon;
+                    
+                    return (
+                      <div key={element}>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <Icon className={`w-4 h-4 ${info.color}`} />
+                            <span className="font-medium text-slate-900 dark:text-slate-100">{element}</span>
+                          </div>
+                          <span className="text-sm font-semibold text-slate-600 dark:text-slate-400">{count as number} letters ({percentage}%)</span>
+                        </div>
+                        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
+                          <div
+                            className={`h-full ${info.bg} transition-all duration-500`}
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 5. Sacred Number Resonance */}
+              {result.resonance && (
+                <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-4 sm:p-6 border border-purple-200 dark:border-purple-800">
+                  <h3 className="text-lg font-bold text-purple-900 dark:text-purple-100 flex items-center gap-2 mb-4">
+                    <Sparkles className="w-5 h-5" />
+                    Sacred Number Resonance
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {/* Divisibility by 7 */}
+                      <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
+                        <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">🔢 Divisible by 7</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{result.kabir % 7 === 0 ? '✓ Yes - Divine perfection' : `Nearest: ${Math.round(result.kabir / 7) * 7}`}</p>
+                      </div>
+                      {/* Divisibility by 19 */}
+                      <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
+                        <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">✨ Divisible by 19</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{result.kabir % 19 === 0 ? '✓ Yes - Quranic harmony' : `Nearest: ${Math.round(result.kabir / 19) * 19}`}</p>
+                      </div>
+                      {/* Divisibility by 99 */}
+                      <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
+                        <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">🌟 Divisible by 99</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{result.kabir % 99 === 0 ? '✓ Yes - 99 Divine Names' : `Nearest: ${Math.round(result.kabir / 99) * 99}`}</p>
+                      </div>
+                      {/* Digital Root Match */}
+                      <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
+                        <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">🎯 Essence Pattern</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">Core number: {result.saghir}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 6. Personal Interpretation Summary */}
+              <div className="bg-gradient-to-br from-indigo-600 to-purple-600 dark:from-indigo-700 dark:to-purple-700 rounded-xl p-4 sm:p-6 border border-indigo-500 dark:border-indigo-600 text-white overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"></div>
+                
+                <div className="relative z-10">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Heart className="w-5 h-5" />
+                    Your Numerical Essence
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    {/* Core Number Meaning */}
+                    <div>
+                      <p className="text-sm opacity-90 mb-2">Core Number Meaning:</p>
+                      <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+                        <p className="font-bold text-lg mb-2">The Number {result.saghir}</p>
+                        <p className="text-sm opacity-90">
+                          {result.saghir === 1 && "Leadership, independence, pioneering spirit"}
+                          {result.saghir === 2 && "Partnership, balance, cooperation and harmony"}
+                          {result.saghir === 3 && "Creativity, expression, joy and communication"}
+                          {result.saghir === 4 && "Stability, foundation, security and structure"}
+                          {result.saghir === 5 && "Freedom, adventure, change and adaptability"}
+                          {result.saghir === 6 && "Service, responsibility, nurturing and love"}
+                          {result.saghir === 7 && "Wisdom, spirituality, introspection and mystery"}
+                          {result.saghir === 8 && "Power, abundance, material mastery and success"}
+                          {result.saghir === 9 && "Completion, universal love, wisdom and compassion"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Element Meaning */}
+                    <div>
+                      <p className="text-sm opacity-90 mb-2">Dominant Element:</p>
+                      <div className={`${ELEMENT_INFO[result.dominant as ElementType].bg} text-slate-900 rounded-lg p-4`}>
+                        <p className="font-bold text-lg mb-2">{result.dominant}</p>
+                        <p className="text-sm opacity-90">
+                          {result.dominant === 'Fire' && "Passionate, energetic, transformative, action-oriented"}
+                          {result.dominant === 'Water' && "Intuitive, emotional, reflective, flowing and adaptive"}
+                          {result.dominant === 'Air' && "Communicative, intellectual, social, quick-thinking"}
+                          {result.dominant === 'Earth' && "Grounded, practical, reliable, solid and steady"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm opacity-90 italic border-t border-white/20 pt-4">
+                    💫 These numbers and elements offer guidance for self-reflection. Remember that you are more than numbers—your choices, values, and character shape your destiny.
+                  </p>
+                </div>
+              </div>
+
+              {/* Complete Hadad Analysis Panel */}
               <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-slate-900 dark:text-slate-100">
                   Complete Ḥadad Analysis for <span className="text-indigo-600 dark:text-indigo-400 font-arabic text-xl sm:text-2xl" dir="rtl">{result.arabic}</span>
