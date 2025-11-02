@@ -13,6 +13,7 @@ import type { AbjadAudit, AuditStep, ElementType, SacredResonance } from './src/
 import { useAbjad } from './src/contexts/AbjadContext';
 import { AbjadSystemSelector } from './src/components/AbjadSystemSelector';
 import { ArabicKeyboard } from './src/components/ArabicKeyboard';
+import GeomancyFeature from './src/features/geomancy';
 
 // ============================================================================
 // DOMAIN RULES & CORE DATA
@@ -736,7 +737,7 @@ export default function AsrarEveryday() {
   const { abjad } = useAbjad(); // Get the current Abjad system
   const [darkMode, setDarkMode] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(true);
-  const [viewMode, setViewMode] = useState<'calculator' | 'guidance'>('calculator');
+  const [viewMode, setViewMode] = useState<'calculator' | 'guidance' | 'advanced'>('calculator');
   const [arabicInput, setArabicInput] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [latinInput, setLatinInput] = useState('');
@@ -749,8 +750,8 @@ export default function AsrarEveryday() {
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [showCompatibility, setShowCompatibility] = useState(false);
   
-  // Daily Reflection State - initialize to false, set from localStorage in useEffect
-  const [isDailyReflectionCollapsed, setIsDailyReflectionCollapsed] = useState(false);
+  // Daily Reflection State - initialize to true (collapsed by default), set from localStorage in useEffect
+  const [isDailyReflectionCollapsed, setIsDailyReflectionCollapsed] = useState(true);
   
   // Load daily reflection preference from localStorage
   useEffect(() => {
@@ -1125,11 +1126,28 @@ export default function AsrarEveryday() {
                 <span className="hidden sm:inline">Life Guidance</span>
                 <span className="sm:hidden">Guidance</span>
               </button>
+              <button
+                onClick={() => setViewMode('advanced')}
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all whitespace-nowrap text-sm sm:text-base ${
+                  viewMode === 'advanced'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
+                }`}
+              >
+                <Compass className="w-4 sm:w-5 h-4 sm:h-5 inline mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Advanced</span>
+                <span className="sm:hidden">Advanced</span>
+              </button>
             </div>
           </div>
           
           {viewMode === 'guidance' ? (
             <IlmHurufPanel />
+          ) : viewMode === 'advanced' ? (
+            <GeomancyFeature 
+              isPremium={true}
+              language="en"
+            />
           ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Main Content Area - Mobile Full Width, Desktop 2/3 */}
