@@ -19,7 +19,8 @@ export const nameTransliterations: NameTransliteration[] = [
   },
   {
     arabic: "سيك",
-    latin: "saikou"
+    latin: "saikou",
+    alternatives: ["sheikh, sheikhou, sheikha, sheik,cheikh"]
   },
   {
     arabic: "كم",
