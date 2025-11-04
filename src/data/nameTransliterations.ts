@@ -11,6 +11,16 @@ export interface NameTransliteration {
   alternatives?: string[];
 }
 
+export interface NameMatch {
+  arabic: string;
+  /** The specific variation that matched the user's input */
+  matchedVariation: string;
+  /** Whether this was an exact match */
+  isExactMatch: boolean;
+  /** Whether this starts with the query */
+  isStartsWith: boolean;
+}
+
 export const nameTransliterations: NameTransliteration[] = [
   {
     arabic: "لمي",
@@ -378,44 +388,68 @@ export const nameTransliterations: NameTransliteration[] = [
 
 /**
  * Search for Arabic name matches based on Latin input
- * Case-insensitive fuzzy matching
+ * Returns only the specific variation that matches the user's input
  */
-export function searchNameTransliterations(query: string): NameTransliteration[] {
+export function searchNameTransliterations(query: string): NameMatch[] {
   if (!query || query.trim().length === 0) return [];
   
   const normalizedQuery = query.toLowerCase().trim();
+  const matches: NameMatch[] = [];
   
-  // Find exact and partial matches
-  const matches = nameTransliterations.filter(item => {
-    const latinMatch = item.latin.toLowerCase().includes(normalizedQuery);
-    const altMatch = item.alternatives?.some(alt => alt.toLowerCase().includes(normalizedQuery));
-    return latinMatch || altMatch;
+  nameTransliterations.forEach(item => {
+    // Check primary latin name
+    const primaryLatin = item.latin.toLowerCase();
+    if (primaryLatin.includes(normalizedQuery)) {
+      matches.push({
+        arabic: item.arabic,
+        matchedVariation: item.latin,
+        isExactMatch: primaryLatin === normalizedQuery,
+        isStartsWith: primaryLatin.startsWith(normalizedQuery)
+      });
+    }
+    
+    // Check alternatives
+    if (item.alternatives) {
+      item.alternatives.forEach(alt => {
+        const altLower = alt.toLowerCase();
+        if (altLower.includes(normalizedQuery)) {
+          matches.push({
+            arabic: item.arabic,
+            matchedVariation: alt,
+            isExactMatch: altLower === normalizedQuery,
+            isStartsWith: altLower.startsWith(normalizedQuery)
+          });
+        }
+      });
+    }
   });
   
   // Sort by relevance: exact matches first, then starts-with, then contains
   return matches.sort((a, b) => {
-    const aLatin = a.latin.toLowerCase();
-    const bLatin = b.latin.toLowerCase();
+    // Exact match priority
+    if (a.isExactMatch && !b.isExactMatch) return -1;
+    if (!a.isExactMatch && b.isExactMatch) return 1;
     
-    // Exact match
-    if (aLatin === normalizedQuery) return -1;
-    if (bLatin === normalizedQuery) return 1;
-    
-    // Starts with
-    const aStarts = aLatin.startsWith(normalizedQuery);
-    const bStarts = bLatin.startsWith(normalizedQuery);
-    if (aStarts && !bStarts) return -1;
-    if (!aStarts && bStarts) return 1;
+    // Starts with priority
+    if (a.isStartsWith && !b.isStartsWith) return -1;
+    if (!a.isStartsWith && b.isStartsWith) return 1;
     
     // Alphabetical for remaining
-    return aLatin.localeCompare(bLatin);
+    return a.matchedVariation.localeCompare(b.matchedVariation);
   });
 }
 
 /**
- * Get display label for a name with alternatives
+ * Get display label for a name match
+ * Shows only the matched variation, not all alternatives
  */
-export function getNameDisplayLabel(item: NameTransliteration): string {
+export function getNameDisplayLabel(item: NameMatch | NameTransliteration): string {
+  // If it's a NameMatch, show only the matched variation
+  if ('matchedVariation' in item) {
+    return item.matchedVariation;
+  }
+  
+  // Legacy support for NameTransliteration (should not be used in UI)
   if (!item.alternatives || item.alternatives.length === 0) {
     return item.latin;
   }

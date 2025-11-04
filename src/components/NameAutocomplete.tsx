@@ -6,7 +6,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { 
   searchNameTransliterations, 
   getNameDisplayLabel, 
-  type NameTransliteration 
+  type NameMatch 
 } from '../data/nameTransliterations';
 
 interface NameAutocompleteProps {
@@ -34,7 +34,7 @@ export default function NameAutocomplete({
 }: NameAutocompleteProps) {
   const { t } = useLanguage();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [matches, setMatches] = useState<NameTransliteration[]>([]);
+  const [matches, setMatches] = useState<NameMatch[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -72,9 +72,9 @@ export default function NameAutocomplete({
     onChange(e.target.value);
   };
 
-  const handleSelectName = (item: NameTransliteration) => {
-    onChange(item.latin);
-    onArabicSelect(item.arabic, item.latin);
+  const handleSelectName = (item: NameMatch) => {
+    onChange(item.matchedVariation);
+    onArabicSelect(item.arabic, item.matchedVariation);
     setShowDropdown(false);
     inputRef.current?.blur();
   };
