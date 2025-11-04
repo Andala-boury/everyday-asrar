@@ -620,14 +620,17 @@ export function IlmHurufPanel() {
                     </button>
                   </div>
                   
-                  {/* Mother's Latin Input */}
+                  {/* Mother's Latin Input with Autocomplete */}
                   <div>
-                    <input
-                      type="text"
+                    <NameAutocomplete
                       value={motherLatinInput}
-                      onChange={(e) => handleMotherLatinInput(e.target.value)}
+                      onChange={handleMotherLatinInput}
+                      onArabicSelect={(arabic, latin) => {
+                        setMotherName(arabic);
+                        setMotherLatinInput(latin);
+                      }}
                       placeholder={t.ilmHuruf.motherNamePlaceholderEn}
-                      className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                      showHelper={false}
                     />
                     <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-medium">
                       💡 {t.nameDestiny.inputs.motherHint}
