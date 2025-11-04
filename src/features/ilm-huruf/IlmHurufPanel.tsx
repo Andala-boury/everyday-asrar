@@ -7,11 +7,13 @@ import {
   TrendingUp, Target, MessageCircle, Home, Flame, Keyboard, ExternalLink,
   Plus, Info, X, ArrowUp, Circle, Minus, Zap, CheckCircle2
 } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { BalanceMeter } from '../../components/BalanceMeter';
 import type { ElementType } from '../../components/BalanceMeter';
 import { HarmonyTooltip, type HarmonyBreakdown } from '../../components/HarmonyTooltip';
 import { ActNowButtons } from '../../components/ActNowButtons';
 import { DailyColorGuidanceCard } from '../../components/DailyColorGuidanceCard';
+import NameAutocomplete from '../../components/NameAutocomplete';
 import {
   analyzeNameDestiny,
   analyzeCompatibility,
@@ -53,7 +55,13 @@ import {
   type ActionButton,
   type AlignmentQuality,
   type ElementType2,
-  type DailyColorGuidance
+  type DailyColorGuidance,
+  // New imports for Name Destiny module
+  buildDestiny,
+  type NameDestinyResult,
+  BURUJ,
+  ELEMENTS,
+  PLANETARY_HOURS,
 } from './core';
 import { getQuranResonanceMessage } from './quranResonance';
 import { fetchQuranVerse, type VerseText } from './quranApi';
@@ -124,6 +132,7 @@ const PLANET_ICONS_EMOJI: Record<Planet, string> = {
 };
 
 export function IlmHurufPanel() {
+  const { t } = useLanguage();
   const { abjad } = useAbjad(); // Get the current Abjad system
   const [mode, setMode] = useState<'destiny' | 'compatibility' | 'timing' | 'life-path' | 'weekly'>('weekly');
   const [name, setName] = useState('');
@@ -272,6 +281,15 @@ export function IlmHurufPanel() {
           }
         }
         
+        // ENHANCEMENT: Add complete Name Destiny calculation with mother's name
+        try {
+          const nameDestiny = buildDestiny(name, motherName || undefined, abjad);
+          result.nameDestiny = nameDestiny;
+        } catch (error) {
+          console.error('Error building name destiny:', error);
+          // Continue without name destiny enhancement if it fails
+        }
+        
         setResults(result);
       } else if (mode === 'compatibility' && name && name2) {
         // Calculate Abjad totals
@@ -330,21 +348,21 @@ export function IlmHurufPanel() {
       console.error('Analysis error:', error);
       setResults({
         error: true,
-        message: error instanceof Error ? error.message : 'Unable to analyze. Please check your input.'
+        message: error instanceof Error ? error.message : (t?.errors?.analysisError || 'Unable to analyze. Please check your input.')
       });
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-full overflow-x-hidden">
       {/* Mode Selection Header */}
       <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-6 md:p-8 shadow-md">
         <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-slate-100 flex items-center gap-3">
           <Sparkles className="w-7 h-7 text-purple-500" />
-          ʿIlm al-Ḥurūf - Practical Life Guidance
+          {t.ilmHuruf.title}
         </h2>
         <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 mb-6">
-          Choose a guidance mode and discover insights tailored to your inquiry
+          {t.ilmHuruf.subtitle}
         </p>
         
         {/* Mode Selection Grid */}
@@ -362,7 +380,7 @@ export function IlmHurufPanel() {
             <div className="relative">
               <Calendar className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'weekly' ? 'text-green-600' : 'text-green-500 group-hover:text-green-600'}`} />
               <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'weekly' ? 'animate-scale-in' : ''}`}>
-                Week at a Glance
+                {t.ilmHuruf.weeklyGuidance}
               </div>
               {mode === 'weekly' && (
                 <div className="absolute top-0 right-0 animate-scale-in">
@@ -385,7 +403,7 @@ export function IlmHurufPanel() {
             <div className="relative">
               <Target className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'destiny' ? 'text-purple-600' : 'text-purple-500 group-hover:text-purple-600'}`} />
               <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'destiny' ? 'animate-scale-in' : ''}`}>
-                Name Destiny
+                {t.ilmHuruf.nameDestiny}
               </div>
               {mode === 'destiny' && (
                 <div className="absolute top-0 right-0 animate-scale-in">
@@ -408,7 +426,7 @@ export function IlmHurufPanel() {
             <div className="relative">
               <Users className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'compatibility' ? 'text-pink-600' : 'text-pink-500 group-hover:text-pink-600'}`} />
               <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'compatibility' ? 'animate-scale-in' : ''}`}>
-                Compatibility
+                {t.ilmHuruf.compatibility}
               </div>
               {mode === 'compatibility' && (
                 <div className="absolute top-0 right-0 animate-scale-in">
@@ -431,7 +449,7 @@ export function IlmHurufPanel() {
             <div className="relative">
               <Compass className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'life-path' ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
               <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'life-path' ? 'animate-scale-in' : ''}`}>
-                Life Path
+                {t.ilmHuruf.lifePath}
               </div>
               {mode === 'life-path' && (
                 <div className="absolute top-0 right-0 animate-scale-in">
@@ -454,7 +472,7 @@ export function IlmHurufPanel() {
             <div className="relative">
               <Clock className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'timing' ? 'text-amber-600' : 'text-amber-500 group-hover:text-amber-600'}`} />
               <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'timing' ? 'animate-scale-in' : ''}`}>
-                Divine Timing
+                {t.ilmHuruf.divineTiming}
               </div>
               {mode === 'timing' && (
                 <div className="absolute top-0 right-0 animate-scale-in">
@@ -482,43 +500,43 @@ export function IlmHurufPanel() {
               mode === 'life-path' ? 'bg-blue-500' : 
               'bg-amber-500'
             }`}></span>
-            {mode === 'weekly' && 'Generate Your Weekly Guidance'}
-            {mode === 'destiny' && 'Discover Your Name Destiny'}
-            {mode === 'compatibility' && 'Analyze Two Souls'}
-            {mode === 'life-path' && 'Calculate Your Life Path'}
-            {mode === 'timing' && 'Current Planetary Influence'}
+            {mode === 'weekly' && t.ilmHuruf.generateWeeklyGuidance}
+            {mode === 'destiny' && t.ilmHuruf.discoverNameDestiny}
+            {mode === 'compatibility' && t.ilmHuruf.analyzeTwoSouls}
+            {mode === 'life-path' && t.ilmHuruf.calculateLifePath}
+            {mode === 'timing' && t.ilmHuruf.currentPlanetaryInfluence}
           </h3>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
-            {mode === 'weekly' && 'Reflective guidance mapped to planetary influences'}
-            {mode === 'destiny' && 'Discover the spiritual essence encoded in your name'}
-            {mode === 'compatibility' && 'Explore the harmony and potential between two individuals'}
-            {mode === 'life-path' && 'Understand the numerological significance of your birth path'}
-            {mode === 'timing' && 'Align your actions with celestial timings'}
+            {mode === 'weekly' && t.ilmHuruf.weeklyGuidanceDesc}
+            {mode === 'destiny' && t.ilmHuruf.nameDestinyDesc}
+            {mode === 'compatibility' && t.ilmHuruf.compatibilityDesc}
+            {mode === 'life-path' && t.ilmHuruf.lifePathDesc}
+            {mode === 'timing' && t.ilmHuruf.divineTimingDesc}
           </p>
         </div>
         
         <div className="space-y-4 animate-slide-up">
           {(mode === 'destiny' || mode === 'compatibility' || mode === 'weekly' || mode === 'life-path') && (
             <div className="space-y-3">
-              {/* Latin Input */}
+              {/* Latin Input with Autocomplete */}
               <div>
                 <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                  {mode === 'compatibility' ? 'First Person - Latin (English/French)' : 'Name - Latin (English/French)'}
+                  {mode === 'compatibility' ? t.ilmHuruf.firstPersonLatin : t.ilmHuruf.nameLatinLabel}
                 </label>
-                <input
-                  type="text"
+                <NameAutocomplete
                   value={latinInput}
-                  onChange={(e) => handleLatinInput(e.target.value, true)}
-                  placeholder="e.g., Muhammad, Hassan, Fatima, Layla"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  onChange={(value) => handleLatinInput(value, true)}
+                  onArabicSelect={(arabic, latin) => {
+                    setName(arabic);
+                    setLatinInput(latin);
+                  }}
+                  placeholder={t.ilmHuruf.namePlaceholderEn}
+                  showHelper={true}
                 />
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  Auto-transliterates to Arabic • Supports EN/FR names
-                </p>
                 {translitConfidence !== null && translitConfidence < 100 && (
                   <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
                     <p className="text-xs text-amber-800 dark:text-amber-200">
-                      Confidence: {translitConfidence}% 
+                      {t.ilmHuruf.confidence}: {translitConfidence}% 
                       {translitWarnings.length > 0 && ` • ${translitWarnings.join(', ')}`}
                     </p>
                   </div>
@@ -529,7 +547,7 @@ export function IlmHurufPanel() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    {mode === 'compatibility' ? 'First Person - Arabic' : 'Name - Arabic'}
+                    {mode === 'compatibility' ? t.ilmHuruf.firstPersonArabic : t.ilmHuruf.nameArabic}
                   </label>
                   <button
                     onClick={() => setShowKeyboard(!showKeyboard)}
@@ -540,7 +558,7 @@ export function IlmHurufPanel() {
                     }`}
                   >
                     <Keyboard className="w-3 h-3" />
-                    {showKeyboard ? 'Hide' : 'Show'} Keyboard
+                    {showKeyboard ? t.ilmHuruf.hideKeyboard : t.ilmHuruf.showKeyboard}
                   </button>
                 </div>
                 <input
@@ -550,7 +568,7 @@ export function IlmHurufPanel() {
                     setName(e.target.value);
                     setLatinInput(''); // Clear latin if user types Arabic directly
                   }}
-                  placeholder="محمد"
+                  placeholder={t.ilmHuruf.namePlaceholderAr}
                   className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right text-xl font-arabic"
                   dir="rtl"
                   style={{ fontFamily: "'Noto Naskh Arabic', 'Amiri', serif" }}
@@ -573,19 +591,19 @@ export function IlmHurufPanel() {
               {!showMotherNameSection ? (
                 <button
                   onClick={() => setShowMotherNameSection(true)}
-                  className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-                  title="Um Ḥadad (أم حدد) - Reveals your spiritual origin and inherited elemental foundation"
+                  className="flex items-center gap-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
+                  title={t?.tooltips?.umHadad1 || "Um Ḥadad (أم حدد) - Required for complete Name Destiny calculation"}
                 >
                   <Plus className="h-4 w-4" />
-                  <span>Add Mother&apos;s Name (optional)</span>
-                  <Info className="h-4 w-4 text-slate-400" />
+                  <span>{t.nameDestiny.inputs.motherOptional}</span>
+                  <Info className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
                 </button>
               ) : (
                 <div className="space-y-3 animate-slide-down">
                   <div className="flex items-center justify-between">
                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                      Mother&apos;s Name (optional)
-                      <span title="Um Ḥadad (أم حدد) - Reveals your Aṣl al-Rūḥānī (spiritual origin)">
+                      {t.nameDestiny.inputs.motherName}
+                      <span title={t?.tooltips?.umHadad2 || "Um Ḥadad (أم حدد) - Reveals your Aṣl al-Rūḥānī (spiritual origin)"}>
                         <Info className="h-4 w-4 text-slate-400 inline ml-2 cursor-help" />
                       </span>
                     </label>
@@ -598,7 +616,7 @@ export function IlmHurufPanel() {
                       className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 flex items-center gap-1"
                     >
                       <X className="h-3 w-3" />
-                      Clear
+                      {t.ilmHuruf.clearMotherName}
                     </button>
                   </div>
                   
@@ -608,11 +626,11 @@ export function IlmHurufPanel() {
                       type="text"
                       value={motherLatinInput}
                       onChange={(e) => handleMotherLatinInput(e.target.value)}
-                      placeholder="e.g., Fatima, Khadija, Aisha"
+                      placeholder={t.ilmHuruf.motherNamePlaceholderEn}
                       className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
                     />
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                      Latin (English/French) - Auto-transliterates
+                    <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-medium">
+                      💡 {t.nameDestiny.inputs.motherHint}
                     </p>
                   </div>
                   
@@ -620,7 +638,7 @@ export function IlmHurufPanel() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <label className="block text-xs font-medium text-slate-600 dark:text-slate-400">
-                        Or type in Arabic
+                        {t.ilmHuruf.arabicDirectInput}
                       </label>
                       <button
                         onClick={() => setShowMotherKeyboard(!showMotherKeyboard)}
@@ -631,7 +649,7 @@ export function IlmHurufPanel() {
                         }`}
                       >
                         <Keyboard className="w-3 h-3" />
-                        {showMotherKeyboard ? 'Hide' : 'Show'}
+                        {showMotherKeyboard ? t.ilmHuruf.hideKeyboard : t.ilmHuruf.showKeyboard}
                       </button>
                     </div>
                     <input
@@ -641,7 +659,7 @@ export function IlmHurufPanel() {
                         setMotherName(e.target.value);
                         setMotherLatinInput('');
                       }}
-                      placeholder="اسم الأم"
+                      placeholder={t.ilmHuruf.motherNamePlaceholderAr}
                       className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right text-lg font-arabic"
                       dir="rtl"
                       style={{ fontFamily: "'Noto Naskh Arabic', 'Amiri', serif" }}
@@ -663,7 +681,7 @@ export function IlmHurufPanel() {
           {mode === 'weekly' && (
             <div>
               <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                Birth Date (Optional - for anchor date)
+                {t.ilmHuruf.birthDateOptional}
               </label>
               <input
                 type="date"
@@ -672,35 +690,35 @@ export function IlmHurufPanel() {
                 className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
               />
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Used to calculate your personal cycles. Defaults to today if not provided.
+                {t.ilmHuruf.birthDateUsage}
               </p>
             </div>
           )}
           
           {mode === 'compatibility' && (
             <div className="space-y-3">
-              {/* Latin Input for Second Person */}
+              {/* Latin Input for Second Person with Autocomplete */}
               <div>
                 <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                  Second Person - Latin (English/French)
+                  {t.ilmHuruf.secondPersonLatin}
                 </label>
-                <input
-                  type="text"
+                <NameAutocomplete
                   value={latinInput2}
-                  onChange={(e) => handleLatinInput(e.target.value, false)}
-                  placeholder="e.g., Fatima, Aisha, Zainab"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  onChange={(value) => handleLatinInput(value, false)}
+                  onArabicSelect={(arabic, latin) => {
+                    setName2(arabic);
+                    setLatinInput2(latin);
+                  }}
+                  placeholder={t.ilmHuruf.namePlaceholderEn}
+                  showHelper={true}
                 />
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  Auto-transliterates to Arabic
-                </p>
               </div>
               
               {/* Arabic Input for Second Person */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Second Person - Arabic
+                    {t.ilmHuruf.secondPersonArabic}
                   </label>
                   <button
                     onClick={() => setShowKeyboard2(!showKeyboard2)}
@@ -711,7 +729,7 @@ export function IlmHurufPanel() {
                     }`}
                   >
                     <Keyboard className="w-3 h-3" />
-                    {showKeyboard2 ? 'Hide' : 'Show'} Keyboard
+                    {showKeyboard2 ? t.ilmHuruf.hideKeyboard : t.ilmHuruf.showKeyboard}
                   </button>
                 </div>
                 <input
@@ -721,7 +739,7 @@ export function IlmHurufPanel() {
                     setName2(e.target.value);
                     setLatinInput2(''); // Clear latin if user types Arabic directly
                   }}
-                  placeholder="فاطمة"
+                  placeholder={t.ilmHuruf.motherNamePlaceholderAr}
                   className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right text-xl font-arabic"
                   dir="rtl"
                   style={{ fontFamily: "'Noto Naskh Arabic', 'Amiri', serif" }}
@@ -742,20 +760,23 @@ export function IlmHurufPanel() {
             <div className="space-y-4">
               {/* Name fields for Rest Signal feature */}
               <div className="space-y-3">
-                {/* Latin Input */}
+                {/* Latin Input with Autocomplete */}
                 <div>
                   <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                    Your Name - Latin (English/French) <span className="text-xs text-slate-500">(Optional - for Rest Signal)</span>
+                    {t.ilmHuruf.yourNameLatin} <span className="text-xs text-slate-500">({t.ilmHuruf.optionalForRestSignal})</span>
                   </label>
-                  <input
-                    type="text"
+                  <NameAutocomplete
                     value={latinInput}
-                    onChange={(e) => handleLatinInput(e.target.value, true)}
-                    placeholder="e.g., Muhammad, Hassan, Fatima, Layla"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                    onChange={(value) => handleLatinInput(value, true)}
+                    onArabicSelect={(arabic, latin) => {
+                      setName(arabic);
+                      setLatinInput(latin);
+                    }}
+                    placeholder={t.ilmHuruf.namePlaceholderEn}
+                    showHelper={false}
                   />
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                    Enables personalized Rest Signal detection
+                    {t.ilmHuruf.restSignalNote}
                   </p>
                 </div>
                 
@@ -763,7 +784,7 @@ export function IlmHurufPanel() {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                      Your Name - Arabic <span className="text-xs text-slate-500">(Optional)</span>
+                      {t.ilmHuruf.yourNameArabic} <span className="text-xs text-slate-500">({t.ilmHuruf.optional})</span>
                     </label>
                     <button
                       onClick={() => setShowKeyboard(!showKeyboard)}
@@ -774,7 +795,7 @@ export function IlmHurufPanel() {
                       }`}
                     >
                       <Keyboard className="w-3 h-3" />
-                      {showKeyboard ? 'Hide' : 'Show'} Keyboard
+                      {showKeyboard ? t.ilmHuruf.hideKeyboard : t.ilmHuruf.showKeyboard}
                     </button>
                   </div>
                   <input
@@ -784,7 +805,7 @@ export function IlmHurufPanel() {
                       setName(e.target.value);
                       setLatinInput('');
                     }}
-                    placeholder="محمد"
+                    placeholder={t.ilmHuruf.namePlaceholderAr}
                     className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right text-xl font-arabic"
                     dir="rtl"
                     style={{ fontFamily: "'Noto Naskh Arabic', 'Amiri', serif" }}
@@ -802,7 +823,7 @@ export function IlmHurufPanel() {
               
               <div>
                 <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                  Birth Date
+                  {t.ilmHuruf.birthDate}
                 </label>
                 <input
                   type="date"
@@ -817,7 +838,7 @@ export function IlmHurufPanel() {
           {mode === 'life-path' && (
             <div>
               <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                Birth Date
+                {t.ilmHuruf.birthDate}
               </label>
               <input
                 type="date"
@@ -833,7 +854,7 @@ export function IlmHurufPanel() {
             className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl"
           >
             <Sparkles className="w-5 h-5 inline mr-2" />
-            Analyze
+            {t.ilmHuruf.analyzeButton}
           </button>
         </div>
       </div>
@@ -843,7 +864,7 @@ export function IlmHurufPanel() {
         <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
           <div className="flex items-center gap-3 mb-2">
             <MessageCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
-            <h3 className="text-lg font-bold text-red-800 dark:text-red-200">Analysis Error</h3>
+            <h3 className="text-lg font-bold text-red-800 dark:text-red-200">{t.ilmHuruf.analysisError}</h3>
           </div>
           <p className="text-red-700 dark:text-red-300">{results.message}</p>
         </div>
@@ -874,6 +895,7 @@ interface WeeklyResultsProps {
 
 function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsProps) {
   const { profile, weeklySummary, harmonyType, dominantForce } = results;
+  const { t } = useLanguage();
   const [expandedRestDay, setExpandedRestDay] = useState<string | null>(null);
   
   const toggleRestSignal = (dayDate: string) => {
@@ -911,17 +933,17 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       {/* Profile Chips */}
       <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6">
         <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">
-          Your Spiritual Profile
+          {t.ilmHuruf.yourSpiritualProfile}
         </h3>
         <div className="flex flex-wrap gap-3">
           <div className="px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900/40 border border-purple-300 dark:border-purple-700 text-black dark:text-white">
             <span className="text-sm font-medium">
-              Rūḥ: {profile.ruh}
+              {t.ilmHuruf.ruh}: {profile.ruh}
             </span>
           </div>
           <div className={`px-4 py-2 rounded-full border ${ELEMENT_COLORS[profile.element]}`}>
             <span className="text-sm font-medium">
-              Element: {profile.element}
+              {t.ilmHuruf.element}: {profile.element}
             </span>
           </div>
           <div className="px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/40 border border-blue-300 dark:border-blue-700">
@@ -942,17 +964,17 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       {/* Harmony & Dominant Force */}
       <div className="grid md:grid-cols-2 gap-4">
         <div className={`rounded-xl p-4 border-2 ${HARMONY_COLORS[harmonyType]}`}>
-          <div className="text-sm font-medium opacity-75 mb-1">Current Harmony</div>
+          <div className="text-sm font-medium opacity-75 mb-1">{t.ilmHuruf.currentHarmony}</div>
           <div className="text-xl font-bold">{harmonyType}</div>
           <p className="text-xs mt-2 opacity-90">
-            {harmonyType === 'Complete' && 'All forces aligned—excellent flow'}
-            {harmonyType === 'Partial' && 'Mixed signals—proceed mindfully'}
-            {harmonyType === 'Conflict' && 'Challenging energies—patience needed'}
+            {harmonyType === 'Complete' && t.ilmHuruf.allForcesAligned}
+            {harmonyType === 'Partial' && t.ilmHuruf.mixedSignals}
+            {harmonyType === 'Conflict' && t.ilmHuruf.challengingEnergies}
           </p>
         </div>
         
         <div className="rounded-xl p-4 border-2 border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50">
-          <div className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Dominant Force</div>
+          <div className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">{t.ilmHuruf.dominantForce}</div>
           <div className="text-xl font-bold text-slate-900 dark:text-slate-100">{dominantForce}</div>
           <p className="text-xs mt-2 text-slate-600 dark:text-slate-400">{balanceTip}</p>
         </div>
@@ -962,7 +984,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-6 text-slate-900 dark:text-slate-100 flex items-center gap-2">
           <Calendar className="w-5 h-5 text-green-500" />
-          Week at a Glance
+          {t.ilmHuruf.weekAtAGlance}
         </h3>
         
         {/* Week Summary - Best Days */}
@@ -970,55 +992,55 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
           <div className="grid md:grid-cols-2 gap-4">
             {/* Best Day */}
             <div>
-              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">Peak Day This Week</p>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">{t.ilmHuruf.peakDayThisWeek}</p>
               <div className="flex items-center gap-2">
                 <span className="text-2xl">⭐</span>
                 <div>
-                  {weeklySummary.days.find(d => d.date === weeklySummary.best_day) && (
+                  {weeklySummary?.days?.find(d => d.date === weeklySummary?.best_day) && (
                     <>
                       <div className="font-bold text-slate-900 dark:text-slate-100">
-                        {weeklySummary.days.find(d => d.date === weeklySummary.best_day)?.weekday}
+                        {weeklySummary?.days?.find(d => d.date === weeklySummary?.best_day)?.weekday}
                       </div>
                       <div className="text-sm text-slate-600 dark:text-slate-400">
-                        Harmony: {weeklySummary.days.find(d => d.date === weeklySummary.best_day)?.harmony_score}/10
+                        {t.ilmHuruf.harmony}: {weeklySummary?.days?.find(d => d.date === weeklySummary?.best_day)?.harmony_score}/10
                       </div>
                     </>
                   )}
                 </div>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Best for important initiatives</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">{t.ilmHuruf.bestForInitiatives}</p>
             </div>
 
             {/* Focus Day */}
             <div>
-              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">Focus Day</p>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">{t.ilmHuruf.focusDay}</p>
               <div className="flex items-center gap-2">
                 <span className="text-2xl">🎯</span>
                 <div>
-                  {weeklySummary.days.find(d => d.date === weeklySummary.focus_day) && (
+                  {weeklySummary?.days?.find(d => d.date === weeklySummary?.focus_day) && (
                     <>
                       <div className="font-bold text-slate-900 dark:text-slate-100">
-                        {weeklySummary.days.find(d => d.date === weeklySummary.focus_day)?.weekday}
+                        {weeklySummary?.days?.find(d => d.date === weeklySummary?.focus_day)?.weekday}
                       </div>
                       <div className="text-sm text-slate-600 dark:text-slate-400">
-                        Planet: {weeklySummary.days.find(d => d.date === weeklySummary.focus_day)?.day_planet}
+                        {t.ilmHuruf.planet}: {weeklySummary?.days?.find(d => d.date === weeklySummary?.focus_day)?.day_planet}
                       </div>
                     </>
                   )}
                 </div>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">For deep work & planning</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">{t.ilmHuruf.forDeepWorkAndPlanning}</p>
             </div>
           </div>
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-7 gap-3">
-          {weeklySummary.days.map((day) => {
-            const isBest = day.date === weeklySummary.best_day;
-            const isGentle = day.date === weeklySummary.gentle_day;
-            const isFocus = day.date === weeklySummary.focus_day;
+          {weeklySummary?.days?.map((day) => {
+            const isBest = day.date === weeklySummary?.best_day;
+            const isGentle = day.date === weeklySummary?.gentle_day;
+            const isFocus = day.date === weeklySummary?.focus_day;
             const isSelected = day.date === selectedDay;
-            const firstTip = day.tips[0] || 'Plan mindfully';
+            const firstTip = day.tips?.[0] || t.ilmHuruf.planMindfully;
             const truncatedTip = firstTip.length > 45 ? firstTip.slice(0, 45) + '...' : firstTip;
             
             return (
@@ -1039,7 +1061,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 {/* Score display with bar */}
                 <div className="mb-2">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-slate-600 dark:text-slate-400">Harmony</span>
+                    <span className="text-xs text-slate-600 dark:text-slate-400">{t.ilmHuruf.harmony}</span>
                     <div className="flex items-center">
                       <span className="text-sm font-bold text-slate-900 dark:text-slate-100">
                         {day.harmony_score}/10
@@ -1101,7 +1123,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                           : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50'
                       }`}
                     >
-                      {day.restLevel === 'deep' ? '🛑 DEEP REST' : '🌙 REST SIGNAL'}
+                      {day.restLevel === 'deep' ? `🛑 ${t.ilmHuruf.deepRest}` : `🌙 ${t.ilmHuruf.restSignalBadge}`}
                     </div>
                   </div>
                 )}
@@ -1118,10 +1140,16 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1 mb-0.5">
                         <span className="text-[10px] font-bold text-purple-900 dark:text-purple-100 uppercase">
-                          {day.energyReturn.speed}
+                          {day.energyReturn.speed === 'instant' && t.ilmHuruf.instant}
+                          {day.energyReturn.speed === 'quick' && t.ilmHuruf.quick}
+                          {day.energyReturn.speed === 'gradual' && t.ilmHuruf.gradual}
+                          {day.energyReturn.speed === 'delayed' && t.ilmHuruf.delayed}
                         </span>
                         <span className="text-[9px] text-purple-600 dark:text-purple-400">
-                          ({day.energyReturn.timeframe})
+                          {day.energyReturn.speed === 'instant' && t.ilmHuruf.sameDayParens}
+                          {day.energyReturn.speed === 'quick' && t.ilmHuruf.fewHoursParens}
+                          {day.energyReturn.speed === 'gradual' && t.ilmHuruf.twoDaysParens}
+                          {day.energyReturn.speed === 'delayed' && t.ilmHuruf.oneToTwoWeeksParens}
                         </span>
                       </div>
                       <p className="text-[10px] text-purple-700 dark:text-purple-300 leading-tight">
@@ -1165,18 +1193,18 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
         <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-lg border border-blue-200 dark:border-blue-800">
           <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
             <span className="text-lg">⚡</span>
-            Energy Return Speeds This Week
+            {t.ilmHuruf.energyReturnSpeedsThisWeek}
           </h4>
           <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
-            When actions manifest their results (classical concept: Irtiṭāb)
+            {t.ilmHuruf.whenActionsManifestResults}
           </p>
           <div className="grid md:grid-cols-4 gap-3">
             {(() => {
               const speedCounts = {
-                instant: weeklySummary.days.filter(d => d.energyReturn.speed === 'instant').length,
-                quick: weeklySummary.days.filter(d => d.energyReturn.speed === 'quick').length,
-                gradual: weeklySummary.days.filter(d => d.energyReturn.speed === 'gradual').length,
-                delayed: weeklySummary.days.filter(d => d.energyReturn.speed === 'delayed').length,
+                instant: weeklySummary?.days?.filter(d => d.energyReturn?.speed === 'instant').length || 0,
+                quick: weeklySummary?.days?.filter(d => d.energyReturn?.speed === 'quick').length || 0,
+                gradual: weeklySummary?.days?.filter(d => d.energyReturn?.speed === 'gradual').length || 0,
+                delayed: weeklySummary?.days?.filter(d => d.energyReturn?.speed === 'delayed').length || 0,
               };
               return Object.entries(speedCounts).map(([speed, count]) => (
                 <div key={speed} className="bg-white dark:bg-slate-700/50 rounded-lg p-3 text-center">
@@ -1189,10 +1217,10 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   <div className="text-sm font-bold text-slate-900 dark:text-slate-100 capitalize">{speed}</div>
                   <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">{count} day{count !== 1 ? 's' : ''}</div>
                   <div className="text-[11px] text-slate-500 dark:text-slate-500 mt-2">
-                    {speed === 'instant' && 'Same day'}
-                    {speed === 'quick' && 'Few hours'}
-                    {speed === 'gradual' && '2-3 days'}
-                    {speed === 'delayed' && '1-2 weeks'}
+                    {speed === 'instant' && t.ilmHuruf.sameDay}
+                    {speed === 'quick' && t.ilmHuruf.fewHours}
+                    {speed === 'gradual' && t.ilmHuruf.twoDays}
+                    {speed === 'delayed' && t.ilmHuruf.oneToTwoWeeks}
                   </div>
                 </div>
               ));
@@ -1202,7 +1230,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
         
         {/* Expandable Rest Signal Content */}
         {expandedRestDay && (() => {
-          const restDay = weeklySummary.days.find(d => d.date === expandedRestDay);
+          const restDay = weeklySummary?.days?.find(d => d.date === expandedRestDay);
           if (!restDay || !restDay.isRestDay) return null;
           
           return (
@@ -1211,7 +1239,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{restDay.restLevel === 'deep' ? '🛑' : '🌙'}</span>
                   <h4 className="font-bold text-blue-900 dark:text-blue-100">
-                    {restDay.restLevel === 'deep' ? 'Deep Rest Needed' : 'Rest Signal (Infisāl)'}
+                    {restDay.restLevel === 'deep' ? t.ilmHuruf.deepRestNeeded : t.ilmHuruf.restSignal}
                   </h4>
                 </div>
                 <button
@@ -1224,15 +1252,15 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
               
               <p className="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
                 {restDay.restLevel === 'deep' 
-                  ? 'Critical low energy - honor this healing signal from your body and spirit.'
-                  : `Low harmony (${restDay.harmony_score}/10) + ${restDay.day_planet} energy = Time to pause, not push.`
+                  ? t.ilmHuruf.criticalLowEnergy
+                  : t.ilmHuruf.lowHarmonyPause.replace('{planet}', restDay.day_planet)
                 }
               </p>
               
               {/* Rest Practices */}
               <div className="mb-4">
                 <p className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-2 uppercase tracking-wide">
-                  Rest Practices (choose one):
+                  {t.ilmHuruf.restPractices}
                 </p>
                 <ul className="space-y-2">
                   {restDay.restPractices?.map((practice, i) => (
@@ -1249,7 +1277,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 <div className="pt-4 border-t border-blue-200 dark:border-blue-700">
                   <p className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-2 flex items-center gap-1">
                     <span>💡</span>
-                    <span className="uppercase tracking-wide">Better Days This Week:</span>
+                    <span className="uppercase tracking-wide">{t.ilmHuruf.betterDaysThisWeek}</span>
                   </p>
                   <ul className="space-y-1">
                     {restDay.betterDays.map((betterDay, i) => (
@@ -1260,7 +1288,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                     ))}
                   </ul>
                   <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 italic">
-                    Reschedule important tasks to these high-harmony days for better outcomes.
+                    {t.ilmHuruf.rescheduleImportantTasks}
                   </p>
                 </div>
               )}
@@ -1268,9 +1296,9 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
               {/* Classical Wisdom */}
               <div className="mt-4 pt-4 border-t border-blue-200 dark:border-blue-700">
                 <p className="text-xs italic text-slate-600 dark:text-slate-400 text-center">
-                  <span className="font-semibold">Classical wisdom:</span> "Al-sukūn qabl al-ḥaraka" 
+                  <span className="font-semibold">{t.ilmHuruf.classicalWisdom}</span> "{t.ilmHuruf.stillnessBeforeMotion}"
                   <br />
-                  <span className="text-[10px]">(Stillness before motion brings blessed action)</span>
+                  <span className="text-[10px]">{t.ilmHuruf.stillnessExplanation}</span>
                 </p>
               </div>
             </div>
@@ -1279,7 +1307,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
         
         {/* Selected Day Details - Enhanced */}
         {selectedDay && (() => {
-          const day = weeklySummary.days.find(d => d.date === selectedDay);
+          const day = weeklySummary?.days?.find(d => d.date === selectedDay);
           if (!day) return null;
           
           const PlanetIcon = PLANET_ICONS[day.day_planet];
@@ -1322,30 +1350,30 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 
                 <div className="grid md:grid-cols-3 gap-3 mb-4">
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
-                    <div className="text-xs opacity-75 mb-1">Planet</div>
+                    <div className="text-xs opacity-75 mb-1">{t.ilmHuruf.planet}</div>
                     <div className="font-bold flex items-center gap-2">
                       <PlanetIcon className="w-5 h-5" />
                       {day.day_planet}
                     </div>
                     <div className="text-xs opacity-75 mt-1">
-                      {day.day_planet === 'Sun' && 'Leadership & Vitality'}
-                      {day.day_planet === 'Moon' && 'Emotions & Intuition'}
-                      {day.day_planet === 'Mars' && 'Action & Courage'}
-                      {day.day_planet === 'Mercury' && 'Communication & Learning'}
-                      {day.day_planet === 'Jupiter' && 'Expansion & Wisdom'}
-                      {day.day_planet === 'Venus' && 'Love & Harmony'}
-                      {day.day_planet === 'Saturn' && 'Structure & Discipline'}
+                      {day.day_planet === 'Sun' && t.ilmHuruf.leadership}
+                      {day.day_planet === 'Moon' && t.ilmHuruf.emotions}
+                      {day.day_planet === 'Mars' && t.ilmHuruf.action}
+                      {day.day_planet === 'Mercury' && t.ilmHuruf.communication}
+                      {day.day_planet === 'Jupiter' && t.ilmHuruf.expansion}
+                      {day.day_planet === 'Venus' && t.ilmHuruf.love}
+                      {day.day_planet === 'Saturn' && t.ilmHuruf.structure}
                     </div>
                   </div>
                   
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
-                    <div className="text-xs opacity-75 mb-1">Rūḥ Phase</div>
+                    <div className="text-xs opacity-75 mb-1">{t.ilmHuruf.ruhPhase}</div>
                     <div className="font-bold">{day.ruh_phase_group}</div>
-                    <div className="text-xs opacity-75 mt-1">Phase {day.ruh_phase}/9</div>
+                    <div className="text-xs opacity-75 mt-1">{t.ilmHuruf.phase} {day.ruh_phase}/9</div>
                   </div>
                   
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
-                    <div className="text-xs opacity-75 mb-1">Energy Band</div>
+                    <div className="text-xs opacity-75 mb-1">{t.ilmHuruf.energyBand}</div>
                     <div className={`font-bold flex items-center gap-2`}>
                       {day.band === 'High' && '🔥 High'}
                       {day.band === 'Moderate' && '⚖️ Moderate'}
@@ -1363,7 +1391,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
               <div className="mt-4 bg-white dark:bg-slate-800 rounded-xl p-5 border-2 border-purple-200 dark:border-purple-800">
                 <div className="flex items-center gap-2 mb-4">
                   <Sparkles className="w-5 h-5 text-purple-500" />
-                  <h4 className="font-bold text-slate-900 dark:text-slate-100">Your Guidance for This Day</h4>
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100">{t.ilmHuruf.yourGuidanceForThisDay}</h4>
                 </div>
                 
                 {/* Energy Return - Detailed (Irtiṭāb) */}
@@ -1375,14 +1403,19 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                       {day.energyReturn.speed === 'gradual' && '🌊'}
                       {day.energyReturn.speed === 'delayed' && '🌱'}
                     </span>
-                    <span>Energy Return Wisdom</span>
+                    <span>{t.ilmHuruf.energyReturnWisdom}</span>
                   </h4>
                   
                   <div className="space-y-3">
                     <div>
                       <p className="text-sm text-slate-700 dark:text-slate-300 mb-2">
-                        <strong className="text-purple-700 dark:text-purple-300">Return Speed:</strong>{' '}
-                        <span className="uppercase font-bold">{day.energyReturn.speed}</span>
+                        <strong className="text-purple-700 dark:text-purple-300">{t.ilmHuruf.returnSpeed}</strong>{' '}
+                        <span className="uppercase font-bold">
+                          {day.energyReturn.speed === 'instant' && t.ilmHuruf.instant}
+                          {day.energyReturn.speed === 'quick' && t.ilmHuruf.quick}
+                          {day.energyReturn.speed === 'gradual' && t.ilmHuruf.gradual}
+                          {day.energyReturn.speed === 'delayed' && t.ilmHuruf.delayed}
+                        </span>
                         {' '}
                         <span className="text-purple-600 dark:text-purple-400">
                           ({day.energyReturn.timeframe})
@@ -1396,7 +1429,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                     <div className="pt-3 border-t border-purple-200 dark:border-purple-700">
                       <p className="text-xs font-semibold text-purple-800 dark:text-purple-200 mb-2 uppercase tracking-wide flex items-center gap-1">
                         <span>🎯</span>
-                        <span>Today's Practice:</span>
+                        <span>{t.ilmHuruf.todaysPractice}</span>
                       </p>
                       <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                         {day.energyReturn.practice}
@@ -1405,8 +1438,8 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                     
                     <div className="pt-3 border-t border-purple-200 dark:border-purple-700">
                       <p className="text-xs text-slate-500 dark:text-slate-400 italic leading-relaxed">
-                        <span className="font-semibold">Classical teaching (Lesson 25):</span> "Man zaraʿa khayran ḥaṣada khayran" 
-                        (Who plants good, harvests good) — The timing of harvest depends on the seed and season.
+                        <span className="font-semibold">{t.ilmHuruf.classicalTeaching}</span> "{t.ilmHuruf.classicalQuote}" 
+                        {t.ilmHuruf.classicalMeaning}
                       </p>
                     </div>
                   </div>
@@ -1650,7 +1683,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       {/* Disclaimer */}
       <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
         <p className="text-sm text-amber-900 dark:text-amber-200">
-          <strong>Reflective guidance to plan your week.</strong> Use your own judgment. This is a rhythm and planning helper, not a prediction or medical/financial advice.
+          {t.ilmHuruf.reflectiveGuidance}
         </p>
       </div>
     </div>
@@ -1658,6 +1691,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
 }
 
 function DestinyResults({ results }: { results: any }) {
+  const { t } = useLanguage();
   const [verseText, setVerseText] = useState<VerseText | null>(null);
   const [loadingVerse, setLoadingVerse] = useState(false);
   const [verseError, setVerseError] = useState<string | null>(null);
@@ -1688,7 +1722,7 @@ function DestinyResults({ results }: { results: any }) {
       
       fetchVerse().catch(err => {
         console.error('❌ Error fetching verse:', err);
-        setVerseError('Unable to load verse text. Please try again.');
+        setVerseError(t?.errors?.verseLoadError || 'Unable to load verse text. Please try again.');
         setLoadingVerse(false);
       });
     }
@@ -1708,8 +1742,216 @@ function DestinyResults({ results }: { results: any }) {
   // Debug log
   console.log('DestinyResults rendering. Has quranResonance?', !!results.quranResonance, results.quranResonance);
   
+  // Extract language from useLanguage hook
+  const { language } = useLanguage();
+  const isFr = language === 'fr';
+  
   return (
     <div className="space-y-6">
+      {/* Name Chart - New Section */}
+      {results.nameDestiny && (
+        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-6 border-2 border-indigo-200 dark:border-indigo-700 shadow-lg">
+          <div className="flex items-center gap-3 mb-5">
+            <Star className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
+            <div>
+              <h3 className="text-2xl font-bold text-indigo-900 dark:text-indigo-200">
+                {t.nameDestiny.nameChart.title}
+              </h3>
+              <p className="text-sm text-indigo-700 dark:text-indigo-300">
+                {t.nameDestiny.nameChart.subtitle}
+              </p>
+            </div>
+          </div>
+
+          {/* Grid of chart values */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+            {/* Total Ḥadad Kabīr */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-indigo-200 dark:border-indigo-700">
+              <div className="text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-semibold mb-1">
+                {t.nameDestiny.nameChart.total}
+              </div>
+              <div className="text-4xl font-bold text-indigo-900 dark:text-indigo-100">
+                {results.nameDestiny.totalKabir}
+              </div>
+              {results.nameDestiny.motherKabir > 0 && (
+                <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-1">
+                  ({results.nameDestiny.personKabir} + {results.nameDestiny.motherKabir})
+                </div>
+              )}
+            </div>
+
+            {/* Digital Root (Ṣaghīr) */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-purple-200 dark:border-purple-700">
+              <div className="text-xs uppercase tracking-wider text-purple-600 dark:text-purple-400 font-semibold mb-1">
+                {t.nameDestiny.nameChart.saghir}
+              </div>
+              <div className="text-4xl font-bold text-purple-900 dark:text-purple-100">
+                {results.nameDestiny.saghir}
+              </div>
+            </div>
+
+            {/* Element (Ṭabʿ) */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-emerald-200 dark:border-emerald-700">
+              <div className="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold mb-1">
+                {t.nameDestiny.nameChart.tabh}
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-4xl">{results.nameDestiny.element.icon}</span>
+                <div>
+                  <div className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">
+                    {isFr ? results.nameDestiny.element.fr : results.nameDestiny.element.en}
+                  </div>
+                  <div className="text-xs text-emerald-700 dark:text-emerald-300">
+                    {isFr ? results.nameDestiny.element.qualityFr : results.nameDestiny.element.qualityEn}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Burj (Zodiac) */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-amber-200 dark:border-amber-700">
+              <div className="text-xs uppercase tracking-wider text-amber-600 dark:text-amber-400 font-semibold mb-1">
+                {t.nameDestiny.nameChart.burj}
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-4xl">{results.nameDestiny.burj.symbol}</span>
+                <div>
+                  <div className="text-2xl font-bold text-amber-900 dark:text-amber-100">
+                    {isFr ? results.nameDestiny.burj.fr : results.nameDestiny.burj.en}
+                  </div>
+                  <div className="text-xs text-amber-700 dark:text-amber-300 font-arabic mb-1">
+                    {results.nameDestiny.burj.ar}
+                  </div>
+                  <div className="text-xs text-amber-600 dark:text-amber-400 italic">
+                    {isFr ? results.nameDestiny.burj.qualityFr : results.nameDestiny.burj.qualityEn}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Planet, Day, Hour row */}
+          <div className="grid grid-cols-3 gap-3 mb-5">
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-3 text-center border border-slate-200 dark:border-slate-700">
+              <div className="text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1">
+                {t.nameDestiny.nameChart.planet}
+              </div>
+              <div className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                {results.nameDestiny.burj.planet}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-3 text-center border border-slate-200 dark:border-slate-700">
+              <div className="text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1">
+                {t.nameDestiny.nameChart.day}
+              </div>
+              <div className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                {isFr ? results.nameDestiny.burj.dayFr : results.nameDestiny.burj.dayEn}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-3 text-center border border-slate-200 dark:border-slate-700">
+              <div className="text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1 flex items-center justify-center gap-1">
+                {t.nameDestiny.nameChart.hour}
+                <span className="relative group">
+                  <Info className="h-3 w-3 text-slate-400 cursor-help" />
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 dark:bg-slate-700 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                    {t.nameDestiny.nameChart.hourTip}
+                  </div>
+                </span>
+              </div>
+              <div className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                {results.nameDestiny.hourIndex}
+              </div>
+            </div>
+          </div>
+
+          {/* Element Inheritance (if mother's name provided) */}
+          {results.nameDestiny.foundation && (
+            <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-lg p-4 border border-rose-200 dark:border-rose-700">
+              <div className="text-sm uppercase tracking-wider text-rose-700 dark:text-rose-300 font-semibold mb-3">
+                {t.nameDestiny.origin.inheritance}
+              </div>
+              <div className="flex items-center justify-center gap-6 mb-3">
+                {/* Expression (Person) */}
+                <div className="text-center">
+                  <div className="text-xs text-rose-600 dark:text-rose-400 mb-1 font-semibold">
+                    {t.nameDestiny.origin.expression}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-3xl">{results.nameDestiny.expression.icon}</span>
+                    <span className="text-lg font-bold text-rose-900 dark:text-rose-100">
+                      {isFr ? results.nameDestiny.expression.fr : results.nameDestiny.expression.en}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Arrow */}
+                <div className="text-3xl text-rose-400">↔</div>
+
+                {/* Foundation (Mother) */}
+                <div className="text-center">
+                  <div className="text-xs text-rose-600 dark:text-rose-400 mb-1 font-semibold">
+                    {t.nameDestiny.origin.foundation}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-3xl">{results.nameDestiny.foundation.icon}</span>
+                    <span className="text-lg font-bold text-rose-900 dark:text-rose-100">
+                      {isFr ? results.nameDestiny.foundation.fr : results.nameDestiny.foundation.en}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Element Harmony Badge */}
+              {(() => {
+                const expressionElem = isFr ? results.nameDestiny.expression.fr : results.nameDestiny.expression.en;
+                const foundationElem = isFr ? results.nameDestiny.foundation.fr : results.nameDestiny.foundation.en;
+                
+                let harmonyType = '';
+                let harmonyColor = '';
+                
+                if (expressionElem === foundationElem) {
+                  harmonyType = t.nameDestiny.nameChart.unified;
+                  harmonyColor = 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 border-purple-300 dark:border-purple-700';
+                } else if (
+                  (expressionElem === 'Fire' || expressionElem === 'Feu') && (foundationElem === 'Air' || foundationElem === 'Air') ||
+                  (expressionElem === 'Air' || expressionElem === 'Air') && (foundationElem === 'Fire' || foundationElem === 'Feu') ||
+                  (expressionElem === 'Water' || expressionElem === 'Eau') && (foundationElem === 'Earth' || foundationElem === 'Terre') ||
+                  (expressionElem === 'Earth' || expressionElem === 'Terre') && (foundationElem === 'Water' || foundationElem === 'Eau')
+                ) {
+                  harmonyType = t.nameDestiny.nameChart.harmonious;
+                  harmonyColor = 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700';
+                } else if (
+                  (expressionElem === 'Fire' || expressionElem === 'Feu') && (foundationElem === 'Earth' || foundationElem === 'Terre') ||
+                  (expressionElem === 'Earth' || expressionElem === 'Terre') && (foundationElem === 'Air' || foundationElem === 'Air') ||
+                  (expressionElem === 'Air' || expressionElem === 'Air') && (foundationElem === 'Water' || foundationElem === 'Eau') ||
+                  (expressionElem === 'Water' || expressionElem === 'Eau') && (foundationElem === 'Fire' || foundationElem === 'Feu')
+                ) {
+                  harmonyType = t.nameDestiny.nameChart.nourishing;
+                  harmonyColor = 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border-blue-300 dark:border-blue-700';
+                } else {
+                  harmonyType = t.nameDestiny.nameChart.transformative;
+                  harmonyColor = 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 border-amber-300 dark:border-amber-700';
+                }
+                
+                return (
+                  <div className="text-center">
+                    <div className="text-xs text-rose-600 dark:text-rose-400 mb-1">{t.nameDestiny.nameChart.elementHarmony}</div>
+                    <div className={`inline-block px-3 py-1 rounded-full border text-sm font-semibold ${harmonyColor}`}>
+                      {harmonyType}
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+
+          {/* Disclaimer */}
+          <div className="mt-4 text-xs text-center text-indigo-600 dark:text-indigo-400 italic">
+            {t.nameDestiny.disclaimer.reflectionOnly}
+          </div>
+        </div>
+      )}
+
       {/* Main Destiny */}
       <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl p-6 text-black shadow-xl">
         <div className="text-center">
@@ -1784,8 +2026,8 @@ function DestinyResults({ results }: { results: any }) {
                   <div className="space-y-2">
                     <h4 className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Arabic Text</h4>
                     <div className="text-right bg-gradient-to-l from-emerald-50 to-transparent dark:from-slate-800 dark:to-transparent rounded p-5 border-r-4 border-emerald-500">
-                      <p className="text-2xl leading-loose text-black dark:text-white font-semibold" 
-                         style={{ fontFamily: 'Amiri, Scheherazade, serif', lineHeight: '2.2', direction: 'rtl' }}>
+                      <p className="text-2xl md:text-3xl font-semibold leading-relaxed text-black dark:text-white" 
+                         style={{ fontFamily: 'Amiri, Scheherazade, serif', lineHeight: '2', direction: 'rtl' }}>
                         {verseText.arabic}
                       </p>
                     </div>
@@ -1842,17 +2084,14 @@ function DestinyResults({ results }: { results: any }) {
         <div className="bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-xl border border-rose-200 dark:border-rose-800 p-6 shadow-lg">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-black dark:text-slate-100">
             <Heart className="h-5 w-5 text-rose-500" />
-            Your Spiritual Origin
-            <span className="text-sm font-normal text-slate-600 dark:text-slate-400">
-              (Aṣl al-Rūḥānī - أصل روحاني)
-            </span>
+            {t.nameDestiny.origin.title}
           </h3>
           
           <div className="space-y-4">
             {/* Mother's Element */}
             <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-rose-200 dark:border-rose-700">
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                Mother&apos;s Name Element (Um Ḥadad - أم حدد)
+                {t.nameDestiny.origin.motherElement}
               </p>
               <div className="flex items-center gap-3">
                 <div className="text-2xl font-bold text-rose-600 dark:text-rose-400">
@@ -1863,18 +2102,18 @@ function DestinyResults({ results }: { results: any }) {
                 </div>
               </div>
               <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                Kabīr: {results.motherAnalysis.kabir} • Ṣaghīr: {results.motherAnalysis.saghir} • Ḥadath: {results.motherAnalysis.hadath}
+                {t.nameDestiny.origin.kabir}: {results.motherAnalysis.kabir} • {t.nameDestiny.origin.saghir}: {results.motherAnalysis.saghir} • {t.nameDestiny.origin.hadath}: {results.motherAnalysis.hadath}
               </div>
             </div>
             
             {/* Element Inheritance Comparison */}
             <div className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-rose-200 dark:border-rose-700">
               <p className="text-sm font-medium mb-3 text-black dark:text-slate-300">
-                Element Inheritance:
+                {t.nameDestiny.origin.inheritance}:
               </p>
               <div className="flex items-center gap-4">
                 <div className="flex-1 text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Your Expression</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">{t.nameDestiny.origin.yourExpression}</p>
                   <p className="font-bold text-purple-600 dark:text-purple-400">
                     {(() => {
                       // Calculate user's element from their hadath
@@ -1889,7 +2128,7 @@ function DestinyResults({ results }: { results: any }) {
                 </div>
                 <div className="text-3xl text-slate-400">↔</div>
                 <div className="flex-1 text-center p-3 bg-rose-50 dark:bg-rose-900/20 rounded-lg">
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Your Foundation</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">{t.nameDestiny.origin.yourFoundation}</p>
                   <p className="font-bold text-rose-600 dark:text-rose-400">
                     {results.motherAnalysis.element}
                   </p>
@@ -1901,7 +2140,7 @@ function DestinyResults({ results }: { results: any }) {
             <div className="p-4 bg-gradient-to-br from-white to-rose-50 dark:from-slate-800 dark:to-rose-900/10 rounded-lg border border-rose-200 dark:border-rose-700">
               <p className="text-sm font-semibold text-black dark:text-slate-100 mb-2 flex items-center gap-2">
                 <Lightbulb className="h-4 w-4 text-amber-500" />
-                Insight:
+                {t.nameDestiny.origin.insight}:
               </p>
               <p className="text-sm text-black dark:text-slate-300 leading-relaxed">
                 {(() => {
@@ -1912,6 +2151,34 @@ function DestinyResults({ results }: { results: any }) {
                   else if (userHadath >= 4 && userHadath <= 6) userElement = 'Water';
                   else if (userHadath >= 7 && userHadath <= 9) userElement = 'Air';
                   
+                  // Check if French and use translation keys
+                  if (language === 'fr' && t.inheritanceSame && t.inheritanceCompatible && t.inheritanceOpposing) {
+                    const motherEl = results.motherAnalysis.element;
+                    
+                    // Same element
+                    if (userElement === motherEl) {
+                      return t.inheritanceSame.replace('{element}', 
+                        userElement === 'Fire' ? t.elements.fire :
+                        userElement === 'Water' ? t.elements.water :
+                        userElement === 'Air' ? t.elements.air :
+                        t.elements.earth
+                      );
+                    }
+                    
+                    // Compatible elements
+                    const compatKey = `${userElement.toLowerCase()}${motherEl.charAt(0).toUpperCase()}${motherEl.slice(1).toLowerCase()}` as keyof typeof t.inheritanceCompatible;
+                    if (t.inheritanceCompatible[compatKey]) {
+                      return t.inheritanceCompatible[compatKey];
+                    }
+                    
+                    // Opposing elements
+                    const opposKey = `${userElement.toLowerCase()}${motherEl.charAt(0).toUpperCase()}${motherEl.slice(1).toLowerCase()}` as keyof typeof t.inheritanceOpposing;
+                    if (t.inheritanceOpposing[opposKey]) {
+                      return t.inheritanceOpposing[opposKey];
+                    }
+                  }
+                  
+                  // Fallback to English
                   return generateInheritanceInsight(
                     userElement,
                     results.motherAnalysis.element
@@ -1928,7 +2195,7 @@ function DestinyResults({ results }: { results: any }) {
         <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl shadow-md border border-indigo-200 dark:border-indigo-800 p-6">
           <h3 className="text-lg font-bold mb-4 text-black dark:text-slate-100 flex items-center gap-2">
             <Compass className="w-5 h-5 text-indigo-500" />
-            📐 Letter Geometry (Handasa al-Ḥurūf - هندسة الحروف)
+            {t.nameDestiny.geometry.title}
           </h3>
           
           <div className="space-y-5">
@@ -1937,8 +2204,8 @@ function DestinyResults({ results }: { results: any }) {
               <div className="flex items-center gap-2 mb-2">
                 <ArrowUp className="w-4 h-4 text-blue-600" />
                 <span className="text-sm font-bold uppercase text-black dark:text-indigo-300">
-                  {GEOMETRY_NAMES.vertical.en} ({GEOMETRY_NAMES.vertical.transliteration} - {GEOMETRY_NAMES.vertical.ar})
-                  <span className="ml-2 text-xs font-normal">({results.geometry.vertical.count} letters)</span>
+                  {isFr ? GEOMETRY_NAMES.vertical.fr : GEOMETRY_NAMES.vertical.en} ({GEOMETRY_NAMES.vertical.transliteration} - {GEOMETRY_NAMES.vertical.ar})
+                  <span className="ml-2 text-xs font-normal">({results.geometry.vertical.count} {isFr ? 'lettres' : 'letters'})</span>
                 </span>
               </div>
               {results.geometry.vertical.count > 0 ? (
@@ -1959,7 +2226,7 @@ function DestinyResults({ results }: { results: any }) {
                   </p>
                 </>
               ) : (
-                <p className="text-sm text-gray-500 dark:text-gray-500 italic">None in your name</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 italic">{t.nameDestiny.geometry.none}</p>
               )}
             </div>
 
@@ -1970,8 +2237,8 @@ function DestinyResults({ results }: { results: any }) {
               <div className="flex items-center gap-2 mb-2">
                 <Circle className="w-4 h-4 text-rose-600" />
                 <span className="text-sm font-bold uppercase text-black dark:text-indigo-300">
-                  {GEOMETRY_NAMES.round.en} ({GEOMETRY_NAMES.round.transliteration} - {GEOMETRY_NAMES.round.ar})
-                  <span className="ml-2 text-xs font-normal">({results.geometry.round.count} letters)</span>
+                  {isFr ? GEOMETRY_NAMES.round.fr : GEOMETRY_NAMES.round.en} ({GEOMETRY_NAMES.round.transliteration} - {GEOMETRY_NAMES.round.ar})
+                  <span className="ml-2 text-xs font-normal">({results.geometry.round.count} {isFr ? 'lettres' : 'letters'})</span>
                 </span>
               </div>
               {results.geometry.round.count > 0 ? (
@@ -1992,7 +2259,7 @@ function DestinyResults({ results }: { results: any }) {
                   </p>
                 </>
               ) : (
-                <p className="text-sm text-gray-500 dark:text-gray-500 italic">None in your name</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 italic">{t.nameDestiny.geometry.none}</p>
               )}
             </div>
 
@@ -2003,8 +2270,8 @@ function DestinyResults({ results }: { results: any }) {
               <div className="flex items-center gap-2 mb-2">
                 <Minus className="w-4 h-4 text-amber-700" />
                 <span className="text-sm font-bold uppercase text-black dark:text-indigo-300">
-                  {GEOMETRY_NAMES.flat.en} ({GEOMETRY_NAMES.flat.transliteration} - {GEOMETRY_NAMES.flat.ar})
-                  <span className="ml-2 text-xs font-normal">({results.geometry.flat.count} letters)</span>
+                  {isFr ? GEOMETRY_NAMES.flat.fr : GEOMETRY_NAMES.flat.en} ({GEOMETRY_NAMES.flat.transliteration} - {GEOMETRY_NAMES.flat.ar})
+                  <span className="ml-2 text-xs font-normal">({results.geometry.flat.count} {isFr ? 'lettres' : 'letters'})</span>
                 </span>
               </div>
               {results.geometry.flat.count > 0 ? (
@@ -2025,7 +2292,7 @@ function DestinyResults({ results }: { results: any }) {
                   </p>
                 </>
               ) : (
-                <p className="text-sm text-black dark:text-gray-500 italic">None in your name</p>
+                <p className="text-sm text-black dark:text-gray-500 italic">{t.nameDestiny.geometry.none}</p>
               )}
             </div>
 
@@ -2036,8 +2303,8 @@ function DestinyResults({ results }: { results: any }) {
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="w-4 h-4 text-orange-600" />
                 <span className="text-sm font-bold uppercase text-black dark:text-indigo-300">
-                  {GEOMETRY_NAMES.angular.en} ({GEOMETRY_NAMES.angular.transliteration} - {GEOMETRY_NAMES.angular.ar})
-                  <span className="ml-2 text-xs font-normal">({results.geometry.angular.count} letters)</span>
+                  {isFr ? GEOMETRY_NAMES.angular.fr : GEOMETRY_NAMES.angular.en} ({GEOMETRY_NAMES.angular.transliteration} - {GEOMETRY_NAMES.angular.ar})
+                  <span className="ml-2 text-xs font-normal">({results.geometry.angular.count} {isFr ? 'lettres' : 'letters'})</span>
                 </span>
               </div>
               {results.geometry.angular.count > 0 ? (
@@ -2058,7 +2325,7 @@ function DestinyResults({ results }: { results: any }) {
                   </p>
                 </>
               ) : (
-                <p className="text-sm text-black dark:text-gray-500 italic">None in your name</p>
+                <p className="text-sm text-black dark:text-gray-500 italic">{t.nameDestiny.geometry.none}</p>
               )}
             </div>
 
@@ -2068,7 +2335,7 @@ function DestinyResults({ results }: { results: any }) {
                 <Lightbulb className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <div className="font-bold text-black dark:text-indigo-200 mb-2">
-                    💡 Your Geometric Profile
+                    {t.nameDestiny.geometry.profile}
                   </div>
                   <p className="text-sm text-black dark:text-indigo-300 leading-relaxed">
                     {results.geometry.profile}
@@ -2084,34 +2351,40 @@ function DestinyResults({ results }: { results: any }) {
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-4 text-black dark:text-slate-100 flex items-center gap-2">
           <Target className="w-5 h-5 text-purple-500" />
-          Your Soul Triad
+          {t.nameDestiny.triad.title}
         </h3>
         
         <div className="space-y-4">
           <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
             <div className="font-bold text-black dark:text-purple-300 mb-1">
-              Life Destiny ({results.saghir})
+              {t.nameDestiny.triad.lifeDestiny} ({results.saghir})
             </div>
             <div className="text-sm text-black dark:text-slate-300">
-              {station.quality}
+              {language === 'fr' && t.spiritualStations?.[results.saghir as keyof typeof t.spiritualStations]?.quality 
+                ? t.spiritualStations[results.saghir as keyof typeof t.spiritualStations].quality 
+                : station.quality}
             </div>
           </div>
           
           <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <div className="font-bold text-black dark:text-blue-300 mb-1">
-              Soul Urge ({results.soulUrge?.name})
+              {t.nameDestiny.triad.soulUrge} ({results.soulUrge?.name})
             </div>
             <div className="text-sm text-black dark:text-slate-300">
-              {results.soulUrge?.quality}
+              {language === 'fr' && results.soulUrge && t.spiritualStations?.[results.soulUrge.name as keyof typeof t.spiritualStations]?.quality
+                ? t.spiritualStations[results.soulUrge.name as keyof typeof t.spiritualStations].quality
+                : results.soulUrge?.quality}
             </div>
           </div>
           
           <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <div className="font-bold text-black dark:text-green-300 mb-1">
-              Outer Personality ({results.personality?.name})
+              {t.nameDestiny.triad.outerPersonality} ({results.personality?.name})
             </div>
             <div className="text-sm text-black dark:text-slate-300">
-              {results.personality?.quality}
+              {language === 'fr' && results.personality && t.spiritualStations?.[results.personality.name as keyof typeof t.spiritualStations]?.quality
+                ? t.spiritualStations[results.personality.name as keyof typeof t.spiritualStations].quality
+                : results.personality?.quality}
             </div>
           </div>
         </div>
@@ -2121,33 +2394,74 @@ function DestinyResults({ results }: { results: any }) {
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
           <Lightbulb className="w-5 h-5 text-amber-500" />
-          Practical Guidance
+          {t.nameDestiny.guidance.title}
         </h3>
         
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div>
-            <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">✨ Your Path:</div>
+            <div className="font-semibold text-yellow-700 dark:text-yellow-400 mb-1 flex items-center gap-2">
+              ✨ {t.nameDestiny.guidance.yourPath}
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
+              {t.nameDestiny.guidance.yourPathDesc}
+            </p>
             <p className="text-slate-700 dark:text-slate-300">{results.interpretation}</p>
           </div>
           
           <div>
-            <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">🌟 Spiritual Practice:</div>
-            <p className="text-slate-700 dark:text-slate-300">{station.practice}</p>
+            <div className="font-semibold text-indigo-700 dark:text-indigo-400 mb-1 flex items-center gap-2">
+              🕊 {t.nameDestiny.guidance.spiritualPractice}
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
+              {t.nameDestiny.guidance.spiritualPracticeDesc}
+            </p>
+            <p className="text-slate-700 dark:text-slate-300">
+              {language === 'fr' && results.saghir in t.spiritualStations
+                ? (t.spiritualStations as any)[results.saghir]?.practice
+                : station.practice}
+            </p>
           </div>
           
           <div>
-            <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">📖 Quranic Guidance:</div>
-            <p className="text-slate-700 dark:text-slate-300 italic">{station.verse}</p>
+            <div className="font-semibold text-blue-700 dark:text-blue-400 mb-1 flex items-center gap-2">
+              📖 {t.nameDestiny.guidance.quranicGuidance}
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
+              {t.nameDestiny.guidance.quranicGuidanceDesc}
+            </p>
+            <p className="text-slate-700 dark:text-slate-300 italic">
+              {language === 'fr' && results.saghir in t.spiritualStations
+                ? (t.spiritualStations as any)[results.saghir]?.verse
+                : station.verse}
+            </p>
           </div>
           
           <div>
-            <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">💼 Practical Action:</div>
-            <p className="text-slate-700 dark:text-slate-300">{station.practical}</p>
+            <div className="font-semibold text-emerald-700 dark:text-emerald-400 mb-1 flex items-center gap-2">
+              🧭 {t.nameDestiny.guidance.practicalAction}
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
+              {t.nameDestiny.guidance.practicalActionDesc}
+            </p>
+            <p className="text-slate-700 dark:text-slate-300">
+              {language === 'fr' && results.saghir in t.spiritualStations
+                ? (t.spiritualStations as any)[results.saghir]?.practical
+                : station.practical}
+            </p>
           </div>
           
           <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border-l-4 border-amber-500">
-            <div className="font-semibold text-amber-900 dark:text-amber-300 mb-2">⚠️ Shadow to Watch:</div>
-            <p className="text-amber-800 dark:text-amber-200">{station.shadow}</p>
+            <div className="font-semibold text-amber-900 dark:text-amber-300 mb-1 flex items-center gap-2">
+              ⚠️ {t.nameDestiny.guidance.shadowToWatch}
+            </div>
+            <p className="text-xs text-amber-700 dark:text-amber-400 mb-2 italic">
+              {t.nameDestiny.guidance.shadowToWatchDesc}
+            </p>
+            <p className="text-amber-800 dark:text-amber-200">
+              {language === 'fr' && results.saghir in t.spiritualStations
+                ? (t.spiritualStations as any)[results.saghir]?.shadow
+                : station.shadow}
+            </p>
           </div>
         </div>
       </div>
@@ -2156,6 +2470,7 @@ function DestinyResults({ results }: { results: any }) {
 }
 
 function CompatibilityResults({ results }: { results: any }) {
+  const { t } = useLanguage();
   // Check if it's the new RelationshipCompatibility format
   const isNewFormat = results?.mode === 'relationship' && results?.methods;
   
@@ -2389,6 +2704,7 @@ function CompatibilityResults({ results }: { results: any }) {
 }
 
 function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
+  const { t } = useLanguage();
   const {
     lifePathNumber,
     soulUrgeNumber,
@@ -2685,6 +3001,7 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
 }
 
 function TimingResults({ results, birthDate, name, abjad }: { results: any; birthDate: string; name: string; abjad: any }) {
+  const { t } = useLanguage();
   const { planetaryHour, personalYear } = results;
   const [restAlertDismissed, setRestAlertDismissed] = useState(false);
   
@@ -2759,7 +3076,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
       if (calculatedElement && hour) {
         const align = detectAlignment(calculatedElement, hour.element);
         const window = calculateTimeWindow(hour, calculatedElement);
-        const buttons = generateActionButtons(align, window);
+        const buttons = generateActionButtons(align, window, t);
         
         setAlignment(align);
         setTimeWindow(window);
