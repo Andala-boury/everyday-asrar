@@ -152,12 +152,98 @@ export const nameTransliterations: NameTransliteration[] = [
   {"arabic": "كلف", "latin": "kalifa"},
   {"arabic": "لندغ", "latin": "landing"},
   {"arabic": "جلف", "latin": "khalifa"},
-  {"arabic": "اسمان", "latin": "ousman"}
+  {"arabic": "اسمان", "latin": "ousman"},
+  
+  // Common compound names (titles + names)
+  {"arabic": "شيخ إبراهيم", "latin": "cheikh ibrahima"},
+  {"arabic": "شيخ إبراهيم", "latin": "sheikh ibrahima"},
+  {"arabic": "شيخ عثمان", "latin": "cheikh ousman"},
+  {"arabic": "شيخ عثمان", "latin": "sheikh ousman"},
+  {"arabic": "شرن فل", "latin": "serigne fallu"},
+  {"arabic": "شرن فل", "latin": "seringe fallou"},
+  {"arabic": "شرن لمي", "latin": "serigne lamine"},
+  {"arabic": "شرن مود", "latin": "serigne modou"},
+  {"arabic": "شرن توب", "latin": "serigne touba"},
+  {"arabic": "شيخ امد", "latin": "cheikh amadou"},
+  {"arabic": "شيخ بكل", "latin": "cheikh bakari"},
+  {"arabic": "الحاج عثمان", "latin": "alhagie ousman"},
+  {"arabic": "الحاج م مد", "latin": "alhagie mamadou"},
+  {"arabic": "ند فاطمة", "latin": "ndaye fatou"},
+  {"arabic": "ند فاطمة", "latin": "ndeye fatou"},
+  {"arabic": "ند إيسة", "latin": "ndaye aissatou"},
+  {"arabic": "ند إيسة", "latin": "ndeye isatou"},
+  {"arabic": "ند امنة", "latin": "ndaye aminata"},
+  {"arabic": "ند كمب", "latin": "ndaye kumba"},
+  {"arabic": "ياي فاطمة", "latin": "yaye fatou"},
+  {"arabic": "ياي إيسة", "latin": "yaye aissatou"},
+  {"arabic": "ياي امنة", "latin": "yaye aminata"},
+  {"arabic": "باب مالك", "latin": "pape malick"},
+  {"arabic": "باب سمب", "latin": "pape samba"},
+  {"arabic": "باب إبراهيم", "latin": "pape ibrahima"},
+  {"arabic": "شيخ عبد الله", "latin": "cheikh abdoulie"},
+  {"arabic": "شرن سليمان", "latin": "serigne sulayman"},
+  {"arabic": "الحاج محمد", "latin": "alhagie muhammadu"}
 ];
 
 export function searchNameTransliterations(query: string): NameMatch[] {
   if (!query || query.trim().length === 0) return [];
   const normalizedQuery = query.toLowerCase().trim();
+  
+  // Check if query contains multiple words (compound name like "Cheikh Ibrahim")
+  const queryWords = normalizedQuery.split(/\s+/);
+  
+  if (queryWords.length > 1) {
+    // For compound names, match each word separately and combine results
+    const combinedMatches: NameMatch[] = [];
+    const wordMatches: NameMatch[][] = queryWords.map(word => {
+      const wordResults: NameMatch[] = [];
+      nameTransliterations.forEach(item => {
+        const latinLower = item.latin.toLowerCase();
+        if (latinLower.includes(word)) {
+          wordResults.push({
+            arabic: item.arabic,
+            matchedVariation: item.latin,
+            isExactMatch: latinLower === word,
+            isStartsWith: latinLower.startsWith(word)
+          });
+        }
+      });
+      return wordResults.sort((a, b) => {
+        if (a.isExactMatch && !b.isExactMatch) return -1;
+        if (!a.isExactMatch && b.isExactMatch) return 1;
+        if (a.isStartsWith && !b.isStartsWith) return -1;
+        if (!a.isStartsWith && b.isStartsWith) return 1;
+        return 0;
+      });
+    });
+    
+    // Combine matches from each word (take top match from each)
+    // This creates compound name suggestions like "cheikh + ibrahima"
+    if (wordMatches.every(matches => matches.length > 0)) {
+      const topMatches = wordMatches.map(matches => matches[0]);
+      const combinedArabic = topMatches.map(m => m.arabic).join(' ');
+      const combinedLatin = topMatches.map(m => m.matchedVariation).join(' ');
+      combinedMatches.push({
+        arabic: combinedArabic,
+        matchedVariation: combinedLatin,
+        isExactMatch: topMatches.every(m => m.isExactMatch),
+        isStartsWith: topMatches.every(m => m.isStartsWith)
+      });
+    }
+    
+    // Also include individual word matches as alternatives
+    wordMatches.forEach(matches => {
+      matches.slice(0, 3).forEach(match => {
+        if (!combinedMatches.some(cm => cm.matchedVariation === match.matchedVariation)) {
+          combinedMatches.push(match);
+        }
+      });
+    });
+    
+    return combinedMatches;
+  }
+  
+  // Single word search - original logic
   const matches: NameMatch[] = [];
   nameTransliterations.forEach(item => {
     const latinLower = item.latin.toLowerCase();
