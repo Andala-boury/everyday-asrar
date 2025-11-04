@@ -2,25 +2,26 @@
 
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, X, Sparkles, Calculator, BookOpen, Lightbulb } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
-const TUTORIAL_STEPS = [
+const getTutorialSteps = (t: any) => [
   {
     id: 1,
-    title: "Welcome to Asrār Everyday! 🌙",
+    title: t?.onboarding?.welcome || "Welcome to Asrār Everyday! 🌙",
     description: "Explore the beautiful tradition of ʿIlm al-Ḥurūf (Science of Letters) - an Islamic science that reveals numerical values and elemental associations in Arabic text.",
     icon: Sparkles,
     highlight: null
   },
   {
     id: 2,
-    title: "Enter Your Text",
+    title: t?.onboarding?.enterText || "Enter Your Text",
     description: "Type in English/French (like 'Rahim' or 'Fatou') and we'll transliterate to Arabic. Or use the Arabic keyboard for direct input. Always verify the Arabic spelling for accuracy!",
     icon: Calculator,
     highlight: "input-section"
   },
   {
     id: 3,
-    title: "Understanding Your Analysis",
+    title: t?.onboarding?.understanding || "Understanding Your Analysis",
     description: "• Kabīr (الكبير): Total numerical value\n• Ṣaghīr (الصغير): Digital root (1-9)\n• Elements: Fire 🔥 Water 💧 Air 🌬 Earth 🌍\n• Ḥadath: Elemental influence pattern",
     icon: BookOpen,
     highlight: null
@@ -40,6 +41,8 @@ interface OnboardingTutorialProps {
 }
 
 export function OnboardingTutorial({ isOpen, onClose }: OnboardingTutorialProps) {
+  const { t } = useLanguage();
+  const TUTORIAL_STEPS = getTutorialSteps(t);
   const [currentStep, setCurrentStep] = useState(0);
   const [dontShowAgain, setDontShowAgain] = useState(false);
 
@@ -125,7 +128,7 @@ export function OnboardingTutorial({ isOpen, onClose }: OnboardingTutorialProps)
             <button
               onClick={handleSkip}
               className="p-1.5 sm:p-2 hover:bg-white/20 rounded-lg transition-colors touch-manipulation"
-              aria-label="Close tutorial"
+              aria-label={t?.onboarding?.closeTutorial || "Close tutorial"}
             >
               <X className="w-5 h-5 text-white" />
             </button>

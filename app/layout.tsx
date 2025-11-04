@@ -1,8 +1,13 @@
 import './globals.css'
 import type { Metadata, Viewport } from 'next'
 import { AbjadProvider } from '../src/contexts/AbjadContext'
+import { LanguageProvider } from '../src/contexts/LanguageContext'
+import { getSeoConfig } from '../src/lib/seoConfig'
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://asrar-everyday.vercel.app'
+
+// Get SEO config for default language (English)
+const seoConfig = getSeoConfig('en');
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -16,8 +21,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
-  title: 'Asrār Everyday - ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Calculator',
-  description: 'Explore the Islamic sciences of Letter Numerology (ʿIlm al-Ḥurūf) and Number Science (ʿIlm al-ʿAdad). Calculate Abjad values, discover elemental associations, and receive traditional spiritual guidance based on classical sources. Educational and cultural exploration tool - not for divination.',
+  title: seoConfig.title,
+  description: seoConfig.siteDescription,
   keywords: [
     'abjad',
     'ilm al huruf',
@@ -62,9 +67,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     alternateLocale: ['fr_FR', 'ar_SA'],
     url: baseUrl,
-    siteName: 'Asrār Everyday',
-    title: 'Asrār Everyday - ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Calculator',
-    description: 'Explore the Islamic sciences of Letter Numerology and Number Science with our comprehensive Abjad calculator and spiritual guidance tool.',
+    siteName: seoConfig.siteName,
+    title: seoConfig.title,
+    description: seoConfig.siteDescription,
     images: [
       {
         url: '/og-image.png',
@@ -77,8 +82,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Asrār Everyday - ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Calculator',
-    description: 'Explore Islamic Letter Numerology and Number Science with Abjad calculator and spiritual guidance.',
+    title: seoConfig.title,
+    description: seoConfig.siteDescription,
     images: ['/og-image.png'],
   },
   authors: [
@@ -100,9 +105,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AbjadProvider>
-          {children}
-        </AbjadProvider>
+        <LanguageProvider>
+          <AbjadProvider>
+            {children}
+          </AbjadProvider>
+        </LanguageProvider>
       </body>
     </html>
   )

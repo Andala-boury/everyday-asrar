@@ -107,6 +107,259 @@ export const PLANETARY_HOURS_ORDER: Planet[] = [
   'Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 'Moon'
 ];
 
+// ============================================================================
+// HELPER FUNCTIONS FOR NAME DESTINY MODULE
+// ============================================================================
+
+/**
+ * modIndex: Maps modulo result where 0 → base (for Ṭabʿ ÷ 4 and Burj ÷ 12)
+ * Examples: (8 % 4) = 0 → 4 (Earth); (12 % 12) = 0 → 12 (Pisces)
+ */
+export function modIndex(n: number, base: 4 | 12): number {
+  const remainder = n % base;
+  return remainder === 0 ? base : remainder;
+}
+
+// ============================================================================
+// ELEMENTAL DATA (Ṭabʿ) - MAGHRIBI MAPPING: 1=Fire, 2=Earth, 3=Air, 4=Earth
+// IMPORTANT: mod 4 → 0 ⇒ 4 (Earth) per classical Maghribi tradition
+// ============================================================================
+
+export type ElementKey = 1 | 2 | 3 | 4;
+
+export interface ElementData {
+  index: ElementKey;
+  en: string;
+  fr: string;
+  ar: string;
+  icon: string;
+  qualityEn: string;
+  qualityFr: string;
+}
+
+export const ELEMENTS: Record<ElementKey, ElementData> = {
+  1: {
+    index: 1,
+    en: 'Fire',
+    fr: 'Feu',
+    ar: 'نار',
+    icon: '🔥',
+    qualityEn: 'Hot & Dry',
+    qualityFr: 'Chaud & sec',
+  },
+  2: {
+    index: 2,
+    en: 'Earth',
+    fr: 'Terre',
+    ar: 'تراب',
+    icon: '🌍',
+    qualityEn: 'Cold & Dry',
+    qualityFr: 'Froid & sec',
+  },
+  3: {
+    index: 3,
+    en: 'Air',
+    fr: 'Air',
+    ar: 'هواء',
+    icon: '🌬️',
+    qualityEn: 'Hot & Moist',
+    qualityFr: 'Chaud & humide',
+  },
+  4: {
+    index: 4,
+    en: 'Earth',
+    fr: 'Terre',
+    ar: 'تراب',
+    icon: '🌍',
+    qualityEn: 'Cold & Dry',
+    qualityFr: 'Froid & sec',
+  },
+};
+
+// ============================================================================
+// ZODIAC DATA (Burūj al-Falakīya) - 12 Signs
+// ============================================================================
+
+export interface BurjData {
+  index: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  en: string;
+  fr: string;
+  ar: string;
+  symbol: string;
+  planet: Planet;
+  dayEn: string;
+  dayFr: string;
+  dayAr: string;
+  qualityEn: string;
+  qualityFr: string;
+}
+
+export const BURUJ: Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12, BurjData> = {
+  1: {
+    index: 1,
+    en: 'Aries',
+    fr: 'Bélier',
+    ar: 'الحمل',
+    symbol: '♈',
+    planet: 'Mars',
+    dayEn: 'Tuesday',
+    dayFr: 'Mardi',
+    dayAr: 'الثلاثاء',
+    qualityEn: 'Initiative & Courage',
+    qualityFr: 'Initiative & courage',
+  },
+  2: {
+    index: 2,
+    en: 'Taurus',
+    fr: 'Taureau',
+    ar: 'الثور',
+    symbol: '♉',
+    planet: 'Venus',
+    dayEn: 'Friday',
+    dayFr: 'Vendredi',
+    dayAr: 'الجمعة',
+    qualityEn: 'Stability & Beauty',
+    qualityFr: 'Stabilité & beauté',
+  },
+  3: {
+    index: 3,
+    en: 'Gemini',
+    fr: 'Gémeaux',
+    ar: 'الجوزاء',
+    symbol: '♊',
+    planet: 'Mercury',
+    dayEn: 'Wednesday',
+    dayFr: 'Mercredi',
+    dayAr: 'الأربعاء',
+    qualityEn: 'Communication & Adaptability',
+    qualityFr: 'Communication & adaptabilité',
+  },
+  4: {
+    index: 4,
+    en: 'Cancer',
+    fr: 'Cancer',
+    ar: 'السرطان',
+    symbol: '♋',
+    planet: 'Moon',
+    dayEn: 'Monday',
+    dayFr: 'Lundi',
+    dayAr: 'الاثنين',
+    qualityEn: 'Nurturing & Intuition',
+    qualityFr: 'Soin & intuition',
+  },
+  5: {
+    index: 5,
+    en: 'Leo',
+    fr: 'Lion',
+    ar: 'الأسد',
+    symbol: '♌',
+    planet: 'Sun',
+    dayEn: 'Sunday',
+    dayFr: 'Dimanche',
+    dayAr: 'الأحد',
+    qualityEn: 'Leadership & Creativity',
+    qualityFr: 'Leadership & créativité',
+  },
+  6: {
+    index: 6,
+    en: 'Virgo',
+    fr: 'Vierge',
+    ar: 'العذراء',
+    symbol: '♍',
+    planet: 'Mercury',
+    dayEn: 'Wednesday',
+    dayFr: 'Mercredi',
+    dayAr: 'الأربعاء',
+    qualityEn: 'Service & Precision',
+    qualityFr: 'Service & précision',
+  },
+  7: {
+    index: 7,
+    en: 'Libra',
+    fr: 'Balance',
+    ar: 'الميزان',
+    symbol: '♎',
+    planet: 'Venus',
+    dayEn: 'Friday',
+    dayFr: 'Vendredi',
+    dayAr: 'الجمعة',
+    qualityEn: 'Harmony & Justice',
+    qualityFr: 'Harmonie & justice',
+  },
+  8: {
+    index: 8,
+    en: 'Scorpio',
+    fr: 'Scorpion',
+    ar: 'العقرب',
+    symbol: '♏',
+    planet: 'Mars',
+    dayEn: 'Tuesday',
+    dayFr: 'Mardi',
+    dayAr: 'الثلاثاء',
+    qualityEn: 'Transformation & Depth',
+    qualityFr: 'Transformation & profondeur',
+  },
+  9: {
+    index: 9,
+    en: 'Sagittarius',
+    fr: 'Sagittaire',
+    ar: 'القوس',
+    symbol: '♐',
+    planet: 'Jupiter',
+    dayEn: 'Thursday',
+    dayFr: 'Jeudi',
+    dayAr: 'الخميس',
+    qualityEn: 'Wisdom & Expansion',
+    qualityFr: 'Sagesse & expansion',
+  },
+  10: {
+    index: 10,
+    en: 'Capricorn',
+    fr: 'Capricorne',
+    ar: 'الجدي',
+    symbol: '♑',
+    planet: 'Saturn',
+    dayEn: 'Saturday',
+    dayFr: 'Samedi',
+    dayAr: 'السبت',
+    qualityEn: 'Discipline & Achievement',
+    qualityFr: 'Discipline & accomplissement',
+  },
+  11: {
+    index: 11,
+    en: 'Aquarius',
+    fr: 'Verseau',
+    ar: 'الدلو',
+    symbol: '♒',
+    planet: 'Saturn',
+    dayEn: 'Saturday',
+    dayFr: 'Samedi',
+    dayAr: 'السبت',
+    qualityEn: 'Innovation & Humanitarianism',
+    qualityFr: 'Innovation & humanitarisme',
+  },
+  12: {
+    index: 12,
+    en: 'Pisces',
+    fr: 'Poissons',
+    ar: 'الحوت',
+    symbol: '♓',
+    planet: 'Jupiter',
+    dayEn: 'Thursday',
+    dayFr: 'Jeudi',
+    dayAr: 'الخميس',
+    qualityEn: 'Compassion & Spirituality',
+    qualityFr: 'Compassion & spiritualité',
+  },
+};
+
+/**
+ * Planetary Hours - ordered list for finding hour index
+ */
+export const PLANETARY_HOURS: Planet[] = [
+  'Sun', 'Venus', 'Mercury', 'Moon', 'Saturn', 'Jupiter', 'Mars'
+];
+
 /**
  * Zodiacal classification of letters (12 signs)
  */
@@ -406,6 +659,100 @@ export function analyzeMotherName(arabicName: string, abjad: Record<string, numb
   };
 }
 
+// ============================================================================
+// NAME DESTINY MODULE - Mother's Name Integration + Burj Calculation
+// ============================================================================
+
+/**
+ * Result interface for buildDestiny function (unified Name Chart calculation)
+ */
+export interface NameDestinyResult {
+  personKabir: number;    // Person's Ḥadad alone
+  motherKabir: number;    // Mother's Ḥadad alone (0 if not provided)
+  totalKabir: number;     // Combined total (person + mother)
+  saghir: number;         // Digital root (1-9)
+  tabhIdx: ElementKey;    // Element index (1-4, where 4=Earth)
+  element: ElementData;   // Ṭabʿ (Element from ÷ 4, remainder 0→4)
+  burjIdx: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  burj: BurjData;         // Burj (Zodiac from ÷ 12, remainder 0→12)
+  hourIndex: number;      // Planetary hour # (1-7)
+  expression: ElementData;     // Element from person's name alone
+  foundation?: ElementData;    // Element from mother's name (if provided)
+}
+
+/**
+ * Calculate Abjad totals with mother's name
+ * Mother's name is ALWAYS included in calculation (even if empty → 0)
+ */
+function abjadTotalWithMother(
+  personName: string,
+  motherName: string | undefined,
+  abjad: Record<string, number> = ABJAD_MAGHRIBI
+): { p: number; m: number; total: number } {
+  const normalized = personName.replace(/[ًٌٍَُِّْ]/g, '').replace(/\s+/g, '');
+  const letters = [...normalized];
+  const p = letters.reduce((sum, ch) => sum + (abjad[ch] || 0), 0);
+  
+  let m = 0;
+  if (motherName && motherName.trim() !== '') {
+    const normalizedMother = motherName.replace(/[ًٌٍَُِّْ]/g, '').replace(/\s+/g, '');
+    const motherLetters = [...normalizedMother];
+    m = motherLetters.reduce((sum, ch) => sum + (abjad[ch] || 0), 0);
+  }
+  
+  return { p, m, total: p + m };
+}
+
+/**
+ * Build complete Name Chart (unified calculation for Name Destiny)
+ * Implements: Ṭabʿ (÷4, 0→4=Earth) + Burj (÷12, 0→12=Pisces) + Planet/Day/Hour
+ * Mother's name always included in total
+ */
+export function buildDestiny(
+  personName: string,
+  motherName?: string,
+  abjad: Record<string, number> = ABJAD_MAGHRIBI
+): NameDestinyResult {
+  // Calculate totals with mother included
+  const { p: personKabir, m: motherKabir, total: totalKabir } = abjadTotalWithMother(personName, motherName, abjad);
+  
+  // Digital root (Ṣaghīr)
+  const saghir = digitalRoot(totalKabir);
+  
+  // Ṭabʿ (Element) = total ÷ 4, remainder 0 → 4 (Earth)
+  const tabhIdx = modIndex(totalKabir, 4) as ElementKey;
+  const element = ELEMENTS[tabhIdx];
+  
+  // Burj (Zodiac) = total ÷ 12, remainder 0 → 12 (Pisces)
+  const burjIdx = modIndex(totalKabir, 12) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  const burj = BURUJ[burjIdx];
+  
+  // Planetary Hour # (1-7 based on burj's planet)
+  const hourIndex = PLANETARY_HOURS.findIndex(p => p === burj.planet) + 1;
+  
+  // Calculate expression (person's element alone)
+  const expression = ELEMENTS[modIndex(personKabir, 4) as ElementKey];
+  
+  // Calculate foundation (mother's element, if provided)
+  const foundation = (motherName && motherName.trim() !== '') 
+    ? ELEMENTS[modIndex(motherKabir, 4) as ElementKey]
+    : undefined;
+  
+  return {
+    personKabir,
+    motherKabir,
+    totalKabir,
+    saghir,
+    tabhIdx,
+    element,
+    burjIdx,
+    burj,
+    hourIndex,
+    expression,
+    foundation,
+  };
+}
+
 /**
  * Generate inheritance insight based on user's element and mother's element
  * Explains the relationship between expression (user) and foundation (mother)
@@ -518,11 +865,11 @@ const GEOMETRY_MAP: Record<GeometryType, string[]> = {
 /**
  * Arabic names for geometry types
  */
-export const GEOMETRY_NAMES = {
-  vertical: { en: 'Vertical', ar: 'عمودي', transliteration: 'ʿAmūdī' },
-  round: { en: 'Round', ar: 'مدور', transliteration: 'Mudawwar' },
-  flat: { en: 'Flat', ar: 'مسطح', transliteration: 'Musaṭṭaḥ' },
-  angular: { en: 'Angular', ar: 'زاوية', transliteration: 'Zāwiya' }
+export const GEOMETRY_NAMES: Record<GeometryType, { en: string; fr: string; ar: string; transliteration: string }> = {
+  vertical: { en: 'Vertical', fr: 'Vertical', ar: 'عمودي', transliteration: 'ʿAmūdī' },
+  round: { en: 'Round', fr: 'Rond', ar: 'مدور', transliteration: 'Mudawwar' },
+  flat: { en: 'Flat', fr: 'Plat', ar: 'مسطح', transliteration: 'Musaṭṭaḥ' },
+  angular: { en: 'Angular', fr: 'Angulaire', ar: 'زاوية', transliteration: 'Zāwiya' }
 };
 
 /**
@@ -924,26 +1271,27 @@ function isElementCompatible(element1: ElementType, element2: ElementType): bool
  */
 export function generateActionButtons(
   alignment: ElementAlignment,
-  timeWindow: TimeWindow
+  timeWindow: TimeWindow,
+  t?: any
 ): ActionButton[] {
   // HIGH ALIGNMENT (Perfect or Strong)
   if (alignment.quality === 'perfect' || alignment.quality === 'strong') {
     return [
       {
         icon: '🚀',
-        label: 'Start Important Task',
+        label: t?.actionButtons?.startImportantTask || 'Start Important Task',
         action: 'start',
         priority: 'primary'
       },
       {
         icon: '📞',
-        label: 'Make Difficult Call',
+        label: t?.actionButtons?.makeDifficultCall || 'Make Difficult Call',
         action: 'start',
         priority: 'primary'
       },
       {
         icon: '✍️',
-        label: 'Send Critical Email',
+        label: t?.actionButtons?.sendCriticalEmail || 'Send Critical Email',
         action: 'start',
         priority: 'secondary'
       },
@@ -1572,7 +1920,8 @@ function getPlanetReturnSpeed(planet: Planet): EnergyReturnSpeed {
  */
 function getEnergyReturnDetails(
   speed: EnergyReturnSpeed,
-  planet: Planet
+  planet: Planet,
+  t?: any
 ): EnergyReturnInfo {
   
   const baseDetails: Record<EnergyReturnSpeed, { timeframe: string; description: string }> = {
@@ -1582,11 +1931,11 @@ function getEnergyReturnDetails(
     },
     'quick': {
       timeframe: 'few hours',
-      description: 'What you give flows back quickly'
+      description: t?.energyReturn?.fast || 'What you give flows back quickly'
     },
     'gradual': {
       timeframe: '2-3 days',
-      description: 'What you give today takes time to return'
+      description: t?.energyReturn?.slow || 'What you give today takes time to return'
     },
     'delayed': {
       timeframe: '1-2 weeks',

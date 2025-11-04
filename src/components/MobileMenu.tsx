@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { X, HelpCircle, History, Info, BookOpen } from 'lucide-react';
 import { AbjadSystemSelector } from './AbjadSystemSelector';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export function MobileMenu({
   onShowHistory,
   historyCount
 }: MobileMenuProps) {
+  const { t } = useLanguage();
   const [expandAbout, setExpandAbout] = useState(false);
   return (
     <>
@@ -39,11 +41,11 @@ export function MobileMenu({
       >
         {/* Menu Header */}
         <div className="sticky top-0 border-b border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between bg-white dark:bg-slate-800">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Menu</h2>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{t.nav.menu}</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-            aria-label="Close menu"
+            aria-label={t?.controls?.closeMenu || "Close menu"}
           >
             <X className="w-5 h-5" />
           </button>

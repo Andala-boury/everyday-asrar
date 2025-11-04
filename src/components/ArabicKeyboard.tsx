@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Keyboard, X } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface ArabicKeyboardProps {
   onKeyPress: (char: string) => void;
@@ -33,6 +34,8 @@ const KEY_LABELS: Record<string, string> = {
 };
 
 export function ArabicKeyboard({ onKeyPress, onClose }: ArabicKeyboardProps) {
+  const { t } = useLanguage();
+  
   return (
     <div className="bg-slate-100 dark:bg-slate-900 rounded-lg border-2 border-slate-300 dark:border-slate-600 p-4 shadow-lg">
       <div className="flex items-center justify-between mb-3">
@@ -44,7 +47,7 @@ export function ArabicKeyboard({ onKeyPress, onClose }: ArabicKeyboardProps) {
           <button
             onClick={onClose}
             className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded transition-colors"
-            aria-label="Close keyboard"
+            aria-label={t?.controls?.closeKeyboard || "Close keyboard"}
           >
             <X className="w-4 h-4 text-slate-500" />
           </button>

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Flame, Droplet, Wind, Mountain, Timer, X } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 /**
  * Balance Meter Component
@@ -248,6 +249,7 @@ function getElementEmoji(element: ElementType): string {
  */
 export function BalanceMeter({ userElement, currentDayElement, compact = false }: BalanceMeterProps) {
   const balance = calculateBalance(userElement, currentDayElement);
+  const { t } = useLanguage();
   const [showTimer, setShowTimer] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [showGuide, setShowGuide] = useState(false); // FIX #5: Score guide toggle
@@ -299,7 +301,7 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <span className="text-lg">⚖️</span>
-            <span className="font-semibold text-sm text-slate-900 dark:text-slate-100">Balance</span>
+            <span className="font-semibold text-sm text-slate-900 dark:text-slate-100">{t.balanceMeter.balance}</span>
           </div>
           <span className={`text-xl font-bold ${getScoreColor(balance.score)}`}>
             {balance.score}
@@ -322,7 +324,7 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
           <div className="flex items-center gap-2">
             <span className="text-2xl">⚖️</span>
             <h3 className="text-lg font-bold text-white">
-              Your Balance Today
+              {t.balanceMeter.yourBalanceToday}
             </h3>
           </div>
           <div className="text-right">
@@ -344,16 +346,16 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
             />
           </div>
           <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
-            <span>Conflict</span>
-            <span>Moderate</span>
-            <span>Harmony</span>
+            <span>{t.balanceMeter.conflict}</span>
+            <span>{t.balanceMeter.moderate}</span>
+            <span>{t.balanceMeter.harmony}</span>
           </div>
         </div>
 
         {/* Element Status - FIX #4: Add emoji icons */}
         <div className="grid grid-cols-2 gap-3">
           <div className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-            <div className="text-xs text-red-700 dark:text-red-300 font-semibold mb-1">Too much:</div>
+            <div className="text-xs text-red-700 dark:text-red-300 font-semibold mb-1">{t.balanceMeter.tooMuch}</div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-2xl">{getElementEmoji(balance.dominant)}</span>
               <span className="font-bold text-red-900 dark:text-red-100">{balance.dominant}</span>
@@ -364,7 +366,7 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
           </div>
 
           <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <div className="text-xs text-blue-700 dark:text-blue-300 font-semibold mb-1">Need more:</div>
+            <div className="text-xs text-blue-700 dark:text-blue-300 font-semibold mb-1">{t.balanceMeter.needMore}</div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-2xl">{getElementEmoji(balance.deficit)}</span>
               <span className="font-bold text-blue-900 dark:text-blue-100">{balance.deficit}</span>
@@ -382,20 +384,20 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
               <span className="text-xl">💡</span>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="font-bold text-amber-900 dark:text-amber-100">Quick Fix</div>
+                  <div className="font-bold text-amber-900 dark:text-amber-100">{t.balanceMeter.quickFix}</div>
                   {balance.score <= 30 && (
                     <span className="text-xs px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full font-semibold">
-                      Severe Conflict
+                      {t.balanceMeter.severeConflict}
                     </span>
                   )}
                   {balance.score > 30 && balance.score <= 60 && (
                     <span className="text-xs px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full font-semibold">
-                      Moderate
+                      {t.balanceMeter.moderate}
                     </span>
                   )}
                   {balance.score > 60 && balance.score < 81 && (
                     <span className="text-xs px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full font-semibold">
-                      Mild
+                      {t.balanceMeter.mild}
                     </span>
                   )}
                 </div>
@@ -411,7 +413,7 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
                 className="w-full px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
               >
                 <Timer className="w-4 h-4" />
-                Start {balance.fixDuration}-Min Timer
+                {t.balanceMeter.startTimer.replace('{duration}', balance.fixDuration.toString())}
               </button>
             ) : (
               <div className="space-y-2">
@@ -420,7 +422,7 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
                     {formatTime(timeLeft)}
                   </div>
                   <div className="text-xs text-slate-600 dark:text-slate-400">
-                    Focus on your practice...
+                    {t.balanceMeter.focusOnPractice}
                   </div>
                 </div>
                 <button
@@ -428,7 +430,7 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
                   className="w-full px-3 py-1 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors flex items-center justify-center gap-1"
                 >
                   <X className="w-3 h-3" />
-                  Stop Timer
+                  {t.balanceMeter.stopTimer}
                 </button>
               </div>
             )}
@@ -438,15 +440,15 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
               <div className="space-y-1 text-xs text-amber-700 dark:text-amber-300">
                 <div className="flex items-center gap-1">
                   <span>⏱️</span>
-                  <span>Recheck balance: 2 hours after completing Quick Fix</span>
+                  <span>{t.balanceMeter.recheckBalance}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <span>⏰</span>
-                  <span>Score updates: Midnight (new planetary day begins)</span>
+                  <span>{t.balanceMeter.scoreUpdates}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <span>📅</span>
-                  <span>Valid for: Today only - each day brings new elemental balance</span>
+                  <span>{t.balanceMeter.validFor}</span>
                 </div>
               </div>
             </div>
@@ -478,7 +480,7 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
         {/* Explanation */}
         <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
           <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-            Why this score:
+            {t.balanceMeter.whyThisScore}
           </div>
           <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
             {balance.explanation}
@@ -492,7 +494,7 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
             className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
           >
             <span className="text-sm">📊</span>
-            <span>What does my score mean?</span>
+            <span>{t.balanceMeter.whatDoesScoreMean}</span>
             <span className="text-xs">{showGuide ? '▼' : '▶'}</span>
           </button>
           
@@ -529,7 +531,7 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
         {/* Al-Būnī Attribution */}
         <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
           <p className="text-xs text-slate-500 dark:text-slate-500 italic text-center">
-            Based on Mīzān (Scale) concept from Imam al-Būnī's ʿIlm al-Ḥurūf tradition
+            {t.balanceMeter.basedOnMizan}
           </p>
         </div>
       </div>

@@ -8,12 +8,13 @@ import { IlmHurufPanel } from './src/features/ilm-huruf';
 import { CompatibilityPanel } from './src/features/compatibility';
 import { OnboardingTutorial } from './src/components/OnboardingTutorial';
 import { MobileMenu } from './src/components/MobileMenu';
+import LanguageToggle from './src/components/LanguageToggle';
+import { useLanguage } from './src/contexts/LanguageContext';
 import { LETTER_ELEMENTS, digitalRoot as calcDigitalRoot, hadathRemainder as calcHadathRemainder, hadathToElement, nearestSacred, ELEMENT_INFO as HADAD_ELEMENT_INFO } from './src/components/hadad-summary/hadad-core';
 import type { AbjadAudit, AuditStep, ElementType, SacredResonance } from './src/components/hadad-summary/types';
 import { useAbjad } from './src/contexts/AbjadContext';
 import { AbjadSystemSelector } from './src/components/AbjadSystemSelector';
 import { ArabicKeyboard } from './src/components/ArabicKeyboard';
-import GeomancyFeature from './src/features/geomancy';
 
 // ============================================================================
 // DOMAIN RULES & CORE DATA
@@ -181,14 +182,14 @@ function findSacredMatches(kabir: number) {
 // ============================================================================
 
 function DisclaimerBanner({ onDismiss }: { onDismiss: () => void }) {
+  const { t } = useLanguage();
   return (
     <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-6">
       <div className="flex items-start gap-3">
         <Info className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
         <div className="flex-1">
           <p className="text-sm text-amber-900 dark:text-amber-100">
-            <strong>Educational Tool:</strong> This app explores the traditional Islamic sciences of ʿIlm al-Ḥurūf and ʿIlm al-ʿAdad for cultural and historical reflection. 
-            It is not for fortune-telling, medical advice, or religious rulings. Always consult qualified scholars for religious guidance.
+            <strong>{t.disclaimer.title}</strong> {t.disclaimer.message}
           </p>
         </div>
         <button onClick={onDismiss} className="text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-200">
@@ -286,6 +287,7 @@ function TaMarbutaToggle({ value, onChange }: { value: 'ه' | 'ة'; onChange: (v
 }
 
 function SuggestionSection({ element }: { element: ElementType }) {
+  const { t } = useLanguage();
   const suggestions = ELEMENT_SUGGESTIONS[element];
   const info = ELEMENT_INFO[element];
   
@@ -298,11 +300,11 @@ function SuggestionSection({ element }: { element: ElementType }) {
         </h3>
         <p className="text-sm opacity-80 mb-4">{info.quality}</p>
         <p className="italic text-lg">&ldquo;{suggestions.affirmation}&rdquo;</p>
-        <p className="text-xs mt-2 opacity-60">Optimal reflection times: {suggestions.times.join(', ')}</p>
+        <p className="text-xs mt-2 opacity-60">{t.dailyReflection.optimalReflectionTimes}: {suggestions.times.join(', ')}</p>
       </div>
       
       <div>
-        <h4 className="font-semibold mb-3 text-slate-900 dark:text-slate-100">Related Quranic Verses</h4>
+        <h4 className="font-semibold mb-3 text-slate-900 dark:text-slate-100">{t.guidance.relatedQuranicVerses}</h4>
         <div className="space-y-3">
           {suggestions.verses.map((verse, i) => (
             <div key={i} className="bg-slate-50 dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700">
@@ -315,7 +317,7 @@ function SuggestionSection({ element }: { element: ElementType }) {
       </div>
       
       <div>
-        <h4 className="font-semibold mb-3 text-slate-900 dark:text-slate-100">Asmā' al-Ḥusnā (Beautiful Names)</h4>
+        <h4 className="font-semibold mb-3 text-slate-900 dark:text-slate-100">{t.guidance.divineNames}</h4>
         <div className="space-y-3">
           {suggestions.names.map((name, i) => (
             <div key={i} className="bg-slate-50 dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700">
@@ -324,7 +326,7 @@ function SuggestionSection({ element }: { element: ElementType }) {
                 <span className="text-xs text-slate-500">{name.transliteration}</span>
               </div>
               <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">{name.meaning}</div>
-              <div className="text-xs text-slate-500">Suggested counts: {name.counts.join(', ')}</div>
+              <div className="text-xs text-slate-500">{t.dailyReflection.suggestedCounts}: {name.counts.join(', ')}</div>
             </div>
           ))}
         </div>
@@ -394,6 +396,7 @@ function HistoryPanel({
   onToggleFavorite: (id: string) => void;
   onClear: () => void;
 }) {
+  const { t } = useLanguage();
   const favorites = history.filter(h => h.isFavorite);
   const recent = history.filter(h => !h.isFavorite).slice(0, 10);
   
@@ -440,7 +443,7 @@ function HistoryPanel({
           <div className="flex items-center justify-between mb-2">
             <h3 className="font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
-              Favorites
+              {t.history.favorites}
             </h3>
           </div>
           <div className="space-y-2">
@@ -452,13 +455,13 @@ function HistoryPanel({
       {recent.length > 0 && (
         <div>
           <div className="flex items-center justify-between mb-2">
-            <h3 className="font-semibold text-slate-900 dark:text-slate-100">Recent Calculations</h3>
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100">{t.history.recentCalculations}</h3>
             {history.length > 0 && (
               <button
                 onClick={onClear}
                 className="text-xs text-red-500 hover:text-red-600 dark:hover:text-red-400"
               >
-                Clear All
+                {t.history.clearAll}
               </button>
             )}
           </div>
@@ -471,7 +474,7 @@ function HistoryPanel({
       {history.length === 0 && (
         <div className="text-center text-slate-500 dark:text-slate-400 py-8">
           <History className="w-12 h-12 mx-auto mb-2 opacity-50" />
-          <p className="text-sm">No calculations yet</p>
+          <p className="text-sm">{t.history.noCalculationsYet}</p>
         </div>
       )}
     </div>
@@ -483,6 +486,7 @@ function ComparisonMode({ onClose, abjad, analyzeElements }: {
   abjad: Record<string, number>;
   analyzeElements: (text: string) => any;
 }) {
+  const { t } = useLanguage();
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
   const [name1, setName1] = useState('');
@@ -529,7 +533,7 @@ function ComparisonMode({ onClose, abjad, analyzeElements }: {
         <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between">
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <GitCompare className="w-5 h-5" />
-            Comparison Mode
+            {t.comparison.title}
           </h2>
           <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
             <X className="w-5 h-5" />
@@ -540,7 +544,7 @@ function ComparisonMode({ onClose, abjad, analyzeElements }: {
           {/* Input Section */}
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-3">
-              <h3 className="font-semibold text-slate-900 dark:text-slate-100">First Name/Text</h3>
+              <h3 className="font-semibold text-slate-900 dark:text-slate-100">{t.comparison.firstName}</h3>
               <input
                 type="text"
                 value={name1}
@@ -559,7 +563,7 @@ function ComparisonMode({ onClose, abjad, analyzeElements }: {
             </div>
             
             <div className="space-y-3">
-              <h3 className="font-semibold text-slate-900 dark:text-slate-100">Second Name/Text</h3>
+              <h3 className="font-semibold text-slate-900 dark:text-slate-100">{t.comparison.secondName}</h3>
               <input
                 type="text"
                 value={name2}
@@ -591,7 +595,7 @@ function ComparisonMode({ onClose, abjad, analyzeElements }: {
             <div className="space-y-6">
               {/* Compatibility Score */}
               <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 border border-purple-200 dark:border-purple-800">
-                <h3 className="text-xl font-bold mb-2 text-purple-900 dark:text-purple-100">Elemental Harmony</h3>
+                <h3 className="text-xl font-bold mb-2 text-purple-900 dark:text-purple-100">{t.comparison.elementalHarmony}</h3>
                 <div className="flex items-center gap-4">
                   <div className="text-5xl font-bold text-purple-600 dark:text-purple-400">{comparison.compatibility}%</div>
                   <div className="flex-1">
@@ -661,6 +665,7 @@ function ComparisonMode({ onClose, abjad, analyzeElements }: {
 }
 
 function DailyReflectionCard({ isCollapsed, onToggleCollapse }: { isCollapsed: boolean; onToggleCollapse: () => void }) {
+  const { t } = useLanguage();
   const daily = getDailyReflection();
   
   return (
@@ -677,9 +682,9 @@ function DailyReflectionCard({ isCollapsed, onToggleCollapse }: { isCollapsed: b
             
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-bold text-indigo-900 dark:text-indigo-100">Today's Reflection</h3>
+                <h3 className="text-lg font-bold text-indigo-900 dark:text-indigo-100">{t.dailyReflection.todaysReflection}</h3>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-600 text-white animate-pulse">
-                  Daily
+                  {t.dailyReflection.dailyBadge}
                 </span>
               </div>
               {!isCollapsed && (
@@ -695,7 +700,7 @@ function DailyReflectionCard({ isCollapsed, onToggleCollapse }: { isCollapsed: b
               onToggleCollapse();
             }}
             className="p-2 hover:bg-indigo-200/50 dark:hover:bg-indigo-900/50 rounded-lg transition-colors flex-shrink-0 ml-2"
-            aria-label={isCollapsed ? "Expand reflection" : "Collapse reflection"}
+            aria-label={isCollapsed ? t.dailyReflection.expandReflection : t.dailyReflection.collapseReflection}
           >
             {isCollapsed ? (
               <ChevronDown className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
@@ -710,13 +715,13 @@ function DailyReflectionCard({ isCollapsed, onToggleCollapse }: { isCollapsed: b
       {!isCollapsed && (
         <div className="px-6 pb-6 pt-0 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
           <div className="bg-white/50 dark:bg-slate-800/50 rounded-lg p-4">
-            <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1">Verse of the Day</div>
+            <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1">{t.dailyReflection.verseOfTheDay}</div>
             <div className="text-sm font-medium mb-1">{daily.verse.text}</div>
             <div className="text-xs text-slate-600 dark:text-slate-400">Quran {daily.verse.ref} • {daily.verse.context}</div>
           </div>
           
           <div className="bg-white/50 dark:bg-slate-800/50 rounded-lg p-4">
-            <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1">Divine Name for Reflection</div>
+            <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1">{t.dailyReflection.divineNameForReflection}</div>
             <div className="flex items-baseline justify-between mb-1">
               <span className="text-xl font-arabic" dir="rtl">{daily.name.arabic}</span>
               <span className="text-xs text-slate-500">{daily.name.transliteration}</span>
@@ -735,6 +740,7 @@ function DailyReflectionCard({ isCollapsed, onToggleCollapse }: { isCollapsed: b
 
 export default function AsrarEveryday() {
   const { abjad } = useAbjad(); // Get the current Abjad system
+  const { t } = useLanguage(); // Get translations
   const [darkMode, setDarkMode] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(true);
   const [viewMode, setViewMode] = useState<'calculator' | 'guidance' | 'advanced'>('calculator');
@@ -989,6 +995,11 @@ export default function AsrarEveryday() {
                   {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </button>
 
+                {/* Language Toggle - hidden on very small screens */}
+                <div className="hidden xs:block">
+                  <LanguageToggle />
+                </div>
+
                 {/* History Button */}
                 <button
                   onClick={() => setShowHistory(!showHistory)}
@@ -1081,6 +1092,9 @@ export default function AsrarEveryday() {
                 >
                   {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </button>
+
+                {/* Language Toggle */}
+                <LanguageToggle />
               </div>
             </div>
           </div>
@@ -1111,8 +1125,8 @@ export default function AsrarEveryday() {
                 }`}
               >
                 <Calculator className="w-4 sm:w-5 h-4 sm:h-5 inline mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Letter Calculator</span>
-                <span className="sm:hidden">Calculate</span>
+                <span className="hidden sm:inline">{t.calculator.title}</span>
+                <span className="sm:hidden">{t.common.calculate}</span>
               </button>
               <button
                 onClick={() => setViewMode('guidance')}
@@ -1123,8 +1137,8 @@ export default function AsrarEveryday() {
                 }`}
               >
                 <Compass className="w-4 sm:w-5 h-4 sm:h-5 inline mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Life Guidance</span>
-                <span className="sm:hidden">Guidance</span>
+                <span className="hidden sm:inline">{t.nav.guidance}</span>
+                <span className="sm:hidden">{t.nav.guidance}</span>
               </button>
               <button
                 onClick={() => setViewMode('advanced')}
@@ -1135,8 +1149,8 @@ export default function AsrarEveryday() {
                 }`}
               >
                 <Compass className="w-4 sm:w-5 h-4 sm:h-5 inline mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Advanced</span>
-                <span className="sm:hidden">Advanced</span>
+                <span className="hidden sm:inline">{t.nav.advanced}</span>
+                <span className="sm:hidden">{t.nav.advanced}</span>
               </button>
             </div>
           </div>
@@ -1144,10 +1158,11 @@ export default function AsrarEveryday() {
           {viewMode === 'guidance' ? (
             <IlmHurufPanel />
           ) : viewMode === 'advanced' ? (
-            <GeomancyFeature 
-              isPremium={true}
-              language="en"
-            />
+            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
+              <p className="text-slate-600 dark:text-slate-400 text-center py-12">
+                Advanced features coming soon...
+              </p>
+            </div>
           ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Main Content Area - Mobile Full Width, Desktop 2/3 */}
@@ -1156,14 +1171,14 @@ export default function AsrarEveryday() {
               <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Calculator className="w-5 h-5 flex-shrink-0" />
-              <span>Calculate Letter Values</span>
+              <span>{t.calculator.calculateLetterValues}</span>
             </h2>
             
             <div className="space-y-4">
               <div>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 gap-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Latin Text (English/French)
+                    {t.calculator.latinText}
                   </label>
                   <TaMarbutaToggle value={taMarbutaAs} onChange={handleTaMarbutaChange} />
                 </div>
@@ -1175,7 +1190,7 @@ export default function AsrarEveryday() {
                   className="w-full px-3 sm:px-4 py-3 sm:py-4 text-base sm:text-lg rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none transition-all"
                 />
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  Auto-transliterates to Arabic • Supports EN/FR names
+                  {t.calculator.autoTransliterates}
                 </p>
                 {translitResult && translitResult.confidence < 100 && (
                   <div className="mt-2">
@@ -1190,7 +1205,7 @@ export default function AsrarEveryday() {
               <div>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 gap-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Arabic Text <span className="text-red-500">*</span>
+                    {t.calculator.arabicText} <span className="text-red-500">*</span>
                   </label>
                   <button
                     onClick={() => setShowKeyboard(!showKeyboard)}
@@ -1201,7 +1216,7 @@ export default function AsrarEveryday() {
                     }`}
                   >
                     <Keyboard className="w-4 h-4" />
-                    <span className="hidden sm:inline">{showKeyboard ? 'Hide' : 'Show'} Keyboard</span>
+                    <span className="hidden sm:inline">{showKeyboard ? t.calculator.hideKeyboard : t.calculator.showKeyboard}</span>
                     <span className="sm:hidden">{showKeyboard ? '✕' : '⌨'}</span>
                   </button>
                 </div>
@@ -1227,7 +1242,7 @@ export default function AsrarEveryday() {
                   </div>
                 )}
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  Examples: يس (70), بسم الله (786), باكا (108)
+                  {t.calculator.examples}: يس (70), بسم الله (786), باكا (108)
                 </p>
                 {translitResult && translitResult.candidates.length > 1 && (
                   <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
@@ -1259,7 +1274,7 @@ export default function AsrarEveryday() {
                 className="w-full py-3 px-4 sm:px-6 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 text-base sm:text-lg min-h-[44px]"
               >
                 <Sparkles className="w-5 h-5" />
-                Calculate
+                {t.calculator.calculateButton}
               </button>
             </div>
           </div>
@@ -1273,22 +1288,22 @@ export default function AsrarEveryday() {
                 <div className="flex items-start gap-3 mb-4">
                   <Lightbulb className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-indigo-900 dark:text-indigo-100 mb-1">What You're About to Learn</h3>
-                    <p className="text-sm text-indigo-800 dark:text-indigo-200">Discover the numerological significance of your name through the traditional Islamic sciences</p>
+                    <h3 className="text-lg sm:text-xl font-bold text-indigo-900 dark:text-indigo-100 mb-1">{t.calculator.whatYouLearn}</h3>
+                    <p className="text-sm text-indigo-800 dark:text-indigo-200">{t.calculator.discoverSignificance}</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="bg-white dark:bg-slate-800/50 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700">
-                    <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">🔢 Numerical Values</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">How each Arabic letter converts to sacred numbers</p>
+                    <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">🔢 {t.calculator.numericalValues}</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">{t.calculator.numericalValuesDesc}</p>
                   </div>
                   <div className="bg-white dark:bg-slate-800/50 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700">
-                    <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">🌊 Elemental Forces</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">The four classical elements and your spiritual composition</p>
+                    <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">🌊 {t.calculator.elementalForces}</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">{t.calculator.elementalForcesDesc}</p>
                   </div>
                   <div className="bg-white dark:bg-slate-800/50 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700">
-                    <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">✨ Hidden Patterns</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">Sacred connections and divine resonances in your numbers</p>
+                    <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">✨ {t.calculator.hiddenPatterns}</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">{t.calculator.hiddenPatternsDesc}</p>
                   </div>
                 </div>
               </div>
@@ -1297,58 +1312,58 @@ export default function AsrarEveryday() {
               <div className="space-y-3">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                   <Zap className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                  Key Metrics
+                  {t.calculator.keyMetrics}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {/* Kabīr Card */}
                   <div className="group relative bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/40 rounded-xl p-4 border border-blue-200 dark:border-blue-800 hover:shadow-lg transition-all duration-300 cursor-help">
                     <div className="flex items-start justify-between mb-2">
-                      <span className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide">Kabīr (Large)</span>
+                      <span className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide">{t.calculator.kabir.label}</span>
                       <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="text-3xl font-bold text-blue-900 dark:text-blue-100 mb-1">{result.kabir}</div>
-                    <p className="text-xs text-blue-700 dark:text-blue-300">Total of all letter values</p>
+                    <p className="text-xs text-blue-700 dark:text-blue-300">{t.calculator.totalOfAllLetterValues}</p>
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-10 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs rounded-lg px-3 py-2 whitespace-nowrap font-medium">
-                      Sum of Abjad values before reduction
+                      {t.calculator.kabir.description}
                     </div>
                   </div>
 
                   {/* Ṣaghīr Card */}
                   <div className="group relative bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-900/40 rounded-xl p-4 border border-emerald-200 dark:border-emerald-800 hover:shadow-lg transition-all duration-300 cursor-help">
                     <div className="flex items-start justify-between mb-2">
-                      <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide">Ṣaghīr (Small)</span>
+                      <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide">{t.calculator.saghir.label}</span>
                       <Info className="w-4 h-4 text-emerald-600 dark:text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="text-3xl font-bold text-emerald-900 dark:text-emerald-100 mb-1">{result.saghir}</div>
-                    <p className="text-xs text-emerald-700 dark:text-emerald-300">Digital root (1-9)</p>
+                    <p className="text-xs text-emerald-700 dark:text-emerald-300">{t.calculator.digitalRoot}</p>
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-10 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs rounded-lg px-3 py-2 whitespace-nowrap font-medium">
-                      Essence number - your core spiritual vibration
+                      {t.calculator.saghir.description}
                     </div>
                   </div>
 
                   {/* Ḥadath Card */}
                   <div className="group relative bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-900/40 rounded-xl p-4 border border-amber-200 dark:border-amber-800 hover:shadow-lg transition-all duration-300 cursor-help">
                     <div className="flex items-start justify-between mb-2">
-                      <span className="text-xs font-semibold text-amber-700 dark:text-amber-300 uppercase tracking-wide">Ḥadath (Cycle)</span>
+                      <span className="text-xs font-semibold text-amber-700 dark:text-amber-300 uppercase tracking-wide">{t.calculator.hadath.label}</span>
                       <Info className="w-4 h-4 text-amber-600 dark:text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="text-3xl font-bold text-amber-900 dark:text-amber-100 mb-1">{result.hadath}</div>
-                    <p className="text-xs text-amber-700 dark:text-amber-300">Remainder mod 4</p>
+                    <p className="text-xs text-amber-700 dark:text-amber-300">{t.calculator.remainderMod4}</p>
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-10 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs rounded-lg px-3 py-2 whitespace-nowrap font-medium">
-                      Cyclical pattern within four seasons of being
+                      {t.calculator.hadath.description}
                     </div>
                   </div>
 
                   {/* Rūḥ Ḥadad Card */}
                   <div className="group relative bg-gradient-to-br from-rose-50 to-rose-100 dark:from-rose-900/20 dark:to-rose-900/40 rounded-xl p-4 border border-rose-200 dark:border-rose-800 hover:shadow-lg transition-all duration-300 cursor-help">
                     <div className="flex items-start justify-between mb-2">
-                      <span className="text-xs font-semibold text-rose-700 dark:text-rose-300 uppercase tracking-wide">Rūḥ Ḥadad</span>
+                      <span className="text-xs font-semibold text-rose-700 dark:text-rose-300 uppercase tracking-wide">{t.calculator.ruh.label}</span>
                       <Info className="w-4 h-4 text-rose-600 dark:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="text-2xl font-bold text-rose-900 dark:text-rose-100 mb-1">{ELEMENT_INFO[result.hadathElement as ElementType].label}</div>
-                    <p className="text-xs text-rose-700 dark:text-rose-300">Spirit of the cycle</p>
+                    <p className="text-xs text-rose-700 dark:text-rose-300">{t.calculator.spiritOfTheCycle}</p>
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-10 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs rounded-lg px-3 py-2 whitespace-nowrap font-medium">
-                      Elemental nature of your cycle
+                      {t.calculator.ruh.description}
                     </div>
                   </div>
                 </div>
@@ -1358,14 +1373,14 @@ export default function AsrarEveryday() {
               <div className="bg-white dark:bg-slate-800 rounded-xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 mb-4">
                   <Calculator className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                  Step-by-Step Calculation
+                  {t.calculator.stepByStep}
                 </h3>
                 <div className="space-y-4">
                   {/* Step 1: Letter Values */}
                   <div className="flex gap-4">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-sm flex-shrink-0">1</div>
                     <div className="flex-1">
-                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Letter Values</p>
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">{t.guidance.letterValues}</p>
                       <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 text-sm font-arabic" dir="rtl">
                         <div className="flex flex-wrap gap-2">
                           {result.audit.steps.slice(0, 10).map((step: any, i: number) => (
@@ -1383,9 +1398,9 @@ export default function AsrarEveryday() {
                   <div className="flex gap-4">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-sm flex-shrink-0">2</div>
                     <div className="flex-1">
-                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Sum All Values</p>
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">{t.guidance.sumAllValues}</p>
                       <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 text-sm">
-                        <p className="text-slate-600 dark:text-slate-400">Total Abjad Value: <span className="font-bold text-slate-900 dark:text-slate-100">{result.kabir}</span></p>
+                        <p className="text-slate-600 dark:text-slate-400">{t.calculator.totalAbjadValue}: <span className="font-bold text-slate-900 dark:text-slate-100">{result.kabir}</span></p>
                       </div>
                     </div>
                   </div>
@@ -1394,9 +1409,9 @@ export default function AsrarEveryday() {
                   <div className="flex gap-4">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-sm flex-shrink-0">3</div>
                     <div className="flex-1">
-                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Calculate Digital Root</p>
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">{t.guidance.calculateDigitalRoot}</p>
                       <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 text-sm">
-                        <p className="text-slate-600 dark:text-slate-400">Reduce to single digit: <span className="font-bold text-slate-900 dark:text-slate-100">{result.saghir}</span></p>
+                        <p className="text-slate-600 dark:text-slate-400">{t.calculator.reduceToSingleDigit}: <span className="font-bold text-slate-900 dark:text-slate-100">{result.saghir}</span></p>
                       </div>
                     </div>
                   </div>
@@ -1405,9 +1420,9 @@ export default function AsrarEveryday() {
                   <div className="flex gap-4">
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-sm flex-shrink-0">4</div>
                     <div className="flex-1">
-                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Element Discovery</p>
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 mb-2">{t.guidance.elementDiscovery}</p>
                       <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 text-sm">
-                        <p className="text-slate-600 dark:text-slate-400">Dominant element: <span className={`font-bold ${ELEMENT_INFO[result.dominant as ElementType].color}`}>{result.dominant}</span></p>
+                        <p className="text-slate-600 dark:text-slate-400">{t.calculator.dominantElement}: <span className={`font-bold ${ELEMENT_INFO[result.dominant as ElementType].color}`}>{result.dominant}</span></p>
                       </div>
                     </div>
                   </div>
@@ -1418,7 +1433,7 @@ export default function AsrarEveryday() {
               <div className="bg-white dark:bg-slate-800 rounded-xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 mb-4">
                   <Waves className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                  Elemental Composition
+                  {t.elementalComposition.title}
                 </h3>
                 <div className="space-y-4">
                   {Object.entries(result.counts).map(([element, count]) => {
@@ -1426,15 +1441,16 @@ export default function AsrarEveryday() {
                     const percentage = total > 0 ? Math.round((count as number / total) * 100) : 0;
                     const info = ELEMENT_INFO[element as ElementType];
                     const Icon = info.icon;
+                    const elementKey = element.toLowerCase() as 'fire' | 'water' | 'air' | 'earth';
                     
                     return (
                       <div key={element}>
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <Icon className={`w-4 h-4 ${info.color}`} />
-                            <span className="font-medium text-slate-900 dark:text-slate-100">{element}</span>
+                            <span className="font-medium text-slate-900 dark:text-slate-100">{t.elements[elementKey]}</span>
                           </div>
-                          <span className="text-sm font-semibold text-slate-600 dark:text-slate-400">{count as number} letters ({percentage}%)</span>
+                          <span className="text-sm font-semibold text-slate-600 dark:text-slate-400">{count as number} {t.elementalComposition.letters} ({percentage}%)</span>
                         </div>
                         <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
                           <div
@@ -1453,24 +1469,24 @@ export default function AsrarEveryday() {
                 <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-4 sm:p-6 border border-purple-200 dark:border-purple-800">
                   <h3 className="text-lg font-bold text-purple-900 dark:text-purple-100 flex items-center gap-2 mb-4">
                     <Sparkles className="w-5 h-5" />
-                    Sacred Number Resonance
+                    {t.sacredNumbers.title}
                   </h3>
                   <div className="space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {/* Divisibility by 7 */}
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
-                        <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">🔢 Divisible by 7</p>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">{result.kabir % 7 === 0 ? '✓ Yes - Divine perfection' : `Nearest: ${Math.round(result.kabir / 7) * 7}`}</p>
+                        <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">🔢 {t.sacredNumbers.divisibleBy} 7</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{result.kabir % 7 === 0 ? `✓ Yes - ${t.sacredNumbers.divinePerfection}` : `${t.sacredNumbers.nearest}: ${Math.round(result.kabir / 7) * 7}`}</p>
                       </div>
                       {/* Divisibility by 19 */}
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
-                        <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">✨ Divisible by 19</p>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">{result.kabir % 19 === 0 ? '✓ Yes - Quranic harmony' : `Nearest: ${Math.round(result.kabir / 19) * 19}`}</p>
+                        <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">✨ {t.sacredNumbers.divisibleBy} 19</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{result.kabir % 19 === 0 ? `✓ Yes - ${t.sacredNumbers.quranicHarmony}` : `${t.sacredNumbers.nearest}: ${Math.round(result.kabir / 19) * 19}`}</p>
                       </div>
                       {/* Divisibility by 99 */}
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
-                        <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">🌟 Divisible by 99</p>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">{result.kabir % 99 === 0 ? '✓ Yes - 99 Divine Names' : `Nearest: ${Math.round(result.kabir / 99) * 99}`}</p>
+                        <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">🌟 {t.sacredNumbers.divisibleBy} 99</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{result.kabir % 99 === 0 ? `✓ Yes - ${t.sacredNumbers.divineNames}` : `${t.sacredNumbers.nearest}: ${Math.round(result.kabir / 99) * 99}`}</p>
                       </div>
                       {/* Digital Root Match */}
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
@@ -1490,46 +1506,46 @@ export default function AsrarEveryday() {
                 <div className="relative z-10">
                   <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <Heart className="w-5 h-5" />
-                    Your Numerical Essence
+                    {t.numericalEssence.title}
                   </h3>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                     {/* Core Number Meaning */}
                     <div>
-                      <p className="text-sm opacity-90 mb-2">Core Number Meaning:</p>
+                      <p className="text-sm opacity-90 mb-2">{t.numericalEssence.coreNumberMeaning}</p>
                       <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
-                        <p className="font-bold text-lg mb-2">The Number {result.saghir}</p>
+                        <p className="font-bold text-lg mb-2">{t.numericalEssence.theNumber} {result.saghir}</p>
                         <p className="text-sm opacity-90">
-                          {result.saghir === 1 && "Leadership, independence, pioneering spirit"}
-                          {result.saghir === 2 && "Partnership, balance, cooperation and harmony"}
-                          {result.saghir === 3 && "Creativity, expression, joy and communication"}
-                          {result.saghir === 4 && "Stability, foundation, security and structure"}
-                          {result.saghir === 5 && "Freedom, adventure, change and adaptability"}
-                          {result.saghir === 6 && "Service, responsibility, nurturing and love"}
-                          {result.saghir === 7 && "Wisdom, spirituality, introspection and mystery"}
-                          {result.saghir === 8 && "Power, abundance, material mastery and success"}
-                          {result.saghir === 9 && "Completion, universal love, wisdom and compassion"}
+                          {result.saghir === 1 && t.numericalEssence.number1}
+                          {result.saghir === 2 && t.numericalEssence.number2}
+                          {result.saghir === 3 && t.numericalEssence.number3}
+                          {result.saghir === 4 && t.numericalEssence.number4}
+                          {result.saghir === 5 && t.numericalEssence.number5}
+                          {result.saghir === 6 && t.numericalEssence.number6}
+                          {result.saghir === 7 && t.numericalEssence.number7}
+                          {result.saghir === 8 && t.numericalEssence.number8}
+                          {result.saghir === 9 && t.numericalEssence.number9}
                         </p>
                       </div>
                     </div>
 
                     {/* Element Meaning */}
                     <div>
-                      <p className="text-sm opacity-90 mb-2">Dominant Element:</p>
+                      <p className="text-sm opacity-90 mb-2">{t.numericalEssence.dominantElement}</p>
                       <div className={`${ELEMENT_INFO[result.dominant as ElementType].bg} text-slate-900 rounded-lg p-4`}>
                         <p className="font-bold text-lg mb-2">{result.dominant}</p>
                         <p className="text-sm opacity-90">
-                          {result.dominant === 'Fire' && "Passionate, energetic, transformative, action-oriented"}
-                          {result.dominant === 'Water' && "Intuitive, emotional, reflective, flowing and adaptive"}
-                          {result.dominant === 'Air' && "Communicative, intellectual, social, quick-thinking"}
-                          {result.dominant === 'Earth' && "Grounded, practical, reliable, solid and steady"}
+                          {result.dominant === 'Fire' && t.numericalEssence.fireDesc}
+                          {result.dominant === 'Water' && t.numericalEssence.waterDesc}
+                          {result.dominant === 'Air' && t.numericalEssence.airDesc}
+                          {result.dominant === 'Earth' && t.numericalEssence.earthDesc}
                         </p>
                       </div>
                     </div>
                   </div>
 
                   <p className="text-sm opacity-90 italic border-t border-white/20 pt-4">
-                    💫 These numbers and elements offer guidance for self-reflection. Remember that you are more than numbers—your choices, values, and character shape your destiny.
+                    💫 {t.numericalEssence.guidanceMessage}
                   </p>
                 </div>
               </div>
@@ -1538,7 +1554,7 @@ export default function AsrarEveryday() {
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 sm:p-6 border-2 border-blue-200 dark:border-blue-800">
                 <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
                   <Star className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  Celestial Signature
+                  {t.celestialSignature.title}
                   <span className="text-xs font-normal opacity-70">(ʿIlm al-Ḥurūf)</span>
                 </h3>
                 
@@ -1552,7 +1568,7 @@ export default function AsrarEveryday() {
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         {/* Planet */}
                         <div className="bg-white/60 dark:bg-slate-800/60 rounded-lg p-4 text-center border border-blue-200 dark:border-blue-700 hover:shadow-md transition-shadow">
-                          <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">Planet</div>
+                          <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">{t.celestialSignature.planet}</div>
                           <div className="text-3xl font-bold text-blue-900 dark:text-blue-100 mb-1">
                             {celestialInfo.planet}
                           </div>
@@ -1563,7 +1579,7 @@ export default function AsrarEveryday() {
                         
                         {/* Day */}
                         <div className="bg-white/60 dark:bg-slate-800/60 rounded-lg p-4 text-center border border-blue-200 dark:border-blue-700 hover:shadow-md transition-shadow">
-                          <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">Day</div>
+                          <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">{t.celestialSignature.day}</div>
                           <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">
                             {celestialInfo.day}
                           </div>
@@ -1571,7 +1587,7 @@ export default function AsrarEveryday() {
                         
                         {/* Best Hours */}
                         <div className="bg-white/60 dark:bg-slate-800/60 rounded-lg p-4 text-center border border-blue-200 dark:border-blue-700 hover:shadow-md transition-shadow">
-                          <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">Best Hours</div>
+                          <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">{t.celestialSignature.bestHours}</div>
                           <div className="text-lg font-bold text-blue-900 dark:text-blue-100">
                             {celestialInfo.hours.join(', ')}
                           </div>
@@ -1579,7 +1595,7 @@ export default function AsrarEveryday() {
                       </div>
                       
                       <p className="text-xs text-blue-700 dark:text-blue-300 mt-4 text-center italic">
-                        ✨ Based on classical Islamic cosmology following the Four Natures (Ṭabāʾiʿ Arbaʿa) • For spiritual reflection only
+                        ✨ {t.celestialSignature.footerNote}
                       </p>
                     </>
                   );
@@ -1592,18 +1608,18 @@ export default function AsrarEveryday() {
           {!result && (
             <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 text-center">
               <Sparkles className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4 text-indigo-600 dark:text-indigo-400" />
-              <h2 className="text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100">Welcome to Asrār Everyday</h2>
+              <h2 className="text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100">{t.welcome.title}</h2>
               <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-6">
-                Explore the rich tradition of ʿIlm al-Ḥurūf (Science of Letters) and ʿIlm al-ʿAdad (Science of Numbers) through an intuitive, educational interface. 
-                Enter Arabic text above to discover numerical values, elemental associations, and traditional guidance.
+                {t.welcome.description}
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
                 {Object.entries(ELEMENT_INFO).map(([element, info]) => {
                   const Icon = info.icon;
+                  const elementKey = element.toLowerCase() as 'fire' | 'water' | 'air' | 'earth';
                   return (
                     <div key={element} className={`p-4 rounded-lg ${info.bg} border border-current/20`}>
                       <Icon className={`w-8 h-8 mx-auto mb-2 ${info.color}`} />
-                      <div className={`font-medium text-sm ${info.color}`}>{element}</div>
+                      <div className={`font-medium text-sm ${info.color}`}>{t.elements[elementKey]}</div>
                     </div>
                   );
                 })}
@@ -1618,7 +1634,7 @@ export default function AsrarEveryday() {
                 <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6 sticky top-24">
                   <h2 className="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
                     <History className="w-5 h-5" />
-                    History
+                    {t.common.history}
                   </h2>
                   <HistoryPanel
                     history={history}

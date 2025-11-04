@@ -3,18 +3,31 @@
  * Centralized metadata and SEO settings for the application
  */
 
-export const seoConfig = {
-  // Site configuration
-  siteName: 'Asrār Everyday',
-  siteDescription:
-    'Explore the Islamic sciences of Letter Numerology (ʿIlm al-Ḥurūf) and Number Science (ʿIlm al-ʿAdad). Calculate Abjad values, discover elemental associations, and receive traditional spiritual guidance based on classical sources.',
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://asrar-everyday.vercel.app',
-  locale: 'en_US',
-  supportedLocales: ['en_US', 'fr_FR', 'ar_SA'],
+import { translations } from './translations';
 
-  // Title configuration
-  title: 'Asrār Everyday - ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Calculator',
-  titleTemplate: '%s | Asrār Everyday',
+type Language = 'en' | 'fr';
+
+/**
+ * Get SEO configuration with language-specific titles
+ * @param language - The current language ('en' or 'fr')
+ */
+export const getSeoConfig = (language: Language = 'en') => {
+  const t = translations[language];
+  
+  return {
+    // Site configuration
+    siteName: 'Asrār Everyday',
+    siteDescription:
+      language === 'en'
+        ? 'Explore the Islamic sciences of Letter Numerology (ʿIlm al-Ḥurūf) and Number Science (ʿIlm al-ʿAdad). Calculate Abjad values, discover elemental associations, and receive traditional spiritual guidance based on classical sources.'
+        : 'Explorez les sciences islamiques de la Numérologie des Lettres (ʿIlm al-Ḥurūf) et de la Science des Nombres (ʿIlm al-ʿAdad). Calculez les valeurs Abjad, découvrez les associations élémentaires et recevez des conseils spirituels traditionnels basés sur des sources classiques.',
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://asrar-everyday.vercel.app',
+    locale: language === 'en' ? 'en_US' : 'fr_FR',
+    supportedLocales: ['en_US', 'fr_FR', 'ar_SA'],
+
+    // Title configuration - using translations
+    title: t.seo.siteTitle,
+    titleTemplate: t.seo.titleTemplate,
 
   // Keywords
   keywords: [
@@ -140,6 +153,10 @@ export const seoConfig = {
       },
     };
   },
+  };
 };
+
+// Default export for English (backward compatibility)
+export const seoConfig = getSeoConfig('en');
 
 export default seoConfig;

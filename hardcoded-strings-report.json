@@ -1,0 +1,4327 @@
+{
+  "hardcodedStrings": [
+    {
+      "file": "components\\ActNowButtons.tsx",
+      "line": 51,
+      "string": "Could not determine your location. Using Mecca as fallback.",
+      "context": "throw new Error('Could not determine your location. Using Mecca as fallback.');"
+    },
+    {
+      "file": "components\\ActNowButtons.tsx",
+      "line": 64,
+      "string": "Failed to calculate planetary hours for your location",
+      "context": "throw new Error('Failed to calculate planetary hours for your location');"
+    },
+    {
+      "file": "components\\ActNowButtons.tsx",
+      "line": 97,
+      "string": "Mecca (Fallback)",
+      "context": "cityName: 'Mecca (Fallback)',"
+    },
+    {
+      "file": "components\\ActNowButtons.tsx",
+      "line": 374,
+      "string": "Update",
+      "context": "📍 {location.isAccurate ? 'Update' : 'Enable'} Location"
+    },
+    {
+      "file": "components\\ActNowButtons.tsx",
+      "line": 408,
+      "string": "📊 MODERATE ENERGY - DECENT TIME FOR ROUTINE WORK",
+      "context": "statusMessage = `📊 MODERATE ENERGY - DECENT TIME FOR ROUTINE WORK`;"
+    },
+    {
+      "file": "components\\ActNowButtons.tsx",
+      "line": 443,
+      "string": "☀️ Day Hour",
+      "context": "{currentHour.isDayHour ? '☀️ Day Hour' : '🌙 Night Hour'}"
+    },
+    {
+      "file": "components\\ActNowButtons.tsx",
+      "line": 548,
+      "string": "} flex items-center justify-center gap-2 sm:gap-3",
+      "context": "className={`${buttonClass} ${isClicked ? 'scale-95' : ''} ${isFocused ? 'ring-4 ring-blue-500 ring-o..."
+    },
+    {
+      "file": "components\\ActNowButtons.tsx",
+      "line": 621,
+      "string": "Use this time for:",
+      "context": "💡 {isHighAlignment ? 'Best for right now:' : 'Use this time for:'}"
+    },
+    {
+      "file": "components\\ArabicKeyboard.tsx",
+      "line": 27,
+      "string": "Shadda",
+      "context": "'ّ': 'Shadda',"
+    },
+    {
+      "file": "components\\ArabicKeyboard.tsx",
+      "line": 47,
+      "string": "Close keyboard",
+      "context": "aria-label=\"Close keyboard\""
+    },
+    {
+      "file": "components\\BalanceMeter.tsx",
+      "line": 187,
+      "string": "15min meditation by water + cold compress on forehead",
+      "context": "severe: '15min meditation by water + cold compress on forehead', // 15min"
+    },
+    {
+      "file": "components\\BalanceMeter.tsx",
+      "line": 189,
+      "string": "2min slow breathing, eyes closed",
+      "context": "mild: '2min slow breathing, eyes closed' // 2min"
+    },
+    {
+      "file": "components\\BalanceMeter.tsx",
+      "line": 199,
+      "string": "Sit still, feel your weight for 2min",
+      "context": "mild: 'Sit still, feel your weight for 2min' // 2min"
+    },
+    {
+      "file": "components\\BalanceMeter.tsx",
+      "line": 204,
+      "string": "Open window, take 10 deep breaths",
+      "context": "mild: 'Open window, take 10 deep breaths' // 2min"
+    },
+    {
+      "file": "components\\ColorGuidanceCard.tsx",
+      "line": 12,
+      "string": "Sunday",
+      "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+    },
+    {
+      "file": "components\\ColorGuidanceCard.tsx",
+      "line": 12,
+      "string": "Monday",
+      "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+    },
+    {
+      "file": "components\\ColorGuidanceCard.tsx",
+      "line": 12,
+      "string": "Tuesday",
+      "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+    },
+    {
+      "file": "components\\ColorGuidanceCard.tsx",
+      "line": 12,
+      "string": "Wednesday",
+      "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+    },
+    {
+      "file": "components\\ColorGuidanceCard.tsx",
+      "line": 12,
+      "string": "Thursday",
+      "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+    },
+    {
+      "file": "components\\ColorGuidanceCard.tsx",
+      "line": 12,
+      "string": "Friday",
+      "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+    },
+    {
+      "file": "components\\ColorGuidanceCard.tsx",
+      "line": 12,
+      "string": "Saturday",
+      "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+    },
+    {
+      "file": "components\\EnhancedLifePathDisplay.tsx",
+      "line": 285,
+      "string": "Cycle Year",
+      "context": "{isArabic ? 'السنة في الدورة' : 'Cycle Year'}"
+    },
+    {
+      "file": "components\\EnhancedLifePathView.tsx",
+      "line": 172,
+      "string": "Your Spiritual Guidance",
+      "context": "{isArabic ? 'إرشادك الروحاني' : 'Your Spiritual Guidance'}"
+    },
+    {
+      "file": "components\\EnhancedLifePathView.tsx",
+      "line": 269,
+      "string": "Your Current Position",
+      "context": "{isArabic ? 'موقعك الحالي' : 'Your Current Position'}"
+    },
+    {
+      "file": "components\\EnhancedLifePathView.tsx",
+      "line": 294,
+      "string": "Year",
+      "context": "{isArabic ? 'سنة' : 'Year'}"
+    },
+    {
+      "file": "components\\EnhancedLifePathView.tsx",
+      "line": 314,
+      "string": "🎯 This Year\\",
+      "context": "{isArabic ? '🎯 تركيز هذه السنة:' : '🎯 This Year\\'s Focus:'}"
+    },
+    {
+      "file": "components\\EnhancedLifePathView.tsx",
+      "line": 361,
+      "string": "Sacred Numbers in Your Name",
+      "context": "{isArabic ? 'الأرقام المقدسة في اسمك' : 'Sacred Numbers in Your Name'}"
+    },
+    {
+      "file": "components\\EnhancedLifePathView.tsx",
+      "line": 390,
+      "string": "Your Spiritual Focus",
+      "context": "{isArabic ? 'تركيزك الروحاني' : 'Your Spiritual Focus'}"
+    },
+    {
+      "file": "components\\GlossaryModal.tsx",
+      "line": 98,
+      "string": "Rest Day",
+      "context": "term: 'Rest Day',"
+    },
+    {
+      "file": "components\\GlossaryModal.tsx",
+      "line": 100,
+      "string": "Recovery Day",
+      "context": "meaning: 'Recovery Day',"
+    },
+    {
+      "file": "components\\GlossaryModal.tsx",
+      "line": 107,
+      "string": "A suggested Quranic verse based on your name\\",
+      "context": "definition: 'A suggested Quranic verse based on your name\\'s numerical value. Intended for spiritual..."
+    },
+    {
+      "file": "components\\GlossaryModal.tsx",
+      "line": 157,
+      "string": "Open Islamic Numerology Glossary",
+      "context": "title=\"Open Islamic Numerology Glossary\""
+    },
+    {
+      "file": "components\\GlossaryModal.tsx",
+      "line": 180,
+      "string": "Close glossary",
+      "context": "aria-label=\"Close glossary\""
+    },
+    {
+      "file": "components\\GlossaryModal.tsx",
+      "line": 190,
+      "string": "Search terms... (e.g.,",
+      "context": "placeholder=\"Search terms... (e.g., 'Saghir', 'element', 'destiny')\""
+    },
+    {
+      "file": "components\\GlossaryModal.tsx",
+      "line": 216,
+      "string": "{searchTerm}",
+      "context": "<p className=\"text-slate-600\">No terms found matching \"{searchTerm}\"</p>"
+    },
+    {
+      "file": "components\\hadad-summary\\hadad-core.ts",
+      "line": 140,
+      "string": "Seven heavens, seven days of creation",
+      "context": "7: 'Seven heavens, seven days of creation',"
+    },
+    {
+      "file": "components\\hadad-summary\\hadad-core.ts",
+      "line": 141,
+      "string": "Twelve Imams, twelve months",
+      "context": "12: 'Twelve Imams, twelve months',"
+    },
+    {
+      "file": "components\\hadad-summary\\hadad-core.ts",
+      "line": 162,
+      "string": "Tuesday",
+      "context": "day: 'Tuesday',"
+    },
+    {
+      "file": "components\\hadad-summary\\hadad-core.ts",
+      "line": 172,
+      "string": "Monday",
+      "context": "day: 'Monday',"
+    },
+    {
+      "file": "components\\hadad-summary\\hadad-core.ts",
+      "line": 182,
+      "string": "Wednesday",
+      "context": "day: 'Wednesday',"
+    },
+    {
+      "file": "components\\hadad-summary\\hadad-core.ts",
+      "line": 192,
+      "string": "Saturday",
+      "context": "day: 'Saturday',"
+    },
+    {
+      "file": "components\\hadad-summary\\hadad-core.ts",
+      "line": 202,
+      "string": "The Opener",
+      "context": "{ ar: 'يَا فَتَّاح', transliteration: 'Yā Fattāḥ', en: 'The Opener', abjad: 489, element: 'Fire' as ..."
+    },
+    {
+      "file": "components\\hadad-summary\\hadad-core.ts",
+      "line": 258,
+      "string": "Channel your energy into focused practice.",
+      "context": "? 'Channel your energy into focused practice.'"
+    },
+    {
+      "file": "components\\HarmonyTooltip.tsx",
+      "line": 13,
+      "string": "Mars day",
+      "context": "contextLabel: string; // \"Mars day\" or \"Jupiter hour\""
+    },
+    {
+      "file": "components\\HarmonyTooltip.tsx",
+      "line": 65,
+      "string": "→ Easy flow today",
+      "context": "'strong': '→ Easy flow today',"
+    },
+    {
+      "file": "components\\MobileMenu.tsx",
+      "line": 48,
+      "string": "Close menu",
+      "context": "aria-label=\"Close menu\""
+    },
+    {
+      "file": "components\\OnboardingTutorial.tsx",
+      "line": 9,
+      "string": "Welcome to Asrār Everyday! 🌙",
+      "context": "title: \"Welcome to Asrār Everyday! 🌙\","
+    },
+    {
+      "file": "components\\OnboardingTutorial.tsx",
+      "line": 16,
+      "string": "Enter Your Text",
+      "context": "title: \"Enter Your Text\","
+    },
+    {
+      "file": "components\\OnboardingTutorial.tsx",
+      "line": 23,
+      "string": "Understanding Your Analysis",
+      "context": "title: \"Understanding Your Analysis\","
+    },
+    {
+      "file": "components\\OnboardingTutorial.tsx",
+      "line": 128,
+      "string": "Close tutorial",
+      "context": "aria-label=\"Close tutorial\""
+    },
+    {
+      "file": "components\\OnboardingTutorial.tsx",
+      "line": 187,
+      "string": "Previous step",
+      "context": "aria-label=\"Previous step\""
+    },
+    {
+      "file": "components\\OnboardingTutorial.tsx",
+      "line": 197,
+      "string": "Next step",
+      "context": "aria-label={isLastStep ? 'Complete tutorial' : 'Next step'}"
+    },
+    {
+      "file": "components\\RelationshipInputForm.tsx",
+      "line": 23,
+      "string": "Please enter Arabic names for both people",
+      "context": "alert('Please enter Arabic names for both people');"
+    },
+    {
+      "file": "constants\\lifePathMeanings.ts",
+      "line": 37,
+      "string": "Self-centeredness",
+      "context": "'Self-centeredness'"
+    },
+    {
+      "file": "constants\\lifePathMeanings.ts",
+      "line": 206,
+      "string": "So set your face to the religion, as one by nature upright (30:30)",
+      "context": "quranResonance: 'So set your face to the religion, as one by nature upright (30:30)',"
+    },
+    {
+      "file": "constants\\lifePathMeanings.ts",
+      "line": 411,
+      "string": "To demonstrate that success serves higher purpose",
+      "context": "lifePurpose: 'To demonstrate that success serves higher purpose',"
+    },
+    {
+      "file": "contexts\\LanguageContext.tsx",
+      "line": 19,
+      "string": "|| saved ===",
+      "context": "if (saved === 'en' || saved === 'fr') setLanguage(saved);"
+    },
+    {
+      "file": "features\\compatibility\\CompatibilityPanel.tsx",
+      "line": 53,
+      "string": "Error calculating compatibility:",
+      "context": "console.error('Error calculating compatibility:', error);"
+    },
+    {
+      "file": "features\\compatibility\\CompatibilityPanel.tsx",
+      "line": 54,
+      "string": "Error calculating compatibility. Please try again.",
+      "context": "alert('Error calculating compatibility. Please try again.');"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 93,
+      "string": "Sunday",
+      "context": "'Sun': ['Sunday', 'الأحد'],"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 94,
+      "string": "Monday",
+      "context": "'Moon': ['Monday', 'الاثنين'],"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 95,
+      "string": "Tuesday",
+      "context": "'Mars': ['Tuesday', 'الثلاثاء'],"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 96,
+      "string": "Wednesday",
+      "context": "'Mercury': ['Wednesday', 'الأربعاء'],"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 97,
+      "string": "Thursday",
+      "context": "'Jupiter': ['Thursday', 'الخميس'],"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 98,
+      "string": "Friday",
+      "context": "'Venus': ['Friday', 'الجمعة'],"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 99,
+      "string": "Saturday",
+      "context": "'Saturn': ['Saturday', 'السبت']"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 205,
+      "string": "Tuesday",
+      "context": "dayEn: 'Tuesday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 218,
+      "string": "Friday",
+      "context": "dayEn: 'Friday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 231,
+      "string": "Wednesday",
+      "context": "dayEn: 'Wednesday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 244,
+      "string": "Monday",
+      "context": "dayEn: 'Monday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 257,
+      "string": "Sunday",
+      "context": "dayEn: 'Sunday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 270,
+      "string": "Wednesday",
+      "context": "dayEn: 'Wednesday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 283,
+      "string": "Friday",
+      "context": "dayEn: 'Friday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 296,
+      "string": "Tuesday",
+      "context": "dayEn: 'Tuesday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 309,
+      "string": "Thursday",
+      "context": "dayEn: 'Thursday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 322,
+      "string": "Saturday",
+      "context": "dayEn: 'Saturday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 335,
+      "string": "Saturday",
+      "context": "dayEn: 'Saturday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 348,
+      "string": "Thursday",
+      "context": "dayEn: 'Thursday',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 381,
+      "string": "Meditate on divine oneness. Reflect:",
+      "context": "practice: 'Meditate on divine oneness. Reflect: \"All power belongs to the One.\"',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 402,
+      "string": "Read in the name of your Lord who created (96:1)",
+      "context": "verse: 'Read in the name of your Lord who created (96:1)',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 420,
+      "string": "Restlessness, Irresponsibility, Addiction",
+      "context": "shadow: 'Restlessness, Irresponsibility, Addiction',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 443,
+      "string": "Study, research, meditate, retreat. Deepen spiritual practice.",
+      "context": "practical: 'Study, research, meditate, retreat. Deepen spiritual practice.'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 462,
+      "string": "This day I have perfected your religion for you (5:3)",
+      "context": "verse: 'This day I have perfected your religion for you (5:3)',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 492,
+      "string": "Your soul",
+      "context": "interpretation: `Your soul's journey is through the station of ${station?.name || 'Unknown'}`"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 508,
+      "string": "Name cannot be empty",
+      "context": "throw new Error('Name cannot be empty');"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1281,
+      "string": "Start Important Task",
+      "context": "label: 'Start Important Task',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1293,
+      "string": "Send Critical Email",
+      "context": "label: 'Send Critical Email',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1360,
+      "string": "Make important decisions",
+      "context": "'Make important decisions',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1483,
+      "string": "Material success together",
+      "context": "'4-8': { type: 'Builder & Achiever', bonus: 20, note: 'Material success together' },"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1569,
+      "string": "Important decisions (emotions may cloud judgment)",
+      "context": "avoid: ['Important decisions (emotions may cloud judgment)', 'Legal matters']"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1732,
+      "string": "2-3 days",
+      "context": "timeframe: string; // \"same day\", \"few hours\", \"2-3 days\", \"1-2 weeks\""
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1732,
+      "string": "1-2 weeks",
+      "context": "timeframe: string; // \"same day\", \"few hours\", \"2-3 days\", \"1-2 weeks\""
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1753,
+      "string": "Important decisions",
+      "context": "bestFor: string[];         // [\"Important decisions\", \"Creative work\"]"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1813,
+      "string": "No decision-making today - defer to better days",
+      "context": "'No decision-making today - defer to better days',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1821,
+      "string": "20min silence or meditation away from bright light",
+      "context": "'20min silence or meditation away from bright light',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1825,
+      "string": "Early bedtime for solar repair (before 10pm)",
+      "context": "'Early bedtime for solar repair (before 10pm)'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1859,
+      "string": "Solo time in pleasant surroundings",
+      "context": "'Solo time in pleasant surroundings',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1932,
+      "string": "What you give flows back quickly",
+      "context": "description: 'What you give flows back quickly'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1935,
+      "string": "2-3 days",
+      "context": "timeframe: '2-3 days',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1936,
+      "string": "What you give today takes time to return",
+      "context": "description: 'What you give today takes time to return'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1939,
+      "string": "1-2 weeks",
+      "context": "timeframe: '1-2 weeks',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1947,
+      "string": "Lead with generosity—authority returns respect today",
+      "context": "instant: 'Lead with generosity—authority returns respect today',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1950,
+      "string": "Lead with consistency—reputation builds over time",
+      "context": "delayed: 'Lead with consistency—reputation builds over time'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1955,
+      "string": "Push forward—progress shows in days",
+      "context": "gradual: 'Push forward—progress shows in days',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1959,
+      "string": "Speak clearly—understanding comes back instantly",
+      "context": "instant: 'Speak clearly—understanding comes back instantly',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1961,
+      "string": "Share knowledge—learning compounds over days",
+      "context": "gradual: 'Share knowledge—learning compounds over days',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1965,
+      "string": "Give care—comfort returns quickly today",
+      "context": "instant: 'Give care—comfort returns quickly today',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1967,
+      "string": "Nurture bonds—emotional depth grows over days",
+      "context": "gradual: 'Nurture bonds—emotional depth grows over days',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1968,
+      "string": "Tend relationships—trust builds with time",
+      "context": "delayed: 'Tend relationships—trust builds with time'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1971,
+      "string": "Show love—beauty reflects back today",
+      "context": "instant: 'Show love—beauty reflects back today',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1972,
+      "string": "Show love—joy returns soon",
+      "context": "quick: 'Show love—joy returns soon',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1973,
+      "string": "Create beauty—appreciation deepens over days",
+      "context": "gradual: 'Create beauty—appreciation deepens over days',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1974,
+      "string": "Invest in art—value increases with time",
+      "context": "delayed: 'Invest in art—value increases with time'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1977,
+      "string": "Think big—opportunities appear today",
+      "context": "instant: 'Think big—opportunities appear today',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1978,
+      "string": "Expand horizons—doors open quickly",
+      "context": "quick: 'Expand horizons—doors open quickly',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1979,
+      "string": "Study deeply—wisdom unfolds over days",
+      "context": "gradual: 'Study deeply—wisdom unfolds over days',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1980,
+      "string": "Build legacy—growth compounds over time",
+      "context": "delayed: 'Build legacy—growth compounds over time'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1983,
+      "string": "Structure well—stability shows today",
+      "context": "instant: 'Structure well—stability shows today',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1985,
+      "string": "Plan carefully—results manifest in days",
+      "context": "gradual: 'Plan carefully—results manifest in days',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 1986,
+      "string": "Build foundations—lasting results take weeks",
+      "context": "delayed: 'Build foundations—lasting results take weeks'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2037,
+      "string": "Important decisions",
+      "context": "'Important decisions',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2051,
+      "string": "Performance reviews",
+      "context": "'Performance reviews',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2054,
+      "string": "Background work",
+      "context": "avoid: ['Background work', 'Hiding mistakes'],"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2063,
+      "string": "Review team work",
+      "context": "'Review team work',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2121,
+      "string": "Meditation",
+      "context": "'Meditation',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2167,
+      "string": "Process day\\",
+      "context": "'Process day\\'s battles',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2191,
+      "string": "Important calls",
+      "context": "'Important calls',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2203,
+      "string": "Email responses",
+      "context": "'Email responses',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2213,
+      "string": "Review what you learned",
+      "context": "'Review what you learned',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2308,
+      "string": "Time with loved ones",
+      "context": "'Time with loved ones',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2309,
+      "string": "Entertainment",
+      "context": "'Entertainment',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2456,
+      "string": "Your inner compass guides you—balance introspection with outer engagement.",
+      "context": "Rūḥ: 'Your inner compass guides you—balance introspection with outer engagement.',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2457,
+      "string": "Your temperament leads—balance feelings with mindful structure.",
+      "context": "Element: 'Your temperament leads—balance feelings with mindful structure.',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2642,
+      "string": "Excellent for leadership—schedule important meetings and presentations",
+      "context": "high: 'Excellent for leadership—schedule important meetings and presentations',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2644,
+      "string": "Challenging for visibility—lead quietly, support others today",
+      "context": "low: 'Challenging for visibility—lead quietly, support others today'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2647,
+      "string": "Perfect for reflection—trust your intuition and emotional wisdom",
+      "context": "high: 'Perfect for reflection—trust your intuition and emotional wisdom',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2648,
+      "string": "Gentle day—plan, review, nurture relationships, avoid overload",
+      "context": "moderate: 'Gentle day—plan, review, nurture relationships, avoid overload',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2649,
+      "string": "Rest needed—minimize commitments, process emotions, be kind to yourself",
+      "context": "low: 'Rest needed—minimize commitments, process emotions, be kind to yourself'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2658,
+      "string": "Communicate clearly—good for emails, meetings, and study sessions",
+      "context": "moderate: 'Communicate clearly—good for emails, meetings, and study sessions',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2663,
+      "string": "Growth day—great for planning expansion and seeking opportunities",
+      "context": "moderate: 'Growth day—great for planning expansion and seeking opportunities',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2664,
+      "string": "Temper optimism—research thoroughly before committing to anything big",
+      "context": "low: 'Temper optimism—research thoroughly before committing to anything big'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2668,
+      "string": "Harmonious day—connect with others, enjoy art, balance work-pleasure",
+      "context": "moderate: 'Harmonious day—connect with others, enjoy art, balance work-pleasure',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2673,
+      "string": "Structure your week—discipline and planning bring good results",
+      "context": "moderate: 'Structure your week—discipline and planning bring good results',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2683,
+      "string": "Balance heat—practice calm speech, charity, time near water",
+      "context": "Fire: 'Balance heat—practice calm speech, charity, time near water',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2685,
+      "string": "Ground yourself—stick to routine, nature walk, one task at a time",
+      "context": "Air: 'Ground yourself—stick to routine, nature walk, one task at a time',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2686,
+      "string": "Add lightness—try creativity, flexibility, or a short change of scenery",
+      "context": "Earth: 'Add lightness—try creativity, flexibility, or a short change of scenery'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2692,
+      "string": "Shine your light—but stay humble and generous with recognition",
+      "context": "Sun: 'Shine your light—but stay humble and generous with recognition',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2693,
+      "string": "Honor your feelings—they guide you to what truly matters",
+      "context": "Moon: 'Honor your feelings—they guide you to what truly matters',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2697,
+      "string": "Appreciate beauty—create harmony in your environment and relationships",
+      "context": "Venus: 'Appreciate beauty—create harmony in your environment and relationships',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2698,
+      "string": "Master discipline—small consistent efforts build lasting success",
+      "context": "Saturn: 'Master discipline—small consistent efforts build lasting success'"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2755,
+      "string": ")[0] : new Date().toISOString().split(",
+      "context": "const anchor = birthDate ? birthDate.toISOString().split('T')[0] : new Date().toISOString().split('T..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2981,
+      "string": "Wear red, orange, or gold to amplify today\\",
+      "context": "Fire: 'Wear red, orange, or gold to amplify today\\'s fiery energy.',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2987,
+      "string": "Wear blue, turquoise, or silver to deepen today\\",
+      "context": "Water: 'Wear blue, turquoise, or silver to deepen today\\'s flow.',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 2999,
+      "string": "Wear green, brown, or beige to ground today\\",
+      "context": "Earth: 'Wear green, brown, or beige to ground today\\'s energy.',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3006,
+      "string": "Blend your colors with today\\",
+      "context": "tip = tips[userElement][dayElement] || 'Blend your colors with today\\'s element for enhanced harmony..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3022,
+      "string": "Today",
+      "context": "explanation = `Today's ${dayElement} energy may challenge your ${userElement} nature. Wear your elem..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3026,
+      "string": "Today",
+      "context": "explanation = `Today's ${dayElement} energy is neutral to your ${userElement} nature. Your element c..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3196,
+      "string": "Saddle Brown",
+      "context": "secondary: { name: 'Saddle Brown', hex: '#8B4513' },"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3256,
+      "string": "Today",
+      "context": "return `Today's ${dailyElement} energy is different from your ${userElement} nature. Stay grounded a..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3267,
+      "string": "Add gold jewelry or accessories",
+      "context": "Fire: ['Wear reds and oranges - bright and bold', 'Add gold jewelry or accessories', 'You\\'ll feel e..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3268,
+      "string": "Great day for meetings and new things",
+      "context": "Air: ['Red or orange shirt, gold accents', 'Mix warm and light colors together', 'Great day for meet..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3275,
+      "string": "Wear blues or turquoise today",
+      "context": "Water: ['Wear blues or turquoise today', 'Silver jewelry would be nice', 'Calming colors for a smoot..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3275,
+      "string": "Calming colors for a smooth day",
+      "context": "Water: ['Wear blues or turquoise today', 'Silver jewelry would be nice', 'Calming colors for a smoot..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3279,
+      "string": "Energetic and clear-headed day",
+      "context": "Fire: ['Yellow or orange combinations', 'Wear gold or warm colors', 'Energetic and clear-headed day'..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3288,
+      "string": "Greens and browns are your friends",
+      "context": "Earth: ['Greens and browns are your friends', 'Add some tan or beige', 'Strong, grounded, natural']..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3288,
+      "string": "Add some tan or beige",
+      "context": "Earth: ['Greens and browns are your friends', 'Add some tan or beige', 'Strong, grounded, natural']..."
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3295,
+      "string": "Stick with your favorite colors - your natural choice",
+      "context": "'Stick with your favorite colors - your natural choice',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3296,
+      "string": "Add grey or beige if you need to feel more calm",
+      "context": "'Add grey or beige if you need to feel more calm',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3303,
+      "string": "Add just a touch of your favorite color for strength",
+      "context": "'Add just a touch of your favorite color for strength',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3304,
+      "string": "Keep colors simple and natural today",
+      "context": "'Keep colors simple and natural today',"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3318,
+      "string": "Morning (5-7 AM): Best time",
+      "context": "'Sun': ['Morning (5-7 AM): Best time', 'Around noon: Strong', 'Evening: Getting weaker'],"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3319,
+      "string": "Evening (6-9 PM): Best time",
+      "context": "'Moon': ['Evening (6-9 PM): Best time', 'Late night: Strong', 'Morning: Weaker'],"
+    },
+    {
+      "file": "features\\ilm-huruf\\core.ts",
+      "line": 3320,
+      "string": "Morning (5-7 AM): Best time",
+      "context": "'Mars': ['Morning (5-7 AM): Best time', 'Afternoon (2-4 PM): Good', 'Evening: Okay'],"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 278,
+      "string": "Error analyzing mother\\",
+      "context": "console.error('Error analyzing mother\\'s name:', error);"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 288,
+      "string": "Error building name destiny:",
+      "context": "console.error('Error building name destiny:', error);"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 347,
+      "string": "Analysis error:",
+      "context": "console.error('Analysis error:', error);"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 350,
+      "string": "Unable to analyze. Please check your input.",
+      "context": "message: error instanceof Error ? error.message : 'Unable to analyze. Please check your input.'..."
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 594,
+      "string": "Um Ḥadad (أم حدد) - Required for complete Name Destiny calculation",
+      "context": "title=\"Um Ḥadad (أم حدد) - Required for complete Name Destiny calculation\""
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 605,
+      "string": "Um Ḥadad (أم حدد) - Reveals your Aṣl al-Rūḥānī (spiritual origin)",
+      "context": "<span title=\"Um Ḥadad (أم حدد) - Reveals your Aṣl al-Rūḥānī (spiritual origin)\">..."
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 1720,
+      "string": "❌ Error fetching verse:",
+      "context": "console.error('❌ Error fetching verse:', err);"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 1721,
+      "string": "Unable to load verse text. Please try again.",
+      "context": "setVerseError('Unable to load verse text. Please try again.');"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 2768,
+      "string": "Your Core Path",
+      "context": "{numberExplanations[lifePathNumber as keyof typeof numberExplanations]?.title || \"Your Core Path\"}..."
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 2771,
+      "string": "This is your main life purpose and natural talents.",
+      "context": "{numberExplanations[lifePathNumber as keyof typeof numberExplanations]?.meaning || \"This is your mai..."
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 3038,
+      "string": "Error calculating today\\",
+      "context": "console.error('Error calculating today\\'s reading:', e);"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 3063,
+      "string": "Error calculating user element:",
+      "context": "console.error('Error calculating user element:', e);"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 3101,
+      "string": "[data-week-view]",
+      "context": "const weekSection = document.querySelector('[data-week-view]');"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 3233,
+      "string": "{todayReading.restLevel ===",
+      "context": "\"{todayReading.restLevel === 'deep'"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 3240,
+      "string": "Who knows the time for disconnection, preserves their energy",
+      "context": "? 'Who knows the time for disconnection, preserves their energy'"
+    },
+    {
+      "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+      "line": 3321,
+      "string": "⏸️ REST TIME",
+      "context": "alignment.quality === 'opposing' ? '⏸️ REST TIME' : '📊 MODERATE'}"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranApi.ts",
+      "line": 116,
+      "string": "Translation not available. Please visit Quran.com for the full translation.",
+      "context": "translation: \"Translation not available. Please visit Quran.com for the full translation.\",..."
+    },
+    {
+      "file": "features\\ilm-huruf\\quranApi.ts",
+      "line": 185,
+      "string": "Alternative API error:",
+      "context": "console.error(`Alternative API error:`, error);"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 22,
+      "string": ", nameAr:",
+      "context": "5: { name: \"Al-Ma'idah\", nameAr: \"المائدة\", totalAyahs: 120 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 23,
+      "string": ", nameAr:",
+      "context": "6: { name: \"Al-An'am\", nameAr: \"الأنعام\", totalAyahs: 165 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 24,
+      "string": ", nameAr:",
+      "context": "7: { name: \"Al-A'raf\", nameAr: \"الأعراف\", totalAyahs: 206 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 30,
+      "string": ", nameAr:",
+      "context": "13: { name: \"Ar-Ra'd\", nameAr: \"الرعد\", totalAyahs: 43 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 40,
+      "string": ", nameAr:",
+      "context": "23: { name: \"Al-Mu'minun\", nameAr: \"المؤمنون\", totalAyahs: 118 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 43,
+      "string": ", nameAr:",
+      "context": "26: { name: \"Ash-Shu'ara\", nameAr: \"الشعراء\", totalAyahs: 227 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 79,
+      "string": ", nameAr:",
+      "context": "62: { name: \"Al-Jumu'ah\", nameAr: \"الجمعة\", totalAyahs: 11 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 87,
+      "string": ", nameAr:",
+      "context": "70: { name: \"Al-Ma'arij\", nameAr: \"المعارج\", totalAyahs: 44 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 96,
+      "string": ", nameAr:",
+      "context": "79: { name: \"An-Nazi'at\", nameAr: \"النازعات\", totalAyahs: 46 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 104,
+      "string": ", nameAr:",
+      "context": "87: { name: \"Al-A'la\", nameAr: \"الأعلى\", totalAyahs: 19 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 118,
+      "string": ", nameAr:",
+      "context": "101: { name: \"Al-Qari'ah\", nameAr: \"القارعة\", totalAyahs: 11 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 124,
+      "string": ", nameAr:",
+      "context": "107: { name: \"Al-Ma'un\", nameAr: \"الماعون\", totalAyahs: 7 },"
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 187,
+      "string": "This verse emerged through numerical resonance between your name and the Qur",
+      "context": "\"This verse emerged through numerical resonance between your name and the Qur'anic structure. \" +..."
+    },
+    {
+      "file": "features\\ilm-huruf\\quranResonance.ts",
+      "line": 188,
+      "string": "Reflect upon it as a potential sign or reminder in your spiritual journey.",
+      "context": "\"Reflect upon it as a potential sign or reminder in your spiritual journey. \" +"
+    },
+    {
+      "file": "lib\\seoConfig.ts",
+      "line": 8,
+      "string": "Asrār Everyday",
+      "context": "siteName: 'Asrār Everyday',"
+    },
+    {
+      "file": "lib\\seoConfig.ts",
+      "line": 16,
+      "string": "Asrār Everyday - ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Calculator",
+      "context": "title: 'Asrār Everyday - ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Calculator',"
+    },
+    {
+      "file": "lib\\seoConfig.ts",
+      "line": 17,
+      "string": "%s | Asrār Everyday",
+      "context": "titleTemplate: '%s | Asrār Everyday',"
+    },
+    {
+      "file": "lib\\seoConfig.ts",
+      "line": 59,
+      "string": "@AsrarEveryday",
+      "context": "twitterHandle: '@AsrarEveryday', // Update with actual handle"
+    },
+    {
+      "file": "lib\\seoConfig.ts",
+      "line": 67,
+      "string": "Asrār Everyday",
+      "context": "name: 'Asrār Everyday',"
+    },
+    {
+      "file": "lib\\seoConfig.ts",
+      "line": 111,
+      "string": "SearchAction",
+      "context": "'@type': 'SearchAction',"
+    },
+    {
+      "file": "lib\\text-normalize-v2.ts",
+      "line": 255,
+      "string": "Doubled consonant detected: provided shadda alternative",
+      "context": "warnings.push('Doubled consonant detected: provided shadda alternative');"
+    },
+    {
+      "file": "lib\\text-normalize.ts",
+      "line": 415,
+      "string": ": provided shadda alternative",
+      "context": "warnings.push(`Doubled consonant in \"${originalWord}\": provided shadda alternative`);"
+    },
+    {
+      "file": "lib\\text-normalize.ts",
+      "line": 423,
+      "string": ": consider shadda on appropriate letter",
+      "context": "warnings.push(`Doubled consonant in \"${originalWord}\": consider shadda on appropriate letter`);..."
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 70,
+      "string": "Day",
+      "context": "day: \"Day\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 77,
+      "string": "Today",
+      "context": "todaysReflection: \"Today's Reflection\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 219,
+      "string": "Day",
+      "context": "day: \"Day\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 232,
+      "string": "This verse emerged through numerical resonance between your name and the Qur",
+      "context": "message: \"This verse emerged through numerical resonance between your name and the Qur'anic structur..."
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 269,
+      "string": "Your soul",
+      "context": "lifePath: \"Your soul's primary journey and purpose\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 270,
+      "string": "Your heart",
+      "context": "soulUrge: \"Your heart's deepest desires and inner motivations\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 307,
+      "string": "Day",
+      "context": "day: \"Day\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 356,
+      "string": "A verse connected to your name",
+      "context": "quranicGuidanceDesc: \"A verse connected to your name's energy, for reflection only.\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 451,
+      "string": "Add Mother",
+      "context": "addMotherName: \"Add Mother's Name (optional)\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 472,
+      "string": "Analysis Error",
+      "context": "analysisError: \"Analysis Error\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 475,
+      "string": "Your Spiritual Profile",
+      "context": "yourSpiritualProfile: \"Your Spiritual Profile\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 483,
+      "string": "Week at a Glance",
+      "context": "weekAtAGlance: \"Week at a Glance\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 484,
+      "string": "Peak Day This Week",
+      "context": "peakDayThisWeek: \"Peak Day This Week\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 485,
+      "string": "Best for important initiatives",
+      "context": "bestForInitiatives: \"Best for important initiatives\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 486,
+      "string": "Focus Day",
+      "context": "focusDay: \"Focus Day\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 490,
+      "string": "Energy Return Speeds This Week",
+      "context": "energyReturnSpeedsThisWeek: \"Energy Return Speeds This Week\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 492,
+      "string": "Same day",
+      "context": "sameDay: \"Same day\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 494,
+      "string": "2-3 days",
+      "context": "twoDays: \"2-3 days\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 495,
+      "string": "1-2 weeks",
+      "context": "oneToTwoWeeks: \"1-2 weeks\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 498,
+      "string": "Critical low energy - honor this healing signal from your body and spirit.",
+      "context": "criticalLowEnergy: \"Critical low energy - honor this healing signal from your body and spirit.\",..."
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 499,
+      "string": "Low harmony + {planet} energy = Time to pause, not push.",
+      "context": "lowHarmonyPause: \"Low harmony + {planet} energy = Time to pause, not push.\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 500,
+      "string": "Rest Practices (choose one):",
+      "context": "restPractices: \"Rest Practices (choose one):\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 501,
+      "string": "Better Days This Week:",
+      "context": "betterDaysThisWeek: \"Better Days This Week:\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 502,
+      "string": "Reschedule important tasks to these high-harmony days for better outcomes.",
+      "context": "rescheduleImportantTasks: \"Reschedule important tasks to these high-harmony days for better outcomes..."
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 516,
+      "string": "All Tips for the Day",
+      "context": "allTipsForTheDay: \"All Tips for the Day\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 532,
+      "string": "(same day)",
+      "context": "sameDayParens: \"(same day)\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 534,
+      "string": "(2-3 days)",
+      "context": "twoDaysParens: \"(2-3 days)\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 535,
+      "string": "(1-2 weeks)",
+      "context": "oneToTwoWeeksParens: \"(1-2 weeks)\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 541,
+      "string": "Your Guidance for This Day",
+      "context": "yourGuidanceForThisDay: \"Your Guidance for This Day\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 544,
+      "string": "Today",
+      "context": "todaysPractice: \"Today's Practice:\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 548,
+      "string": "Optimal Sequence for {day}",
+      "context": "optimalSequence: \"Optimal Sequence for {day}\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 554,
+      "string": "Your Balance Today",
+      "context": "yourBalanceToday: \"Your Balance Today\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 564,
+      "string": "Start {duration}-Min Timer",
+      "context": "startTimer: \"Start {duration}-Min Timer\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 565,
+      "string": "Focus on your practice...",
+      "context": "focusOnPractice: \"Focus on your practice...\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 566,
+      "string": "Stop Timer",
+      "context": "stopTimer: \"Stop Timer\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 568,
+      "string": "Score updates: Midnight (new planetary day begins)",
+      "context": "scoreUpdates: \"Score updates: Midnight (new planetary day begins)\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 569,
+      "string": "Valid for: Today only - each day brings new elemental balance",
+      "context": "validFor: \"Valid for: Today only - each day brings new elemental balance\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 578,
+      "string": "Challenging day. Deep rebalancing needed.",
+      "context": "conflictDesc: \"Challenging day. Deep rebalancing needed.\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 598,
+      "string": "Meditate on divine oneness. Reflect:",
+      "context": "practice: \"Meditate on divine oneness. Reflect: 'All power belongs to the One.'\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 617,
+      "string": "Read in the name of your Lord who created (96:1)",
+      "context": "verse: \"Read in the name of your Lord who created (96:1)\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 633,
+      "string": "Restlessness, Irresponsibility, Addiction",
+      "context": "shadow: \"Restlessness, Irresponsibility, Addiction\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 654,
+      "string": "Study, research, meditate, retreat. Deepen spiritual practice.",
+      "context": "practical: \"Study, research, meditate, retreat. Deepen spiritual practice.\""
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 671,
+      "string": "Today I have perfected your religion for you (5:3)",
+      "context": "verse: \"Today I have perfected your religion for you (5:3)\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 810,
+      "string": "Your soul",
+      "context": "soulJourney: \"Your soul's journey passes through the station of\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 852,
+      "string": "This Month",
+      "context": "thisMonthFlow: \"This Month's Flow\""
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 883,
+      "string": "Your life purpose & what you",
+      "context": "ultimateGoal: \"Your life purpose & what you're meant to accomplish. Your ultimate goal.\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 886,
+      "string": "These numbers represent lessons your soul wants to learn in this life. They",
+      "context": "lessonsDescription: \"These numbers represent lessons your soul wants to learn in this life. They're ..."
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 917,
+      "string": "This Year & Month",
+      "context": "thisYearMonth: \"This Year & Month's Energy\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1084,
+      "string": "Today",
+      "context": "todayElement: \"Today's Element\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1193,
+      "string": "(For everything there is a time) — Success comes from right action at the right time.",
+      "context": "successFromTiming: \"(For everything there is a time) — Success comes from right action at the right ..."
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1208,
+      "string": "Day",
+      "context": "dayLabel: \"Day\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1268,
+      "string": "A verse connected to your name",
+      "context": "quranicGuidanceDesc: \"A verse connected to your name's energy, for reflection only.\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1353,
+      "string": "(For everything there is a time) — Success comes from right action at the right time.",
+      "context": "forEverythingExplanation: \"(For everything there is a time) — Success comes from right action at the..."
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1355,
+      "string": "(Who knows the time of disconnection, preserves his energy)",
+      "context": "whoKnowsExplanation: \"(Who knows the time of disconnection, preserves his energy)\""
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1374,
+      "string": "Bienvenue sur Asrār Everyday",
+      "context": "title: \"Bienvenue sur Asrār Everyday\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1392,
+      "string": "Sélectionnez la date",
+      "context": "selectDate: \"Sélectionnez la date\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1623,
+      "string": "Votre mission de vie ultime et votre but divin",
+      "context": "\"Votre mission de vie ultime et votre but divin\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1668,
+      "string": "Date de Naissance",
+      "context": "birthDate: \"Date de Naissance\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1669,
+      "string": "Date de Naissance (Optionnel - pour date d",
+      "context": "birthDateOptional: \"Date de Naissance (Optionnel - pour date d'ancrage)\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1711,
+      "string": "Excellent pour les initiatives importantes",
+      "context": "bestForInitiatives: \"Excellent pour les initiatives importantes\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1728,
+      "string": "Reportez les tâches importantes aux jours d",
+      "context": "rescheduleImportantTasks: \"Reportez les tâches importantes aux jours d'harmonie élevée pour de meill..."
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1774,
+      "string": "Séquence Optimale pour {day}",
+      "context": "optimalSequence: \"Séquence Optimale pour {day}\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 1981,
+      "string": "Agitation, Irresponsabilité, Addiction",
+      "context": "shadow: \"Agitation, Irresponsabilité, Addiction\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 2094,
+      "string": "Décisions importantes (émotions troublées)",
+      "context": "avoid: [\"Décisions importantes (émotions troublées)\", \"Questions juridiques\"]"
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 2231,
+      "string": "Votre but de vie & ce que vous êtes destiné à accomplir. Votre objectif ultime.",
+      "context": "ultimateGoal: \"Votre but de vie & ce que vous êtes destiné à accomplir. Votre objectif ultime.\",..."
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 2338,
+      "string": "Commencer une tâche importante",
+      "context": "startImportantTask: \"Commencer une tâche importante\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 2340,
+      "string": "Envoyer un email critique",
+      "context": "sendCriticalEmail: \"Envoyer un email critique\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 2373,
+      "string": "Prendre des décisions importantes",
+      "context": "\"Prendre des décisions importantes\","
+    },
+    {
+      "file": "lib\\translations.ts",
+      "line": 2467,
+      "string": "Reporter les communications importantes",
+      "context": "postponeCommunication: \"Reporter les communications importantes\","
+    },
+    {
+      "file": "utils\\actionButtons.ts",
+      "line": 18,
+      "string": "Start Important Task",
+      "context": "label: 'Start Important Task',"
+    },
+    {
+      "file": "utils\\actionButtons.ts",
+      "line": 113,
+      "string": "Make important decisions",
+      "context": "'Make important decisions',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 170,
+      "string": "Share your gifts",
+      "context": "{ theme: 'Creative Expression', arabic: 'التعبير الإبداعي', focus: ['Share your gifts', 'Communicate..."
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 174,
+      "string": "Meditate",
+      "context": "{ theme: 'Spiritual Growth', arabic: 'النمو الروحاني', focus: ['Seek wisdom', 'Meditate', 'Study dee..."
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 413,
+      "string": "Repeated setbacks requiring perseverance",
+      "context": "'Repeated setbacks requiring perseverance',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 451,
+      "string": "Addiction patterns",
+      "context": "'Addiction patterns',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 491,
+      "string": "Ego-driven decisions backfire",
+      "context": "'Ego-driven decisions backfire',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 508,
+      "string": "Meditate on impermanence",
+      "context": "'Meditate on impermanence',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 575,
+      "string": "Days of Creation, Completion",
+      "context": "significance: 'Days of Creation, Completion',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 578,
+      "string": "Divine perfection and wholeness. Your name carries the frequency of completion.",
+      "context": "spiritualMeaning: 'Divine perfection and wholeness. Your name carries the frequency of completion.',..."
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 583,
+      "string": "Months, Tribes, Imams",
+      "context": "significance: 'Months, Tribes, Imams',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 585,
+      "string": "Twelve months, twelve springs",
+      "context": "quranConnection: 'Twelve months, twelve springs',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 586,
+      "string": "Cosmic order and leadership. Your path involves guiding others.",
+      "context": "spiritualMeaning: 'Cosmic order and leadership. Your path involves guiding others.',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 594,
+      "string": "Divine signature. Your soul carries a special message for humanity.",
+      "context": "spiritualMeaning: 'Divine signature. Your soul carries a special message for humanity.',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 602,
+      "string": "Transformation through trial. Your journey involves deep purification.",
+      "context": "spiritualMeaning: 'Transformation through trial. Your journey involves deep purification.',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 615,
+      "string": "Names of Allah",
+      "context": "significance: 'Names of Allah',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 618,
+      "string": "Divine attributes. Your soul reflects the Beautiful Names.",
+      "context": "spiritualMeaning: 'Divine attributes. Your soul reflects the Beautiful Names.',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 626,
+      "string": "Pure monotheism. Your essence is aligned with divine unity.",
+      "context": "spiritualMeaning: 'Pure monotheism. Your essence is aligned with divine unity.',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 641,
+      "string": "Opening verse of Quran",
+      "context": "quranConnection: 'Opening verse of Quran',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 642,
+      "string": "Begin with grace. Your every action should start with divine remembrance.",
+      "context": "spiritualMeaning: 'Begin with grace. Your every action should start with divine remembrance.',"
+    },
+    {
+      "file": "utils\\enhancedLifePath.ts",
+      "line": 649,
+      "string": "Night of Qadr better than 1000 months",
+      "context": "quranConnection: 'Night of Qadr better than 1000 months',"
+    },
+    {
+      "file": "utils\\location.ts",
+      "line": 21,
+      "string": "Your Location",
+      "context": "let cityName = 'Your Location';"
+    },
+    {
+      "file": "utils\\location.ts",
+      "line": 27,
+      "string": "Your Location",
+      "context": "cityName = data.address?.city || data.address?.town || data.address?.village || 'Your Location';..."
+    },
+    {
+      "file": "utils\\location.ts",
+      "line": 29,
+      "string": "Could not fetch city name",
+      "context": "console.warn('Could not fetch city name');"
+    },
+    {
+      "file": "utils\\location.ts",
+      "line": 67,
+      "string": "Error loading location:",
+      "context": "console.error('Error loading location:', error);"
+    },
+    {
+      "file": "utils\\planetaryHours.ts",
+      "line": 20,
+      "string": "Invalid sunrise/sunset times, using fallback",
+      "context": "console.warn('Invalid sunrise/sunset times, using fallback');"
+    },
+    {
+      "file": "utils\\planetaryHours.ts",
+      "line": 173,
+      "string": "No current hour found. Time range check:",
+      "context": "console.warn('No current hour found. Time range check:');"
+    },
+    {
+      "file": "utils\\relationshipCompatibility.ts",
+      "line": 72,
+      "string": "Completion and transformation. A karmic connection bringing cycles to close.",
+      "context": "en: 'Completion and transformation. A karmic connection bringing cycles to close.',"
+    },
+    {
+      "file": "utils\\relationshipCompatibility.ts",
+      "line": 370,
+      "string": "Your spiritual paths may differ. Respect each other\\",
+      "context": "recommendations.push('Your spiritual paths may differ. Respect each other\\'s journey and find common..."
+    },
+    {
+      "file": "utils\\relationshipCompatibility.ts",
+      "line": 393,
+      "string": "Practice patience, kindness, and open communication to nurture your connection.",
+      "context": "recommendations.push('Practice patience, kindness, and open communication to nurture your connection..."
+    }
+  ],
+  "fileStats": {
+    "components\\AbjadSystemSelector.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\AccuracyIndicator.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\ActNowButtons.tsx": {
+      "count": 8,
+      "strings": [
+        "Could not determine your location. Using Mecca as fallback.",
+        "Failed to calculate planetary hours for your location",
+        "Mecca (Fallback)",
+        "Update",
+        "📊 MODERATE ENERGY - DECENT TIME FOR ROUTINE WORK",
+        "☀️ Day Hour",
+        "} flex items-center justify-center gap-2 sm:gap-3",
+        "Use this time for:"
+      ]
+    },
+    "components\\ArabicKeyboard.tsx": {
+      "count": 2,
+      "strings": [
+        "Shadda",
+        "Close keyboard"
+      ]
+    },
+    "components\\BalanceMeter.tsx": {
+      "count": 4,
+      "strings": [
+        "15min meditation by water + cold compress on forehead",
+        "2min slow breathing, eyes closed",
+        "Sit still, feel your weight for 2min",
+        "Open window, take 10 deep breaths"
+      ]
+    },
+    "components\\ColorGuidanceCard.tsx": {
+      "count": 7,
+      "strings": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ]
+    },
+    "components\\CompatibilityGauge.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\CompatibilityModeSwitcher.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\DailyColorGuidanceCard.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\DisclaimerBanner.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\DisclaimerSection.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\EnhancedLifePathDisplay.tsx": {
+      "count": 1,
+      "strings": [
+        "Cycle Year"
+      ]
+    },
+    "components\\EnhancedLifePathView.tsx": {
+      "count": 6,
+      "strings": [
+        "Your Spiritual Guidance",
+        "Your Current Position",
+        "Year",
+        "🎯 This Year\\",
+        "Sacred Numbers in Your Name",
+        "Your Spiritual Focus"
+      ]
+    },
+    "components\\GlossaryModal.tsx": {
+      "count": 7,
+      "strings": [
+        "Rest Day",
+        "Recovery Day",
+        "A suggested Quranic verse based on your name\\",
+        "Open Islamic Numerology Glossary",
+        "Close glossary",
+        "Search terms... (e.g.,",
+        "{searchTerm}"
+      ]
+    },
+    "components\\hadad-summary\\hadad-core.ts": {
+      "count": 8,
+      "strings": [
+        "Seven heavens, seven days of creation",
+        "Twelve Imams, twelve months",
+        "Tuesday",
+        "Monday",
+        "Wednesday",
+        "Saturday",
+        "The Opener",
+        "Channel your energy into focused practice."
+      ]
+    },
+    "components\\hadad-summary\\HadadSummaryPanel.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\hadad-summary\\index.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\hadad-summary\\types.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\HarmonyTooltip.tsx": {
+      "count": 2,
+      "strings": [
+        "Mars day",
+        "→ Easy flow today"
+      ]
+    },
+    "components\\LanguageToggle.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\MobileMenu.tsx": {
+      "count": 1,
+      "strings": [
+        "Close menu"
+      ]
+    },
+    "components\\MoreInfoModal.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\OnboardingTutorial.tsx": {
+      "count": 6,
+      "strings": [
+        "Welcome to Asrār Everyday! 🌙",
+        "Enter Your Text",
+        "Understanding Your Analysis",
+        "Close tutorial",
+        "Previous step",
+        "Next step"
+      ]
+    },
+    "components\\RelationshipCompatibilityView.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "components\\RelationshipInputForm.tsx": {
+      "count": 1,
+      "strings": [
+        "Please enter Arabic names for both people"
+      ]
+    },
+    "constants\\compatibility.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "constants\\lifePathMeanings.ts": {
+      "count": 3,
+      "strings": [
+        "Self-centeredness",
+        "So set your face to the religion, as one by nature upright (30:30)",
+        "To demonstrate that success serves higher purpose"
+      ]
+    },
+    "constants\\planets.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "contexts\\AbjadContext.tsx": {
+      "count": 0,
+      "strings": []
+    },
+    "contexts\\LanguageContext.tsx": {
+      "count": 1,
+      "strings": [
+        "|| saved ==="
+      ]
+    },
+    "features\\compatibility\\CompatibilityPanel.tsx": {
+      "count": 2,
+      "strings": [
+        "Error calculating compatibility:",
+        "Error calculating compatibility. Please try again."
+      ]
+    },
+    "features\\compatibility\\index.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "features\\ilm-huruf\\core.ts": {
+      "count": 114,
+      "strings": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Tuesday",
+        "Friday",
+        "Wednesday",
+        "Monday",
+        "Sunday",
+        "Wednesday",
+        "Friday",
+        "Tuesday",
+        "Thursday",
+        "Saturday",
+        "Saturday",
+        "Thursday",
+        "Meditate on divine oneness. Reflect:",
+        "Read in the name of your Lord who created (96:1)",
+        "Restlessness, Irresponsibility, Addiction",
+        "Study, research, meditate, retreat. Deepen spiritual practice.",
+        "This day I have perfected your religion for you (5:3)",
+        "Your soul",
+        "Name cannot be empty",
+        "Start Important Task",
+        "Send Critical Email",
+        "Make important decisions",
+        "Material success together",
+        "Important decisions (emotions may cloud judgment)",
+        "2-3 days",
+        "1-2 weeks",
+        "Important decisions",
+        "No decision-making today - defer to better days",
+        "20min silence or meditation away from bright light",
+        "Early bedtime for solar repair (before 10pm)",
+        "Solo time in pleasant surroundings",
+        "What you give flows back quickly",
+        "2-3 days",
+        "What you give today takes time to return",
+        "1-2 weeks",
+        "Lead with generosity—authority returns respect today",
+        "Lead with consistency—reputation builds over time",
+        "Push forward—progress shows in days",
+        "Speak clearly—understanding comes back instantly",
+        "Share knowledge—learning compounds over days",
+        "Give care—comfort returns quickly today",
+        "Nurture bonds—emotional depth grows over days",
+        "Tend relationships—trust builds with time",
+        "Show love—beauty reflects back today",
+        "Show love—joy returns soon",
+        "Create beauty—appreciation deepens over days",
+        "Invest in art—value increases with time",
+        "Think big—opportunities appear today",
+        "Expand horizons—doors open quickly",
+        "Study deeply—wisdom unfolds over days",
+        "Build legacy—growth compounds over time",
+        "Structure well—stability shows today",
+        "Plan carefully—results manifest in days",
+        "Build foundations—lasting results take weeks",
+        "Important decisions",
+        "Performance reviews",
+        "Background work",
+        "Review team work",
+        "Meditation",
+        "Process day\\",
+        "Important calls",
+        "Email responses",
+        "Review what you learned",
+        "Time with loved ones",
+        "Entertainment",
+        "Your inner compass guides you—balance introspection with outer engagement.",
+        "Your temperament leads—balance feelings with mindful structure.",
+        "Excellent for leadership—schedule important meetings and presentations",
+        "Challenging for visibility—lead quietly, support others today",
+        "Perfect for reflection—trust your intuition and emotional wisdom",
+        "Gentle day—plan, review, nurture relationships, avoid overload",
+        "Rest needed—minimize commitments, process emotions, be kind to yourself",
+        "Communicate clearly—good for emails, meetings, and study sessions",
+        "Growth day—great for planning expansion and seeking opportunities",
+        "Temper optimism—research thoroughly before committing to anything big",
+        "Harmonious day—connect with others, enjoy art, balance work-pleasure",
+        "Structure your week—discipline and planning bring good results",
+        "Balance heat—practice calm speech, charity, time near water",
+        "Ground yourself—stick to routine, nature walk, one task at a time",
+        "Add lightness—try creativity, flexibility, or a short change of scenery",
+        "Shine your light—but stay humble and generous with recognition",
+        "Honor your feelings—they guide you to what truly matters",
+        "Appreciate beauty—create harmony in your environment and relationships",
+        "Master discipline—small consistent efforts build lasting success",
+        ")[0] : new Date().toISOString().split(",
+        "Wear red, orange, or gold to amplify today\\",
+        "Wear blue, turquoise, or silver to deepen today\\",
+        "Wear green, brown, or beige to ground today\\",
+        "Blend your colors with today\\",
+        "Today",
+        "Today",
+        "Saddle Brown",
+        "Today",
+        "Add gold jewelry or accessories",
+        "Great day for meetings and new things",
+        "Wear blues or turquoise today",
+        "Calming colors for a smooth day",
+        "Energetic and clear-headed day",
+        "Greens and browns are your friends",
+        "Add some tan or beige",
+        "Stick with your favorite colors - your natural choice",
+        "Add grey or beige if you need to feel more calm",
+        "Add just a touch of your favorite color for strength",
+        "Keep colors simple and natural today",
+        "Morning (5-7 AM): Best time",
+        "Evening (6-9 PM): Best time",
+        "Morning (5-7 AM): Best time"
+      ]
+    },
+    "features\\ilm-huruf\\IlmHurufPanel.tsx": {
+      "count": 16,
+      "strings": [
+        "Error analyzing mother\\",
+        "Error building name destiny:",
+        "Analysis error:",
+        "Unable to analyze. Please check your input.",
+        "Um Ḥadad (أم حدد) - Required for complete Name Destiny calculation",
+        "Um Ḥadad (أم حدد) - Reveals your Aṣl al-Rūḥānī (spiritual origin)",
+        "❌ Error fetching verse:",
+        "Unable to load verse text. Please try again.",
+        "Your Core Path",
+        "This is your main life purpose and natural talents.",
+        "Error calculating today\\",
+        "Error calculating user element:",
+        "[data-week-view]",
+        "{todayReading.restLevel ===",
+        "Who knows the time for disconnection, preserves their energy",
+        "⏸️ REST TIME"
+      ]
+    },
+    "features\\ilm-huruf\\index.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "features\\ilm-huruf\\quranApi.ts": {
+      "count": 2,
+      "strings": [
+        "Translation not available. Please visit Quran.com for the full translation.",
+        "Alternative API error:"
+      ]
+    },
+    "features\\ilm-huruf\\quranResonance.ts": {
+      "count": 14,
+      "strings": [
+        ", nameAr:",
+        ", nameAr:",
+        ", nameAr:",
+        ", nameAr:",
+        ", nameAr:",
+        ", nameAr:",
+        ", nameAr:",
+        ", nameAr:",
+        ", nameAr:",
+        ", nameAr:",
+        ", nameAr:",
+        ", nameAr:",
+        "This verse emerged through numerical resonance between your name and the Qur",
+        "Reflect upon it as a potential sign or reminder in your spiritual journey."
+      ]
+    },
+    "lib\\seoConfig.ts": {
+      "count": 6,
+      "strings": [
+        "Asrār Everyday",
+        "Asrār Everyday - ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Calculator",
+        "%s | Asrār Everyday",
+        "@AsrarEveryday",
+        "Asrār Everyday",
+        "SearchAction"
+      ]
+    },
+    "lib\\test-normalize-v2.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "lib\\test-normalize.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "lib\\text-normalize-v2.ts": {
+      "count": 1,
+      "strings": [
+        "Doubled consonant detected: provided shadda alternative"
+      ]
+    },
+    "lib\\text-normalize.ts": {
+      "count": 2,
+      "strings": [
+        ": provided shadda alternative",
+        ": consider shadda on appropriate letter"
+      ]
+    },
+    "lib\\translations.ts": {
+      "count": 69,
+      "strings": [
+        "Day",
+        "Today",
+        "Day",
+        "This verse emerged through numerical resonance between your name and the Qur",
+        "Your soul",
+        "Your heart",
+        "Day",
+        "A verse connected to your name",
+        "Add Mother",
+        "Analysis Error",
+        "Your Spiritual Profile",
+        "Week at a Glance",
+        "Peak Day This Week",
+        "Best for important initiatives",
+        "Focus Day",
+        "Energy Return Speeds This Week",
+        "Same day",
+        "2-3 days",
+        "1-2 weeks",
+        "Critical low energy - honor this healing signal from your body and spirit.",
+        "Low harmony + {planet} energy = Time to pause, not push.",
+        "Rest Practices (choose one):",
+        "Better Days This Week:",
+        "Reschedule important tasks to these high-harmony days for better outcomes.",
+        "All Tips for the Day",
+        "(same day)",
+        "(2-3 days)",
+        "(1-2 weeks)",
+        "Your Guidance for This Day",
+        "Today",
+        "Optimal Sequence for {day}",
+        "Your Balance Today",
+        "Start {duration}-Min Timer",
+        "Focus on your practice...",
+        "Stop Timer",
+        "Score updates: Midnight (new planetary day begins)",
+        "Valid for: Today only - each day brings new elemental balance",
+        "Challenging day. Deep rebalancing needed.",
+        "Meditate on divine oneness. Reflect:",
+        "Read in the name of your Lord who created (96:1)",
+        "Restlessness, Irresponsibility, Addiction",
+        "Study, research, meditate, retreat. Deepen spiritual practice.",
+        "Today I have perfected your religion for you (5:3)",
+        "Your soul",
+        "This Month",
+        "Your life purpose & what you",
+        "These numbers represent lessons your soul wants to learn in this life. They",
+        "This Year & Month",
+        "Today",
+        "(For everything there is a time) — Success comes from right action at the right time.",
+        "Day",
+        "A verse connected to your name",
+        "(For everything there is a time) — Success comes from right action at the right time.",
+        "(Who knows the time of disconnection, preserves his energy)",
+        "Bienvenue sur Asrār Everyday",
+        "Sélectionnez la date",
+        "Votre mission de vie ultime et votre but divin",
+        "Date de Naissance",
+        "Date de Naissance (Optionnel - pour date d",
+        "Excellent pour les initiatives importantes",
+        "Reportez les tâches importantes aux jours d",
+        "Séquence Optimale pour {day}",
+        "Agitation, Irresponsabilité, Addiction",
+        "Décisions importantes (émotions troublées)",
+        "Votre but de vie & ce que vous êtes destiné à accomplir. Votre objectif ultime.",
+        "Commencer une tâche importante",
+        "Envoyer un email critique",
+        "Prendre des décisions importantes",
+        "Reporter les communications importantes"
+      ]
+    },
+    "types\\compatibility.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "types\\lifePath.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "types\\planetary.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "utils\\actionButtons.ts": {
+      "count": 2,
+      "strings": [
+        "Start Important Task",
+        "Make important decisions"
+      ]
+    },
+    "utils\\alignment.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "utils\\enhancedLifePath.ts": {
+      "count": 19,
+      "strings": [
+        "Share your gifts",
+        "Meditate",
+        "Repeated setbacks requiring perseverance",
+        "Addiction patterns",
+        "Ego-driven decisions backfire",
+        "Meditate on impermanence",
+        "Days of Creation, Completion",
+        "Divine perfection and wholeness. Your name carries the frequency of completion.",
+        "Months, Tribes, Imams",
+        "Twelve months, twelve springs",
+        "Cosmic order and leadership. Your path involves guiding others.",
+        "Divine signature. Your soul carries a special message for humanity.",
+        "Transformation through trial. Your journey involves deep purification.",
+        "Names of Allah",
+        "Divine attributes. Your soul reflects the Beautiful Names.",
+        "Pure monotheism. Your essence is aligned with divine unity.",
+        "Opening verse of Quran",
+        "Begin with grace. Your every action should start with divine remembrance.",
+        "Night of Qadr better than 1000 months"
+      ]
+    },
+    "utils\\lifePathCalculator.ts": {
+      "count": 0,
+      "strings": []
+    },
+    "utils\\location.ts": {
+      "count": 4,
+      "strings": [
+        "Your Location",
+        "Your Location",
+        "Could not fetch city name",
+        "Error loading location:"
+      ]
+    },
+    "utils\\planetaryHours.ts": {
+      "count": 2,
+      "strings": [
+        "Invalid sunrise/sunset times, using fallback",
+        "No current hour found. Time range check:"
+      ]
+    },
+    "utils\\relationshipCompatibility.ts": {
+      "count": 3,
+      "strings": [
+        "Completion and transformation. A karmic connection bringing cycles to close.",
+        "Your spiritual paths may differ. Respect each other\\",
+        "Practice patience, kindness, and open communication to nurture your connection."
+      ]
+    },
+    "utils\\timeHelpers.ts": {
+      "count": 0,
+      "strings": []
+    }
+  },
+  "priorityLevels": {
+    "high": [
+      {
+        "file": "components\\ActNowButtons.tsx",
+        "line": 548,
+        "string": "} flex items-center justify-center gap-2 sm:gap-3",
+        "context": "className={`${buttonClass} ${isClicked ? 'scale-95' : ''} ${isFocused ? 'ring-4 ring-blue-500 ring-o..."
+      },
+      {
+        "file": "components\\ArabicKeyboard.tsx",
+        "line": 47,
+        "string": "Close keyboard",
+        "context": "aria-label=\"Close keyboard\""
+      },
+      {
+        "file": "components\\GlossaryModal.tsx",
+        "line": 157,
+        "string": "Open Islamic Numerology Glossary",
+        "context": "title=\"Open Islamic Numerology Glossary\""
+      },
+      {
+        "file": "components\\GlossaryModal.tsx",
+        "line": 180,
+        "string": "Close glossary",
+        "context": "aria-label=\"Close glossary\""
+      },
+      {
+        "file": "components\\HarmonyTooltip.tsx",
+        "line": 13,
+        "string": "Mars day",
+        "context": "contextLabel: string; // \"Mars day\" or \"Jupiter hour\""
+      },
+      {
+        "file": "components\\MobileMenu.tsx",
+        "line": 48,
+        "string": "Close menu",
+        "context": "aria-label=\"Close menu\""
+      },
+      {
+        "file": "components\\OnboardingTutorial.tsx",
+        "line": 9,
+        "string": "Welcome to Asrār Everyday! 🌙",
+        "context": "title: \"Welcome to Asrār Everyday! 🌙\","
+      },
+      {
+        "file": "components\\OnboardingTutorial.tsx",
+        "line": 16,
+        "string": "Enter Your Text",
+        "context": "title: \"Enter Your Text\","
+      },
+      {
+        "file": "components\\OnboardingTutorial.tsx",
+        "line": 23,
+        "string": "Understanding Your Analysis",
+        "context": "title: \"Understanding Your Analysis\","
+      },
+      {
+        "file": "components\\OnboardingTutorial.tsx",
+        "line": 128,
+        "string": "Close tutorial",
+        "context": "aria-label=\"Close tutorial\""
+      },
+      {
+        "file": "components\\OnboardingTutorial.tsx",
+        "line": 187,
+        "string": "Previous step",
+        "context": "aria-label=\"Previous step\""
+      },
+      {
+        "file": "components\\OnboardingTutorial.tsx",
+        "line": 197,
+        "string": "Next step",
+        "context": "aria-label={isLastStep ? 'Complete tutorial' : 'Next step'}"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1281,
+        "string": "Start Important Task",
+        "context": "label: 'Start Important Task',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1293,
+        "string": "Send Critical Email",
+        "context": "label: 'Send Critical Email',"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 594,
+        "string": "Um Ḥadad (أم حدد) - Required for complete Name Destiny calculation",
+        "context": "title=\"Um Ḥadad (أم حدد) - Required for complete Name Destiny calculation\""
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 605,
+        "string": "Um Ḥadad (أم حدد) - Reveals your Aṣl al-Rūḥānī (spiritual origin)",
+        "context": "<span title=\"Um Ḥadad (أم حدد) - Reveals your Aṣl al-Rūḥānī (spiritual origin)\">..."
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 2768,
+        "string": "Your Core Path",
+        "context": "{numberExplanations[lifePathNumber as keyof typeof numberExplanations]?.title || \"Your Core Path\"}..."
+      },
+      {
+        "file": "lib\\seoConfig.ts",
+        "line": 16,
+        "string": "Asrār Everyday - ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Calculator",
+        "context": "title: 'Asrār Everyday - ʿIlm al-Ḥurūf & ʿIlm al-ʿAdad Calculator',"
+      },
+      {
+        "file": "lib\\seoConfig.ts",
+        "line": 17,
+        "string": "%s | Asrār Everyday",
+        "context": "titleTemplate: '%s | Asrār Everyday',"
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1208,
+        "string": "Day",
+        "context": "dayLabel: \"Day\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1374,
+        "string": "Bienvenue sur Asrār Everyday",
+        "context": "title: \"Bienvenue sur Asrār Everyday\","
+      },
+      {
+        "file": "utils\\actionButtons.ts",
+        "line": 18,
+        "string": "Start Important Task",
+        "context": "label: 'Start Important Task',"
+      }
+    ],
+    "medium": [
+      {
+        "file": "components\\GlossaryModal.tsx",
+        "line": 190,
+        "string": "Search terms... (e.g.,",
+        "context": "placeholder=\"Search terms... (e.g., 'Saghir', 'element', 'destiny')\""
+      },
+      {
+        "file": "components\\GlossaryModal.tsx",
+        "line": 216,
+        "string": "{searchTerm}",
+        "context": "<p className=\"text-slate-600\">No terms found matching \"{searchTerm}\"</p>"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1932,
+        "string": "What you give flows back quickly",
+        "context": "description: 'What you give flows back quickly'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1936,
+        "string": "What you give today takes time to return",
+        "context": "description: 'What you give today takes time to return'"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 350,
+        "string": "Unable to analyze. Please check your input.",
+        "context": "message: error instanceof Error ? error.message : 'Unable to analyze. Please check your input.'..."
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 1721,
+        "string": "Unable to load verse text. Please try again.",
+        "context": "setVerseError('Unable to load verse text. Please try again.');"
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 232,
+        "string": "This verse emerged through numerical resonance between your name and the Qur",
+        "context": "message: \"This verse emerged through numerical resonance between your name and the Qur'anic structur..."
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 594,
+        "string": "Divine signature. Your soul carries a special message for humanity.",
+        "context": "spiritualMeaning: 'Divine signature. Your soul carries a special message for humanity.',"
+      }
+    ],
+    "low": [
+      {
+        "file": "components\\ActNowButtons.tsx",
+        "line": 51,
+        "string": "Could not determine your location. Using Mecca as fallback.",
+        "context": "throw new Error('Could not determine your location. Using Mecca as fallback.');"
+      },
+      {
+        "file": "components\\ActNowButtons.tsx",
+        "line": 64,
+        "string": "Failed to calculate planetary hours for your location",
+        "context": "throw new Error('Failed to calculate planetary hours for your location');"
+      },
+      {
+        "file": "components\\ActNowButtons.tsx",
+        "line": 97,
+        "string": "Mecca (Fallback)",
+        "context": "cityName: 'Mecca (Fallback)',"
+      },
+      {
+        "file": "components\\ActNowButtons.tsx",
+        "line": 374,
+        "string": "Update",
+        "context": "📍 {location.isAccurate ? 'Update' : 'Enable'} Location"
+      },
+      {
+        "file": "components\\ActNowButtons.tsx",
+        "line": 408,
+        "string": "📊 MODERATE ENERGY - DECENT TIME FOR ROUTINE WORK",
+        "context": "statusMessage = `📊 MODERATE ENERGY - DECENT TIME FOR ROUTINE WORK`;"
+      },
+      {
+        "file": "components\\ActNowButtons.tsx",
+        "line": 443,
+        "string": "☀️ Day Hour",
+        "context": "{currentHour.isDayHour ? '☀️ Day Hour' : '🌙 Night Hour'}"
+      },
+      {
+        "file": "components\\ActNowButtons.tsx",
+        "line": 621,
+        "string": "Use this time for:",
+        "context": "💡 {isHighAlignment ? 'Best for right now:' : 'Use this time for:'}"
+      },
+      {
+        "file": "components\\ArabicKeyboard.tsx",
+        "line": 27,
+        "string": "Shadda",
+        "context": "'ّ': 'Shadda',"
+      },
+      {
+        "file": "components\\BalanceMeter.tsx",
+        "line": 187,
+        "string": "15min meditation by water + cold compress on forehead",
+        "context": "severe: '15min meditation by water + cold compress on forehead', // 15min"
+      },
+      {
+        "file": "components\\BalanceMeter.tsx",
+        "line": 189,
+        "string": "2min slow breathing, eyes closed",
+        "context": "mild: '2min slow breathing, eyes closed' // 2min"
+      },
+      {
+        "file": "components\\BalanceMeter.tsx",
+        "line": 199,
+        "string": "Sit still, feel your weight for 2min",
+        "context": "mild: 'Sit still, feel your weight for 2min' // 2min"
+      },
+      {
+        "file": "components\\BalanceMeter.tsx",
+        "line": 204,
+        "string": "Open window, take 10 deep breaths",
+        "context": "mild: 'Open window, take 10 deep breaths' // 2min"
+      },
+      {
+        "file": "components\\ColorGuidanceCard.tsx",
+        "line": 12,
+        "string": "Sunday",
+        "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+      },
+      {
+        "file": "components\\ColorGuidanceCard.tsx",
+        "line": 12,
+        "string": "Monday",
+        "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+      },
+      {
+        "file": "components\\ColorGuidanceCard.tsx",
+        "line": 12,
+        "string": "Tuesday",
+        "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+      },
+      {
+        "file": "components\\ColorGuidanceCard.tsx",
+        "line": 12,
+        "string": "Wednesday",
+        "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+      },
+      {
+        "file": "components\\ColorGuidanceCard.tsx",
+        "line": 12,
+        "string": "Thursday",
+        "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+      },
+      {
+        "file": "components\\ColorGuidanceCard.tsx",
+        "line": 12,
+        "string": "Friday",
+        "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+      },
+      {
+        "file": "components\\ColorGuidanceCard.tsx",
+        "line": 12,
+        "string": "Saturday",
+        "context": "const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new D..."
+      },
+      {
+        "file": "components\\EnhancedLifePathDisplay.tsx",
+        "line": 285,
+        "string": "Cycle Year",
+        "context": "{isArabic ? 'السنة في الدورة' : 'Cycle Year'}"
+      },
+      {
+        "file": "components\\EnhancedLifePathView.tsx",
+        "line": 172,
+        "string": "Your Spiritual Guidance",
+        "context": "{isArabic ? 'إرشادك الروحاني' : 'Your Spiritual Guidance'}"
+      },
+      {
+        "file": "components\\EnhancedLifePathView.tsx",
+        "line": 269,
+        "string": "Your Current Position",
+        "context": "{isArabic ? 'موقعك الحالي' : 'Your Current Position'}"
+      },
+      {
+        "file": "components\\EnhancedLifePathView.tsx",
+        "line": 294,
+        "string": "Year",
+        "context": "{isArabic ? 'سنة' : 'Year'}"
+      },
+      {
+        "file": "components\\EnhancedLifePathView.tsx",
+        "line": 314,
+        "string": "🎯 This Year\\",
+        "context": "{isArabic ? '🎯 تركيز هذه السنة:' : '🎯 This Year\\'s Focus:'}"
+      },
+      {
+        "file": "components\\EnhancedLifePathView.tsx",
+        "line": 361,
+        "string": "Sacred Numbers in Your Name",
+        "context": "{isArabic ? 'الأرقام المقدسة في اسمك' : 'Sacred Numbers in Your Name'}"
+      },
+      {
+        "file": "components\\EnhancedLifePathView.tsx",
+        "line": 390,
+        "string": "Your Spiritual Focus",
+        "context": "{isArabic ? 'تركيزك الروحاني' : 'Your Spiritual Focus'}"
+      },
+      {
+        "file": "components\\GlossaryModal.tsx",
+        "line": 98,
+        "string": "Rest Day",
+        "context": "term: 'Rest Day',"
+      },
+      {
+        "file": "components\\GlossaryModal.tsx",
+        "line": 100,
+        "string": "Recovery Day",
+        "context": "meaning: 'Recovery Day',"
+      },
+      {
+        "file": "components\\GlossaryModal.tsx",
+        "line": 107,
+        "string": "A suggested Quranic verse based on your name\\",
+        "context": "definition: 'A suggested Quranic verse based on your name\\'s numerical value. Intended for spiritual..."
+      },
+      {
+        "file": "components\\hadad-summary\\hadad-core.ts",
+        "line": 140,
+        "string": "Seven heavens, seven days of creation",
+        "context": "7: 'Seven heavens, seven days of creation',"
+      },
+      {
+        "file": "components\\hadad-summary\\hadad-core.ts",
+        "line": 141,
+        "string": "Twelve Imams, twelve months",
+        "context": "12: 'Twelve Imams, twelve months',"
+      },
+      {
+        "file": "components\\hadad-summary\\hadad-core.ts",
+        "line": 162,
+        "string": "Tuesday",
+        "context": "day: 'Tuesday',"
+      },
+      {
+        "file": "components\\hadad-summary\\hadad-core.ts",
+        "line": 172,
+        "string": "Monday",
+        "context": "day: 'Monday',"
+      },
+      {
+        "file": "components\\hadad-summary\\hadad-core.ts",
+        "line": 182,
+        "string": "Wednesday",
+        "context": "day: 'Wednesday',"
+      },
+      {
+        "file": "components\\hadad-summary\\hadad-core.ts",
+        "line": 192,
+        "string": "Saturday",
+        "context": "day: 'Saturday',"
+      },
+      {
+        "file": "components\\hadad-summary\\hadad-core.ts",
+        "line": 202,
+        "string": "The Opener",
+        "context": "{ ar: 'يَا فَتَّاح', transliteration: 'Yā Fattāḥ', en: 'The Opener', abjad: 489, element: 'Fire' as ..."
+      },
+      {
+        "file": "components\\hadad-summary\\hadad-core.ts",
+        "line": 258,
+        "string": "Channel your energy into focused practice.",
+        "context": "? 'Channel your energy into focused practice.'"
+      },
+      {
+        "file": "components\\HarmonyTooltip.tsx",
+        "line": 65,
+        "string": "→ Easy flow today",
+        "context": "'strong': '→ Easy flow today',"
+      },
+      {
+        "file": "components\\RelationshipInputForm.tsx",
+        "line": 23,
+        "string": "Please enter Arabic names for both people",
+        "context": "alert('Please enter Arabic names for both people');"
+      },
+      {
+        "file": "constants\\lifePathMeanings.ts",
+        "line": 37,
+        "string": "Self-centeredness",
+        "context": "'Self-centeredness'"
+      },
+      {
+        "file": "constants\\lifePathMeanings.ts",
+        "line": 206,
+        "string": "So set your face to the religion, as one by nature upright (30:30)",
+        "context": "quranResonance: 'So set your face to the religion, as one by nature upright (30:30)',"
+      },
+      {
+        "file": "constants\\lifePathMeanings.ts",
+        "line": 411,
+        "string": "To demonstrate that success serves higher purpose",
+        "context": "lifePurpose: 'To demonstrate that success serves higher purpose',"
+      },
+      {
+        "file": "contexts\\LanguageContext.tsx",
+        "line": 19,
+        "string": "|| saved ===",
+        "context": "if (saved === 'en' || saved === 'fr') setLanguage(saved);"
+      },
+      {
+        "file": "features\\compatibility\\CompatibilityPanel.tsx",
+        "line": 53,
+        "string": "Error calculating compatibility:",
+        "context": "console.error('Error calculating compatibility:', error);"
+      },
+      {
+        "file": "features\\compatibility\\CompatibilityPanel.tsx",
+        "line": 54,
+        "string": "Error calculating compatibility. Please try again.",
+        "context": "alert('Error calculating compatibility. Please try again.');"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 93,
+        "string": "Sunday",
+        "context": "'Sun': ['Sunday', 'الأحد'],"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 94,
+        "string": "Monday",
+        "context": "'Moon': ['Monday', 'الاثنين'],"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 95,
+        "string": "Tuesday",
+        "context": "'Mars': ['Tuesday', 'الثلاثاء'],"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 96,
+        "string": "Wednesday",
+        "context": "'Mercury': ['Wednesday', 'الأربعاء'],"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 97,
+        "string": "Thursday",
+        "context": "'Jupiter': ['Thursday', 'الخميس'],"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 98,
+        "string": "Friday",
+        "context": "'Venus': ['Friday', 'الجمعة'],"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 99,
+        "string": "Saturday",
+        "context": "'Saturn': ['Saturday', 'السبت']"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 205,
+        "string": "Tuesday",
+        "context": "dayEn: 'Tuesday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 218,
+        "string": "Friday",
+        "context": "dayEn: 'Friday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 231,
+        "string": "Wednesday",
+        "context": "dayEn: 'Wednesday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 244,
+        "string": "Monday",
+        "context": "dayEn: 'Monday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 257,
+        "string": "Sunday",
+        "context": "dayEn: 'Sunday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 270,
+        "string": "Wednesday",
+        "context": "dayEn: 'Wednesday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 283,
+        "string": "Friday",
+        "context": "dayEn: 'Friday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 296,
+        "string": "Tuesday",
+        "context": "dayEn: 'Tuesday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 309,
+        "string": "Thursday",
+        "context": "dayEn: 'Thursday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 322,
+        "string": "Saturday",
+        "context": "dayEn: 'Saturday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 335,
+        "string": "Saturday",
+        "context": "dayEn: 'Saturday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 348,
+        "string": "Thursday",
+        "context": "dayEn: 'Thursday',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 381,
+        "string": "Meditate on divine oneness. Reflect:",
+        "context": "practice: 'Meditate on divine oneness. Reflect: \"All power belongs to the One.\"',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 402,
+        "string": "Read in the name of your Lord who created (96:1)",
+        "context": "verse: 'Read in the name of your Lord who created (96:1)',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 420,
+        "string": "Restlessness, Irresponsibility, Addiction",
+        "context": "shadow: 'Restlessness, Irresponsibility, Addiction',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 443,
+        "string": "Study, research, meditate, retreat. Deepen spiritual practice.",
+        "context": "practical: 'Study, research, meditate, retreat. Deepen spiritual practice.'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 462,
+        "string": "This day I have perfected your religion for you (5:3)",
+        "context": "verse: 'This day I have perfected your religion for you (5:3)',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 492,
+        "string": "Your soul",
+        "context": "interpretation: `Your soul's journey is through the station of ${station?.name || 'Unknown'}`"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 508,
+        "string": "Name cannot be empty",
+        "context": "throw new Error('Name cannot be empty');"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1360,
+        "string": "Make important decisions",
+        "context": "'Make important decisions',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1483,
+        "string": "Material success together",
+        "context": "'4-8': { type: 'Builder & Achiever', bonus: 20, note: 'Material success together' },"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1569,
+        "string": "Important decisions (emotions may cloud judgment)",
+        "context": "avoid: ['Important decisions (emotions may cloud judgment)', 'Legal matters']"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1732,
+        "string": "2-3 days",
+        "context": "timeframe: string; // \"same day\", \"few hours\", \"2-3 days\", \"1-2 weeks\""
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1732,
+        "string": "1-2 weeks",
+        "context": "timeframe: string; // \"same day\", \"few hours\", \"2-3 days\", \"1-2 weeks\""
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1753,
+        "string": "Important decisions",
+        "context": "bestFor: string[];         // [\"Important decisions\", \"Creative work\"]"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1813,
+        "string": "No decision-making today - defer to better days",
+        "context": "'No decision-making today - defer to better days',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1821,
+        "string": "20min silence or meditation away from bright light",
+        "context": "'20min silence or meditation away from bright light',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1825,
+        "string": "Early bedtime for solar repair (before 10pm)",
+        "context": "'Early bedtime for solar repair (before 10pm)'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1859,
+        "string": "Solo time in pleasant surroundings",
+        "context": "'Solo time in pleasant surroundings',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1935,
+        "string": "2-3 days",
+        "context": "timeframe: '2-3 days',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1939,
+        "string": "1-2 weeks",
+        "context": "timeframe: '1-2 weeks',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1947,
+        "string": "Lead with generosity—authority returns respect today",
+        "context": "instant: 'Lead with generosity—authority returns respect today',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1950,
+        "string": "Lead with consistency—reputation builds over time",
+        "context": "delayed: 'Lead with consistency—reputation builds over time'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1955,
+        "string": "Push forward—progress shows in days",
+        "context": "gradual: 'Push forward—progress shows in days',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1959,
+        "string": "Speak clearly—understanding comes back instantly",
+        "context": "instant: 'Speak clearly—understanding comes back instantly',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1961,
+        "string": "Share knowledge—learning compounds over days",
+        "context": "gradual: 'Share knowledge—learning compounds over days',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1965,
+        "string": "Give care—comfort returns quickly today",
+        "context": "instant: 'Give care—comfort returns quickly today',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1967,
+        "string": "Nurture bonds—emotional depth grows over days",
+        "context": "gradual: 'Nurture bonds—emotional depth grows over days',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1968,
+        "string": "Tend relationships—trust builds with time",
+        "context": "delayed: 'Tend relationships—trust builds with time'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1971,
+        "string": "Show love—beauty reflects back today",
+        "context": "instant: 'Show love—beauty reflects back today',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1972,
+        "string": "Show love—joy returns soon",
+        "context": "quick: 'Show love—joy returns soon',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1973,
+        "string": "Create beauty—appreciation deepens over days",
+        "context": "gradual: 'Create beauty—appreciation deepens over days',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1974,
+        "string": "Invest in art—value increases with time",
+        "context": "delayed: 'Invest in art—value increases with time'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1977,
+        "string": "Think big—opportunities appear today",
+        "context": "instant: 'Think big—opportunities appear today',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1978,
+        "string": "Expand horizons—doors open quickly",
+        "context": "quick: 'Expand horizons—doors open quickly',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1979,
+        "string": "Study deeply—wisdom unfolds over days",
+        "context": "gradual: 'Study deeply—wisdom unfolds over days',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1980,
+        "string": "Build legacy—growth compounds over time",
+        "context": "delayed: 'Build legacy—growth compounds over time'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1983,
+        "string": "Structure well—stability shows today",
+        "context": "instant: 'Structure well—stability shows today',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1985,
+        "string": "Plan carefully—results manifest in days",
+        "context": "gradual: 'Plan carefully—results manifest in days',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 1986,
+        "string": "Build foundations—lasting results take weeks",
+        "context": "delayed: 'Build foundations—lasting results take weeks'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2037,
+        "string": "Important decisions",
+        "context": "'Important decisions',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2051,
+        "string": "Performance reviews",
+        "context": "'Performance reviews',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2054,
+        "string": "Background work",
+        "context": "avoid: ['Background work', 'Hiding mistakes'],"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2063,
+        "string": "Review team work",
+        "context": "'Review team work',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2121,
+        "string": "Meditation",
+        "context": "'Meditation',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2167,
+        "string": "Process day\\",
+        "context": "'Process day\\'s battles',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2191,
+        "string": "Important calls",
+        "context": "'Important calls',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2203,
+        "string": "Email responses",
+        "context": "'Email responses',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2213,
+        "string": "Review what you learned",
+        "context": "'Review what you learned',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2308,
+        "string": "Time with loved ones",
+        "context": "'Time with loved ones',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2309,
+        "string": "Entertainment",
+        "context": "'Entertainment',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2456,
+        "string": "Your inner compass guides you—balance introspection with outer engagement.",
+        "context": "Rūḥ: 'Your inner compass guides you—balance introspection with outer engagement.',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2457,
+        "string": "Your temperament leads—balance feelings with mindful structure.",
+        "context": "Element: 'Your temperament leads—balance feelings with mindful structure.',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2642,
+        "string": "Excellent for leadership—schedule important meetings and presentations",
+        "context": "high: 'Excellent for leadership—schedule important meetings and presentations',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2644,
+        "string": "Challenging for visibility—lead quietly, support others today",
+        "context": "low: 'Challenging for visibility—lead quietly, support others today'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2647,
+        "string": "Perfect for reflection—trust your intuition and emotional wisdom",
+        "context": "high: 'Perfect for reflection—trust your intuition and emotional wisdom',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2648,
+        "string": "Gentle day—plan, review, nurture relationships, avoid overload",
+        "context": "moderate: 'Gentle day—plan, review, nurture relationships, avoid overload',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2649,
+        "string": "Rest needed—minimize commitments, process emotions, be kind to yourself",
+        "context": "low: 'Rest needed—minimize commitments, process emotions, be kind to yourself'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2658,
+        "string": "Communicate clearly—good for emails, meetings, and study sessions",
+        "context": "moderate: 'Communicate clearly—good for emails, meetings, and study sessions',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2663,
+        "string": "Growth day—great for planning expansion and seeking opportunities",
+        "context": "moderate: 'Growth day—great for planning expansion and seeking opportunities',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2664,
+        "string": "Temper optimism—research thoroughly before committing to anything big",
+        "context": "low: 'Temper optimism—research thoroughly before committing to anything big'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2668,
+        "string": "Harmonious day—connect with others, enjoy art, balance work-pleasure",
+        "context": "moderate: 'Harmonious day—connect with others, enjoy art, balance work-pleasure',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2673,
+        "string": "Structure your week—discipline and planning bring good results",
+        "context": "moderate: 'Structure your week—discipline and planning bring good results',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2683,
+        "string": "Balance heat—practice calm speech, charity, time near water",
+        "context": "Fire: 'Balance heat—practice calm speech, charity, time near water',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2685,
+        "string": "Ground yourself—stick to routine, nature walk, one task at a time",
+        "context": "Air: 'Ground yourself—stick to routine, nature walk, one task at a time',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2686,
+        "string": "Add lightness—try creativity, flexibility, or a short change of scenery",
+        "context": "Earth: 'Add lightness—try creativity, flexibility, or a short change of scenery'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2692,
+        "string": "Shine your light—but stay humble and generous with recognition",
+        "context": "Sun: 'Shine your light—but stay humble and generous with recognition',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2693,
+        "string": "Honor your feelings—they guide you to what truly matters",
+        "context": "Moon: 'Honor your feelings—they guide you to what truly matters',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2697,
+        "string": "Appreciate beauty—create harmony in your environment and relationships",
+        "context": "Venus: 'Appreciate beauty—create harmony in your environment and relationships',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2698,
+        "string": "Master discipline—small consistent efforts build lasting success",
+        "context": "Saturn: 'Master discipline—small consistent efforts build lasting success'"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2755,
+        "string": ")[0] : new Date().toISOString().split(",
+        "context": "const anchor = birthDate ? birthDate.toISOString().split('T')[0] : new Date().toISOString().split('T..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2981,
+        "string": "Wear red, orange, or gold to amplify today\\",
+        "context": "Fire: 'Wear red, orange, or gold to amplify today\\'s fiery energy.',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2987,
+        "string": "Wear blue, turquoise, or silver to deepen today\\",
+        "context": "Water: 'Wear blue, turquoise, or silver to deepen today\\'s flow.',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 2999,
+        "string": "Wear green, brown, or beige to ground today\\",
+        "context": "Earth: 'Wear green, brown, or beige to ground today\\'s energy.',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3006,
+        "string": "Blend your colors with today\\",
+        "context": "tip = tips[userElement][dayElement] || 'Blend your colors with today\\'s element for enhanced harmony..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3022,
+        "string": "Today",
+        "context": "explanation = `Today's ${dayElement} energy may challenge your ${userElement} nature. Wear your elem..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3026,
+        "string": "Today",
+        "context": "explanation = `Today's ${dayElement} energy is neutral to your ${userElement} nature. Your element c..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3196,
+        "string": "Saddle Brown",
+        "context": "secondary: { name: 'Saddle Brown', hex: '#8B4513' },"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3256,
+        "string": "Today",
+        "context": "return `Today's ${dailyElement} energy is different from your ${userElement} nature. Stay grounded a..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3267,
+        "string": "Add gold jewelry or accessories",
+        "context": "Fire: ['Wear reds and oranges - bright and bold', 'Add gold jewelry or accessories', 'You\\'ll feel e..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3268,
+        "string": "Great day for meetings and new things",
+        "context": "Air: ['Red or orange shirt, gold accents', 'Mix warm and light colors together', 'Great day for meet..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3275,
+        "string": "Wear blues or turquoise today",
+        "context": "Water: ['Wear blues or turquoise today', 'Silver jewelry would be nice', 'Calming colors for a smoot..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3275,
+        "string": "Calming colors for a smooth day",
+        "context": "Water: ['Wear blues or turquoise today', 'Silver jewelry would be nice', 'Calming colors for a smoot..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3279,
+        "string": "Energetic and clear-headed day",
+        "context": "Fire: ['Yellow or orange combinations', 'Wear gold or warm colors', 'Energetic and clear-headed day'..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3288,
+        "string": "Greens and browns are your friends",
+        "context": "Earth: ['Greens and browns are your friends', 'Add some tan or beige', 'Strong, grounded, natural']..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3288,
+        "string": "Add some tan or beige",
+        "context": "Earth: ['Greens and browns are your friends', 'Add some tan or beige', 'Strong, grounded, natural']..."
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3295,
+        "string": "Stick with your favorite colors - your natural choice",
+        "context": "'Stick with your favorite colors - your natural choice',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3296,
+        "string": "Add grey or beige if you need to feel more calm",
+        "context": "'Add grey or beige if you need to feel more calm',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3303,
+        "string": "Add just a touch of your favorite color for strength",
+        "context": "'Add just a touch of your favorite color for strength',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3304,
+        "string": "Keep colors simple and natural today",
+        "context": "'Keep colors simple and natural today',"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3318,
+        "string": "Morning (5-7 AM): Best time",
+        "context": "'Sun': ['Morning (5-7 AM): Best time', 'Around noon: Strong', 'Evening: Getting weaker'],"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3319,
+        "string": "Evening (6-9 PM): Best time",
+        "context": "'Moon': ['Evening (6-9 PM): Best time', 'Late night: Strong', 'Morning: Weaker'],"
+      },
+      {
+        "file": "features\\ilm-huruf\\core.ts",
+        "line": 3320,
+        "string": "Morning (5-7 AM): Best time",
+        "context": "'Mars': ['Morning (5-7 AM): Best time', 'Afternoon (2-4 PM): Good', 'Evening: Okay'],"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 278,
+        "string": "Error analyzing mother\\",
+        "context": "console.error('Error analyzing mother\\'s name:', error);"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 288,
+        "string": "Error building name destiny:",
+        "context": "console.error('Error building name destiny:', error);"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 347,
+        "string": "Analysis error:",
+        "context": "console.error('Analysis error:', error);"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 1720,
+        "string": "❌ Error fetching verse:",
+        "context": "console.error('❌ Error fetching verse:', err);"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 2771,
+        "string": "This is your main life purpose and natural talents.",
+        "context": "{numberExplanations[lifePathNumber as keyof typeof numberExplanations]?.meaning || \"This is your mai..."
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 3038,
+        "string": "Error calculating today\\",
+        "context": "console.error('Error calculating today\\'s reading:', e);"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 3063,
+        "string": "Error calculating user element:",
+        "context": "console.error('Error calculating user element:', e);"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 3101,
+        "string": "[data-week-view]",
+        "context": "const weekSection = document.querySelector('[data-week-view]');"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 3233,
+        "string": "{todayReading.restLevel ===",
+        "context": "\"{todayReading.restLevel === 'deep'"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 3240,
+        "string": "Who knows the time for disconnection, preserves their energy",
+        "context": "? 'Who knows the time for disconnection, preserves their energy'"
+      },
+      {
+        "file": "features\\ilm-huruf\\IlmHurufPanel.tsx",
+        "line": 3321,
+        "string": "⏸️ REST TIME",
+        "context": "alignment.quality === 'opposing' ? '⏸️ REST TIME' : '📊 MODERATE'}"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranApi.ts",
+        "line": 116,
+        "string": "Translation not available. Please visit Quran.com for the full translation.",
+        "context": "translation: \"Translation not available. Please visit Quran.com for the full translation.\",..."
+      },
+      {
+        "file": "features\\ilm-huruf\\quranApi.ts",
+        "line": 185,
+        "string": "Alternative API error:",
+        "context": "console.error(`Alternative API error:`, error);"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 22,
+        "string": ", nameAr:",
+        "context": "5: { name: \"Al-Ma'idah\", nameAr: \"المائدة\", totalAyahs: 120 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 23,
+        "string": ", nameAr:",
+        "context": "6: { name: \"Al-An'am\", nameAr: \"الأنعام\", totalAyahs: 165 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 24,
+        "string": ", nameAr:",
+        "context": "7: { name: \"Al-A'raf\", nameAr: \"الأعراف\", totalAyahs: 206 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 30,
+        "string": ", nameAr:",
+        "context": "13: { name: \"Ar-Ra'd\", nameAr: \"الرعد\", totalAyahs: 43 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 40,
+        "string": ", nameAr:",
+        "context": "23: { name: \"Al-Mu'minun\", nameAr: \"المؤمنون\", totalAyahs: 118 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 43,
+        "string": ", nameAr:",
+        "context": "26: { name: \"Ash-Shu'ara\", nameAr: \"الشعراء\", totalAyahs: 227 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 79,
+        "string": ", nameAr:",
+        "context": "62: { name: \"Al-Jumu'ah\", nameAr: \"الجمعة\", totalAyahs: 11 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 87,
+        "string": ", nameAr:",
+        "context": "70: { name: \"Al-Ma'arij\", nameAr: \"المعارج\", totalAyahs: 44 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 96,
+        "string": ", nameAr:",
+        "context": "79: { name: \"An-Nazi'at\", nameAr: \"النازعات\", totalAyahs: 46 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 104,
+        "string": ", nameAr:",
+        "context": "87: { name: \"Al-A'la\", nameAr: \"الأعلى\", totalAyahs: 19 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 118,
+        "string": ", nameAr:",
+        "context": "101: { name: \"Al-Qari'ah\", nameAr: \"القارعة\", totalAyahs: 11 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 124,
+        "string": ", nameAr:",
+        "context": "107: { name: \"Al-Ma'un\", nameAr: \"الماعون\", totalAyahs: 7 },"
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 187,
+        "string": "This verse emerged through numerical resonance between your name and the Qur",
+        "context": "\"This verse emerged through numerical resonance between your name and the Qur'anic structure. \" +..."
+      },
+      {
+        "file": "features\\ilm-huruf\\quranResonance.ts",
+        "line": 188,
+        "string": "Reflect upon it as a potential sign or reminder in your spiritual journey.",
+        "context": "\"Reflect upon it as a potential sign or reminder in your spiritual journey. \" +"
+      },
+      {
+        "file": "lib\\seoConfig.ts",
+        "line": 8,
+        "string": "Asrār Everyday",
+        "context": "siteName: 'Asrār Everyday',"
+      },
+      {
+        "file": "lib\\seoConfig.ts",
+        "line": 59,
+        "string": "@AsrarEveryday",
+        "context": "twitterHandle: '@AsrarEveryday', // Update with actual handle"
+      },
+      {
+        "file": "lib\\seoConfig.ts",
+        "line": 67,
+        "string": "Asrār Everyday",
+        "context": "name: 'Asrār Everyday',"
+      },
+      {
+        "file": "lib\\seoConfig.ts",
+        "line": 111,
+        "string": "SearchAction",
+        "context": "'@type': 'SearchAction',"
+      },
+      {
+        "file": "lib\\text-normalize-v2.ts",
+        "line": 255,
+        "string": "Doubled consonant detected: provided shadda alternative",
+        "context": "warnings.push('Doubled consonant detected: provided shadda alternative');"
+      },
+      {
+        "file": "lib\\text-normalize.ts",
+        "line": 415,
+        "string": ": provided shadda alternative",
+        "context": "warnings.push(`Doubled consonant in \"${originalWord}\": provided shadda alternative`);"
+      },
+      {
+        "file": "lib\\text-normalize.ts",
+        "line": 423,
+        "string": ": consider shadda on appropriate letter",
+        "context": "warnings.push(`Doubled consonant in \"${originalWord}\": consider shadda on appropriate letter`);..."
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 70,
+        "string": "Day",
+        "context": "day: \"Day\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 77,
+        "string": "Today",
+        "context": "todaysReflection: \"Today's Reflection\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 219,
+        "string": "Day",
+        "context": "day: \"Day\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 269,
+        "string": "Your soul",
+        "context": "lifePath: \"Your soul's primary journey and purpose\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 270,
+        "string": "Your heart",
+        "context": "soulUrge: \"Your heart's deepest desires and inner motivations\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 307,
+        "string": "Day",
+        "context": "day: \"Day\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 356,
+        "string": "A verse connected to your name",
+        "context": "quranicGuidanceDesc: \"A verse connected to your name's energy, for reflection only.\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 451,
+        "string": "Add Mother",
+        "context": "addMotherName: \"Add Mother's Name (optional)\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 472,
+        "string": "Analysis Error",
+        "context": "analysisError: \"Analysis Error\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 475,
+        "string": "Your Spiritual Profile",
+        "context": "yourSpiritualProfile: \"Your Spiritual Profile\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 483,
+        "string": "Week at a Glance",
+        "context": "weekAtAGlance: \"Week at a Glance\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 484,
+        "string": "Peak Day This Week",
+        "context": "peakDayThisWeek: \"Peak Day This Week\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 485,
+        "string": "Best for important initiatives",
+        "context": "bestForInitiatives: \"Best for important initiatives\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 486,
+        "string": "Focus Day",
+        "context": "focusDay: \"Focus Day\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 490,
+        "string": "Energy Return Speeds This Week",
+        "context": "energyReturnSpeedsThisWeek: \"Energy Return Speeds This Week\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 492,
+        "string": "Same day",
+        "context": "sameDay: \"Same day\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 494,
+        "string": "2-3 days",
+        "context": "twoDays: \"2-3 days\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 495,
+        "string": "1-2 weeks",
+        "context": "oneToTwoWeeks: \"1-2 weeks\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 498,
+        "string": "Critical low energy - honor this healing signal from your body and spirit.",
+        "context": "criticalLowEnergy: \"Critical low energy - honor this healing signal from your body and spirit.\",..."
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 499,
+        "string": "Low harmony + {planet} energy = Time to pause, not push.",
+        "context": "lowHarmonyPause: \"Low harmony + {planet} energy = Time to pause, not push.\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 500,
+        "string": "Rest Practices (choose one):",
+        "context": "restPractices: \"Rest Practices (choose one):\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 501,
+        "string": "Better Days This Week:",
+        "context": "betterDaysThisWeek: \"Better Days This Week:\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 502,
+        "string": "Reschedule important tasks to these high-harmony days for better outcomes.",
+        "context": "rescheduleImportantTasks: \"Reschedule important tasks to these high-harmony days for better outcomes..."
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 516,
+        "string": "All Tips for the Day",
+        "context": "allTipsForTheDay: \"All Tips for the Day\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 532,
+        "string": "(same day)",
+        "context": "sameDayParens: \"(same day)\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 534,
+        "string": "(2-3 days)",
+        "context": "twoDaysParens: \"(2-3 days)\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 535,
+        "string": "(1-2 weeks)",
+        "context": "oneToTwoWeeksParens: \"(1-2 weeks)\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 541,
+        "string": "Your Guidance for This Day",
+        "context": "yourGuidanceForThisDay: \"Your Guidance for This Day\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 544,
+        "string": "Today",
+        "context": "todaysPractice: \"Today's Practice:\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 548,
+        "string": "Optimal Sequence for {day}",
+        "context": "optimalSequence: \"Optimal Sequence for {day}\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 554,
+        "string": "Your Balance Today",
+        "context": "yourBalanceToday: \"Your Balance Today\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 564,
+        "string": "Start {duration}-Min Timer",
+        "context": "startTimer: \"Start {duration}-Min Timer\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 565,
+        "string": "Focus on your practice...",
+        "context": "focusOnPractice: \"Focus on your practice...\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 566,
+        "string": "Stop Timer",
+        "context": "stopTimer: \"Stop Timer\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 568,
+        "string": "Score updates: Midnight (new planetary day begins)",
+        "context": "scoreUpdates: \"Score updates: Midnight (new planetary day begins)\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 569,
+        "string": "Valid for: Today only - each day brings new elemental balance",
+        "context": "validFor: \"Valid for: Today only - each day brings new elemental balance\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 578,
+        "string": "Challenging day. Deep rebalancing needed.",
+        "context": "conflictDesc: \"Challenging day. Deep rebalancing needed.\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 598,
+        "string": "Meditate on divine oneness. Reflect:",
+        "context": "practice: \"Meditate on divine oneness. Reflect: 'All power belongs to the One.'\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 617,
+        "string": "Read in the name of your Lord who created (96:1)",
+        "context": "verse: \"Read in the name of your Lord who created (96:1)\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 633,
+        "string": "Restlessness, Irresponsibility, Addiction",
+        "context": "shadow: \"Restlessness, Irresponsibility, Addiction\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 654,
+        "string": "Study, research, meditate, retreat. Deepen spiritual practice.",
+        "context": "practical: \"Study, research, meditate, retreat. Deepen spiritual practice.\""
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 671,
+        "string": "Today I have perfected your religion for you (5:3)",
+        "context": "verse: \"Today I have perfected your religion for you (5:3)\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 810,
+        "string": "Your soul",
+        "context": "soulJourney: \"Your soul's journey passes through the station of\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 852,
+        "string": "This Month",
+        "context": "thisMonthFlow: \"This Month's Flow\""
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 883,
+        "string": "Your life purpose & what you",
+        "context": "ultimateGoal: \"Your life purpose & what you're meant to accomplish. Your ultimate goal.\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 886,
+        "string": "These numbers represent lessons your soul wants to learn in this life. They",
+        "context": "lessonsDescription: \"These numbers represent lessons your soul wants to learn in this life. They're ..."
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 917,
+        "string": "This Year & Month",
+        "context": "thisYearMonth: \"This Year & Month's Energy\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1084,
+        "string": "Today",
+        "context": "todayElement: \"Today's Element\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1193,
+        "string": "(For everything there is a time) — Success comes from right action at the right time.",
+        "context": "successFromTiming: \"(For everything there is a time) — Success comes from right action at the right ..."
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1268,
+        "string": "A verse connected to your name",
+        "context": "quranicGuidanceDesc: \"A verse connected to your name's energy, for reflection only.\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1353,
+        "string": "(For everything there is a time) — Success comes from right action at the right time.",
+        "context": "forEverythingExplanation: \"(For everything there is a time) — Success comes from right action at the..."
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1355,
+        "string": "(Who knows the time of disconnection, preserves his energy)",
+        "context": "whoKnowsExplanation: \"(Who knows the time of disconnection, preserves his energy)\""
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1392,
+        "string": "Sélectionnez la date",
+        "context": "selectDate: \"Sélectionnez la date\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1623,
+        "string": "Votre mission de vie ultime et votre but divin",
+        "context": "\"Votre mission de vie ultime et votre but divin\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1668,
+        "string": "Date de Naissance",
+        "context": "birthDate: \"Date de Naissance\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1669,
+        "string": "Date de Naissance (Optionnel - pour date d",
+        "context": "birthDateOptional: \"Date de Naissance (Optionnel - pour date d'ancrage)\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1711,
+        "string": "Excellent pour les initiatives importantes",
+        "context": "bestForInitiatives: \"Excellent pour les initiatives importantes\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1728,
+        "string": "Reportez les tâches importantes aux jours d",
+        "context": "rescheduleImportantTasks: \"Reportez les tâches importantes aux jours d'harmonie élevée pour de meill..."
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1774,
+        "string": "Séquence Optimale pour {day}",
+        "context": "optimalSequence: \"Séquence Optimale pour {day}\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 1981,
+        "string": "Agitation, Irresponsabilité, Addiction",
+        "context": "shadow: \"Agitation, Irresponsabilité, Addiction\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 2094,
+        "string": "Décisions importantes (émotions troublées)",
+        "context": "avoid: [\"Décisions importantes (émotions troublées)\", \"Questions juridiques\"]"
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 2231,
+        "string": "Votre but de vie & ce que vous êtes destiné à accomplir. Votre objectif ultime.",
+        "context": "ultimateGoal: \"Votre but de vie & ce que vous êtes destiné à accomplir. Votre objectif ultime.\",..."
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 2338,
+        "string": "Commencer une tâche importante",
+        "context": "startImportantTask: \"Commencer une tâche importante\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 2340,
+        "string": "Envoyer un email critique",
+        "context": "sendCriticalEmail: \"Envoyer un email critique\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 2373,
+        "string": "Prendre des décisions importantes",
+        "context": "\"Prendre des décisions importantes\","
+      },
+      {
+        "file": "lib\\translations.ts",
+        "line": 2467,
+        "string": "Reporter les communications importantes",
+        "context": "postponeCommunication: \"Reporter les communications importantes\","
+      },
+      {
+        "file": "utils\\actionButtons.ts",
+        "line": 113,
+        "string": "Make important decisions",
+        "context": "'Make important decisions',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 170,
+        "string": "Share your gifts",
+        "context": "{ theme: 'Creative Expression', arabic: 'التعبير الإبداعي', focus: ['Share your gifts', 'Communicate..."
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 174,
+        "string": "Meditate",
+        "context": "{ theme: 'Spiritual Growth', arabic: 'النمو الروحاني', focus: ['Seek wisdom', 'Meditate', 'Study dee..."
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 413,
+        "string": "Repeated setbacks requiring perseverance",
+        "context": "'Repeated setbacks requiring perseverance',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 451,
+        "string": "Addiction patterns",
+        "context": "'Addiction patterns',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 491,
+        "string": "Ego-driven decisions backfire",
+        "context": "'Ego-driven decisions backfire',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 508,
+        "string": "Meditate on impermanence",
+        "context": "'Meditate on impermanence',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 575,
+        "string": "Days of Creation, Completion",
+        "context": "significance: 'Days of Creation, Completion',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 578,
+        "string": "Divine perfection and wholeness. Your name carries the frequency of completion.",
+        "context": "spiritualMeaning: 'Divine perfection and wholeness. Your name carries the frequency of completion.',..."
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 583,
+        "string": "Months, Tribes, Imams",
+        "context": "significance: 'Months, Tribes, Imams',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 585,
+        "string": "Twelve months, twelve springs",
+        "context": "quranConnection: 'Twelve months, twelve springs',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 586,
+        "string": "Cosmic order and leadership. Your path involves guiding others.",
+        "context": "spiritualMeaning: 'Cosmic order and leadership. Your path involves guiding others.',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 602,
+        "string": "Transformation through trial. Your journey involves deep purification.",
+        "context": "spiritualMeaning: 'Transformation through trial. Your journey involves deep purification.',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 615,
+        "string": "Names of Allah",
+        "context": "significance: 'Names of Allah',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 618,
+        "string": "Divine attributes. Your soul reflects the Beautiful Names.",
+        "context": "spiritualMeaning: 'Divine attributes. Your soul reflects the Beautiful Names.',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 626,
+        "string": "Pure monotheism. Your essence is aligned with divine unity.",
+        "context": "spiritualMeaning: 'Pure monotheism. Your essence is aligned with divine unity.',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 641,
+        "string": "Opening verse of Quran",
+        "context": "quranConnection: 'Opening verse of Quran',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 642,
+        "string": "Begin with grace. Your every action should start with divine remembrance.",
+        "context": "spiritualMeaning: 'Begin with grace. Your every action should start with divine remembrance.',"
+      },
+      {
+        "file": "utils\\enhancedLifePath.ts",
+        "line": 649,
+        "string": "Night of Qadr better than 1000 months",
+        "context": "quranConnection: 'Night of Qadr better than 1000 months',"
+      },
+      {
+        "file": "utils\\location.ts",
+        "line": 21,
+        "string": "Your Location",
+        "context": "let cityName = 'Your Location';"
+      },
+      {
+        "file": "utils\\location.ts",
+        "line": 27,
+        "string": "Your Location",
+        "context": "cityName = data.address?.city || data.address?.town || data.address?.village || 'Your Location';..."
+      },
+      {
+        "file": "utils\\location.ts",
+        "line": 29,
+        "string": "Could not fetch city name",
+        "context": "console.warn('Could not fetch city name');"
+      },
+      {
+        "file": "utils\\location.ts",
+        "line": 67,
+        "string": "Error loading location:",
+        "context": "console.error('Error loading location:', error);"
+      },
+      {
+        "file": "utils\\planetaryHours.ts",
+        "line": 20,
+        "string": "Invalid sunrise/sunset times, using fallback",
+        "context": "console.warn('Invalid sunrise/sunset times, using fallback');"
+      },
+      {
+        "file": "utils\\planetaryHours.ts",
+        "line": 173,
+        "string": "No current hour found. Time range check:",
+        "context": "console.warn('No current hour found. Time range check:');"
+      },
+      {
+        "file": "utils\\relationshipCompatibility.ts",
+        "line": 72,
+        "string": "Completion and transformation. A karmic connection bringing cycles to close.",
+        "context": "en: 'Completion and transformation. A karmic connection bringing cycles to close.',"
+      },
+      {
+        "file": "utils\\relationshipCompatibility.ts",
+        "line": 370,
+        "string": "Your spiritual paths may differ. Respect each other\\",
+        "context": "recommendations.push('Your spiritual paths may differ. Respect each other\\'s journey and find common..."
+      },
+      {
+        "file": "utils\\relationshipCompatibility.ts",
+        "line": 393,
+        "string": "Practice patience, kindness, and open communication to nurture your connection.",
+        "context": "recommendations.push('Practice patience, kindness, and open communication to nurture your connection..."
+      }
+    ]
+  }
+}
