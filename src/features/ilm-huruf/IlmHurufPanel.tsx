@@ -2959,7 +2959,10 @@ function CompatibilityResults({ results }: { results: any }) {
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-lg">{getElementIcon(dominant1)}</span>
                         <span className="text-xs font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-800 px-2 py-1 rounded-full border border-purple-300 dark:border-purple-700">
-                          {t.compatibilityResults[`${dominant1}Temperament` as keyof typeof t.compatibilityResults]}
+                          {(() => {
+                            const key = `${dominant1}Temperament` as 'fireTemperament' | 'airTemperament' | 'waterTemperament' | 'earthTemperament';
+                            return t.compatibilityResults[key];
+                          })()}
                         </span>
                       </div>
                     </div>
@@ -2996,7 +2999,10 @@ function CompatibilityResults({ results }: { results: any }) {
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-lg">{getElementIcon(dominant2)}</span>
                         <span className="text-xs font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-800 px-2 py-1 rounded-full border border-pink-300 dark:border-pink-700">
-                          {t.compatibilityResults[`${dominant2}Temperament` as keyof typeof t.compatibilityResults]}
+                          {(() => {
+                            const key = `${dominant2}Temperament` as 'fireTemperament' | 'airTemperament' | 'waterTemperament' | 'earthTemperament';
+                            return t.compatibilityResults[key];
+                          })()}
                         </span>
                       </div>
                     </div>
