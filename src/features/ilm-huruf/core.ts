@@ -667,6 +667,7 @@ export function analyzeMotherName(arabicName: string, abjad: Record<string, numb
  * Result interface for buildDestiny function (unified Name Chart calculation)
  */
 export interface NameDestinyResult {
+  arabicName?: string;    // The Arabic name for element chart calculation
   personKabir: number;    // Person's Ḥadad alone
   motherKabir: number;    // Mother's Ḥadad alone (0 if not provided)
   totalKabir: number;     // Combined total (person + mother)
