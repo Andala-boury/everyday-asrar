@@ -349,6 +349,35 @@ export const translations = {
       disclaimer: {
         reflectionOnly: "For reflection only — not divination or legal ruling.",
       },
+      elementChart: {
+        title: "Name Element Chart",
+        subtitle: "Elemental Composition & Balance",
+        dominant: "Dominant Element",
+        personality: "Personality Reflection",
+        balancingDhikr: "Balancing Dhikr",
+        fire: {
+          name: "Fire",
+          personality: "Your name carries the energy of passion, courage, and bold action. You're naturally driven to lead, initiate, and transform.",
+        },
+        air: {
+          name: "Air",
+          personality: "Your name embodies intellectual clarity, communication, and adaptability. You're drawn to thinking, learning, and connecting ideas.",
+        },
+        water: {
+          name: "Water",
+          personality: "Your name resonates with emotional depth, empathy, and intuition. You naturally heal, nurture, and flow with life's rhythms.",
+        },
+        earth: {
+          name: "Earth",
+          personality: "Your name grounds you in practicality, reliability, and patience. You excel at building, organizing, and bringing stability.",
+        },
+        dhikr: {
+          fire: "Yā Laṭīf (The Gentle) — to soften intensity",
+          air: "Yā Ḥakīm (The Wise) — to ground thoughts",
+          water: "Yā Nūr (The Light) — to illuminate emotions",
+          earth: "Yā Fattāḥ (The Opener) — to invite flow",
+        },
+      },
     },
 
     // Planetary Hours
@@ -895,7 +924,47 @@ export const translations = {
       sharedElement: "Element",
       recommendations: "Recommendations",
       strengths: "Strengths",
-      challenges: "Challenges"
+      challenges: "Challenges",
+      // Letter Chemistry Feature
+      letterChemistry: "Letter Chemistry",
+      letterChemistryArabic: "Zawāj al-Ḥurūf",
+      letterChemistryDesc: "Shows the elemental temperament between the two names. Each letter carries Fire, Air, Water, or Earth energy — their blend forms the emotional and energetic balance of your connection.",
+      combinedHarmony: "Combined Harmony",
+      combinedHarmonyExplain: "Higher means smoother elemental flow between you",
+      balancingDhikr: "Balancing Dhikr",
+      balancingDhikrContext: "These dhikr help balance the dominant elements so both can harmonize.",
+      temperament: "Temperament",
+      for: "For",
+      // Element names
+      fire: "Fire",
+      air: "Air",
+      water: "Water",
+      earth: "Earth",
+      // Element temperament descriptions
+      fireTemperament: "Fire Temperament — passionate, creative, bold",
+      airTemperament: "Air Temperament — quick, intellectual, communicative",
+      waterTemperament: "Water Temperament — calm, emotional, intuitive",
+      earthTemperament: "Earth Temperament — stable, practical, grounded",
+      // Balance Advice for Element Pairs
+      balanceAdvice: {
+        fireFire: "Practice calm dhikr together, avoid rushing decisions.",
+        fireAir: "Creative synergy! Good for projects and ideas, but take cool-down time together.",
+        fireWater: "Balance passion with patience. Cool flames with understanding.",
+        fireEarth: "Combine vision with planning. Let fire inspire, earth execute.",
+        airAir: "Express ideas clearly, but ground them in action.",
+        airWater: "Express feelings clearly through words or art. Write or sing together.",
+        airEarth: "Ideas meet practicality. Discuss, then build together.",
+        waterWater: "Nurture each other's emotions. Create safe, peaceful spaces.",
+        waterEarth: "Nurture creative rest together. Cook, garden, or create beauty.",
+        earthEarth: "Build stability together, but leave room for spontaneity."
+      },
+      // Dhikr Effects
+      dhikrEffects: {
+        fireEffect: "Cools intensity, brings gentleness",
+        airEffect: "Focuses the mind, brings wisdom",
+        waterEffect: "Lifts emotion into clarity",
+        earthEffect: "Softens rigidity, opens possibilities"
+      }
     },
 
     // LIFE PATH RESULTS COMPONENT
@@ -1936,6 +2005,35 @@ export const translations = {
       disclaimer: {
         reflectionOnly: "Pour la réflexion uniquement — aucune divination ni avis juridique.",
       },
+      elementChart: {
+        title: "Carte des éléments du nom",
+        subtitle: "Composition et équilibre élémentaire",
+        dominant: "Élément dominant",
+        personality: "Réflexion sur la personnalité",
+        balancingDhikr: "Dhikr d'équilibrage",
+        fire: {
+          name: "Feu",
+          personality: "Votre nom porte l'énergie de la passion, du courage et de l'action audacieuse. Vous êtes naturellement poussé à diriger, initier et transformer.",
+        },
+        air: {
+          name: "Air",
+          personality: "Votre nom incarne la clarté intellectuelle, la communication et l'adaptabilité. Vous êtes attiré par la pensée, l'apprentissage et la connexion des idées.",
+        },
+        water: {
+          name: "Eau",
+          personality: "Votre nom résonne avec la profondeur émotionnelle, l'empathie et l'intuition. Vous guérissez, nourrissez et suivez naturellement les rythmes de la vie.",
+        },
+        earth: {
+          name: "Terre",
+          personality: "Votre nom vous ancre dans le pragmatisme, la fiabilité et la patience. Vous excellez à construire, organiser et apporter de la stabilité.",
+        },
+        dhikr: {
+          fire: "Yā Laṭīf (Le Doux) — pour adoucir l'intensité",
+          air: "Yā Ḥakīm (Le Sage) — pour ancrer les pensées",
+          water: "Yā Nūr (La Lumière) — pour illuminer les émotions",
+          earth: "Yā Fattāḥ (Celui qui ouvre) — pour inviter le flux",
+        },
+      },
     },
 
     planetaryHours: {
@@ -2293,7 +2391,47 @@ export const translations = {
       sharedElement: "Élément",
       recommendations: "Recommandations",
       strengths: "Forces",
-      challenges: "Défis"
+      challenges: "Défis",
+      // Letter Chemistry Feature
+      letterChemistry: "Chimie des Lettres",
+      letterChemistryArabic: "Zawāj al-Ḥurūf",
+      letterChemistryDesc: "Montre le tempérament élémentaire entre les deux noms. Chaque lettre porte une énergie de Feu, Air, Eau ou Terre — leur mélange forme l'équilibre émotionnel et énergétique de votre connexion.",
+      combinedHarmony: "Harmonie Combinée",
+      combinedHarmonyExplain: "Plus le pourcentage est élevé, plus le flux des éléments est harmonieux",
+      balancingDhikr: "Dhikr d'Équilibre",
+      balancingDhikrContext: "Ces dhikr aident à équilibrer les éléments dominants pour une meilleure harmonie.",
+      temperament: "Tempérament",
+      for: "Pour",
+      // Element names
+      fire: "Feu",
+      air: "Air",
+      water: "Eau",
+      earth: "Terre",
+      // Element temperament descriptions
+      fireTemperament: "Tempérament Feu — passionné, créatif, audacieux",
+      airTemperament: "Tempérament Air — rapide, intellectuel, communicatif",
+      waterTemperament: "Tempérament Eau — calme, émotionnel, intuitif",
+      earthTemperament: "Tempérament Terre — stable, pratique, ancré",
+      // Balance Advice for Element Pairs
+      balanceAdvice: {
+        fireFire: "Pratiquez le dhikr calmement ensemble, évitez les décisions hâtives.",
+        fireAir: "Synergie créative! Bon pour les projets et idées, mais prenez du temps pour vous calmer ensemble.",
+        fireWater: "Équilibrez la passion avec la patience. Refroidissez les flammes avec compréhension.",
+        fireEarth: "Combinez vision et planification. Laissez le feu inspirer, la terre exécuter.",
+        airAir: "Exprimez les idées clairement, mais ancrez-les dans l'action.",
+        airWater: "Exprimez vos sentiments clairement par les mots ou l'art. Écrivez ou chantez ensemble.",
+        airEarth: "Les idées rencontrent la praticité. Discutez, puis construisez ensemble.",
+        waterWater: "Nourrissez les émotions de l'autre. Créez des espaces sûrs et paisibles.",
+        waterEarth: "Cultivez le repos créatif ensemble. Cuisinez, jardinez ou créez de la beauté.",
+        earthEarth: "Construisez la stabilité ensemble, mais laissez place à la spontanéité."
+      },
+      // Dhikr Effects
+      dhikrEffects: {
+        fireEffect: "Refroidit l'intensité, apporte la douceur",
+        airEffect: "Concentre l'esprit, apporte la sagesse",
+        waterEffect: "Élève l'émotion vers la clarté",
+        earthEffect: "Adoucit la rigidité, ouvre les possibilités"
+      }
     },
 
     // LIFE PATH RESULTS COMPONENT
