@@ -90,6 +90,127 @@ import {
   type PinnacleChallenge
 } from '../../utils/enhancedLifePath';
 
+// ============================================================================
+// ELEMENT HARMONY & LETTER CHEMISTRY CONSTANTS
+// ============================================================================
+
+// Element harmony scores (0-1 scale)
+const ELEMENT_HARMONY: Record<string, Record<string, number>> = {
+  fire: { fire: 0.95, air: 0.85, water: 0.45, earth: 0.60 },
+  air: { fire: 0.85, air: 0.95, water: 0.70, earth: 0.50 },
+  water: { fire: 0.45, air: 0.70, water: 0.95, earth: 0.85 },
+  earth: { fire: 0.60, air: 0.50, water: 0.85, earth: 0.95 }
+};
+
+// Letter to Element mapping (28 Arabic letters)
+const LETTER_ELEMENTS: Record<string, 'fire' | 'air' | 'water' | 'earth'> = {
+  // Fire letters (hot & dry): ا د ط م ف ش ذ
+  'ا': 'fire', 'د': 'fire', 'ط': 'fire', 'م': 'fire', 'ف': 'fire', 'ش': 'fire', 'ذ': 'fire',
+  // Air letters (hot & wet): ه و ي ن ص ت ض  
+  'ه': 'air', 'و': 'air', 'ي': 'air', 'ن': 'air', 'ص': 'air', 'ت': 'air', 'ض': 'air',
+  // Water letters (cold & wet): ب ح ل ع ر ك غ
+  'ب': 'water', 'ح': 'water', 'ل': 'water', 'ع': 'water', 'ر': 'water', 'ك': 'water', 'غ': 'water',
+  // Earth letters (cold & dry): ج ز س ق ث خ ظ
+  'ج': 'earth', 'ز': 'earth', 'س': 'earth', 'ق': 'earth', 'ث': 'earth', 'خ': 'earth', 'ظ': 'earth'
+};
+
+// Helper function to get balance advice key from element pair
+function getBalanceAdviceKey(element1: 'fire' | 'air' | 'water' | 'earth', element2: 'fire' | 'air' | 'water' | 'earth'): string {
+  const pairs: Record<string, string> = {
+    'fire-fire': 'fireFire',
+    'fire-air': 'fireAir',
+    'air-fire': 'fireAir',
+    'fire-water': 'fireWater',
+    'water-fire': 'fireWater',
+    'fire-earth': 'fireEarth',
+    'earth-fire': 'fireEarth',
+    'air-air': 'airAir',
+    'air-water': 'airWater',
+    'water-air': 'airWater',
+    'air-earth': 'airEarth',
+    'earth-air': 'airEarth',
+    'water-water': 'waterWater',
+    'water-earth': 'waterEarth',
+    'earth-water': 'waterEarth',
+    'earth-earth': 'earthEarth'
+  };
+  return pairs[`${element1}-${element2}`] || 'fireFire';
+}
+
+// Helper function to get dhikr effect key
+function getDhikrEffectKey(element: 'fire' | 'air' | 'water' | 'earth'): string {
+  const keys: Record<string, string> = {
+    fire: 'fireEffect',
+    air: 'airEffect',
+    water: 'waterEffect',
+    earth: 'earthEffect'
+  };
+  return keys[element];
+}
+
+// Divine Names for each element (these are proper names, don't translate)
+const DHIKR_NAMES: Record<'fire' | 'air' | 'water' | 'earth', { name: string; nameFr: string; nameAr: string }> = {
+  fire: { name: 'Yā Laṭīf (يا لطيف)', nameFr: 'Yā Laṭīf (يا لطيف)', nameAr: 'يا لطيف' },
+  air: { name: 'Yā Ḥakīm (يا حكيم)', nameFr: 'Yā Ḥakīm (يا حكيم)', nameAr: 'يا حكيم' },
+  water: { name: 'Yā Nūr (يا نور)', nameFr: 'Yā Nūr (يا نور)', nameAr: 'يا نور' },
+  earth: { name: 'Yā Fattāḥ (يا فتاح)', nameFr: 'Yā Fattāḥ (يا فتاح)', nameAr: 'يا فتاح' }
+};
+
+// Helper function to calculate element distribution from Arabic text
+function calculateElementDistribution(arabicText: string): Record<'fire' | 'air' | 'water' | 'earth', number> {
+  const normalized = arabicText.replace(/[ًٌٍَُِّْ\s]/g, '');
+  const letters = [...normalized];
+  const total = letters.length;
+  
+  const counts = { fire: 0, air: 0, water: 0, earth: 0 };
+  
+  letters.forEach(letter => {
+    const element = LETTER_ELEMENTS[letter];
+    if (element) {
+      counts[element]++;
+    }
+  });
+  
+  return {
+    fire: total > 0 ? Math.round((counts.fire / total) * 100) : 0,
+    air: total > 0 ? Math.round((counts.air / total) * 100) : 0,
+    water: total > 0 ? Math.round((counts.water / total) * 100) : 0,
+    earth: total > 0 ? Math.round((counts.earth / total) * 100) : 0
+  };
+}
+
+// Helper function to get dominant element
+function getDominantElement(distribution: Record<'fire' | 'air' | 'water' | 'earth', number>): 'fire' | 'air' | 'water' | 'earth' {
+  let max = 0;
+  let dominant: 'fire' | 'air' | 'water' | 'earth' = 'fire';
+  
+  (Object.entries(distribution) as [typeof dominant, number][]).forEach(([element, percentage]) => {
+    if (percentage > max) {
+      max = percentage;
+      dominant = element;
+    }
+  });
+  
+  return dominant;
+}
+
+// Helper function to get element icon
+function getElementIcon(element: 'fire' | 'air' | 'water' | 'earth'): string {
+  const icons = { fire: '🔥', air: '💨', water: '💧', earth: '🌍' };
+  return icons[element];
+}
+
+// Helper function to get element name in multiple languages
+function getElementName(element: 'fire' | 'air' | 'water' | 'earth', lang: 'en' | 'fr' | 'ar'): string {
+  const names = {
+    fire: { en: 'Fire', fr: 'Feu', ar: 'النار' },
+    air: { en: 'Air', fr: 'Air', ar: 'الهواء' },
+    water: { en: 'Water', fr: 'Eau', ar: 'الماء' },
+    earth: { en: 'Earth', fr: 'Terre', ar: 'الأرض' }
+  };
+  return names[element][lang];
+}
+
 /**
  * Get current day's element based on planetary day assignment
  * Sun=Fire, Mon=Water, Tue=Fire, Wed=Air, Thu=Water, Fri=Air, Sat=Earth
@@ -1955,6 +2076,120 @@ function DestinyResults({ results }: { results: any }) {
         </div>
       )}
 
+      {/* Name Element Chart */}
+      {results.nameDestiny && results.nameDestiny.arabicName && (
+        <div className="bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 rounded-xl p-6 border-2 border-teal-200 dark:border-teal-700 shadow-lg">
+          <div className="flex items-center gap-3 mb-5">
+            <Flame className="w-7 h-7 text-teal-600 dark:text-teal-400" />
+            <div>
+              <h3 className="text-2xl font-bold text-teal-900 dark:text-teal-200">
+                {t.nameDestiny.elementChart.title}
+              </h3>
+              <p className="text-sm text-teal-700 dark:text-teal-300">
+                {t.nameDestiny.elementChart.subtitle}
+              </p>
+            </div>
+          </div>
+
+          {(() => {
+            // Calculate element distribution for the name
+            const elementDist = calculateElementDistribution(results.nameDestiny.arabicName);
+            
+            // Find dominant element
+            let dominantElement: 'fire' | 'air' | 'water' | 'earth' = 'fire';
+            let maxPercentage = 0;
+            
+            Object.entries(elementDist).forEach(([elem, pct]) => {
+              if (pct > maxPercentage) {
+                maxPercentage = pct;
+                dominantElement = elem as 'fire' | 'air' | 'water' | 'earth';
+              }
+            });
+
+            // Element visual config
+            const elementConfig = {
+              fire: { icon: '🔥', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30', bar: 'bg-red-500' },
+              air: { icon: '💨', color: 'text-sky-600 dark:text-sky-400', bg: 'bg-sky-100 dark:bg-sky-900/30', bar: 'bg-sky-500' },
+              water: { icon: '💧', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30', bar: 'bg-blue-500' },
+              earth: { icon: '🌍', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/30', bar: 'bg-amber-500' }
+            };
+
+            return (
+              <>
+                {/* Element Bars */}
+                <div className="space-y-3 mb-6">
+                  {Object.entries(elementDist).map(([elem, pct]) => {
+                    const config = elementConfig[elem as keyof typeof elementConfig];
+                    const elemName = elem as 'fire' | 'air' | 'water' | 'earth';
+                    const displayName = isFr ? t.nameDestiny.elementChart[elemName].name : elem.charAt(0).toUpperCase() + elem.slice(1);
+                    
+                    return (
+                      <div key={elem} className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-2xl">{config.icon}</span>
+                            <span className={`font-semibold ${config.color}`}>{displayName}</span>
+                          </div>
+                          <span className={`font-bold text-lg ${config.color}`}>{pct}%</span>
+                        </div>
+                        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
+                          <div 
+                            className={`${config.bar} h-2.5 rounded-full transition-all duration-500`}
+                            style={{ width: `${pct}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Dominant Element Info */}
+                <div className={`${elementConfig[dominantElement].bg} rounded-lg p-5 border-2 border-${dominantElement === 'fire' ? 'red' : dominantElement === 'air' ? 'sky' : dominantElement === 'water' ? 'blue' : 'amber'}-300 dark:border-${dominantElement === 'fire' ? 'red' : dominantElement === 'air' ? 'sky' : dominantElement === 'water' ? 'blue' : 'amber'}-700`}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-3xl">{elementConfig[dominantElement].icon}</span>
+                    <div>
+                      <div className="text-xs uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400">
+                        {t.nameDestiny.elementChart.dominant}
+                      </div>
+                      <div className={`text-xl font-bold ${elementConfig[dominantElement].color}`}>
+                        {isFr ? t.nameDestiny.elementChart[dominantElement].name : dominantElement.charAt(0).toUpperCase() + dominantElement.slice(1)} ({maxPercentage}%)
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Personality Reflection */}
+                  <div className="mb-4">
+                    <div className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                      <Lightbulb className="w-4 h-4" />
+                      {t.nameDestiny.elementChart.personality}
+                    </div>
+                    <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed">
+                      {t.nameDestiny.elementChart[dominantElement].personality}
+                    </p>
+                  </div>
+
+                  {/* Balancing Dhikr */}
+                  <div className="bg-white/60 dark:bg-slate-800/60 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                    <div className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                      <BookOpen className="w-4 h-4" />
+                      {t.nameDestiny.elementChart.balancingDhikr}
+                    </div>
+                    <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
+                      {t.nameDestiny.elementChart.dhikr[dominantElement]}
+                    </p>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
+
+          {/* Disclaimer */}
+          <div className="mt-4 text-xs text-center text-teal-600 dark:text-teal-400 italic">
+            {t.nameDestiny.disclaimer.reflectionOnly}
+          </div>
+        </div>
+      )}
+
       {/* Main Destiny */}
       <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl p-6 text-black shadow-xl">
         <div className="text-center">
@@ -2473,7 +2708,7 @@ function DestinyResults({ results }: { results: any }) {
 }
 
 function CompatibilityResults({ results }: { results: any }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   // Check if it's the new RelationshipCompatibility format
   const isNewFormat = results?.mode === 'relationship' && results?.methods;
   
@@ -2487,7 +2722,7 @@ function CompatibilityResults({ results }: { results: any }) {
 
   // New format with three methods
   if (isNewFormat) {
-    const { person1, person2, methods, overallScore, overallQuality, summary, recommendations } = results as RelationshipCompatibility;
+    const { person1, person2, methods, overallScore, overallQuality, overallQualityFrench, summary, summaryFrench, recommendations, recommendationsFrench } = results as RelationshipCompatibility;
     
     const qualityColors: Record<string, string> = {
       'excellent': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
@@ -2497,6 +2732,10 @@ function CompatibilityResults({ results }: { results: any }) {
       'challenging': 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'
     };
     
+    // Select content based on language
+    const displayRecommendations = language === 'fr' ? recommendationsFrench : recommendations;
+    const displaySummary = language === 'fr' ? summaryFrench : summary;
+    const displayOverallQuality = language === 'fr' ? overallQualityFrench : overallQuality.toUpperCase().replace('-', ' ');
     return (
       <div className="space-y-6">
         {/* Overall Score */}
@@ -2507,7 +2746,7 @@ function CompatibilityResults({ results }: { results: any }) {
             label="Overall Compatibility"
           />
           <div className={`mt-4 px-4 py-2 rounded-full font-semibold ${qualityColors[overallQuality] || qualityColors['moderate']}`}>
-            {overallQuality.toUpperCase().replace('-', ' ')}
+            {displayOverallQuality}
           </div>
         </div>
 
@@ -2516,7 +2755,7 @@ function CompatibilityResults({ results }: { results: any }) {
           <div className="flex items-start gap-2">
             <Info className="w-5 h-5 text-indigo-500 flex-shrink-0 mt-0.5" />
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              {summary}
+              {displaySummary}
             </p>
           </div>
         </div>
@@ -2547,7 +2786,7 @@ function CompatibilityResults({ results }: { results: any }) {
                 Remainder: {methods.spiritualDestiny.remainder}
               </p>
               <p className="text-xs text-gray-700 dark:text-gray-300">
-                {methods.spiritualDestiny.description}
+                {language === 'fr' ? methods.spiritualDestiny.descriptionFrench : methods.spiritualDestiny.description}
               </p>
             </div>
 
@@ -2566,10 +2805,10 @@ function CompatibilityResults({ results }: { results: any }) {
                 🌊 Elemental Temperament
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                Element: {methods.elementalTemperament.sharedElement}
+                Element: {language === 'fr' ? methods.elementalTemperament.sharedElementFrench : methods.elementalTemperament.sharedElement}
               </p>
               <p className="text-xs text-gray-700 dark:text-gray-300">
-                {methods.elementalTemperament.description}
+                {language === 'fr' ? methods.elementalTemperament.descriptionFrench : methods.elementalTemperament.description}
               </p>
             </div>
 
@@ -2591,10 +2830,269 @@ function CompatibilityResults({ results }: { results: any }) {
                 {methods.planetaryCosmic.person1Planet.name} × {methods.planetaryCosmic.person2Planet.name}
               </p>
               <p className="text-xs text-gray-700 dark:text-gray-300">
-                {methods.planetaryCosmic.description}
+                {language === 'fr' ? methods.planetaryCosmic.descriptionFrench : methods.planetaryCosmic.description}
               </p>
             </div>
           </div>
+        </div>
+
+        {/* NEW FEATURE 1: Letter Chemistry Breakdown */}
+        <div className="p-6 bg-gradient-to-br from-rose-50 to-orange-50 dark:from-rose-950/20 dark:to-orange-950/20 rounded-xl space-y-4">
+          {/* Title with Explanation */}
+          <div className="text-center space-y-2 mb-4">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-2">
+              <span>✨</span>
+              <span>{t.compatibilityResults.letterChemistry}</span>
+              <span className="text-sm font-normal text-gray-600 dark:text-gray-400">
+                ({t.compatibilityResults.letterChemistryArabic} • زواج الحروف)
+              </span>
+            </h3>
+            {/* Description Line */}
+            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+              {t.compatibilityResults.letterChemistryDesc}
+            </p>
+          </div>
+          
+          {(() => {
+            // Calculate element distributions for both people
+            const person1Dist = calculateElementDistribution(person1.arabicName);
+            const person2Dist = calculateElementDistribution(person2.arabicName);
+            
+            // Calculate combined distribution
+            const combined = {
+              fire: Math.round((person1Dist.fire + person2Dist.fire) / 2),
+              air: Math.round((person1Dist.air + person2Dist.air) / 2),
+              water: Math.round((person1Dist.water + person2Dist.water) / 2),
+              earth: Math.round((person1Dist.earth + person2Dist.earth) / 2)
+            };
+            
+            // Calculate overall harmony percentage (based on element balance)
+            const maxElement = Math.max(combined.fire, combined.air, combined.water, combined.earth);
+            const minElement = Math.min(combined.fire, combined.air, combined.water, combined.earth);
+            const harmonyPercentage = Math.round(100 - ((maxElement - minElement) * 1.5)); // More balanced = higher harmony
+            
+            const dominant1 = getDominantElement(person1Dist);
+            const dominant2 = getDominantElement(person2Dist);
+            
+            return (
+              <>
+                {/* Combined Element Bar */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium text-gray-700 dark:text-gray-300">
+                      {t.compatibilityResults.combinedHarmony}
+                    </span>
+                    <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                      {language === 'fr' ? 'Harmonie' : 'Harmony'}: {harmonyPercentage}%
+                    </span>
+                  </div>
+                  {/* Harmony explanation */}
+                  <p className="text-xs italic text-gray-600 dark:text-gray-400 text-center">
+                    {t.compatibilityResults.combinedHarmonyExplain}
+                  </p>
+                  <div className="flex h-6 rounded-full overflow-hidden border-2 border-white dark:border-slate-700 shadow-inner">
+                    {combined.fire > 0 && (
+                      <div 
+                        style={{ width: `${combined.fire}%` }}
+                        className="bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold"
+                        title={`${getElementName('fire', language === 'fr' ? 'fr' : 'en')} ${combined.fire}%`}
+                      >
+                        {combined.fire >= 15 && `🔥 ${combined.fire}%`}
+                      </div>
+                    )}
+                    {combined.air > 0 && (
+                      <div 
+                        style={{ width: `${combined.air}%` }}
+                        className="bg-gradient-to-r from-cyan-400 to-blue-400 flex items-center justify-center text-white text-xs font-bold"
+                        title={`${getElementName('air', language === 'fr' ? 'fr' : 'en')} ${combined.air}%`}
+                      >
+                        {combined.air >= 15 && `💨 ${combined.air}%`}
+                      </div>
+                    )}
+                    {combined.water > 0 && (
+                      <div 
+                        style={{ width: `${combined.water}%` }}
+                        className="bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white text-xs font-bold"
+                        title={`${getElementName('water', language === 'fr' ? 'fr' : 'en')} ${combined.water}%`}
+                      >
+                        {combined.water >= 15 && `💧 ${combined.water}%`}
+                      </div>
+                    )}
+                    {combined.earth > 0 && (
+                      <div 
+                        style={{ width: `${combined.earth}%` }}
+                        className="bg-gradient-to-r from-green-600 to-emerald-600 flex items-center justify-center text-white text-xs font-bold"
+                        title={`${getElementName('earth', language === 'fr' ? 'fr' : 'en')} ${combined.earth}%`}
+                      >
+                        {combined.earth >= 15 && `🌍 ${combined.earth}%`}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* NEW FEATURE 2: Dominant Element Pair Insight */}
+                <div className="mt-4 p-4 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-rose-200 dark:border-rose-800">
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <span className="text-2xl">{getElementIcon(dominant1)}</span>
+                    <span className="text-xl font-bold text-gray-700 dark:text-gray-300">
+                      {getElementName(dominant1, language === 'fr' ? 'fr' : 'en')}
+                    </span>
+                    <span className="text-2xl">×</span>
+                    <span className="text-xl font-bold text-gray-700 dark:text-gray-300">
+                      {getElementName(dominant2, language === 'fr' ? 'fr' : 'en')}
+                    </span>
+                    <span className="text-2xl">{getElementIcon(dominant2)}</span>
+                  </div>
+                  <p className="text-sm text-center text-gray-600 dark:text-gray-400">
+                    {t.compatibilityResults.balanceAdvice[getBalanceAdviceKey(dominant1, dominant2) as keyof typeof t.compatibilityResults.balanceAdvice]}
+                  </p>
+                </div>
+
+                {/* Individual breakdowns */}
+                <div className="grid md:grid-cols-2 gap-4 mt-4">
+                  <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                    <div className="space-y-2 mb-3">
+                      <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">
+                        {person1.name}
+                      </div>
+                      {/* Element Temperament Tag */}
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-lg">{getElementIcon(dominant1)}</span>
+                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-800 px-2 py-1 rounded-full border border-purple-300 dark:border-purple-700">
+                          {t.compatibilityResults[`${dominant1}Temperament` as keyof typeof t.compatibilityResults]}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      {(['fire', 'air', 'water', 'earth'] as const).map(el => (
+                        person1Dist[el] > 0 && (
+                          <div key={el} className="flex items-center gap-2 text-xs">
+                            <span>{getElementIcon(el)}</span>
+                            <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                              <div 
+                                className={`h-2 rounded-full ${
+                                  el === 'fire' ? 'bg-red-500' :
+                                  el === 'air' ? 'bg-cyan-500' :
+                                  el === 'water' ? 'bg-blue-500' : 'bg-green-600'
+                                }`}
+                                style={{ width: `${person1Dist[el]}%` }}
+                              />
+                            </div>
+                            <span className="w-10 text-right text-gray-600 dark:text-gray-400">
+                              {person1Dist[el]}%
+                            </span>
+                          </div>
+                        )
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-pink-50 dark:bg-pink-950/20 rounded-lg border border-pink-200 dark:border-pink-800">
+                    <div className="space-y-2 mb-3">
+                      <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">
+                        {person2.name}
+                      </div>
+                      {/* Element Temperament Tag */}
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-lg">{getElementIcon(dominant2)}</span>
+                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-800 px-2 py-1 rounded-full border border-pink-300 dark:border-pink-700">
+                          {t.compatibilityResults[`${dominant2}Temperament` as keyof typeof t.compatibilityResults]}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      {(['fire', 'air', 'water', 'earth'] as const).map(el => (
+                        person2Dist[el] > 0 && (
+                          <div key={el} className="flex items-center gap-2 text-xs">
+                            <span>{getElementIcon(el)}</span>
+                            <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                              <div 
+                                className={`h-2 rounded-full ${
+                                  el === 'fire' ? 'bg-red-500' :
+                                  el === 'air' ? 'bg-cyan-500' :
+                                  el === 'water' ? 'bg-blue-500' : 'bg-green-600'
+                                }`}
+                                style={{ width: `${person2Dist[el]}%` }}
+                              />
+                            </div>
+                            <span className="w-10 text-right text-gray-600 dark:text-gray-400">
+                              {person2Dist[el]}%
+                            </span>
+                          </div>
+                        )
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
+        </div>
+
+        {/* NEW FEATURE 3: Balancing Dhikr Recommendation */}
+        <div className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 rounded-xl">
+          <h3 className="text-lg font-bold text-center text-gray-900 dark:text-gray-100 mb-2 flex items-center justify-center gap-2">
+            <span>🤲</span>
+            <span>{t.compatibilityResults.balancingDhikr}</span>
+          </h3>
+          {/* Contextual Sentence */}
+          <p className="text-sm text-center text-gray-600 dark:text-gray-400 mb-4 italic">
+            {t.compatibilityResults.balancingDhikrContext}
+          </p>
+          {(() => {
+            const person1Dist = calculateElementDistribution(person1.arabicName);
+            const person2Dist = calculateElementDistribution(person2.arabicName);
+            const dominant1 = getDominantElement(person1Dist);
+            const dominant2 = getDominantElement(person2Dist);
+            
+            // Get dhikr for the most dominant element
+            const primaryDhikr = DHIKR_NAMES[dominant1];
+            const primaryEffectKey = getDhikrEffectKey(dominant1) as 'fireEffect' | 'airEffect' | 'waterEffect' | 'earthEffect';
+            const primaryEffect = t.compatibilityResults.dhikrEffects[primaryEffectKey];
+            const secondaryDhikr = dominant1 !== dominant2 ? DHIKR_NAMES[dominant2] : null;
+            const secondaryEffectKey = secondaryDhikr ? getDhikrEffectKey(dominant2) as 'fireEffect' | 'airEffect' | 'waterEffect' | 'earthEffect' : null;
+            const secondaryEffect = secondaryEffectKey ? t.compatibilityResults.dhikrEffects[secondaryEffectKey] : null;
+            
+            return (
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-4 bg-white/70 dark:bg-slate-800/70 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-2xl">{getElementIcon(dominant1)}</span>
+                    <div>
+                      <div className="font-bold text-gray-900 dark:text-gray-100">
+                        {language === 'fr' ? primaryDhikr.nameFr : primaryDhikr.name}
+                      </div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400">
+                        {t.compatibilityResults.for} {getElementName(dominant1, language === 'fr' ? 'fr' : 'en')}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    {primaryEffect}
+                  </p>
+                </div>
+                
+                {secondaryDhikr && (
+                  <div className="p-4 bg-white/70 dark:bg-slate-800/70 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-2xl">{getElementIcon(dominant2)}</span>
+                      <div>
+                        <div className="font-bold text-gray-900 dark:text-gray-100">
+                          {language === 'fr' ? secondaryDhikr.nameFr : secondaryDhikr.name}
+                        </div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400">
+                          {t.compatibilityResults.for} {getElementName(dominant2, language === 'fr' ? 'fr' : 'en')}
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                      {secondaryEffect}
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Recommendations */}
@@ -2602,12 +3100,12 @@ function CompatibilityResults({ results }: { results: any }) {
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-yellow-500" />
             <h3 className="font-bold text-gray-900 dark:text-gray-100">
-              Recommendations
+              {t.compatibilityResults.recommendations}
             </h3>
           </div>
           
           <ul className="space-y-2">
-            {recommendations.map((rec, idx) => (
+            {displayRecommendations.map((rec, idx) => (
               <li 
                 key={idx}
                 className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg"

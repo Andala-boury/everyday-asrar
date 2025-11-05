@@ -14,7 +14,9 @@ export interface SpiritualDestinyResult {
   score: number; // 0-100
   quality: 'excellent' | 'good' | 'moderate' | 'challenging' | 'completion';
   qualityArabic: string;
+  qualityFrench: string;
   description: string;
+  descriptionFrench: string;
   descriptionArabic: string;
   color: string;
 }
@@ -26,10 +28,13 @@ export interface ElementalTemperamentResult {
   remainder: number; // 1-4
   sharedElement: 'fire' | 'water' | 'air' | 'earth';
   sharedElementArabic: string;
+  sharedElementFrench: string;
   score: number; // 0-100
   quality: 'harmonious' | 'complementary' | 'balanced' | 'dynamic';
   qualityArabic: string;
+  qualityFrench: string;
   description: string;
+  descriptionFrench: string;
   descriptionArabic: string;
   color: string;
 }
@@ -50,10 +55,13 @@ export interface PlanetaryCosmicResult {
   };
   relationship: 'friendly' | 'neutral' | 'opposing';
   relationshipArabic: string;
+  relationshipFrench: string;
   score: number; // 0-100
   quality: 'excellent' | 'good' | 'moderate' | 'challenging';
   qualityArabic: string;
+  qualityFrench: string;
   description: string;
+  descriptionFrench: string;
   descriptionArabic: string;
   color: string;
 }
@@ -81,9 +89,12 @@ export interface RelationshipCompatibility {
   overallScore: number; // Average of 3 methods, 0-100
   overallQuality: 'excellent' | 'very-good' | 'good' | 'moderate' | 'challenging';
   overallQualityArabic: string;
+  overallQualityFrench: string;
   summary: string;
+  summaryFrench: string;
   summaryArabic: string;
   recommendations: string[];
+  recommendationsFrench: string[];
   recommendationsArabic: string[];
 }
 

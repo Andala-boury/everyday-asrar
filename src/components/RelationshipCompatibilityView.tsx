@@ -5,7 +5,7 @@ import { Heart, Users, Sparkles, Info } from 'lucide-react';
 
 interface RelationshipCompatibilityViewProps {
   compatibility: RelationshipCompatibility;
-  language?: 'en' | 'ar';
+  language?: 'en' | 'fr' | 'ar';
 }
 
 export function RelationshipCompatibilityView({ 
@@ -13,7 +13,7 @@ export function RelationshipCompatibilityView({
   language = 'en' 
 }: RelationshipCompatibilityViewProps) {
   
-  const { person1, person2, methods, overallScore, overallQuality, summary, summaryArabic, recommendations, recommendationsArabic } = compatibility;
+  const { person1, person2, methods, overallScore, overallQuality, summary, summaryArabic, recommendations, recommendationsFrench, recommendationsArabic } = compatibility;
   
   // Quality badge colors
   const qualityColors: Record<typeof overallQuality, string> = {
@@ -23,6 +23,9 @@ export function RelationshipCompatibilityView({
     'moderate': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
     'challenging': 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'
   };
+  
+  // Select recommendations based on language
+  const displayRecommendations = language === 'ar' ? recommendationsArabic : (language === 'fr' ? recommendationsFrench : recommendations);
   
   return (
     <div className="space-y-8 p-6 bg-white dark:bg-slate-900 rounded-xl shadow-lg">
@@ -153,12 +156,12 @@ export function RelationshipCompatibilityView({
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-yellow-500" />
           <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-            {language === 'ar' ? 'توصيات' : 'Recommendations'}
+            {language === 'ar' ? 'توصيات' : language === 'fr' ? 'Recommandations' : 'Recommendations'}
           </h3>
         </div>
         
         <ul className="space-y-2">
-          {(language === 'ar' ? recommendationsArabic : recommendations).map((rec, idx) => (
+          {displayRecommendations.map((rec, idx) => (
             <li 
               key={idx}
               className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg"

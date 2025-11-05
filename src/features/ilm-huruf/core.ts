@@ -739,6 +739,7 @@ export function buildDestiny(
     : undefined;
   
   return {
+    arabicName: personName, // Add the Arabic name for element chart calculation
     personKabir,
     motherKabir,
     totalKabir,

@@ -743,7 +743,7 @@ export default function AsrarEveryday() {
   const { t } = useLanguage(); // Get translations
   const [darkMode, setDarkMode] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(true);
-  const [viewMode, setViewMode] = useState<'calculator' | 'guidance' | 'advanced'>('calculator');
+  const [viewMode, setViewMode] = useState<'calculator' | 'guidance' | 'advanced'>('guidance');
   const [arabicInput, setArabicInput] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [latinInput, setLatinInput] = useState('');
