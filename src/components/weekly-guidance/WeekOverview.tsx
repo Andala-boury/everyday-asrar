@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { Calendar, Sun, Moon, Star } from 'lucide-react';
+import { Calendar, Sun, Moon, Star, AlertCircle } from 'lucide-react';
 import type { DailyReading } from '../../features/ilm-huruf/core';
 
 interface WeekOverviewProps {
