@@ -94,7 +94,6 @@ import {
   type LifeCycleAnalysis,
   type PinnacleChallenge
 } from '../../utils/enhancedLifePath';
-import { DivineTiming } from '../../components/divine-timing';
 
 // ============================================================================
 // ELEMENT HARMONY & LETTER CHEMISTRY CONSTANTS
@@ -1067,24 +1066,7 @@ export function IlmHurufPanel() {
       {results && !results.error && mode === 'destiny' && <DestinyResults results={results} />}
       {results && !results.error && mode === 'compatibility' && results.person1 && results.person2 && <CompatibilityResults results={results} />}
       {results && !results.error && mode === 'life-path' && <LifePathResults results={results} />}
-      {results && !results.error && mode === 'timing' && (
-        (() => {
-          // Calculate user element from name if available
-          let userElement: ElementType | null = null;
-          if (name) {
-            try {
-              const tempProfile = calculateUserProfile(name, birthDate ? new Date(birthDate) : undefined, undefined, abjad);
-              userElement = tempProfile.element;
-            } catch (e) {
-              console.error('Error calculating user element:', e);
-            }
-          }
-          // Convert ElementType ('Fire') to Element ('fire') for DivineTiming component
-          const normalizedElement: 'fire' | 'water' | 'air' | 'earth' = 
-            userElement ? (userElement.toLowerCase() as 'fire' | 'water' | 'air' | 'earth') : 'fire';
-          return <DivineTiming userElement={normalizedElement} />;
-        })()
-      )}
+      {results && !results.error && mode === 'timing' && <TimingResults results={results} birthDate={birthDate || ''} name={name || ''} abjad={abjad} />}
     </div>
   );
 }
