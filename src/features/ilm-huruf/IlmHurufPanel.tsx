@@ -113,8 +113,8 @@ const LETTER_ELEMENTS: Record<string, 'fire' | 'air' | 'water' | 'earth'> = {
   'Ø§': 'fire', 'Ø¯': 'fire', 'Ø·': 'fire', 'Ù…': 'fire', 'Ù': 'fire', 'Ø´': 'fire', 'Ø°': 'fire',
   // Air letters (hot & wet): Ù‡ Ùˆ ÙŠ Ù† Øµ Øª Ø¶  
   'Ù‡': 'air', 'Ùˆ': 'air', 'ÙŠ': 'air', 'Ù†': 'air', 'Øµ': 'air', 'Øª': 'air', 'Ø¶': 'air',
-  // Water letters (cold & wet): Ø¨ Ø­ Ù„ Ø¹ Ø± Ùƒ Øº
-  'Ø¨': 'water', 'Ø­': 'water', 'Ù„': 'water', 'Ø¹': 'water', 'Ø±': 'water', 'Ùƒ': 'water', 'Øº': 'water',
+  // Water letters (cold & wet): Ø¨ Ø⭐ Ù„ Ø¹ Ø± Ùƒ Øº
+  'Ø¨': 'water', 'Ø⭐': 'water', 'Ù„': 'water', 'Ø¹': 'water', 'Ø±': 'water', 'Ùƒ': 'water', 'Øº': 'water',
   // Earth letters (cold & dry): Ø¬ Ø² Ø³ Ù‚ Ø« Ø® Ø¸
   'Ø¬': 'earth', 'Ø²': 'earth', 'Ø³': 'earth', 'Ù‚': 'earth', 'Ø«': 'earth', 'Ø®': 'earth', 'Ø¸': 'earth'
 };
@@ -155,10 +155,10 @@ function getDhikrEffectKey(element: 'fire' | 'air' | 'water' | 'earth'): string 
 
 // Divine Names for each element (these are proper names, don't translate)
 const DHIKR_NAMES: Record<'fire' | 'air' | 'water' | 'earth', { name: string; nameFr: string; nameAr: string }> = {
-  fire: { name: 'YÄ Laá¹­Ä«f (ÙŠØ§ Ù„Ø·ÙŠÙ)', nameFr: 'YÄ Laá¹­Ä«f (ÙŠØ§ Ù„Ø·ÙŠÙ)', nameAr: 'ÙŠØ§ Ù„Ø·ÙŠÙ' },
-  air: { name: 'YÄ á¸¤akÄ«m (ÙŠØ§ Ø­ÙƒÙŠÙ…)', nameFr: 'YÄ á¸¤akÄ«m (ÙŠØ§ Ø­ÙƒÙŠÙ…)', nameAr: 'ÙŠØ§ Ø­ÙƒÙŠÙ…' },
+  fire: { name: 'YÄ Laá¹⭐Ä«f (ÙŠØ§ Ù„Ø·ÙŠÙ)', nameFr: 'YÄ Laá¹⭐Ä«f (ÙŠØ§ Ù„Ø·ÙŠÙ)', nameAr: 'ÙŠØ§ Ù„Ø·ÙŠÙ' },
+  air: { name: 'YÄ á¸🤝akÄ«m (ÙŠØ§ Ø⭐ÙƒÙŠÙ…)', nameFr: 'YÄ á¸🤝akÄ«m (ÙŠØ§ Ø⭐ÙƒÙŠÙ…)', nameAr: 'ÙŠØ§ Ø⭐ÙƒÙŠÙ…' },
   water: { name: 'YÄ NÅ«r (ÙŠØ§ Ù†ÙˆØ±)', nameFr: 'YÄ NÅ«r (ÙŠØ§ Ù†ÙˆØ±)', nameAr: 'ÙŠØ§ Ù†ÙˆØ±' },
-  earth: { name: 'YÄ FattÄá¸¥ (ÙŠØ§ ÙØªØ§Ø­)', nameFr: 'YÄ FattÄá¸¥ (ÙŠØ§ ÙØªØ§Ø­)', nameAr: 'ÙŠØ§ ÙØªØ§Ø­' }
+  earth: { name: 'YÄ FattÄá¸¥ (ÙŠØ§ ÙØªØ§Ø⭐)', nameFr: 'YÄ FattÄá¸¥ (ÙŠØ§ ÙØªØ§Ø⭐)', nameAr: 'ÙŠØ§ ÙØªØ§Ø⭐' }
 };
 
 // Helper function to calculate element distribution from Arabic text
@@ -201,7 +201,7 @@ function getDominantElement(distribution: Record<'fire' | 'air' | 'water' | 'ear
 
 // Helper function to get element icon
 function getElementIcon(element: 'fire' | 'air' | 'water' | 'earth'): string {
-  const icons = { fire: 'ðŸ”¥', air: 'ðŸ’¨', water: 'ðŸ’§', earth: 'ðŸŒ' };
+  const icons = { fire: '”¥', air: '’¨', water: '’§', earth: '' };
   return icons[element];
 }
 
@@ -248,13 +248,13 @@ const PLANET_COLORS: Record<Planet, string> = {
 };
 
 const PLANET_ICONS_EMOJI: Record<Planet, string> = {
-  Sun: 'â˜€ï¸',
-  Moon: 'ðŸŒ™',
-  Mars: 'â™‚ï¸',
-  Mercury: 'â˜¿ï¸',
-  Jupiter: 'â™ƒ',
-  Venus: 'â™€ï¸',
-  Saturn: 'â™„'
+  Sun: '˜€ï¸',
+  Moon: '™',
+  Mars: '™‚ï¸',
+  Mercury: '˜¿ï¸',
+  Jupiter: '™ƒ',
+  Venus: '™€ï¸',
+  Saturn: '™„'
 };
 
 export function IlmHurufPanel() {
@@ -272,7 +272,7 @@ export function IlmHurufPanel() {
   const [birthDate, setBirthDate] = useState('');
   const [results, setResults] = useState<any>(null);
   
-  // Mother's name feature (Um á¸¤adad)
+  // Mother's name feature (Um á¸🤝adad)
   const [motherName, setMotherName] = useState('');
   const [motherLatinInput, setMotherLatinInput] = useState('');
   const [showMotherNameSection, setShowMotherNameSection] = useState(false);
@@ -349,7 +349,7 @@ export function IlmHurufPanel() {
   const handleKeyboardPress = (char: string, isFirstName: boolean = true) => {
     const currentName = isFirstName ? name : name2;
     
-    if (char === 'âŒ«') {
+    if (char === 'Œ«') {
       // Backspace
       const newValue = currentName.slice(0, -1);
       if (isFirstName) {
@@ -359,7 +359,7 @@ export function IlmHurufPanel() {
         setName2(newValue);
         setLatinInput2('');
       }
-    } else if (char === 'âŽµ') {
+    } else if (char === 'Žµ') {
       // Space
       if (isFirstName) {
         setName(currentName + ' ');
@@ -389,11 +389,11 @@ export function IlmHurufPanel() {
   };
 
   const handleMotherKeyboardPress = (char: string) => {
-    if (char === 'âŒ«') {
+    if (char === 'Œ«') {
       // Backspace
       setMotherName(motherName.slice(0, -1));
       setMotherLatinInput('');
-    } else if (char === 'âŽµ') {
+    } else if (char === 'Žµ') {
       // Space
       setMotherName(motherName + ' ');
     } else {
@@ -405,10 +405,10 @@ export function IlmHurufPanel() {
 
   // Keyboard handlers for compatibility mode mother's names
   const handleMotherKeyboardPress1 = (char: string) => {
-    if (char === 'âŒ«') {
+    if (char === 'Œ«') {
       setMotherName(motherName.slice(0, -1));
       setMotherLatinInput('');
-    } else if (char === 'âŽµ') {
+    } else if (char === 'Žµ') {
       setMotherName(motherName + ' ');
     } else {
       setMotherName(motherName + char);
@@ -417,10 +417,10 @@ export function IlmHurufPanel() {
   };
 
   const handleMotherKeyboardPress2 = (char: string) => {
-    if (char === 'âŒ«') {
+    if (char === 'Œ«') {
       setMotherName2(motherName2.slice(0, -1));
       setMotherLatinInput2('');
-    } else if (char === 'âŽµ') {
+    } else if (char === 'Žµ') {
       setMotherName2(motherName2 + ' ');
     } else {
       setMotherName2(motherName2 + char);
@@ -656,7 +656,7 @@ export function IlmHurufPanel() {
                   <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
                     <p className="text-xs text-amber-800 dark:text-amber-200">
                       {t.ilmHuruf.confidence}: {translitConfidence}% 
-                      {translitWarnings.length > 0 && ` â€¢ ${translitWarnings.join(', ')}`}
+                      {translitWarnings.length > 0 && ` €¢ ${translitWarnings.join(', ')}`}
                     </p>
                   </div>
                 )}
@@ -726,7 +726,7 @@ export function IlmHurufPanel() {
                 <button
                   onClick={() => setShowMotherNameSection(true)}
                   className="flex items-center gap-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
-                  title={t?.tooltips?.umHadad1 || "Um á¸¤adad (Ø£Ù… Ø­Ø¯Ø¯) - Required for complete Name Destiny calculation"}
+                  title={t?.tooltips?.umHadad1 || "Um á¸🤝adad (Ø£Ù… Ø⭐Ø¯Ø¯) - Required for complete Name Destiny calculation"}
                 >
                   <Plus className="h-4 w-4" />
                   <span>{t.nameDestiny.inputs.motherOptional}</span>
@@ -737,7 +737,7 @@ export function IlmHurufPanel() {
                   <div className="flex items-center justify-between">
                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                       {t.nameDestiny.inputs.motherName}
-                      <span title={t?.tooltips?.umHadad2 || "Um á¸¤adad (Ø£Ù… Ø­Ø¯Ø¯) - Reveals your Aá¹£l al-RÅ«á¸¥ÄnÄ« (spiritual origin)"}>
+                      <span title={t?.tooltips?.umHadad2 || "Um á¸🤝adad (Ø£Ù… Ø⭐Ø¯Ø¯) - Reveals your Aá¹£l al-RÅ«á¸¥ÄnÄ« (spiritual origin)"}>
                         <Info className="h-4 w-4 text-slate-400 inline ml-2 cursor-help" />
                       </span>
                     </label>
@@ -767,7 +767,7 @@ export function IlmHurufPanel() {
                       showHelper={false}
                     />
                     <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-medium">
-                      ðŸ’¡ {t.nameDestiny.inputs.motherHint}
+                      ’¡ {t.nameDestiny.inputs.motherHint}
                     </p>
                   </div>
                   
@@ -1140,7 +1140,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       Mars: { en: 'Mars', fr: 'Mars' },
       Mercury: { en: 'Mercury', fr: 'Mercure' },
       Jupiter: { en: 'Jupiter', fr: 'Jupiter' },
-      Venus: { en: 'Venus', fr: 'VÃ©nus' },
+      Venus: { en: 'Venus', fr: 'Vénus' },
       Saturn: { en: 'Saturn', fr: 'Saturne' }
     };
     return language === 'fr' ? (names[planetName]?.fr || planetName) : (names[planetName]?.en || planetName);
@@ -1153,46 +1153,46 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
 
     const map: Record<string, string> = {
       // Sun
-      'Excellent for leadershipâ€”schedule important meetings and presentations': 'Excellent pour le leadership â€” planifiez des rÃ©unions et prÃ©sentations importantes',
-      'Lead projects and take initiativeâ€”high energy for achievements': 'Dirigez des projets et prenez l\'initiative â€” Ã©nergie Ã©levÃ©e pour les rÃ©alisations',
-      'Challenging for visibilityâ€”lead quietly, support others today': 'Difficile pour la visibilitÃ© â€” dirigez discrÃ¨tement, soutenez les autres aujourd\'hui',
+      'Excellent for leadership€”schedule important meetings and presentations': 'Excellent pour le leadership €” planifiez des réunions et présentations importantes',
+      'Lead projects and take initiative€”high energy for achievements': 'Dirigez des projets et prenez l\'initiative €” énergie élevée pour les réalisations',
+      'Challenging for visibility€”lead quietly, support others today': 'Difficile pour la visibilité €” dirigez discr¨tement, soutenez les autres aujourd\'hui',
       // Moon
-      'Perfect for reflectionâ€”trust your intuition and emotional wisdom': 'Parfait pour la rÃ©flexion â€” faites confiance Ã  votre intuition et sagesse Ã©motionnelle',
-      'Gentle dayâ€”plan, review, nurture relationships, avoid overload': 'JournÃ©e douce â€” planifiez, rÃ©visez, entretenez les relations, Ã©vitez la surcharge',
-      'Rest neededâ€”minimize commitments, process emotions, be kind to yourself': 'Repos nÃ©cessaire â€” rÃ©duisez les engagements, traitez les Ã©motions, soyez bienveillant avec vous-mÃªme',
+      'Perfect for reflection€”trust your intuition and emotional wisdom': 'Parfait pour la réflexion €” faites confiance   votre intuition et sagesse émotionnelle',
+      'Gentle day€”plan, review, nurture relationships, avoid overload': 'Journée douce €” planifiez, révisez, entretenez les relations, évitez la surcharge',
+      'Rest needed€”minimize commitments, process emotions, be kind to yourself': 'Repos nécessaire €” réduisez les engagements, traitez les émotions, soyez bienveillant avec vous-mªme',
       // Mars
-      'Fierce energyâ€”tackle tough challenges and push through obstacles boldly': 'Ã‰nergie fÃ©roce â€” relevez les dÃ©fis difficiles et surmontez les obstacles avec audace',
-      'Take action on difficult tasksâ€”courage and determination favored': 'Agissez sur les tÃ¢ches difficiles â€” le courage et la dÃ©termination sont favorisÃ©s',
-      'Channel carefullyâ€”physical activity helps, avoid conflicts and rushing': 'Canalisez prudemment â€” l\'activitÃ© physique aide, Ã©vitez les conflits et la prÃ©cipitation',
+      'Fierce energy€”tackle tough challenges and push through obstacles boldly': '‰nergie féroce €” relevez les défis difficiles et surmontez les obstacles avec audace',
+      'Take action on difficult tasks€”courage and determination favored': 'Agissez sur les t¢ches difficiles €” le courage et la détermination sont favorisés',
+      'Channel carefully€”physical activity helps, avoid conflicts and rushing': 'Canalisez prudemment €” l\'activité physique aide, évitez les conflits et la précipitation',
       // Mercury
-      'Sharp mindâ€”perfect for writing, calls, learning, and travel plans': 'Esprit vif â€” parfait pour l\'Ã©criture, les appels, l\'apprentissage et les projets de voyage',
-      'Communicate clearlyâ€”good for emails, meetings, and study sessions': 'Communiquez clairement â€” bon pour les e-mails, rÃ©unions et sessions d\'Ã©tude',
-      'Mental fog possibleâ€”double-check messages, postpone major decisions': 'Brouillard mental possible â€” vÃ©rifiez les messages, reportez les dÃ©cisions majeures',
+      'Sharp mind€”perfect for writing, calls, learning, and travel plans': 'Esprit vif €” parfait pour l\'écriture, les appels, l\'apprentissage et les projets de voyage',
+      'Communicate clearly€”good for emails, meetings, and study sessions': 'Communiquez clairement €” bon pour les e-mails, réunions et sessions d\'étude',
+      'Mental fog possible€”double-check messages, postpone major decisions': 'Brouillard mental possible €” vérifiez les messages, reportez les décisions majeures',
       // Jupiter
-      'Timing is perfectâ€”make big decisions, start new ventures, expand horizons': 'Le moment est parfait â€” prenez de grandes dÃ©cisions, lancez de nouvelles entreprises, Ã©largissez vos horizons',
-      'Growth dayâ€”great for planning expansion and seeking opportunities': 'JournÃ©e de croissance â€” idÃ©ale pour planifier l\'expansion et rechercher des opportunitÃ©s',
-      'Temper optimismâ€”research thoroughly before committing to anything big': 'ModÃ©rez l\'optimisme â€” recherchez soigneusement avant de vous engager dans de grandes choses',
+      'Timing is perfect€”make big decisions, start new ventures, expand horizons': 'Le moment est parfait €” prenez de grandes décisions, lancez de nouvelles entreprises, élargissez vos horizons',
+      'Growth day€”great for planning expansion and seeking opportunities': 'Journée de croissance €” idéale pour planifier l\'expansion et rechercher des opportunités',
+      'Temper optimism€”research thoroughly before committing to anything big': 'Modérez l\'optimisme €” recherchez soigneusement avant de vous engager dans de grandes choses',
       // Venus
-      'Excellent for connectionâ€”ideal for relationships, creativity, and beauty': 'Excellent pour la connexion â€” idÃ©al pour les relations, la crÃ©ativitÃ© et la beautÃ©',
-      'Harmonious dayâ€”connect with others, enjoy art, balance work-pleasure': 'JournÃ©e harmonieuse â€” connectez-vous aux autres, apprÃ©ciez l\'art, Ã©quilibrer travail et plaisir',
-      'Social challengesâ€”focus on self-care, solo creative work, gentle interactions': 'DÃ©fis sociaux â€” concentrez-vous sur les soins personnels, travail crÃ©atif en solo, interactions douces',
+      'Excellent for connection€”ideal for relationships, creativity, and beauty': 'Excellent pour la connexion €” idéal pour les relations, la créativité et la beauté',
+      'Harmonious day€”connect with others, enjoy art, balance work-pleasure': 'Journée harmonieuse €” connectez-vous aux autres, appréciez l\'art, équilibrer travail et plaisir',
+      'Social challenges€”focus on self-care, solo creative work, gentle interactions': 'Défis sociaux €” concentrez-vous sur les soins personnels, travail créatif en solo, interactions douces',
       // Saturn
-      'Build strong foundationsâ€”organize, plan long-term, establish structures': 'Construisez des bases solides â€” organisez, planifiez Ã  long terme, Ã©tablissez des structures',
-      'Structure your weekâ€”discipline and planning bring good results': 'Structurez votre semaine â€” la discipline et la planification apportent de bons rÃ©sultats',
-      'Heavy responsibilitiesâ€”break tasks into small steps, be patient with delays': 'ResponsabilitÃ©s lourdes â€” dÃ©composez les tÃ¢ches en petites Ã©tapes, soyez patient face aux retards',
+      'Build strong foundations€”organize, plan long-term, establish structures': 'Construisez des bases solides €” organisez, planifiez   long terme, établissez des structures',
+      'Structure your week€”discipline and planning bring good results': 'Structurez votre semaine €” la discipline et la planification apportent de bons résultats',
+      'Heavy responsibilities€”break tasks into small steps, be patient with delays': 'Responsabilités lourdes €” décomposez les t¢ches en petites étapes, soyez patient face aux retards',
       // Element tips
-      'Balance heatâ€”practice calm speech, charity, time near water': 'Ã‰quilibrez la chaleur â€” pratiquez la parole calme, la charitÃ©, du temps prÃ¨s de l\'eau',
-      'Activate energyâ€”light exercise, sunlight, decisive action': 'Activez l\'Ã©nergie â€” exercice lÃ©ger, lumiÃ¨re du soleil, action dÃ©cisive',
-      'Ground yourselfâ€”stick to routine, nature walk, one task at a time': 'Ancrez-vous â€” respectez la routine, promenade dans la nature, une tÃ¢che Ã  la fois',
-      'Add lightnessâ€”try creativity, flexibility, or a short change of scenery': 'Ajoutez de la lÃ©gÃ¨retÃ© â€” essayez la crÃ©ativitÃ©, la flexibilitÃ© ou un court changement de dÃ©cor',
+      'Balance heat€”practice calm speech, charity, time near water': '‰quilibrez la chaleur €” pratiquez la parole calme, la charité, du temps pr¨s de l\'eau',
+      'Activate energy€”light exercise, sunlight, decisive action': 'Activez l\'énergie €” exercice léger, lumi¨re du soleil, action décisive',
+      'Ground yourself€”stick to routine, nature walk, one task at a time': 'Ancrez-vous €” respectez la routine, promenade dans la nature, une t¢che   la fois',
+      'Add lightness€”try creativity, flexibility, or a short change of scenery': 'Ajoutez de la lég¨reté €” essayez la créativité, la flexibilité ou un court changement de décor',
       // Planet secondary tips
-      'Shine your lightâ€”but stay humble and generous with recognition': 'Faites briller votre lumiÃ¨re â€” restez humble et gÃ©nÃ©reux dans la reconnaissance',
-      'Honor your feelingsâ€”they guide you to what truly matters': 'Honorez vos sentiments â€” ils vous guident vers ce qui compte vraiment',
-      'Channel warrior energyâ€”protect boundaries, pursue goals with courage': 'Canalisez l\'Ã©nergie guerriÃ¨re â€” protÃ©gez les limites, poursuivez vos objectifs avec courage',
-      'Mental agility peaksâ€”network, negotiate, adapt quickly': 'L\'agilitÃ© mentale atteint son apogÃ©e â€” rÃ©seauter, nÃ©gocier, s\'adapter rapidement',
-      'Seek wisdom and growthâ€”mentor others or learn from teachers': 'Recherchez la sagesse et la croissance â€” mentorat ou apprentissage auprÃ¨s des enseignants',
-      'Appreciate beautyâ€”create harmony in your environment and relationships': 'ApprÃ©ciez la beautÃ© â€” crÃ©ez l\'harmonie dans votre environnement et vos relations',
-      'Master disciplineâ€”small consistent efforts build lasting success': 'MaÃ®trisez la discipline â€” de petits efforts constants construisent un succÃ¨s durable'
+      'Shine your light€”but stay humble and generous with recognition': 'Faites briller votre lumi¨re €” restez humble et généreux dans la reconnaissance',
+      'Honor your feelings€”they guide you to what truly matters': 'Honorez vos sentiments €” ils vous guident vers ce qui compte vraiment',
+      'Channel warrior energy€”protect boundaries, pursue goals with courage': 'Canalisez l\'énergie guerri¨re €” protégez les limites, poursuivez vos objectifs avec courage',
+      'Mental agility peaks€”network, negotiate, adapt quickly': 'L\'agilité mentale atteint son apogée €” réseauter, négocier, s\'adapter rapidement',
+      'Seek wisdom and growth€”mentor others or learn from teachers': 'Recherchez la sagesse et la croissance €” mentorat ou apprentissage aupr¨s des enseignants',
+      'Appreciate beauty€”create harmony in your environment and relationships': 'Appréciez la beauté €” créez l\'harmonie dans votre environnement et vos relations',
+      'Master discipline€”small consistent efforts build lasting success': 'Ma®trisez la discipline €” de petits efforts constants construisent un succ¨s durable'
     };
 
     return map[tip] || tip;
@@ -1206,9 +1206,9 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       '20min Silence': '20min de silence',
       'Nature Walk': 'Promenade en nature',
       'Journal Freely': 'Journal libre',
-      'Read Sacred Texts': 'Lire des textes sacrÃ©s',
-      'Mindful Tea': 'ThÃ© conscient',
-      'Early Sleep': 'Dormir tÃ´t'
+      'Read Sacred Texts': 'Lire des textes sacrés',
+      'Mindful Tea': 'Thé conscient',
+      'Early Sleep': 'Dormir t´t'
     };
     return m[practice] || practice;
   };
@@ -1219,46 +1219,46 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
     
     const m: Record<string, string> = {
       // Mercury
-      'Mental sharpness': 'AcuitÃ© mentale',
+      'Mental sharpness': 'Acuité mentale',
       'Communication peak': 'Pic de communication',
       'Quick connections': 'Connexions rapides',
-      'Integration time': 'Temps d\'intÃ©gration',
+      'Integration time': 'Temps d\'intégration',
       
       // Sun
-      'Peak leadership energy': 'Pic d\'Ã©nergie de leadership',
-      'High visibility': 'Haute visibilitÃ©',
-      'Delegation phase': 'Phase de dÃ©lÃ©gation',
-      'Reflection time': 'Temps de rÃ©flexion',
+      'Peak leadership energy': 'Pic d\'énergie de leadership',
+      'High visibility': 'Haute visibilité',
+      'Delegation phase': 'Phase de délégation',
+      'Reflection time': 'Temps de réflexion',
       
       // Moon
-      'Emotional clarity': 'ClartÃ© Ã©motionnelle',
+      'Emotional clarity': 'Clarté émotionnelle',
       'Nurturing peak': 'Pic de soin',
-      'Intuitive window': 'FenÃªtre intuitive',
-      'Release & rest': 'RelÃ¢chement & repos',
+      'Intuitive window': 'Fenªtre intuitive',
+      'Release & rest': 'Rel¢chement & repos',
       
       // Mars
-      'Peak action energy': 'Pic d\'Ã©nergie d\'action',
-      'Competitive drive': 'Esprit de compÃ©tition',
-      'Courage window': 'FenÃªtre de courage',
-      'Power-down time': 'Temps de rÃ©cupÃ©ration',
+      'Peak action energy': 'Pic d\'énergie d\'action',
+      'Competitive drive': 'Esprit de compétition',
+      'Courage window': 'Fenªtre de courage',
+      'Power-down time': 'Temps de récupération',
       
       // Venus
-      'Beauty & connection': 'BeautÃ© & connexion',
+      'Beauty & connection': 'Beauté & connexion',
       'Pleasure peak': 'Pic de plaisir',
       'Relationship time': 'Temps relationnel',
-      'Art & beauty': 'Art & beautÃ©',
+      'Art & beauty': 'Art & beauté',
       
       // Jupiter
       'Expansion begins': 'L\'expansion commence',
-      'Opportunity window': 'FenÃªtre d\'opportunitÃ©',
+      'Opportunity window': 'Fenªtre d\'opportunité',
       'Growth momentum': 'Momentum de croissance',
-      'Wisdom integration': 'IntÃ©gration de la sagesse',
+      'Wisdom integration': 'Intégration de la sagesse',
       
       // Saturn
       'Structure setting': 'Mise en place de structure',
       'Discipline peak': 'Pic de discipline',
-      'Responsibility time': 'Temps de responsabilitÃ©',
-      'Completion energy': 'Ã‰nergie de completion'
+      'Responsibility time': 'Temps de responsabilité',
+      'Completion energy': '‰nergie de completion'
     };
     
     return m[energyType] || energyType;
@@ -1270,102 +1270,102 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
     
     const m: Record<string, string> = {
       // Mercury tasks
-      'Writing tasks': 'TÃ¢ches d\'Ã©criture',
-      'Study complex topics': 'Ã‰tudier des sujets complexes',
+      'Writing tasks': 'T¢ches d\'écriture',
+      'Study complex topics': '‰tudier des sujets complexes',
       'Plan communications': 'Planifier les communications',
-      'Learn new skills': 'Apprendre de nouvelles compÃ©tences',
+      'Learn new skills': 'Apprendre de nouvelles compétences',
       'Mindless work': 'Travail machinal',
-      'Physical-only tasks': 'TÃ¢ches uniquement physiques',
+      'Physical-only tasks': 'T¢ches uniquement physiques',
       'Important calls': 'Appels importants',
-      'Presentations': 'PrÃ©sentations',
+      'Presentations': 'Présentations',
       'Teach or explain': 'Enseigner ou expliquer',
-      'Networking': 'RÃ©seautage',
+      'Networking': 'Réseautage',
       'Solo work': 'Travail en solo',
       'Silence': 'Silence',
       'Short trips/errands': 'Courts trajets/courses',
-      'Email responses': 'RÃ©ponses aux e-mails',
-      'Quick meetings': 'RÃ©unions rapides',
-      'Social media': 'MÃ©dias sociaux',
+      'Email responses': 'Réponses aux e-mails',
+      'Quick meetings': 'Réunions rapides',
+      'Social media': 'Médias sociaux',
       'Deep focus': 'Concentration profonde',
       'Long commitments': 'Engagements longs',
       'Review what you learned': 'Revoir ce que vous avez appris',
       'Journal insights': 'Noter les perspectives',
       'Organize notes': 'Organiser les notes',
-      'Light reading': 'Lecture lÃ©gÃ¨re',
+      'Light reading': 'Lecture lég¨re',
       'New information': 'Nouvelles informations',
       'Complex learning': 'Apprentissage complexe',
       
       // Sun tasks
-      'Important decisions': 'DÃ©cisions importantes',
-      'Set daily direction': 'DÃ©finir la direction du jour',
-      'Lead team meetings': 'Diriger des rÃ©unions d\'Ã©quipe',
-      'Strategic planning': 'Planification stratÃ©gique',
-      'Routine tasks': 'TÃ¢ches routiniÃ¨res',
+      'Important decisions': 'Décisions importantes',
+      'Set daily direction': 'Définir la direction du jour',
+      'Lead team meetings': 'Diriger des réunions d\'équipe',
+      'Strategic planning': 'Planification stratégique',
+      'Routine tasks': 'T¢ches routini¨res',
       'Following others': 'Suivre les autres',
-      'Public presentations': 'PrÃ©sentations publiques',
-      'Client meetings': 'RÃ©unions avec clients',
-      'Performance reviews': 'Ã‰valuations de performance',
+      'Public presentations': 'Présentations publiques',
+      'Client meetings': 'Réunions avec clients',
+      'Performance reviews': '‰valuations de performance',
       'Launch initiatives': 'Lancer des initiatives',
-      'Background work': 'Travail en arriÃ¨re-plan',
+      'Background work': 'Travail en arri¨re-plan',
       'Hiding mistakes': 'Cacher les erreurs',
-      'Delegate tasks': 'DÃ©lÃ©guer des tÃ¢ches',
+      'Delegate tasks': 'Déléguer des t¢ches',
       'Teach and mentor': 'Enseigner et encadrer',
-      'Review team work': 'RÃ©viser le travail d\'Ã©quipe',
+      'Review team work': 'Réviser le travail d\'équipe',
       'Empower others': 'Responsabiliser les autres',
       'Micromanaging': 'Microgestion',
-      'Reflect on the day': 'RÃ©flÃ©chir sur la journÃ©e',
-      'Celebrate wins': 'CÃ©lÃ©brer les victoires',
+      'Reflect on the day': 'Réfléchir sur la journée',
+      'Celebrate wins': 'Célébrer les victoires',
       'Plan tomorrow': 'Planifier demain',
-      'Rest with pride': 'Se reposer avec fiertÃ©',
+      'Rest with pride': 'Se reposer avec fierté',
       'Self-criticism': 'Auto-critique',
-      'Dim your light': 'Diminuer votre lumiÃ¨re',
+      'Dim your light': 'Diminuer votre lumi¨re',
       
       // Moon tasks
-      'Check in with feelings': 'VÃ©rifier vos sentiments',
+      'Check in with feelings': 'Vérifier vos sentiments',
       'Care for family': 'Prendre soin de la famille',
       'Gentle morning ritual': 'Rituel matinal doux',
       'Cook nourishing food': 'Cuisiner des aliments nourrissants',
-      'Harsh decisions': 'DÃ©cisions dures',
-      'Ignore emotions': 'Ignorer les Ã©motions',
+      'Harsh decisions': 'Décisions dures',
+      'Ignore emotions': 'Ignorer les émotions',
       'Mother/nurture others': 'Materner/prendre soin des autres',
-      'Create safe space': 'CrÃ©er un espace sÃ»r',
-      'Listen deeply': 'Ã‰couter profondÃ©ment',
-      'Comfort someone': 'RÃ©conforter quelqu\'un',
+      'Create safe space': 'Créer un espace s»r',
+      'Listen deeply': '‰couter profondément',
+      'Comfort someone': 'Réconforter quelqu\'un',
       'Aggression': 'Agression',
-      'Emotional coldness': 'Froideur Ã©motionnelle',
-      'Trust your gut': 'Faire confiance Ã  votre instinct',
-      'Dream journaling': 'Journal des rÃªves',
-      'Water activities': 'ActivitÃ©s aquatiques',
-      'Meditate': 'MÃ©diter',
-      'Logic-only thinking': 'PensÃ©e uniquement logique',
+      'Emotional coldness': 'Froideur émotionnelle',
+      'Trust your gut': 'Faire confiance   votre instinct',
+      'Dream journaling': 'Journal des rªves',
+      'Water activities': 'Activités aquatiques',
+      'Meditate': 'Méditer',
+      'Logic-only thinking': 'Pensée uniquement logique',
       'Ignore intuition': 'Ignorer l\'intuition',
-      'Let go of the day': 'LÃ¢cher prise sur la journÃ©e',
+      'Let go of the day': 'L¢cher prise sur la journée',
       'Forgive conflicts': 'Pardonner les conflits',
       'New fights': 'Nouvelles disputes',
       'Revenge planning': 'Planification de vengeance',
       'Alcohol': 'Alcool',
       
       // Mars tasks
-      'Start difficult tasks': 'Commencer les tÃ¢ches difficiles',
+      'Start difficult tasks': 'Commencer les t¢ches difficiles',
       'Physical exercise': 'Exercice physique',
-      'Tackle challenges': 'Relever des dÃ©fis',
+      'Tackle challenges': 'Relever des défis',
       'Assert yourself': 'S\'affirmer',
-      'Passive activities': 'ActivitÃ©s passives',
+      'Passive activities': 'Activités passives',
       'Procrastination': 'Procrastination',
-      'Compete or debate': 'CompÃ©tition ou dÃ©bat',
-      'Sales pitches': 'PrÃ©sentations de vente',
+      'Compete or debate': 'Compétition ou débat',
+      'Sales pitches': 'Présentations de vente',
       'Push through obstacles': 'Surmonter les obstacles',
-      'Take action': 'Passer Ã  l\'action',
-      'Avoid conflict': 'Ã‰viter les conflits',
-      'Fence-sitting': 'IndÃ©cision',
+      'Take action': 'Passer   l\'action',
+      'Avoid conflict': '‰viter les conflits',
+      'Fence-sitting': 'Indécision',
       'Face your fear': 'Affronter votre peur',
       'Bold moves': 'Mouvements audacieux',
-      'Defend boundaries': 'DÃ©fendre les limites',
-      'Stand up for yourself': 'DÃ©fendre vos droits',
-      'Cowardice': 'LÃ¢chetÃ©',
+      'Defend boundaries': 'Défendre les limites',
+      'Stand up for yourself': 'Défendre vos droits',
+      'Cowardice': 'L¢cheté',
       'People-pleasing': 'Plaire aux autres',
-      'Wind down intensity': 'RÃ©duire l\'intensitÃ©',
-      'Repair any damage': 'RÃ©parer les dÃ©gÃ¢ts',
+      'Wind down intensity': 'Réduire l\'intensité',
+      'Repair any damage': 'Réparer les dég¢ts',
       'Cool down': 'Se calmer',
       'Forgive self': 'Se pardonner',
       'Stir up conflict': 'Attiser les conflits',
@@ -1374,79 +1374,79 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       // Venus tasks
       'Beautify space': 'Embellir l\'espace',
       'Dress nicely': 'S\'habiller joliment',
-      'Enjoy breakfast': 'Savourer le petit dÃ©jeuner',
-      'Appreciate beauty': 'ApprÃ©cier la beautÃ©',
+      'Enjoy breakfast': 'Savourer le petit déjeuner',
+      'Appreciate beauty': 'Apprécier la beauté',
       'Ugliness': 'Laideur',
-      'Harshness': 'DuretÃ©',
+      'Harshness': 'Dureté',
       'Socialize': 'Socialiser',
       'Express affection': 'Exprimer l\'affection',
-      'Enjoy pleasures': 'ApprÃ©cier les plaisirs',
+      'Enjoy pleasures': 'Apprécier les plaisirs',
       'Share love': 'Partager l\'amour',
       'Isolation': 'Isolation',
       'Rudeness': 'Impolitesse',
-      'Connect deeply': 'Se connecter profondÃ©ment',
-      'Date night': 'SoirÃ©e en amoureux',
-      'Quality time': 'Temps de qualitÃ©',
+      'Connect deeply': 'Se connecter profondément',
+      'Date night': 'Soirée en amoureux',
+      'Quality time': 'Temps de qualité',
       'Relationship talk': 'Discussion relationnelle',
       'Conflict': 'Conflit',
       'Distance': 'Distance',
-      'Create art': 'CrÃ©er de l\'art',
-      'Listen to music': 'Ã‰couter de la musique',
+      'Create art': 'Créer de l\'art',
+      'Listen to music': '‰couter de la musique',
       'Indulge senses': 'Se faire plaisir',
       'Luxury bath': 'Bain de luxe',
-      'Frugality': 'FrugalitÃ©',
-      'Denial': 'DÃ©ni',
+      'Frugality': 'Frugalité',
+      'Denial': 'Déni',
       
       // Jupiter tasks
-      'Think big picture': 'Penser Ã  long terme',
-      'Study philosophy': 'Ã‰tudier la philosophie',
+      'Think big picture': 'Penser   long terme',
+      'Study philosophy': '‰tudier la philosophie',
       'Set ambitious goals': 'Fixer des objectifs ambitieux',
-      'Small thinking': 'PensÃ©e limitÃ©e',
-      'Petty details': 'DÃ©tails insignifiants',
-      'Seek opportunities': 'Chercher des opportunitÃ©s',
-      'Make connections': 'CrÃ©er des connexions',
-      'Generous acts': 'Actes gÃ©nÃ©reux',
+      'Small thinking': 'Pensée limitée',
+      'Petty details': 'Détails insignifiants',
+      'Seek opportunities': 'Chercher des opportunités',
+      'Make connections': 'Créer des connexions',
+      'Generous acts': 'Actes généreux',
       'Teaching': 'Enseignement',
       'Stinginess': 'Avarice',
-      'Narrowness': 'Ã‰troitesse d\'esprit',
-      'Expand projects': 'Ã‰tendre les projets',
-      'Take calculated risks': 'Prendre des risques calculÃ©s',
+      'Narrowness': '‰troitesse d\'esprit',
+      'Expand projects': '‰tendre les projets',
+      'Take calculated risks': 'Prendre des risques calculés',
       'Travel planning': 'Planification de voyage',
       'Cultural exploration': 'Exploration culturelle',
       'Contraction': 'Contraction',
-      'Fear-based decisions': 'DÃ©cisions basÃ©es sur la peur',
-      'Philosophical reflection': 'RÃ©flexion philosophique',
+      'Fear-based decisions': 'Décisions basées sur la peur',
+      'Philosophical reflection': 'Réflexion philosophique',
       'Gratitude practice': 'Pratique de gratitude',
       'Mentor someone': 'Encadrer quelqu\'un',
-      'Spiritual study': 'Ã‰tude spirituelle',
-      'Materialism': 'MatÃ©rialisme',
+      'Spiritual study': '‰tude spirituelle',
+      'Materialism': 'Matérialisme',
       'Pessimism': 'Pessimisme',
       
       // Saturn tasks
       'Build structure': 'Construire une structure',
-      'Long-term planning': 'Planification Ã  long terme',
-      'Set boundaries': 'DÃ©finir des limites',
-      'Serious work': 'Travail sÃ©rieux',
+      'Long-term planning': 'Planification   long terme',
+      'Set boundaries': 'Définir des limites',
+      'Serious work': 'Travail sérieux',
       'Chaos': 'Chaos',
-      'Frivolity': 'FrivolitÃ©',
-      'Focused work': 'Travail concentrÃ©',
-      'Meet deadlines': 'Respecter les dÃ©lais',
-      'Quality control': 'ContrÃ´le qualitÃ©',
+      'Frivolity': 'Frivolité',
+      'Focused work': 'Travail concentré',
+      'Meet deadlines': 'Respecter les délais',
+      'Quality control': 'Contr´le qualité',
       'Professional duties': 'Devoirs professionnels',
       'Slacking': 'Paresse',
       'Shortcuts': 'Raccourcis',
-      'Take responsibility': 'Prendre ses responsabilitÃ©s',
+      'Take responsibility': 'Prendre ses responsabilités',
       'Difficult conversations': 'Conversations difficiles',
-      'Face consequences': 'Faire face aux consÃ©quences',
-      'Do what you must': 'Faire ce qui doit Ãªtre fait',
-      'Blame others': 'BlÃ¢mer les autres',
-      'Avoid duty': 'Ã‰viter le devoir',
+      'Face consequences': 'Faire face aux conséquences',
+      'Do what you must': 'Faire ce qui doit ªtre fait',
+      'Blame others': 'Bl¢mer les autres',
+      'Avoid duty': '‰viter le devoir',
       'Complete projects': 'Terminer les projets',
-      'Tie up loose ends': 'RÃ©gler les dÃ©tails',
+      'Tie up loose ends': 'Régler les détails',
       'Archive & organize': 'Archiver & organiser',
-      'Review progress': 'RÃ©viser les progrÃ¨s',
+      'Review progress': 'Réviser les progr¨s',
       'Start new things': 'Commencer de nouvelles choses',
-      'Rush': 'PrÃ©cipitation'
+      'Rush': 'Précipitation'
     };
     
     return m[task] || task;
@@ -1457,10 +1457,10 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
     if (language === 'en') return phase;
     
     const m: Record<string, string> = {
-      'Sun rises - authority peaks': 'Le soleil se lÃ¨ve - pic d\'autoritÃ©',
-      'Solar noon - maximum presence': 'Midi solaire - prÃ©sence maximale',
+      'Sun rises - authority peaks': 'Le soleil se l¨ve - pic d\'autorité',
+      'Solar noon - maximum presence': 'Midi solaire - présence maximale',
       'Moon opens heart': 'La lune ouvre le cÅ“ur',
-      'Emotional tide peaks': 'Pic de marÃ©e Ã©motionnelle',
+      'Emotional tide peaks': 'Pic de marée émotionnelle',
       'Mars fuels courage': 'Mars alimente le courage'
     };
     
@@ -1533,7 +1533,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
             <div>
               <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">{t.ilmHuruf.peakDayThisWeek}</p>
               <div className="flex items-center gap-2">
-                <span className="text-2xl">â­</span>
+                <span className="text-2xl">⭐</span>
                 <div>
                   {weeklySummary?.days?.find(d => d.date === weeklySummary?.best_day) && (
                     <>
@@ -1554,7 +1554,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
             <div>
               <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">{t.ilmHuruf.focusDay}</p>
               <div className="flex items-center gap-2">
-                <span className="text-2xl">ðŸŽ¯</span>
+                <span className="text-2xl">Ž¯</span>
                 <div>
                   {weeklySummary?.days?.find(d => d.date === weeklySummary?.focus_day) && (
                     <>
@@ -1642,7 +1642,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 {/* Key tip preview */}
                 <div className="mb-2 min-h-[2.5rem]">
                   <div className="flex items-start gap-1">
-                    <span className="text-xs flex-shrink-0">ðŸ’¡</span>
+                    <span className="text-xs flex-shrink-0">’¡</span>
                     <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight text-left">
                       {truncatedTip}
                     </p>
@@ -1663,19 +1663,19 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                           : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50'
                       }`}
                     >
-                      {day.restLevel === 'deep' ? `ðŸ›‘ ${t.ilmHuruf.deepRest}` : `ðŸŒ™ ${t.ilmHuruf.restSignalBadge}`}
+                      {day.restLevel === 'deep' ? `›‘ ${t.ilmHuruf.deepRest}` : `™ ${t.ilmHuruf.restSignalBadge}`}
                     </div>
                   </div>
                 )}
                 
-                {/* Energy Return Speed (Irtiá¹­Äb) - Lesson 25 */}
+                {/* Energy Return Speed (Irtiá¹⭐Äb) - Lesson 25 */}
                 <div className="mb-2 p-2 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-lg border border-purple-200 dark:border-purple-700/50">
                   <div className="flex items-start gap-1.5">
                     <span className="text-sm flex-shrink-0">
-                      {day.energyReturn.speed === 'instant' && 'âš¡'}
-                      {day.energyReturn.speed === 'quick' && 'ðŸ’¨'}
-                      {day.energyReturn.speed === 'gradual' && 'ðŸŒŠ'}
-                      {day.energyReturn.speed === 'delayed' && 'ðŸŒ±'}
+                      {day.energyReturn.speed === 'instant' && 'š¡'}
+                      {day.energyReturn.speed === 'quick' && '’¨'}
+                      {day.energyReturn.speed === 'gradual' && 'Š'}
+                      {day.energyReturn.speed === 'delayed' && '±'}
                     </span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1 mb-0.5">
@@ -1721,7 +1721,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 {/* Click indicator */}
                 {!isSelected && (
                   <div className="absolute bottom-1 right-1 text-[10px] text-slate-400 dark:text-slate-600">
-                    â–¼
+                    –¼
                   </div>
                 )}
               </button>
@@ -1729,10 +1729,10 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
           })}
         </div>
         
-        {/* Energy Return Speeds Overview (Irtiá¹­Äb) */}
+        {/* Energy Return Speeds Overview (Irtiá¹⭐Äb) */}
         <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-lg border border-blue-200 dark:border-blue-800">
           <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
-            <span className="text-lg">âš¡</span>
+            <span className="text-lg">š¡</span>
             {t.ilmHuruf.energyReturnSpeedsThisWeek}
           </h4>
           <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
@@ -1749,10 +1749,10 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
               return Object.entries(speedCounts).map(([speed, count]) => (
                 <div key={speed} className="bg-white dark:bg-slate-700/50 rounded-lg p-3 text-center">
                   <div className="flex justify-center text-2xl mb-1">
-                    {speed === 'instant' && 'âš¡'}
-                    {speed === 'quick' && 'ðŸ’¨'}
-                    {speed === 'gradual' && 'ðŸŒŠ'}
-                    {speed === 'delayed' && 'ðŸŒ±'}
+                    {speed === 'instant' && 'š¡'}
+                    {speed === 'quick' && '’¨'}
+                    {speed === 'gradual' && 'Š'}
+                    {speed === 'delayed' && '±'}
                   </div>
                   <div className="text-sm font-bold text-slate-900 dark:text-slate-100">
                     {speed === 'instant' ? t.ilmHuruf.instant : speed === 'quick' ? t.ilmHuruf.fewHours : speed === 'gradual' ? t.ilmHuruf.twoDays : t.ilmHuruf.oneToTwoWeeks}
@@ -1781,7 +1781,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
             <div className="mt-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-5 border-2 border-blue-200 dark:border-blue-800 animate-in slide-in-from-top duration-300">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl">{restDay.restLevel === 'deep' ? 'ðŸ›‘' : 'ðŸŒ™'}</span>
+                  <span className="text-2xl">{restDay.restLevel === 'deep' ? '›‘' : '™'}</span>
                   <h4 className="font-bold text-blue-900 dark:text-blue-100">
                     {restDay.restLevel === 'deep' ? t.ilmHuruf.deepRestNeeded : t.ilmHuruf.restSignal}
                   </h4>
@@ -1790,7 +1790,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   onClick={() => setExpandedRestDay(null)}
                   className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 text-sm"
                 >
-                  âœ•
+                  œ•
                 </button>
               </div>
               
@@ -1809,7 +1809,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 <ul className="space-y-2">
                   {restDay.restPractices?.map((practice, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
-                      <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">â–¡</span>
+                      <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">–¡</span>
                       <span>{translatePractice(practice)}</span>
                     </li>
                   ))}
@@ -1820,13 +1820,13 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
               {restDay.betterDays && restDay.betterDays.length > 0 && (
                 <div className="pt-4 border-t border-blue-200 dark:border-blue-700">
                   <p className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-2 flex items-center gap-1">
-                    <span>ðŸ’¡</span>
+                    <span>’¡</span>
                     <span className="uppercase tracking-wide">{t.ilmHuruf.betterDaysThisWeek}</span>
                   </p>
                   <ul className="space-y-1">
                     {restDay.betterDays.map((betterDay, i) => (
                       <li key={i} className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                        <span className="text-green-500">â€¢</span>
+                        <span className="text-green-500">€¢</span>
                         <span>{betterDay}</span>
                       </li>
                     ))}
@@ -1919,9 +1919,9 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
                     <div className="text-xs opacity-75 mb-1">{t.ilmHuruf.energyBand}</div>
                     <div className={`font-bold flex items-center gap-2`}>
-                      {day.band === 'High' && 'ðŸ”¥ High'}
-                      {day.band === 'Moderate' && 'âš–ï¸ Moderate'}
-                      {day.band === 'Low' && 'ðŸŒŠ Gentle'}
+                      {day.band === 'High' && '”¥ High'}
+                      {day.band === 'Moderate' && 'š–ï¸ Moderate'}
+                      {day.band === 'Low' && 'Š Gentle'}
                     </div>
                     <div className="text-xs opacity-75 mt-1">
                       {day.band === 'High' && 'Peak performance day'}
@@ -1938,14 +1938,14 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   <h4 className="font-bold text-slate-900 dark:text-slate-100">{t.ilmHuruf.yourGuidanceForThisDay}</h4>
                 </div>
                 
-                {/* Energy Return - Detailed (Irtiá¹­Äb) */}
+                {/* Energy Return - Detailed (Irtiá¹⭐Äb) */}
                 <div className="mb-5 p-4 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/30 dark:to-indigo-900/30 rounded-lg border border-purple-200 dark:border-purple-700">
                   <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3 flex items-center gap-2">
                     <span className="text-2xl">
-                      {day.energyReturn.speed === 'instant' && 'âš¡'}
-                      {day.energyReturn.speed === 'quick' && 'ðŸ’¨'}
-                      {day.energyReturn.speed === 'gradual' && 'ðŸŒŠ'}
-                      {day.energyReturn.speed === 'delayed' && 'ðŸŒ±'}
+                      {day.energyReturn.speed === 'instant' && 'š¡'}
+                      {day.energyReturn.speed === 'quick' && '’¨'}
+                      {day.energyReturn.speed === 'gradual' && 'Š'}
+                      {day.energyReturn.speed === 'delayed' && '±'}
                     </span>
                     <span>{t.ilmHuruf.energyReturnWisdom}</span>
                   </h4>
@@ -1972,7 +1972,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                     
                     <div className="pt-3 border-t border-purple-200 dark:border-purple-700">
                       <p className="text-xs font-semibold text-purple-800 dark:text-purple-200 mb-2 uppercase tracking-wide flex items-center gap-1">
-                        <span>ðŸŽ¯</span>
+                        <span>Ž¯</span>
                         <span>{t.ilmHuruf.todaysPractice}</span>
                       </p>
                       <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -1996,13 +1996,13 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                     {/* Header */}
                     <div className="mb-4">
                       <h4 className="text-lg font-bold text-purple-900 dark:text-purple-100 flex items-center gap-2">
-                        <span className="text-2xl">ðŸ“‹</span>
+                        <span className="text-2xl">“‹</span>
                         <span>
-                          {language === 'fr' ? 'SÃ©quence Optimale pour' : 'Optimal Sequence for'} {getTranslatedWeekday(day.date)}
+                          {language === 'fr' ? 'Séquence Optimale pour' : 'Optimal Sequence for'} {getTranslatedWeekday(day.date)}
                         </span>
                       </h4>
                       <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                        {getPlanetName(day.day_planet)} {language === 'fr' ? 'jour' : 'day'} â€¢ {t.ilmHuruf.harmony} {day.harmony_score}/10
+                        {getPlanetName(day.day_planet)} {language === 'fr' ? 'jour' : 'day'} €¢ {t.ilmHuruf.harmony} {day.harmony_score}/10
                       </p>
                     </div>
                     
@@ -2013,7 +2013,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-yellow-400">
                         <div className="flex items-center justify-between mb-2">
                           <h5 className="font-semibold text-slate-900 dark:text-slate-100">
-                            ðŸŒ… {language === 'fr' ? 'Matin' : 'Morning'}
+                            … {language === 'fr' ? 'Matin' : 'Morning'}
                           </h5>
                           <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded text-yellow-800 dark:text-yellow-200 font-medium">
                             {day.taskSequence.morning.timeRange}
@@ -2027,21 +2027,21 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         <div className="grid md:grid-cols-2 gap-3">
                           <div>
                             <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
-                              âœ“ {language === 'fr' ? 'IdÃ©al Pour :' : 'Best For:'}
+                              œ“ {language === 'fr' ? 'Idéal Pour :' : 'Best For:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.morning.bestFor.map((task, i) => (
-                                <li key={i}>â€¢ {translateTask(task)}</li>
+                                <li key={i}>€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              âœ— {language === 'fr' ? 'Ã€ Ã‰viter :' : 'Avoid:'}
+                              œ× {language === 'fr' ? '€ ‰viter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.morning.avoid.map((task, i) => (
-                                <li key={i}>â€¢ {translateTask(task)}</li>
+                                <li key={i}>€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -2058,7 +2058,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-blue-400">
                         <div className="flex items-center justify-between mb-2">
                           <h5 className="font-semibold text-slate-900 dark:text-slate-100">
-                            â˜€ï¸ {language === 'fr' ? 'Midi' : 'Midday'}
+                            ˜€ï¸ {language === 'fr' ? 'Midi' : 'Midday'}
                           </h5>
                           <span className="text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded text-blue-800 dark:text-blue-200 font-medium">
                             {day.taskSequence.midday.timeRange}
@@ -2072,21 +2072,21 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         <div className="grid md:grid-cols-2 gap-3">
                           <div>
                             <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
-                              âœ“ {language === 'fr' ? 'IdÃ©al Pour :' : 'Best For:'}
+                              œ“ {language === 'fr' ? 'Idéal Pour :' : 'Best For:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.midday.bestFor.map((task, i) => (
-                                <li key={i}>â€¢ {translateTask(task)}</li>
+                                <li key={i}>€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              âœ— {language === 'fr' ? 'Ã€ Ã‰viter :' : 'Avoid:'}
+                              œ× {language === 'fr' ? '€ ‰viter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.midday.avoid.map((task, i) => (
-                                <li key={i}>â€¢ {translateTask(task)}</li>
+                                <li key={i}>€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -2103,7 +2103,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-orange-400">
                         <div className="flex items-center justify-between mb-2">
                           <h5 className="font-semibold text-slate-900 dark:text-slate-100">
-                            ðŸŒ† {language === 'fr' ? 'AprÃ¨s-midi' : 'Afternoon'}
+                            † {language === 'fr' ? 'Apr¨s-midi' : 'Afternoon'}
                           </h5>
                           <span className="text-xs bg-orange-100 dark:bg-orange-900/30 px-2 py-1 rounded text-orange-800 dark:text-orange-200 font-medium">
                             {day.taskSequence.afternoon.timeRange}
@@ -2117,21 +2117,21 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         <div className="grid md:grid-cols-2 gap-3">
                           <div>
                             <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
-                              âœ“ {language === 'fr' ? 'IdÃ©al Pour :' : 'Best For:'}
+                              œ“ {language === 'fr' ? 'Idéal Pour :' : 'Best For:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.afternoon.bestFor.map((task, i) => (
-                                <li key={i}>â€¢ {translateTask(task)}</li>
+                                <li key={i}>€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              âœ— {language === 'fr' ? 'Ã€ Ã‰viter :' : 'Avoid:'}
+                              œ× {language === 'fr' ? '€ ‰viter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.afternoon.avoid.map((task, i) => (
-                                <li key={i}>â€¢ {translateTask(task)}</li>
+                                <li key={i}>€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -2148,7 +2148,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-purple-400">
                         <div className="flex items-center justify-between mb-2">
                           <h5 className="font-semibold text-slate-900 dark:text-slate-100">
-                            ðŸŒ™ {language === 'fr' ? 'Soir' : 'Evening'}
+                            ™ {language === 'fr' ? 'Soir' : 'Evening'}
                           </h5>
                           <span className="text-xs bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded text-purple-800 dark:text-purple-200 font-medium">
                             {day.taskSequence.evening.timeRange}
@@ -2162,21 +2162,21 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         <div className="grid md:grid-cols-2 gap-3">
                           <div>
                             <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
-                              âœ“ {language === 'fr' ? 'IdÃ©al Pour :' : 'Best For:'}
+                              œ“ {language === 'fr' ? 'Idéal Pour :' : 'Best For:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.evening.bestFor.map((task, i) => (
-                                <li key={i}>â€¢ {translateTask(task)}</li>
+                                <li key={i}>€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              âœ— {language === 'fr' ? 'Ã€ Ã‰viter :' : 'Avoid:'}
+                              œ× {language === 'fr' ? '€ ‰viter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.evening.avoid.map((task, i) => (
-                                <li key={i}>â€¢ {translateTask(task)}</li>
+                                <li key={i}>€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -2195,7 +2195,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                     <div className="mt-4 pt-4 border-t border-purple-200 dark:border-purple-700">
                       <p className="text-xs italic text-slate-500 dark:text-slate-400">
                         <span className="font-semibold">Classical teaching (Lesson 28):</span> "Li-kulli shay'in waqtun" 
-                        (For everything there is a time) â€” Success comes from right action at right time.
+                        (For everything there is a time) €” Success comes from right action at right time.
                       </p>
                     </div>
                   </div>
@@ -2217,7 +2217,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   onClick={() => setSelectedDay(null)}
                   className="mt-4 w-full px-4 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
                 >
-                  <span>â–²</span>
+                  <span>–²</span>
                   Close Details
                 </button>
               </div>
@@ -2245,7 +2245,7 @@ function DestinyResults({ results }: { results: any }) {
   // Fetch Quranic verse when quranResonance is available
   useEffect(() => {
     if (results?.quranResonance) {
-      console.log('ðŸ•Œ Fetching Quranic Resonance:', results.quranResonance);
+      console.log('•Œ Fetching Quranic Resonance:', results.quranResonance);
       setLoadingVerse(true);
       setVerseError(null);
       setVerseText(null);
@@ -2257,17 +2257,17 @@ function DestinyResults({ results }: { results: any }) {
         );
         
         if (verse) {
-          console.log('âœ… Successfully fetched verse:', verse);
+          console.log('œ… Successfully fetched verse:', verse);
           setVerseText(verse);
         } else {
-          console.warn('âš ï¸ Verse fetch returned null');
+          console.warn('š ï¸ Verse fetch returned null');
           setVerseError('Unable to load verse at this moment. Please refresh or visit Quran.com directly.');
         }
         setLoadingVerse(false);
       };
       
       fetchVerse().catch(err => {
-        console.error('âŒ Error fetching verse:', err);
+        console.error('Œ Error fetching verse:', err);
         setVerseError(t?.errors?.verseLoadError || 'Unable to load verse text. Please try again.');
         setLoadingVerse(false);
       });
@@ -2335,7 +2335,7 @@ function DestinyResults({ results }: { results: any }) {
 
             {/* Primary Numerology Values */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-            {/* Total á¸¤adad KabÄ«r */}
+            {/* Total á¸🤝adad KabÄ«r */}
             <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-indigo-200 dark:border-indigo-700">
               <div className="text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-semibold mb-1">
                 {t.nameDestiny.nameChart.total}
@@ -2474,7 +2474,7 @@ function DestinyResults({ results }: { results: any }) {
                 </div>
 
                 {/* Arrow */}
-                <div className="text-3xl text-rose-400">â†”</div>
+                <div className="text-3xl text-rose-400">†”</div>
 
                 {/* Foundation (Mother) */}
                 <div className="text-center">
@@ -2575,10 +2575,10 @@ function DestinyResults({ results }: { results: any }) {
 
             // Element visual config
             const elementConfig = {
-              fire: { icon: 'ðŸ”¥', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30', bar: 'bg-red-500' },
-              air: { icon: 'ðŸ’¨', color: 'text-sky-600 dark:text-sky-400', bg: 'bg-sky-100 dark:bg-sky-900/30', bar: 'bg-sky-500' },
-              water: { icon: 'ðŸ’§', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30', bar: 'bg-blue-500' },
-              earth: { icon: 'ðŸŒ', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/30', bar: 'bg-amber-500' }
+              fire: { icon: '”¥', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30', bar: 'bg-red-500' },
+              air: { icon: '’¨', color: 'text-sky-600 dark:text-sky-400', bg: 'bg-sky-100 dark:bg-sky-900/30', bar: 'bg-sky-500' },
+              water: { icon: '’§', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30', bar: 'bg-blue-500' },
+              earth: { icon: '', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/30', bar: 'bg-amber-500' }
             };
 
             return (
@@ -2690,7 +2690,7 @@ function DestinyResults({ results }: { results: any }) {
         <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 border-2 border-purple-200 dark:border-purple-700 shadow-lg">
           <div className="mb-6 text-center">
             <h3 className="text-2xl font-bold text-purple-900 dark:text-purple-200 mb-1">
-              âœ¨ {t.nameDestiny.higherResonance.title}
+              œ¨ {t.nameDestiny.higherResonance.title}
             </h3>
             <p className="text-sm text-purple-700 dark:text-purple-300">
               {t.nameDestiny.higherResonance.subtitle}
@@ -2701,7 +2701,7 @@ function DestinyResults({ results }: { results: any }) {
           {results.nameDestiny.divineNameResonance && (
             <div className="mb-6 bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-purple-300 dark:border-purple-700">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-3xl">ðŸ•Šï¸</span>
+                <span className="text-3xl">•Šï¸</span>
                 <h4 className="text-xl font-bold text-purple-900 dark:text-purple-200">
                   {t.nameDestiny.divineNameResonance.title}
                 </h4>
@@ -2727,7 +2727,7 @@ function DestinyResults({ results }: { results: any }) {
               <div className="space-y-3">
                 <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-4">
                   <div className="text-sm font-semibold text-purple-900 dark:text-purple-200 mb-1 flex items-center gap-2">
-                    <span>ðŸ”¹</span> {t.nameDestiny.divineNameResonance.spiritualInfluence}
+                    <span>”¹</span> {t.nameDestiny.divineNameResonance.spiritualInfluence}
                   </div>
                   <p className="text-sm text-purple-800 dark:text-purple-300">
                     {isFr ? results.nameDestiny.divineNameResonance.spiritualInfluenceFr : results.nameDestiny.divineNameResonance.spiritualInfluence}
@@ -2736,7 +2736,7 @@ function DestinyResults({ results }: { results: any }) {
 
                 <div className="bg-pink-50 dark:bg-pink-900/30 rounded-lg p-4">
                   <div className="text-sm font-semibold text-pink-900 dark:text-pink-200 mb-1 flex items-center gap-2">
-                    <span>ðŸ”¹</span> {t.nameDestiny.divineNameResonance.reflection}
+                    <span>”¹</span> {t.nameDestiny.divineNameResonance.reflection}
                   </div>
                   <p className="text-sm text-pink-800 dark:text-pink-300">
                     {isFr ? results.nameDestiny.divineNameResonance.reflectionFr : results.nameDestiny.divineNameResonance.reflection}
@@ -2750,7 +2750,7 @@ function DestinyResults({ results }: { results: any }) {
           {results.nameDestiny.colorResonance && (
             <div className="bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-pink-300 dark:border-pink-700">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-3xl">ðŸŽ¨</span>
+                <span className="text-3xl">Ž¨</span>
                 <h4 className="text-xl font-bold text-pink-900 dark:text-pink-200">
                   {t.nameDestiny.colorResonance.title}
                 </h4>
@@ -2764,7 +2764,7 @@ function DestinyResults({ results }: { results: any }) {
                 {/* Primary Color */}
                 <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
                   <div className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">
-                    ðŸŽ¨ {t.nameDestiny.colorResonance.primary}
+                    Ž¨ {t.nameDestiny.colorResonance.primary}
                   </div>
                   <div className="flex items-center gap-3 mb-2">
                     <div 
@@ -2789,7 +2789,7 @@ function DestinyResults({ results }: { results: any }) {
                 {results.nameDestiny.colorResonance.secondary && (
                   <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
                     <div className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">
-                      ðŸŽ¨ {t.nameDestiny.colorResonance.secondary}
+                      Ž¨ {t.nameDestiny.colorResonance.secondary}
                     </div>
                     <div className="flex items-center gap-3 mb-2">
                       <div 
@@ -2815,7 +2815,7 @@ function DestinyResults({ results }: { results: any }) {
               {/* Best Colors */}
               <div className="mb-4 bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-200 dark:border-green-700">
                 <div className="text-sm font-semibold text-green-900 dark:text-green-200 mb-2">
-                  âœ… {t.nameDestiny.colorResonance.bestColors}
+                  œ… {t.nameDestiny.colorResonance.bestColors}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {(isFr ? results.nameDestiny.colorResonance.bestColorsFr : results.nameDestiny.colorResonance.bestColorsEn).map((color: string, idx: number) => (
@@ -2829,7 +2829,7 @@ function DestinyResults({ results }: { results: any }) {
               {/* Colors to Avoid */}
               <div className="mb-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-700">
                 <div className="text-sm font-semibold text-amber-900 dark:text-amber-200 mb-2">
-                  âš ï¸ {t.nameDestiny.colorResonance.avoidColors}
+                  š ï¸ {t.nameDestiny.colorResonance.avoidColors}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {(isFr ? results.nameDestiny.colorResonance.avoidColorsFr : results.nameDestiny.colorResonance.avoidColorsEn).map((color: string, idx: number) => (
@@ -2843,7 +2843,7 @@ function DestinyResults({ results }: { results: any }) {
               {/* Tip */}
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
                 <div className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
-                  <span>ðŸ’¡</span> {t.nameDestiny.colorResonance.tip}
+                  <span>’¡</span> {t.nameDestiny.colorResonance.tip}
                 </div>
                 <p className="text-sm text-blue-800 dark:text-blue-300">
                   {isFr ? results.nameDestiny.colorResonance.tipFr : results.nameDestiny.colorResonance.tipEn}
@@ -2879,7 +2879,7 @@ function DestinyResults({ results }: { results: any }) {
         </div>
         
         <div className="bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-700 shadow-md">
-          <div className="text-xs uppercase tracking-wider text-blue-600 dark:text-blue-400 font-semibold mb-2">á¸¤adath (Elemental Value)</div>
+          <div className="text-xs uppercase tracking-wider text-blue-600 dark:text-blue-400 font-semibold mb-2">á¸🤝adath (Elemental Value)</div>
           <div className="text-4xl font-bold text-blue-900 dark:text-blue-400">{results.hadath}</div>
           <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">{t.nameDestiny.destinyNumber.reducedRoot}</p>
         </div>
@@ -2956,7 +2956,7 @@ function DestinyResults({ results }: { results: any }) {
                         "{verseText.translation}"
                       </p>
                       <p className="text-xs text-slate-600 dark:text-slate-400 italic">
-                        â€” {verseText.translationName}
+                        €” {verseText.translationName}
                       </p>
                     </div>
                   </div>
@@ -3022,7 +3022,7 @@ function DestinyResults({ results }: { results: any }) {
                 </div>
               </div>
               <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                {t.nameDestiny.origin.kabir}: {results.motherAnalysis.kabir} â€¢ {t.nameDestiny.origin.saghir}: {results.motherAnalysis.saghir} â€¢ {t.nameDestiny.origin.hadath}: {results.motherAnalysis.hadath}
+                {t.nameDestiny.origin.kabir}: {results.motherAnalysis.kabir} €¢ {t.nameDestiny.origin.saghir}: {results.motherAnalysis.saghir} €¢ {t.nameDestiny.origin.hadath}: {results.motherAnalysis.hadath}
               </div>
             </div>
             
@@ -3046,7 +3046,7 @@ function DestinyResults({ results }: { results: any }) {
                     })()}
                   </p>
                 </div>
-                <div className="text-3xl text-slate-400">â†”</div>
+                <div className="text-3xl text-slate-400">†”</div>
                 <div className="flex-1 text-center p-3 bg-rose-50 dark:bg-rose-900/20 rounded-lg">
                   <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">{t.nameDestiny.origin.yourFoundation}</p>
                   <p className="font-bold text-rose-600 dark:text-rose-400">
@@ -3148,7 +3148,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.vertical.join(' â€¢ ')}
+                    {GEOMETRY_KEYWORDS.vertical.join(' €¢ ')}
                   </p>
                 </>
               ) : (
@@ -3181,7 +3181,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.round.join(' â€¢ ')}
+                    {GEOMETRY_KEYWORDS.round.join(' €¢ ')}
                   </p>
                 </>
               ) : (
@@ -3214,7 +3214,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.flat.join(' â€¢ ')}
+                    {GEOMETRY_KEYWORDS.flat.join(' €¢ ')}
                   </p>
                 </>
               ) : (
@@ -3247,7 +3247,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.angular.join(' â€¢ ')}
+                    {GEOMETRY_KEYWORDS.angular.join(' €¢ ')}
                   </p>
                 </>
               ) : (
@@ -3344,7 +3344,7 @@ function DestinyResults({ results }: { results: any }) {
         <div className="space-y-5">
           <div>
             <div className="font-semibold text-yellow-700 dark:text-yellow-400 mb-1 flex items-center gap-2">
-              âœ¨ {t.nameDestiny.guidance.yourPath}
+              œ¨ {t.nameDestiny.guidance.yourPath}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.yourPathDesc}
@@ -3361,10 +3361,10 @@ function DestinyResults({ results }: { results: any }) {
                   : results.personality;
                 
                 if (isFr) {
-                  return `Votre destin de vie (${destinyStation.name}) vous appelle Ã  ${destinyStation.quality.toLowerCase()}. ` +
-                    `Votre Ã¢me aspire profondÃ©ment Ã  ${soulStation?.quality.toLowerCase()}, ` +
-                    `tandis qu'extÃ©rieurement vous exprimez ${personalityStation?.quality.toLowerCase()}. ` +
-                    `L'intÃ©gration se produit lorsque vous alignez ces trois dimensions.`;
+                  return `Votre destin de vie (${destinyStation.name}) vous appelle   ${destinyStation.quality.toLowerCase()}. ` +
+                    `Votre ¢me aspire profondément   ${soulStation?.quality.toLowerCase()}, ` +
+                    `tandis qu'extérieurement vous exprimez ${personalityStation?.quality.toLowerCase()}. ` +
+                    `L'intégration se produit lorsque vous alignez ces trois dimensions.`;
                 } else {
                   return results.interpretation;
                 }
@@ -3374,7 +3374,7 @@ function DestinyResults({ results }: { results: any }) {
           
           <div>
             <div className="font-semibold text-indigo-700 dark:text-indigo-400 mb-1 flex items-center gap-2">
-              ðŸ•Š {t.nameDestiny.guidance.spiritualPractice}
+              •Š {t.nameDestiny.guidance.spiritualPractice}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.spiritualPracticeDesc}
@@ -3386,7 +3386,7 @@ function DestinyResults({ results }: { results: any }) {
           
           <div>
             <div className="font-semibold text-blue-700 dark:text-blue-400 mb-1 flex items-center gap-2">
-              ðŸ“– {t.nameDestiny.guidance.quranicGuidance}
+              “– {t.nameDestiny.guidance.quranicGuidance}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.quranicGuidanceDesc}
@@ -3398,7 +3398,7 @@ function DestinyResults({ results }: { results: any }) {
           
           <div>
             <div className="font-semibold text-emerald-700 dark:text-emerald-400 mb-1 flex items-center gap-2">
-              ðŸ§­ {t.nameDestiny.guidance.practicalAction}
+              §⭐ {t.nameDestiny.guidance.practicalAction}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.practicalActionDesc}
@@ -3410,7 +3410,7 @@ function DestinyResults({ results }: { results: any }) {
           
           <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border-l-4 border-amber-500">
             <div className="font-semibold text-amber-900 dark:text-amber-300 mb-1 flex items-center gap-2">
-              âš ï¸ {t.nameDestiny.guidance.shadowToWatch}
+              š ï¸ {t.nameDestiny.guidance.shadowToWatch}
             </div>
             <p className="text-xs text-amber-700 dark:text-amber-400 mb-2 italic">
               {t.nameDestiny.guidance.shadowToWatchDesc}
@@ -3433,133 +3433,133 @@ function CompatibilityResults({ results }: { results: any }) {
     if (language === 'fr') {
       if (score >= 85) {
         return [
-          'ðŸŒŸ CompatibilitÃ© exceptionnelle',
+          'Ÿ Compatibilité exceptionnelle',
           '',
           'Ce que cela signifie :',
-          'Harmonie exceptionnelle aux niveaux de surface et d\'Ã¢me. Vos Ã©nergies se complÃ¨tent magnifiquement. Cette relation a un potentiel extraordinaire pour la croissance mutuelle et le bonheur.',
+          'Harmonie exceptionnelle aux niveaux de surface et d\'¢me. Vos énergies se compl¨tent magnifiquement. Cette relation a un potentiel extraordinaire pour la croissance mutuelle et le bonheur.',
           '',
-          'Attente rÃ©aliste :',
-          'â€¢ La communication coule naturellement',
-          'â€¢ Vous vous "comprenez" intuitivement',
-          'â€¢ Les dÃ©fis sont gÃ©rables ensemble',
-          'â€¢ Concentrez-vous sur la croissance continue'
+          'Attente réaliste :',
+          '€¢ La communication coule naturellement',
+          '€¢ Vous vous "comprenez" intuitivement',
+          '€¢ Les défis sont gérables ensemble',
+          '€¢ Concentrez-vous sur la croissance continue'
         ];
       } else if (score >= 70) {
         return [
-          'ðŸ’« TrÃ¨s bonne compatibilitÃ©',
+          '’« Tr¨s bonne compatibilité',
           '',
           'Ce que cela signifie :',
-          'Forte compatibilitÃ© avec des domaines mineurs Ã  cultiver. Cette connexion a un grand potentiel avec un effort mutuel. Vos forces dÃ©passent largement vos dÃ©fis.',
+          'Forte compatibilité avec des domaines mineurs   cultiver. Cette connexion a un grand potentiel avec un effort mutuel. Vos forces dépassent largement vos défis.',
           '',
-          'Attente rÃ©aliste :',
-          'â€¢ Excellent potentiel Ã  long terme',
-          'â€¢ Quelques domaines nÃ©cessitent une attention consciente',
-          'â€¢ La communication et le compromis sont essentiels',
-          'â€¢ Cultivez ce que vous avez construit ensemble'
+          'Attente réaliste :',
+          '€¢ Excellent potentiel   long terme',
+          '€¢ Quelques domaines nécessitent une attention consciente',
+          '€¢ La communication et le compromis sont essentiels',
+          '€¢ Cultivez ce que vous avez construit ensemble'
         ];
       } else if (score >= 55) {
         return [
-          'âœ¨ Bonne compatibilitÃ©',
+          'œ¨ Bonne compatibilité',
           '',
           'Ce que cela signifie :',
-          'CompatibilitÃ© modÃ©rÃ©e. Vous pouvez construire une relation harmonieuse avec comprÃ©hension, communication et compromis. Vos diffÃ©rences sont gÃ©rablesâ€”pas des obstaclesâ€”mais nÃ©cessitent un effort conscient.',
+          'Compatibilité modérée. Vous pouvez construire une relation harmonieuse avec compréhension, communication et compromis. Vos différences sont gérables€”pas des obstacles€”mais nécessitent un effort conscient.',
           '',
-          'Attente rÃ©aliste :',
+          'Attente réaliste :',
           score >= 60 
-            ? 'â€¢ La vie quotidienne peut avoir des frictions\nâ€¢ Mais votre fondation Ã©motionnelle est solide\nâ€¢ Concentrez-vous sur le lien profond que vous partagez'
-            : 'â€¢ Les deux partenaires doivent Ãªtre engagÃ©s\nâ€¢ Les diffÃ©rences enrichissent quand honorÃ©es\nâ€¢ La patience et la comprÃ©hension sont essentielles'
+            ? '€¢ La vie quotidienne peut avoir des frictions\n€¢ Mais votre fondation émotionnelle est solide\n€¢ Concentrez-vous sur le lien profond que vous partagez'
+            : '€¢ Les deux partenaires doivent ªtre engagés\n€¢ Les différences enrichissent quand honorées\n€¢ La patience et la compréhension sont essentielles'
         ];
       } else if (score >= 40) {
         return [
-          'âš ï¸ CompatibilitÃ© difficile',
+          'š ï¸ Compatibilité difficile',
           '',
           'Ce que cela signifie :',
-          'DiffÃ©rences significatives d\'Ã©nergie et d\'approche. Cette relation nÃ©cessite un effort substantiel, de la patience et une croissance mutuelle. Possible, mais les deux partenaires doivent Ãªtre pleinement engagÃ©s.',
+          'Différences significatives d\'énergie et d\'approche. Cette relation nécessite un effort substantiel, de la patience et une croissance mutuelle. Possible, mais les deux partenaires doivent ªtre pleinement engagés.',
           '',
-          'Attente rÃ©aliste :',
-          'â€¢ NÃ©cessite un travail conscient quotidien',
-          'â€¢ Les deux doivent vouloir grandir ensemble',
-          'â€¢ Cherchez des conseils professionnels si nÃ©cessaire',
-          'â€¢ CÃ©lÃ©brez les petites victoires'
+          'Attente réaliste :',
+          '€¢ Nécessite un travail conscient quotidien',
+          '€¢ Les deux doivent vouloir grandir ensemble',
+          '€¢ Cherchez des conseils professionnels si nécessaire',
+          '€¢ Célébrez les petites victoires'
         ];
       } else {
         return [
-          'ðŸš¨ TrÃ¨s difficile',
+          'š¨ Tr¨s difficile',
           '',
           'Ce que cela signifie :',
-          'Conflits Ã©lÃ©mentaires majeurs. Bien que non impossible, ce jumelage fait face Ã  des dÃ©fis fondamentaux qui nÃ©cessitent un engagement profond pour Ãªtre surmontÃ©s.',
+          'Conflits élémentaires majeurs. Bien que non impossible, ce jumelage fait face   des défis fondamentaux qui nécessitent un engagement profond pour ªtre surmontés.',
           '',
-          'ConsidÃ©ration sÃ©rieuse :',
-          'â€¢ ÃŠtes-vous tous deux pleinement engagÃ©s Ã  grandir ?',
-          'â€¢ Le conseil professionnel est fortement recommandÃ©',
-          'â€¢ Fixez des attentes rÃ©alistes',
-          'â€¢ Honorez vos besoins individuels aussi'
+          'Considération sérieuse :',
+          '€¢ Štes-vous tous deux pleinement engagés   grandir ?',
+          '€¢ Le conseil professionnel est fortement recommandé',
+          '€¢ Fixez des attentes réalistes',
+          '€¢ Honorez vos besoins individuels aussi'
         ];
       }
     } else {
       if (score >= 85) {
         return [
-          'ðŸŒŸ Exceptional Compatibility',
+          'Ÿ Exceptional Compatibility',
           '',
           'What This Means:',
           'Outstanding compatibility on both surface and soul levels. Your energies complement each other beautifully. This relationship has extraordinary potential for mutual growth and happiness.',
           '',
           'Realistic Expectation:',
-          'â€¢ Communication flows naturally',
-          'â€¢ You "get" each other intuitively',
-          'â€¢ Challenges are manageable together',
-          'â€¢ Focus on continuous growth'
+          '€¢ Communication flows naturally',
+          '€¢ You "get" each other intuitively',
+          '€¢ Challenges are manageable together',
+          '€¢ Focus on continuous growth'
         ];
       } else if (score >= 70) {
         return [
-          'ðŸ’« Very Good Compatibility',
+          '’« Very Good Compatibility',
           '',
           'What This Means:',
           'Strong compatibility with minor areas to nurture. This connection has great potential with mutual effort. Your strengths far outweigh your challenges.',
           '',
           'Realistic Expectation:',
-          'â€¢ Excellent long-term potential',
-          'â€¢ Some areas need conscious attention',
-          'â€¢ Communication and compromise are key',
-          'â€¢ Nurture what you\'ve built together'
+          '€¢ Excellent long-term potential',
+          '€¢ Some areas need conscious attention',
+          '€¢ Communication and compromise are key',
+          '€¢ Nurture what you\'ve built together'
         ];
       } else if (score >= 55) {
         return [
-          'âœ¨ Good Compatibility',
+          'œ¨ Good Compatibility',
           '',
           'What This Means:',
-          'Moderate compatibility. You can build a harmonious relationship with understanding, communication, and compromise. Your differences are workableâ€”not deal-breakersâ€”but require conscious effort.',
+          'Moderate compatibility. You can build a harmonious relationship with understanding, communication, and compromise. Your differences are workable€”not deal-breakers€”but require conscious effort.',
           '',
           'Realistic Expectation:',
           score >= 60 
-            ? 'â€¢ Daily life may have friction\nâ€¢ But your emotional foundation is strong\nâ€¢ Focus on nurturing the deep bond you share'
-            : 'â€¢ Both partners need to be committed\nâ€¢ Differences enrich when honored\nâ€¢ Patience and understanding are essential'
+            ? '€¢ Daily life may have friction\n€¢ But your emotional foundation is strong\n€¢ Focus on nurturing the deep bond you share'
+            : '€¢ Both partners need to be committed\n€¢ Differences enrich when honored\n€¢ Patience and understanding are essential'
         ];
       } else if (score >= 40) {
         return [
-          'âš ï¸ Challenging Compatibility',
+          'š ï¸ Challenging Compatibility',
           '',
           'What This Means:',
           'Significant differences in energy and approach. This relationship requires substantial effort, patience, and mutual growth. Possible, but both partners must be fully committed.',
           '',
           'Realistic Expectation:',
-          'â€¢ Requires conscious daily work',
-          'â€¢ Both must want to grow together',
-          'â€¢ Seek professional guidance if needed',
-          'â€¢ Celebrate small victories'
+          '€¢ Requires conscious daily work',
+          '€¢ Both must want to grow together',
+          '€¢ Seek professional guidance if needed',
+          '€¢ Celebrate small victories'
         ];
       } else {
         return [
-          'ðŸš¨ Very Difficult',
+          'š¨ Very Difficult',
           '',
           'What This Means:',
           'Major elemental conflicts. While not impossible, this pairing faces fundamental challenges that require deep commitment to overcome.',
           '',
           'Serious Consideration:',
-          'â€¢ Are you both fully committed to growth?',
-          'â€¢ Professional counseling is strongly recommended',
-          'â€¢ Set realistic expectations',
-          'â€¢ Honor your individual needs too'
+          '€¢ Are you both fully committed to growth?',
+          '€¢ Professional counseling is strongly recommended',
+          '€¢ Set realistic expectations',
+          '€¢ Honor your individual needs too'
         ];
       }
     }
@@ -3619,7 +3619,7 @@ function CompatibilityResults({ results }: { results: any }) {
         {/* Four Methods */}
         <div className="space-y-4">
           <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 text-center">
-            {language === 'fr' ? 'Quatre MÃ©thodes d\'Analyse' : 'Four Analysis Methods'}
+            {language === 'fr' ? 'Quatre Méthodes d\'Analyse' : 'Four Analysis Methods'}
           </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -3636,7 +3636,7 @@ function CompatibilityResults({ results }: { results: any }) {
                 />
               </div>
               <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                ðŸŒ™ Spiritual Destiny
+                🌙 Spiritual Destiny
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
                 Remainder: {methods.spiritualDestiny.remainder}
@@ -3658,7 +3658,7 @@ function CompatibilityResults({ results }: { results: any }) {
                 />
               </div>
               <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                ðŸŒŠ Elemental Temperament
+                🌊 Elemental Temperament
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
                 Element: {language === 'fr' ? methods.elementalTemperament.sharedElementFrench : methods.elementalTemperament.sharedElement}
@@ -3680,10 +3680,10 @@ function CompatibilityResults({ results }: { results: any }) {
                 />
               </div>
               <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                {language === 'fr' ? 'â­ Cosmique PlanÃ©taire' : 'â­ Planetary Cosmic'}
+                {language === 'fr' ? '⭐ Cosmique Planétaire' : '⭐ Planetary Cosmic'}
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                {methods.planetaryCosmic.person1Planet.name} Ã— {methods.planetaryCosmic.person2Planet.name}
+                {methods.planetaryCosmic.person1Planet.name} × {methods.planetaryCosmic.person2Planet.name}
               </p>
               <p className="text-xs text-gray-700 dark:text-gray-300">
                 {language === 'fr' ? methods.planetaryCosmic.descriptionFrench : methods.planetaryCosmic.description}
@@ -3702,12 +3702,12 @@ function CompatibilityResults({ results }: { results: any }) {
                 />
               </div>
               <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                {language === 'fr' ? 'ðŸ¤ Interaction Quotidienne' : 'ðŸ¤ Daily Interaction'}
+                {language === 'fr' ? '🤝 Interaction Quotidienne' : '🤝 Daily Interaction'}
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
                 {language === 'fr' 
-                  ? `${methods.dailyInteraction.person1DominantFrench} Ã— ${methods.dailyInteraction.person2DominantFrench}`
-                  : `${methods.dailyInteraction.person1Dominant} Ã— ${methods.dailyInteraction.person2Dominant}`
+                  ? `${methods.dailyInteraction.person1DominantFrench} × ${methods.dailyInteraction.person2DominantFrench}`
+                  : `${methods.dailyInteraction.person1Dominant} × ${methods.dailyInteraction.person2Dominant}`
                 }
               </p>
               <p className="text-xs text-gray-700 dark:text-gray-300">
@@ -3722,10 +3722,10 @@ function CompatibilityResults({ results }: { results: any }) {
           {/* Title with Explanation */}
           <div className="text-center space-y-2 mb-4">
             <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-2">
-              <span>âœ¨</span>
+              <span>œ¨</span>
               <span>{t.compatibilityResults.letterChemistry}</span>
               <span className="text-sm font-normal text-gray-600 dark:text-gray-400">
-                ({t.compatibilityResults.letterChemistryArabic} â€¢ Ø²ÙˆØ§Ø¬ Ø§Ù„Ø­Ø±ÙˆÙ)
+                ({t.compatibilityResults.letterChemistryArabic} €¢ Ø²ÙˆØ§Ø¬ Ø§Ù„Ø⭐Ø±ÙˆÙ)
               </span>
             </h3>
             {/* Description Line */}
@@ -3778,7 +3778,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('fire', language === 'fr' ? 'fr' : 'en')} ${combined.fire}%`}
                       >
-                        {combined.fire >= 15 && `ðŸ”¥ ${combined.fire}%`}
+                        {combined.fire >= 15 && `”¥ ${combined.fire}%`}
                       </div>
                     )}
                     {combined.air > 0 && (
@@ -3787,7 +3787,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-cyan-400 to-blue-400 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('air', language === 'fr' ? 'fr' : 'en')} ${combined.air}%`}
                       >
-                        {combined.air >= 15 && `ðŸ’¨ ${combined.air}%`}
+                        {combined.air >= 15 && `’¨ ${combined.air}%`}
                       </div>
                     )}
                     {combined.water > 0 && (
@@ -3796,7 +3796,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('water', language === 'fr' ? 'fr' : 'en')} ${combined.water}%`}
                       >
-                        {combined.water >= 15 && `ðŸ’§ ${combined.water}%`}
+                        {combined.water >= 15 && `’§ ${combined.water}%`}
                       </div>
                     )}
                     {combined.earth > 0 && (
@@ -3805,7 +3805,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-green-600 to-emerald-600 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('earth', language === 'fr' ? 'fr' : 'en')} ${combined.earth}%`}
                       >
-                        {combined.earth >= 15 && `ðŸŒ ${combined.earth}%`}
+                        {combined.earth >= 15 && ` ${combined.earth}%`}
                       </div>
                     )}
                   </div>
@@ -3818,7 +3818,7 @@ function CompatibilityResults({ results }: { results: any }) {
                     <span className="text-xl font-bold text-gray-700 dark:text-gray-300">
                       {getElementName(dominant1, language === 'fr' ? 'fr' : 'en')}
                     </span>
-                    <span className="text-2xl">Ã—</span>
+                    <span className="text-2xl">×</span>
                     <span className="text-xl font-bold text-gray-700 dark:text-gray-300">
                       {getElementName(dominant2, language === 'fr' ? 'fr' : 'en')}
                     </span>
@@ -3919,7 +3919,7 @@ function CompatibilityResults({ results }: { results: any }) {
         {/* NEW FEATURE 3: Balancing Dhikr Recommendation */}
         <div className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 rounded-xl">
           <h3 className="text-lg font-bold text-center text-gray-900 dark:text-gray-100 mb-2 flex items-center justify-center gap-2">
-            <span>ðŸ¤²</span>
+            <span>🤝²</span>
             <span>{t.compatibilityResults.balancingDhikr}</span>
           </h3>
           {/* Contextual Sentence */}
@@ -3997,7 +3997,7 @@ function CompatibilityResults({ results }: { results: any }) {
                 key={idx}
                 className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg"
               >
-                <span className="text-amber-600 dark:text-amber-400 font-bold">â€¢</span>
+                <span className="text-amber-600 dark:text-amber-400 font-bold">€¢</span>
                 <span className="text-sm text-gray-700 dark:text-gray-300">{rec}</span>
               </li>
             ))}
@@ -4065,7 +4065,7 @@ function CompatibilityResults({ results }: { results: any }) {
           <ul className="space-y-2">
             {results.strengths.map((strength: string, idx: number) => (
               <li key={idx} className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">âœ“</span>
+                <span className="text-green-500 mt-0.5">œ“</span>
                 {strength}
               </li>
             ))}
@@ -4080,7 +4080,7 @@ function CompatibilityResults({ results }: { results: any }) {
           <ul className="space-y-2">
             {results.challenges.map((challenge: string, idx: number) => (
               <li key={idx} className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
-                <span className="text-amber-500 mt-0.5">âš¡</span>
+                <span className="text-amber-500 mt-0.5">š¡</span>
                 {challenge}
               </li>
             ))}
@@ -4276,7 +4276,7 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
             <div className="bg-blue-50 dark:bg-blue-900/30 rounded p-3 border-l-4 border-blue-500">
               <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">{t.lifePath.focusAreas}</div>
               <div className="text-sm text-slate-700 dark:text-slate-300">
-                {cycle.focus.join(' â€¢ ')}
+                {cycle.focus.join(' €¢ ')}
               </div>
             </div>
           </div>
@@ -4591,7 +4591,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3">
               <span className="text-4xl">
-                {todayReading.restLevel === 'deep' ? 'ðŸ›‘' : 'ðŸŒ™'}
+                {todayReading.restLevel === 'deep' ? '›‘' : '™'}
               </span>
               <div>
                 <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
@@ -4630,9 +4630,9 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                       context="daily"
                     />
                   )}
-                  <span className="mx-1">â€¢</span>
+                  <span className="mx-1">€¢</span>
                   <span>{t.timingResults.planetEnergy.replace('{planet}', todayReading.day_planet)}</span>
-                  <span className="mx-1">â€¢</span>
+                  <span className="mx-1">€¢</span>
                   <span>{todayReading.weekday}</span>
                 </p>
               </div>
@@ -4658,7 +4658,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
               <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-2">
                 {todayReading.restPractices.slice(0, 3).map((practice, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">â€¢</span>
+                    <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">€¢</span>
                     <span>{practice}</span>
                   </li>
                 ))}
@@ -4692,7 +4692,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                 : t.timingResults.restDayQuote
               }"
             </span>
-            {' â€” '}
+            {' €” '}
             {todayReading.restLevel === 'deep'
               ? t.timingResults.deepRestTranslation
               : t.timingResults.restDayTranslation
@@ -4705,7 +4705,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
       {todayReading?.isRestDay && !restAlertDismissed && (
         <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
           <p className="text-sm text-amber-800 dark:text-amber-200">
-            <strong>âš ï¸ {t.timingResults.restDayActive}</strong> â€” {t.timingResults.restDayNote}
+            <strong>š ï¸ {t.timingResults.restDayActive}</strong> €” {t.timingResults.restDayNote}
           </p>
         </div>
       )}
@@ -4717,7 +4717,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
           <Clock className="w-5 h-5 text-amber-500" />
-          {t.timingResults.currentPlanetaryHour} {currentHour && 'âš¡'}
+          {t.timingResults.currentPlanetaryHour} {currentHour && 'š¡'}
         </h3>
         
         <div className="text-center mb-6">
@@ -4739,7 +4739,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
             <ul className="space-y-1">
               {planetaryHour.favorable.map((item: string, idx: number) => (
                 <li key={idx} className="text-sm text-slate-700 dark:text-slate-300">
-                  â€¢ {item}
+                  €¢ {item}
                 </li>
               ))}
             </ul>
@@ -4752,7 +4752,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
             <ul className="space-y-1">
               {planetaryHour.avoid.map((item: string, idx: number) => (
                 <li key={idx} className="text-sm text-slate-700 dark:text-slate-300">
-                  â€¢ {item}
+                  €¢ {item}
                 </li>
               ))}
             </ul>
@@ -4773,9 +4773,9 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
             }`}>
               <div className="text-center">
                 <div className="text-2xl mb-2 font-bold">
-                  {alignment.quality === 'perfect' ? `âœ¨ ${t.timingResults.perfectAlignment}` : 
-                   alignment.quality === 'strong' ? `ðŸ’« ${t.timingResults.strongEnergy}` :
-                   alignment.quality === 'opposing' ? `â¸ï¸ ${t.timingResults.restTime}` : `ðŸ“Š ${t.timingResults.moderate}`}
+                  {alignment.quality === 'perfect' ? `œ¨ ${t.timingResults.perfectAlignment}` : 
+                   alignment.quality === 'strong' ? `’« ${t.timingResults.strongEnergy}` :
+                   alignment.quality === 'opposing' ? `¸ï¸ ${t.timingResults.restTime}` : `“Š ${t.timingResults.moderate}`}
                 </div>
                 <p className={`text-sm mb-2 font-medium ${
                   alignment.quality === 'perfect' || alignment.quality === 'strong' 
@@ -4791,7 +4791,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                 }`}>
                   <Clock className={`h-4 w-4 ${timeWindow.urgency === 'high' ? 'animate-pulse' : ''}`} />
                   <span>{t.timingResults.windowClosesIn} {timeWindow.closesIn}</span>
-                  {timeWindow.urgency === 'high' && <span>âš ï¸</span>}
+                  {timeWindow.urgency === 'high' && <span>š ï¸</span>}
                 </div>
               </div>
             </div>
@@ -4820,7 +4820,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
                 <p className="text-sm text-blue-900 dark:text-blue-100 font-medium flex items-center gap-2">
                   <Calendar className="h-4 w-4" />
-                  ðŸ“ {t.timingResults.nextWindow.replace('{element}', userElement)} {timeWindow.nextWindowIn}
+                  “ {t.timingResults.nextWindow.replace('{element}', userElement)} {timeWindow.nextWindowIn}
                 </p>
               </div>
             )}
@@ -4835,7 +4835,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                 <ul className="space-y-1">
                   {ELEMENT_GUIDANCE_MAP[userElement].bestFor.slice(0, 3).map((item, idx) => (
                     <li key={idx} className="text-xs text-indigo-900 dark:text-indigo-200 flex items-start gap-2 font-medium">
-                      <span className="text-green-600 dark:text-green-400 flex-shrink-0">â€¢</span>
+                      <span className="text-green-600 dark:text-green-400 flex-shrink-0">€¢</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -4907,7 +4907,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
           <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Zap className="w-5 h-5 text-amber-500" />
-            ðŸŽ¯ {t.timingResults.actNowRealTimeGuidance}
+            Ž¯ {t.timingResults.actNowRealTimeGuidance}
           </h3>
           <ActNowButtons userElement={userElement as 'fire' | 'water' | 'air' | 'earth'} />
         </div>
