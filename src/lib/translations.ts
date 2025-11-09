@@ -2513,6 +2513,14 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       // Footer message
       reflectiveGuidance: "Guidance réfléchie pour planifier votre semaine. Utilisez votre propre jugement. Ceci est un assistant de rythme et de planification, pas une prédiction ou un conseil médical/financier.",
       
+      // Error messages
+      unableToGenerateWeekly: "Impossible de générer les prévisions hebdomadaires. Veuillez entrer un nom arabe valide.",
+      
+      // Day badges
+      best: "Meilleur",
+      gentle: "Doux",
+      focus: "Focus",
+      
       // Day details
       yourGuidanceForThisDay: "Votre Guidance pour Ce Jour",
       energyReturnWisdom: "Sagesse du Retour d'Énergie",
