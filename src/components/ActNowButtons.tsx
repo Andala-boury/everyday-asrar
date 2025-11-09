@@ -13,6 +13,7 @@ import { needsRecalculation } from '../utils/timeHelpers';
 import { MapPin, CheckCircle, AlertTriangle, Clock, Calendar } from 'lucide-react';
 import { DisclaimerSection } from './DisclaimerSection';
 import { AccuracyIndicator } from './AccuracyIndicator';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface ActNowButtonsProps {
   userElement: Element;
@@ -455,6 +456,7 @@ function CountdownTimer({
   timeWindow: TimeWindow;
   alignment: ElementAlignment;
 }) {
+  const { t } = useLanguage();
   const { urgency, closesIn } = timeWindow;
   
   const urgencyColors = {
@@ -470,22 +472,22 @@ function CountdownTimer({
       className={`flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 ${urgencyColors[urgency]}`}
       role="timer"
       aria-live="assertive"
-      aria-label={`Window closes in ${closesIn}`}
+      aria-label={`${t.timingResults.windowClosesIn} ${closesIn}`}
     >
       <Clock className={`h-5 sm:h-6 w-5 sm:w-6 flex-shrink-0 ${urgency === 'high' ? 'animate-pulse' : ''}`} aria-hidden="true" />
       <div className="flex-1 min-w-0">
         <p className="font-semibold text-sm sm:text-base">
           {urgency === 'high' && '⚠️ '} 
-          Window closes in: <span className="text-lg sm:text-xl font-bold">{closesIn}</span>
+          {t.timingResults.windowClosesIn} <span className="text-lg sm:text-xl font-bold">{closesIn}</span>
         </p>
         {showWarning && (
           <p className="text-xs sm:text-sm font-semibold mt-1 animate-pulse">
-            🔥 ACT NOW! Optimal time ending soon.
+            🔥 {t.timingResults.actNowWarning}
           </p>
         )}
         {urgency === 'low' && (
           <p className="text-xs sm:text-sm mt-1 opacity-75">
-            Plenty of time remaining in this window
+            {t.timingResults.plentyOfTime}
           </p>
         )}
       </div>
@@ -521,10 +523,39 @@ function ActionButtonComponent({
   button: ActionButton;
   alignment: ElementAlignment;
 }) {
+  const { t } = useLanguage();
   const [isClicked, setIsClicked] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const isPrimary = button.priority === 'primary';
   const isHighAlignment = alignment.quality === 'perfect' || alignment.quality === 'strong';
+  
+  // Translate button labels
+  const translateLabel = (label: string): string => {
+    const labelMap: Record<string, string> = {
+      'Start Important Task': t.actionButtons.startImportantTask,
+      'Make Difficult Call': t.actionButtons.makeDifficultCall,
+      'Take Bold Action': t.actionButtons.takeBoldAction,
+      'Write or Communicate': t.actionButtons.writeOrCommunicate,
+      'Brainstorm Ideas': t.actionButtons.brainstormIdeas,
+      'Creative Work': t.actionButtons.creativeWork,
+      'Deep Reflection': t.actionButtons.deepReflection,
+      'Build or Organize': t.actionButtons.buildOrOrganize,
+      'Complete Tasks': t.actionButtons.completeTasks,
+      'Schedule for Later': t.actionButtons.scheduleForLater,
+      'Rest & Reflect': t.actionButtons.restReflect,
+      'Plan & Prepare': t.actionButtons.planPrepare,
+      'Handle Routine Tasks': t.actionButtons.handleRoutineTasks,
+      'Continue Ongoing Work': t.actionButtons.continueOngoingWork,
+      'Wait for Better Timing': t.actionButtons.waitForBetterTiming,
+    };
+    
+    // Handle dynamic "Wait for {element}" labels
+    if (label.startsWith('Wait for ')) {
+      return label; // Keep as is for now, or implement element translation
+    }
+    
+    return labelMap[label] || label;
+  };
   
   let buttonClass = '';
   
@@ -550,10 +581,10 @@ function ActionButtonComponent({
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       tabIndex={0}
-      aria-label={`${button.label} - ${button.priority} action`}
+      aria-label={`${translateLabel(button.label)} - ${button.priority} action`}
     >
       <span className="text-xl sm:text-2xl" aria-hidden="true">{button.icon}</span>
-      <span>{button.label}</span>
+      <span>{translateLabel(button.label)}</span>
       {isClicked && <span className="text-sm" aria-hidden="true">✓</span>}
     </button>
   );
@@ -605,7 +636,45 @@ function GuidanceSection({
   guidance: string[];
   alignment: ElementAlignment;
 }) {
+  const { t } = useLanguage();
   const isHighAlignment = alignment.quality === 'perfect' || alignment.quality === 'strong';
+  
+  // Translate guidance items
+  const translateGuidance = (item: string): string => {
+    const guidanceMap: Record<string, string> = {
+      // Fire guidance
+      'Launch new projects': t.elementGuidance.Fire.bestFor[0],
+      'Make important decisions': t.elementGuidance.Fire.bestFor[1],
+      'Have courage-requiring conversations': t.elementGuidance.Fire.bestFor[2],
+      'Taking bold action': t.elementGuidance.Fire.bestFor[3],
+      'Lead and inspire others': t.elementGuidance.Fire.bestFor[4],
+      // Air guidance
+      'Communicate and network': t.elementGuidance.Air.bestFor[0],
+      'Learn new concepts': t.elementGuidance.Air.bestFor[1],
+      'Brainstorm ideas': t.elementGuidance.Air.bestFor[2],
+      'Write and articulate': t.elementGuidance.Air.bestFor[3],
+      'Teach and share knowledge': t.elementGuidance.Air.bestFor[4],
+      // Water guidance
+      'Emotional processing': t.elementGuidance.Water.bestFor[0],
+      'Deep reflection': t.elementGuidance.Water.bestFor[1],
+      'Healing conversations': t.elementGuidance.Water.bestFor[2],
+      'Intuitive work': t.elementGuidance.Water.bestFor[3],
+      'Creative flow': t.elementGuidance.Water.bestFor[4],
+      // Earth guidance
+      'Build and organize': t.elementGuidance.Earth.bestFor[0],
+      'Make commitments': t.elementGuidance.Earth.bestFor[1],
+      'Complete projects': t.elementGuidance.Earth.bestFor[2],
+      'Financial planning': t.elementGuidance.Earth.bestFor[3],
+      'Physical work': t.elementGuidance.Earth.bestFor[4],
+      // Moderate alignment
+      'Handle routine tasks': t.actionButtons.handleRoutineTasks,
+      'Continue ongoing projects': t.actionButtons.continueOngoingWork,
+      'Low-stakes activities': t.actionButtons.lowStakesActivities,
+      'Preparation work': t.actionButtons.preparationWork,
+    };
+    
+    return guidanceMap[item] || item;
+  };
   
   return (
     <div className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-300 ${
@@ -618,7 +687,7 @@ function GuidanceSection({
           ? 'text-green-900 dark:text-green-100'
           : 'text-gray-900 dark:text-gray-100'
       }`}>
-        💡 {isHighAlignment ? 'Best for right now:' : 'Use this time for:'}
+        💡 {t.timingResults.useThisTimeFor}
       </p>
       <ul className={`space-y-1 text-xs sm:text-sm ${
         isHighAlignment 
@@ -628,7 +697,7 @@ function GuidanceSection({
         {guidance.map((item, index) => (
           <li key={index} className="flex items-start gap-2">
             <span className="mt-0.5 flex-shrink-0">•</span>
-            <span>{item}</span>
+            <span>{translateGuidance(item)}</span>
           </li>
         ))}
       </ul>

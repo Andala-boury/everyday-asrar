@@ -679,6 +679,10 @@ export interface NameDestinyResult {
   hourIndex: number;      // Planetary hour # (1-7)
   expression: ElementData;     // Element from person's name alone
   foundation?: ElementData;    // Element from mother's name (if provided)
+  // Higher Resonance Insights
+  divineNameResonance?: import('./divineNames').DivineName;
+  colorResonance?: import('./colorResonance').ColorResonanceResult;
+  elementDistribution?: Record<'fire' | 'air' | 'water' | 'earth', number>;
 }
 
 /**
@@ -707,37 +711,68 @@ function abjadTotalWithMother(
 /**
  * Build complete Name Chart (unified calculation for Name Destiny)
  * Implements: Ṭabʿ (÷4, 0→4=Earth) + Burj (÷12, 0→12=Pisces) + Planet/Day/Hour
- * Mother's name always included in total
+ * 
+ * ✅ AUTHENTIC TRADITION: 
+ * - Core identity (element, burj, divine name, saghir) uses PERSONAL NAME ONLY
+ * - Mother's name shows INHERITED CONDITIONS (expression vs foundation)
+ * 
+ * Personal Name = WHO you are (internal identity)
+ * Mother's Name = WHAT surrounds you (external influences)
  */
 export function buildDestiny(
   personName: string,
   motherName?: string,
   abjad: Record<string, number> = ABJAD_MAGHRIBI
 ): NameDestinyResult {
-  // Calculate totals with mother included
+  // Calculate totals
   const { p: personKabir, m: motherKabir, total: totalKabir } = abjadTotalWithMother(personName, motherName, abjad);
   
-  // Digital root (Ṣaghīr)
-  const saghir = digitalRoot(totalKabir);
+  // ✅ CORE IDENTITY - Uses PERSONAL NAME ONLY (authentic tradition)
+  // Digital root (Ṣaghīr) - person's essence
+  const saghir = digitalRoot(personKabir);
   
-  // Ṭabʿ (Element) = total ÷ 4, remainder 0 → 4 (Earth)
-  const tabhIdx = modIndex(totalKabir, 4) as ElementKey;
+  // Ṭabʿ (Element) = personKabir ÷ 4, remainder 0 → 4 (Earth)
+  const tabhIdx = modIndex(personKabir, 4) as ElementKey;
   const element = ELEMENTS[tabhIdx];
   
-  // Burj (Zodiac) = total ÷ 12, remainder 0 → 12 (Pisces)
-  const burjIdx = modIndex(totalKabir, 12) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  // Burj (Zodiac) = personKabir ÷ 12, remainder 0 → 12 (Pisces)
+  const burjIdx = modIndex(personKabir, 12) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   const burj = BURUJ[burjIdx];
   
   // Planetary Hour # (1-7 based on burj's planet)
   const hourIndex = PLANETARY_HOURS.findIndex(p => p === burj.planet) + 1;
   
-  // Calculate expression (person's element alone)
+  // ✅ INHERITED INFLUENCES (when mother's name provided)
+  // Calculate expression (person's element alone) - same as main element
   const expression = ELEMENTS[modIndex(personKabir, 4) as ElementKey];
   
   // Calculate foundation (mother's element, if provided)
   const foundation = (motherName && motherName.trim() !== '') 
     ? ELEMENTS[modIndex(motherKabir, 4) as ElementKey]
     : undefined;
+  
+  // Calculate element distribution for color resonance (from person's name letters)
+  const elementDistribution = calculateElementDistributionFromName(personName);
+  
+  // Calculate Divine Name Resonance (uses PERSONAL NAME ONLY - authentic tradition)
+  let divineNameResonance;
+  try {
+    const { calculateDivineNameResonance } = require('./divineNames');
+    divineNameResonance = calculateDivineNameResonance(personKabir); // ✅ Changed from totalKabir
+  } catch (e) {
+    // Divine names module not available yet
+    divineNameResonance = undefined;
+  }
+  
+  // Calculate Color Resonance based on element distribution (from person's letters)
+  let colorResonance;
+  try {
+    const { calculateColorResonance } = require('./colorResonance');
+    colorResonance = calculateColorResonance(elementDistribution);
+  } catch (e) {
+    // Color resonance module not available yet
+    colorResonance = undefined;
+  }
   
   return {
     arabicName: personName, // Add the Arabic name for element chart calculation
@@ -752,6 +787,48 @@ export function buildDestiny(
     hourIndex,
     expression,
     foundation,
+    // Higher Resonance Insights
+    divineNameResonance,
+    colorResonance,
+    elementDistribution,
+  };
+}
+
+/**
+ * Calculate element distribution from Arabic name
+ * Returns percentages for each element (fire, air, water, earth)
+ */
+function calculateElementDistributionFromName(arabicText: string): Record<'fire' | 'air' | 'water' | 'earth', number> {
+  // Letter-to-element mapping based on classical tradition
+  const LETTER_ELEMENTS: Record<string, 'fire' | 'air' | 'water' | 'earth'> = {
+    // Fire letters (hot & dry): ا د ط م ف ش ذ
+    'ا': 'fire', 'د': 'fire', 'ط': 'fire', 'م': 'fire', 'ف': 'fire', 'ش': 'fire', 'ذ': 'fire',
+    // Air letters (hot & wet): ه و ي ن ص ت ض  
+    'ه': 'air', 'و': 'air', 'ي': 'air', 'ن': 'air', 'ص': 'air', 'ت': 'air', 'ض': 'air',
+    // Water letters (cold & wet): ب ح ل ع ر ك غ
+    'ب': 'water', 'ح': 'water', 'ل': 'water', 'ع': 'water', 'ر': 'water', 'ك': 'water', 'غ': 'water',
+    // Earth letters (cold & dry): ج ز س ق ث خ ظ
+    'ج': 'earth', 'ز': 'earth', 'س': 'earth', 'ق': 'earth', 'ث': 'earth', 'خ': 'earth', 'ظ': 'earth'
+  };
+
+  const normalized = arabicText.replace(/[ًٌٍَُِّْ\s]/g, '');
+  const letters = [...normalized];
+  const total = letters.length;
+  
+  const counts = { fire: 0, air: 0, water: 0, earth: 0 };
+  
+  letters.forEach(letter => {
+    const element = LETTER_ELEMENTS[letter];
+    if (element) {
+      counts[element]++;
+    }
+  });
+  
+  return {
+    fire: total > 0 ? Math.round((counts.fire / total) * 100) : 0,
+    air: total > 0 ? Math.round((counts.air / total) * 100) : 0,
+    water: total > 0 ? Math.round((counts.water / total) * 100) : 0,
+    earth: total > 0 ? Math.round((counts.earth / total) * 100) : 0
   };
 }
 

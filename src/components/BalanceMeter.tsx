@@ -40,7 +40,7 @@ interface BalanceMeterProps {
  * - Opposing elements = conflict (20-30 score)
  * - Neutral combinations = moderate (60 score)
  */
-function calculateBalance(userElement: ElementType, dayElement: ElementType): BalanceState {
+function calculateBalance(userElement: ElementType, dayElement: ElementType, language: 'en' | 'fr' = 'en'): BalanceState {
   let score = 50;
   let dominant = userElement;
   let deficit: ElementType = 'Water';
@@ -53,7 +53,9 @@ function calculateBalance(userElement: ElementType, dayElement: ElementType): Ba
     score = 50;
     dominant = userElement;
     deficit = getOppositeElement(userElement);
-    explanation = `${userElement} element doubled today. Energy is intense - ${getElementQuality(userElement, true)}. Need ${getElementQuality(deficit, false)} to balance.`;
+    explanation = language === 'fr'
+      ? `Élément ${userElement} doublé aujourd'hui. L'énergie est intense - ${getElementQuality(userElement, true, language)}. Besoin de ${getElementQuality(deficit, false, language)} pour équilibrer.`
+      : `${userElement} element doubled today. Energy is intense - ${getElementQuality(userElement, true, language)}. Need ${getElementQuality(deficit, false, language)} to balance.`;
   }
   // Complementary pairs (harmonious - feed each other)
   else if (
@@ -63,7 +65,9 @@ function calculateBalance(userElement: ElementType, dayElement: ElementType): Ba
     score = 90;
     dominant = 'Fire';
     deficit = 'Water';
-    explanation = 'Fire + Air = Harmonious! Air fans your flames. Excellent for action and creativity. Minor cooling recommended.';
+    explanation = language === 'fr'
+      ? 'Feu + Air = Harmonieux! L\'air attise vos flammes. Excellent pour l\'action et la créativité. Refroidissement mineur recommandé.'
+      : 'Fire + Air = Harmonious! Air fans your flames. Excellent for action and creativity. Minor cooling recommended.';
   }
   else if (
     (userElement === 'Water' && dayElement === 'Earth') ||
@@ -72,7 +76,9 @@ function calculateBalance(userElement: ElementType, dayElement: ElementType): Ba
     score = 90;
     dominant = 'Earth';
     deficit = 'Air';
-    explanation = 'Water + Earth = Growth harmony! Excellent for nurturing projects. Minor movement recommended.';
+    explanation = language === 'fr'
+      ? 'Eau + Terre = Harmonie de croissance! Excellent pour nourrir les projets. Mouvement mineur recommandé.'
+      : 'Water + Earth = Growth harmony! Excellent for nurturing projects. Minor movement recommended.';
   }
   // Opposing elements (conflict - classical opposition)
   else if (
@@ -82,7 +88,9 @@ function calculateBalance(userElement: ElementType, dayElement: ElementType): Ba
     score = 30;
     dominant = dayElement; // Current day dominates
     deficit = userElement; // User element suppressed
-    explanation = 'Fire vs Water = Classical opposition. Internal conflict between action and rest. Strong rebalancing needed.';
+    explanation = language === 'fr'
+      ? 'Feu vs Eau = Opposition classique. Conflit interne entre action et repos. Rééquilibrage fort nécessaire.'
+      : 'Fire vs Water = Classical opposition. Internal conflict between action and rest. Strong rebalancing needed.';
   }
   else if (
     (userElement === 'Air' && dayElement === 'Earth') ||
@@ -91,18 +99,22 @@ function calculateBalance(userElement: ElementType, dayElement: ElementType): Ba
     score = 35;
     dominant = dayElement;
     deficit = userElement;
-    explanation = 'Air vs Earth = Movement vs Stability conflict. Scattered or stuck energy. Gentle rebalancing needed.';
+    explanation = language === 'fr'
+      ? 'Air vs Terre = Conflit entre mouvement et stabilité. Énergie dispersée ou bloquée. Rééquilibrage doux nécessaire.'
+      : 'Air vs Earth = Movement vs Stability conflict. Scattered or stuck energy. Gentle rebalancing needed.';
   }
   // Neutral combinations
   else {
     score = 60;
     dominant = userElement;
     deficit = getComplementaryElement(userElement);
-    explanation = `${userElement} + ${dayElement} = Moderate balance. Can be improved with ${deficit} practices.`;
+    explanation = language === 'fr'
+      ? `${userElement} + ${dayElement} = Équilibre modéré. Peut être amélioré avec des pratiques de ${deficit}.`
+      : `${userElement} + ${dayElement} = Moderate balance. Can be improved with ${deficit} practices.`;
   }
 
   // Get quick fix based on dominant (excessive) element
-  const fix = getQuickFix(dominant, score);
+  const fix = getQuickFix(dominant, score, language);
   quickFix = fix.action;
   fixDuration = fix.duration;
 
@@ -141,26 +153,52 @@ function getComplementaryElement(element: ElementType): ElementType {
  * Get element quality description
  * FIX #1 & #7: Show correct qualities for each element + personal "you might feel" language
  */
-function getElementQuality(element: ElementType, excessive: boolean): string {
-  const qualities: Record<ElementType, { excess: string; deficit: string }> = {
+function getElementQuality(element: ElementType, excessive: boolean, language: 'en' | 'fr' = 'en'): string {
+  const qualities: Record<ElementType, { excess: { en: string; fr: string }; deficit: { en: string; fr: string } }> = {
     Fire: { 
-      excess: 'You might feel: restless, impatient, quick to anger, scattered energy', 
-      deficit: 'energy, action, courage' 
+      excess: {
+        en: 'You might feel: restless, impatient, quick to anger, scattered energy',
+        fr: 'Vous pourriez ressentir: agitation, impatience, colère rapide, énergie dispersée'
+      },
+      deficit: {
+        en: 'energy, action, courage',
+        fr: 'énergie, action, courage'
+      }
     },
     Water: { 
-      excess: 'You might feel: stuck in thoughts, low energy, avoiding decisions, emotionally heavy', 
-      deficit: 'calm, patience, reflection' 
+      excess: {
+        en: 'You might feel: stuck in thoughts, low energy, avoiding decisions, emotionally heavy',
+        fr: 'Vous pourriez ressentir: bloqué dans vos pensées, énergie faible, évitement des décisions, lourdeur émotionnelle'
+      },
+      deficit: {
+        en: 'calm, patience, reflection',
+        fr: 'calme, patience, réflexion'
+      }
     },
     Air: { 
-      excess: 'You might feel: anxious, unfocused, talking more than doing, mentally scattered', 
-      deficit: 'clarity, communication, flexibility' 
+      excess: {
+        en: 'You might feel: anxious, unfocused, talking more than doing, mentally scattered',
+        fr: 'Vous pourriez ressentir: anxiété, manque de concentration, parler plus qu\'agir, esprit dispersé'
+      },
+      deficit: {
+        en: 'clarity, communication, flexibility',
+        fr: 'clarté, communication, flexibilité'
+      }
     },
     Earth: { 
-      excess: 'You might feel: stubborn, rigid, stuck in routine, resistant to change', 
-      deficit: 'stability, grounding, patience' 
+      excess: {
+        en: 'You might feel: stubborn, rigid, stuck in routine, resistant to change',
+        fr: 'Vous pourriez ressentir: entêtement, rigidité, coincé dans la routine, résistance au changement'
+      },
+      deficit: {
+        en: 'stability, grounding, patience',
+        fr: 'stabilité, ancrage, patience'
+      }
     }
   };
-  return excessive ? qualities[element].excess : qualities[element].deficit;
+  
+  const quality = excessive ? qualities[element].excess : qualities[element].deficit;
+  return language === 'fr' ? quality.fr : quality.en;
 }
 
 /**
@@ -173,46 +211,91 @@ function getElementQuality(element: ElementType, excessive: boolean): string {
  * - Mild (61-80): 2-3min gentle adjustments
  * - Balanced (81-100): Maintenance message
  */
-function getQuickFix(excessiveElement: ElementType, score: number): { action: string; duration: number } {
+function getQuickFix(excessiveElement: ElementType, score: number, language: 'en' | 'fr' = 'en'): { action: string; duration: number } {
   // Balanced state - no fix needed
   if (score >= 81) {
     return { 
-      action: '✨ You\'re balanced - maintain your current activities throughout the day',
+      action: language === 'fr'
+        ? '✨ Vous êtes équilibré - maintenez vos activités actuelles tout au long de la journée'
+        : '✨ You\'re balanced - maintain your current activities throughout the day',
       duration: 0 
     };
   }
 
-  const fixes: Record<ElementType, { severe: string; moderate: string; mild: string }> = {
+  const fixes: Record<ElementType, { 
+    severe: { en: string; fr: string }; 
+    moderate: { en: string; fr: string }; 
+    mild: { en: string; fr: string } 
+  }> = {
     Fire: {
-      severe: '15min meditation by water + cold compress on forehead', // 15min
-      moderate: '5min deep breathing + sip cold water slowly', // 5min
-      mild: '2min slow breathing, eyes closed' // 2min
+      severe: {
+        en: '15min meditation by water + cold compress on forehead',
+        fr: '15min méditation près de l\'eau + compresse froide sur le front'
+      },
+      moderate: {
+        en: '5min deep breathing + sip cold water slowly',
+        fr: '5min respiration profonde + boire de l\'eau froide lentement'
+      },
+      mild: {
+        en: '2min slow breathing, eyes closed',
+        fr: '2min respiration lente, yeux fermés'
+      }
     },
     Water: {
-      severe: '15min vigorous exercise (run, dance, pushups) + 5min sun exposure', // 20min
-      moderate: '10 jumping jacks, then 5min sunlight exposure', // 5min
-      mild: 'Stand and stretch toward sun for 2min' // 2min
+      severe: {
+        en: '15min vigorous exercise (run, dance, pushups) + 5min sun exposure',
+        fr: '15min exercice vigoureux (course, danse, pompes) + 5min exposition au soleil'
+      },
+      moderate: {
+        en: '10 jumping jacks, then 5min sunlight exposure',
+        fr: '10 sauts étoile, puis 5min exposition au soleil'
+      },
+      mild: {
+        en: 'Stand and stretch toward sun for 2min',
+        fr: 'Debout et étirement vers le soleil pendant 2min'
+      }
     },
     Air: {
-      severe: '15min grounding (barefoot walking, gardening, cooking)', // 15min
-      moderate: '5min standing barefoot + eat something solid', // 5min
-      mild: 'Sit still, feel your weight for 2min' // 2min
+      severe: {
+        en: '15min grounding (barefoot walking, gardening, cooking)',
+        fr: '15min ancrage (marche pieds nus, jardinage, cuisine)'
+      },
+      moderate: {
+        en: '5min standing barefoot + eat something solid',
+        fr: '5min debout pieds nus + manger quelque chose de solide'
+      },
+      mild: {
+        en: 'Sit still, feel your weight for 2min',
+        fr: 'Asseyez-vous immobile, ressentez votre poids pendant 2min'
+      }
     },
     Earth: {
-      severe: '15min brisk walk outdoors + deep breathing', // 15min
-      moderate: '5min window gazing + 20 deep breaths', // 5min
-      mild: 'Open window, take 10 deep breaths' // 2min
+      severe: {
+        en: '15min brisk walk outdoors + deep breathing',
+        fr: '15min marche rapide à l\'extérieur + respiration profonde'
+      },
+      moderate: {
+        en: '5min window gazing + 20 deep breaths',
+        fr: '5min regarder par la fenêtre + 20 respirations profondes'
+      },
+      mild: {
+        en: 'Open window, take 10 deep breaths',
+        fr: 'Ouvrir la fenêtre, prendre 10 respirations profondes'
+      }
     }
   };
 
   // Determine severity and duration
   if (score <= 30) {
     const durations: Record<ElementType, number> = { Fire: 15, Water: 20, Air: 15, Earth: 15 };
-    return { action: fixes[excessiveElement].severe, duration: durations[excessiveElement] };
+    const action = language === 'fr' ? fixes[excessiveElement].severe.fr : fixes[excessiveElement].severe.en;
+    return { action, duration: durations[excessiveElement] };
   } else if (score <= 60) {
-    return { action: fixes[excessiveElement].moderate, duration: 5 };
+    const action = language === 'fr' ? fixes[excessiveElement].moderate.fr : fixes[excessiveElement].moderate.en;
+    return { action, duration: 5 };
   } else {
-    return { action: fixes[excessiveElement].mild, duration: 2 };
+    const action = language === 'fr' ? fixes[excessiveElement].mild.fr : fixes[excessiveElement].mild.en;
+    return { action, duration: 2 };
   }
 }
 
@@ -248,8 +331,8 @@ function getElementEmoji(element: ElementType): string {
  * Balance Meter Component
  */
 export function BalanceMeter({ userElement, currentDayElement, compact = false }: BalanceMeterProps) {
-  const balance = calculateBalance(userElement, currentDayElement);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const balance = calculateBalance(userElement, currentDayElement, language);
   const [showTimer, setShowTimer] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [showGuide, setShowGuide] = useState(false); // FIX #5: Score guide toggle
@@ -459,7 +542,9 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
             <div className="flex items-start gap-2 mb-2">
               <span className="text-xl">✨</span>
               <div className="flex-1">
-                <div className="font-bold text-green-900 dark:text-green-100 mb-1">You're Balanced!</div>
+                <div className="font-bold text-green-900 dark:text-green-100 mb-1">
+                  {language === 'fr' ? 'Vous êtes Équilibré!' : 'You\'re Balanced!'}
+                </div>
                 <p className="text-sm text-green-800 dark:text-green-200 leading-relaxed">
                   {balance.quickFix}
                 </p>
@@ -470,7 +555,11 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
               <div className="space-y-1 text-xs text-green-700 dark:text-green-300">
                 <div className="flex items-center gap-1">
                   <span>⏰</span>
-                  <span>Recheck: Tonight before bed (balance shifts with activities)</span>
+                  <span>
+                    {language === 'fr' 
+                      ? 'Revérifier: Ce soir avant de dormir (l\'équilibre change avec les activités)'
+                      : 'Recheck: Tonight before bed (balance shifts with activities)'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -503,25 +592,42 @@ export function BalanceMeter({ userElement, currentDayElement, compact = false }
               <div className="text-xs space-y-1.5 text-slate-700 dark:text-slate-300">
                 <div className="flex items-start gap-2">
                   <span className="font-semibold text-green-600 dark:text-green-400 min-w-[60px]">81-100:</span>
-                  <span>Harmonious - Elements working together beautifully</span>
+                  <span>
+                    {language === 'fr' 
+                      ? 'Harmonieux - Les éléments travaillent magnifiquement ensemble'
+                      : 'Harmonious - Elements working together beautifully'}
+                  </span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="font-semibold text-blue-600 dark:text-blue-400 min-w-[60px]">61-80:</span>
-                  <span>Slight tension - Minor adjustments keep you flowing</span>
+                  <span>
+                    {language === 'fr'
+                      ? 'Légère tension - Des ajustements mineurs vous maintiennent en flux'
+                      : 'Slight tension - Minor adjustments keep you flowing'}
+                  </span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="font-semibold text-amber-600 dark:text-amber-400 min-w-[60px]">31-60:</span>
-                  <span>Moderate conflict - Focused action brings relief</span>
+                  <span>
+                    {language === 'fr'
+                      ? 'Conflit modéré - Une action ciblée apporte du soulagement'
+                      : 'Moderate conflict - Focused action brings relief'}
+                  </span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="font-semibold text-red-600 dark:text-red-400 min-w-[60px]">0-30:</span>
-                  <span>Strong opposition - Multiple actions needed for balance</span>
+                  <span>
+                    {language === 'fr'
+                      ? 'Opposition forte - Plusieurs actions nécessaires pour l\'équilibre'
+                      : 'Strong opposition - Multiple actions needed for balance'}
+                  </span>
                 </div>
               </div>
               <div className="pt-2 mt-2 border-t border-slate-200 dark:border-slate-700">
                 <p className="text-xs text-slate-600 dark:text-slate-400 italic leading-relaxed">
-                  Classical teaching: Conflict isn't bad - it's growth opportunity. 
-                  True harmony comes from consciously balancing opposing forces.
+                  {language === 'fr'
+                    ? 'Enseignement classique: Le conflit n\'est pas mauvais - c\'est une opportunité de croissance. La véritable harmonie vient de l\'équilibre conscient des forces opposées.'
+                    : 'Classical teaching: Conflict isn\'t bad - it\'s growth opportunity. True harmony comes from consciously balancing opposing forces.'}
                 </p>
               </div>
             </div>

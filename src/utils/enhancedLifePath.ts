@@ -106,16 +106,45 @@ export function calculatePersonalityNumber(arabicName: string): number {
 // METHOD 4: Destiny Number (Qadar)
 // ============================================================================
 
+/**
+ * Calculate Destiny Number - CORE LIFE PURPOSE
+ * 
+ * IMPORTANT: Uses personal name + optional father name ONLY.
+ * Mother's name is NOT included as this represents core identity (WHO you are),
+ * not external influences (WHAT surrounds you).
+ * 
+ * Authentic Ḥurūfī Tradition:
+ * - Personal Name = Your soul's mission
+ * - Father Name (optional) = Family lineage influence
+ * - Mother's Name = NOT used for core destiny (see calculateMaternalInfluence instead)
+ */
 export function calculateDestinyNumber(
   givenName: string,
-  fatherName?: string,
-  motherName?: string
+  fatherName?: string
 ): number {
   let fullName = givenName;
   if (fatherName) fullName += ' ' + fatherName;
-  if (motherName) fullName += ' ' + motherName;
+  // ✅ Mother's name deliberately excluded from core destiny calculation
   
   const total = calculateAbjadTotal(fullName);
+  return reduceToSingleDigit(total, true);
+}
+
+/**
+ * Calculate Maternal Influence Number - EXTERNAL CONDITIONS
+ * 
+ * This represents how your mother's energy affects your external path,
+ * obstacles, protection, and inherited emotional patterns.
+ * 
+ * This is separate from core destiny and should be displayed in a
+ * different section labeled "Inherited Influences" or "External Conditions".
+ */
+export function calculateMaternalInfluence(
+  givenName: string,
+  motherName: string
+): number {
+  const combined = givenName + ' ' + motherName;
+  const total = calculateAbjadTotal(combined);
   return reduceToSingleDigit(total, true);
 }
 
@@ -363,7 +392,7 @@ export function calculatePinnaclesAndChallenges(birthDate: Date, currentAge: num
 // ============================================================================
 
 export interface EnhancedLifePathResult {
-  // Core Numbers
+  // Core Numbers (from personal name only)
   lifePathNumber: number;
   soulUrgeNumber: number;
   personalityNumber: number;
@@ -379,6 +408,9 @@ export interface EnhancedLifePathResult {
   // Special Numbers
   karmicDebts: number[];
   sacredNumbers: number[];
+  
+  // External Influences (optional - only if mother's name provided)
+  maternalInfluence?: number;
   
   // Advanced
   pinnaclesAndChallenges: PinnacleChallenge;
@@ -667,12 +699,14 @@ export function calculateEnhancedLifePath(
     lifePathNumber: calculateLifePathNumber(arabicName),
     soulUrgeNumber: calculateSoulUrgeNumber(arabicName),
     personalityNumber: calculatePersonalityNumber(arabicName),
-    destinyNumber: calculateDestinyNumber(arabicName, fatherName, motherName),
+    destinyNumber: calculateDestinyNumber(arabicName, fatherName), // ✅ Fixed: No mother's name
     personalYear: calculatePersonalYear(birthDate),
     personalMonth: calculatePersonalMonth(birthDate),
     cycle: calculateLifeCycle(birthDate, currentDate),
     karmicDebts: detectKarmicDebts(arabicName, birthDate),
     sacredNumbers: detectSacredNumbers(arabicName),
-    pinnaclesAndChallenges: calculatePinnaclesAndChallenges(birthDate, age)
+    pinnaclesAndChallenges: calculatePinnaclesAndChallenges(birthDate, age),
+    // Add maternal influence as separate field (optional)
+    maternalInfluence: motherName ? calculateMaternalInfluence(arabicName, motherName) : undefined
   };
 }

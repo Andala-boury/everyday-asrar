@@ -986,15 +986,6 @@ export default function AsrarEveryday() {
 
               {/* Mobile Controls */}
               <div className="flex items-center gap-2 flex-shrink-0">
-                {/* Dark Mode Toggle */}
-                <button
-                  onClick={() => setDarkMode(!darkMode)}
-                  className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-                  aria-label="Toggle dark mode"
-                >
-                  {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                </button>
-
                 {/* Language Toggle - hidden on very small screens */}
                 <div className="hidden xs:block">
                   <LanguageToggle />
@@ -1082,15 +1073,6 @@ export default function AsrarEveryday() {
                       {history.length > 9 ? '9+' : history.length}
                     </span>
                   )}
-                </button>
-
-                {/* Dark Mode Toggle */}
-                <button
-                  onClick={() => setDarkMode(!darkMode)}
-                  className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                  aria-label="Toggle dark mode"
-                >
-                  {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </button>
 
                 {/* Language Toggle */}

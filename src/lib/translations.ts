@@ -239,6 +239,25 @@ export const translations = {
       earthDesc: "Cold & Dry - Stable and grounding",
     },
 
+    // Enhanced Temperament Profiles (Psychology + Career)
+    temperament: {
+      title: "Temperament Profile",
+      psychologyTitle: "Psychological Profile",
+      careerTitle: "Career Guidance",
+      
+      traits: "Core Traits",
+      strengths: "Strengths",
+      watchOuts: "Watch Out For",
+      balanceTips: "Balance Tips",
+      
+      careerGoodFits: "Good Career Fits",
+      careerAvoid: "May Find Challenging",
+      careerRationale: "Why This Fits",
+      
+      // Note: Individual temperament data is now in temperamentProfiles.ts
+      // This section contains only UI labels
+    },
+
     // Life Path
     lifePath: {
       title: "Life Path Numerology",
@@ -251,6 +270,95 @@ export const translations = {
       karmicDebt: "Karmic Debt Numbers",
       sacredNumbers: "Sacred Numbers",
       cycle: "Life Cycle",
+      
+      // Core vs External sections
+      coreNumbers: "Your Core Life Numbers",
+      coreNumbersDesc: "These four numbers reveal your core personality, inner desires, how others see you, and your life's purpose. Calculated from your personal name only.",
+      externalInfluences: "External Influences",
+      maternalInfluence: "MATERNAL INFLUENCE",
+      maternalInfluenceDesc: "This number shows how your mother's energy affects your external path and the conditions that surround you.",
+      maternalInfluenceExplanation: "Your mother's name reveals external conditions and inherited influences that surround your path, but do not define your core identity.",
+
+      // Number labels in cards
+      lifePathLabel: "LIFE PATH NUMBER",
+      soulUrgeLabel: "SOUL URGE NUMBER",
+      personalityLabel: "PERSONALITY NUMBER",
+      destinyLabel: "DESTINY NUMBER",
+
+      // Simple explanations
+      lifePathSimple: "Your natural talent and life direction. It shows what you're good at and what comes naturally to you.",
+      soulUrgeSimple: "Your inner motivation. What you're seeking in life and what brings you real joy & satisfaction.",
+      personalitySimple: "Your public face. How you appear to others & the energy you give off when you walk into a room.",
+      destinySimple: "Your life purpose & ultimate goal. What you're meant to accomplish and give to the world.",
+
+      // Section titles
+      whatItMeans: "What it means:",
+      important: "Important:",
+      externalEnergy: "External Energy",
+      importantNote: "This represents what surrounds you, not who you are. Your core numbers above define your true identity.",
+
+      // Quick Guide boxes
+      quickGuideTitle: "Quick Guide:",
+      lifePathQuick: "Your core talents & natural strengths. The abilities you're born with.",
+      soulUrgeQuick: "What truly makes you happy. Your deepest desires & inner fulfillment.",
+      personalityQuick: "The impression you give. How people see & experience you at first.",
+      destinyQuick: "Your life purpose & what you're meant to achieve. Your ultimate goal.",
+
+      // Cycle Section
+      whereYouAreNow: "Where You Are Right Now",
+      currentLifePhase: "Current Life Phase",
+      phaseOf9: "Phase {number} of 9",
+      yearTheme: "Year {position}/9:",
+      focusAreas: "Focus Areas:",
+      yourAge: "Your Age",
+      years: "{age} years",
+      yearMonthEnergy: "This Year & Month's Energy",
+      personalYearLabel: "Personal Year",
+      personalMonthLabel: "Personal Month",
+      overallEnergy: "Overall energy",
+      monthFlow: "This month's flow",
+
+      // Strengths & Challenges
+      strengthsAndGrowth: "Your Strengths & Growth Opportunities",
+      strengthsIntro: "Each number from 1-9 represents different life qualities. Your strengths show what you naturally excel at. Growth areas show where you can develop further.",
+      whatYouAreStrongAt: "What You're Strong At",
+      whereYouCanGrow: "Where You Can Grow",
+      strength: "Strength {number}",
+      growthArea: "Growth Area {number}",
+      strengthDesc1: "What makes you capable and reliable",
+      strengthDesc2: "What gives you an edge",
+      strengthDesc3: "Your natural talent",
+      strengthDesc4: "What you excel at",
+      growthDesc1: "A quality to develop",
+      growthDesc2: "An area for improvement",
+      growthDesc3: "Something to work on",
+      growthDesc4: "A key life lesson",
+      currentStrength: "Right Now (Your Current Strength):",
+      currentStrengthDesc: "This is the main strength supporting you this season",
+      currentChallenge: "Currently Working On (Your Main Focus):",
+      currentChallengeDesc: "This is what life is teaching you right now—embrace it!",
+
+      // Special Numbers
+      specialNumbers: "Special Numbers & Lessons",
+      lessonsToLearn: "Lessons to Learn",
+      lessonsDesc: "These numbers represent lessons your soul wants to learn in this lifetime. They're not obstacles — they're opportunities for growth.",
+      blessedNumbers: "Blessed Numbers",
+      blessedDesc: "These are powerful numbers connected to spiritual tradition. They bring special blessings and spiritual protection to your life.",
+
+      // Number Archetypes (1-11, 22)
+      numberArchetypes: {
+        1: { title: "The Leader", meaning: "You're naturally independent and driven to create new things. You prefer making decisions yourself." },
+        2: { title: "The Peacemaker", meaning: "You're great at bringing people together and finding harmony. You're sensitive to others' feelings." },
+        3: { title: "The Creator", meaning: "You express yourself easily and bring joy wherever you go. Communication is your strength." },
+        4: { title: "The Builder", meaning: "You're reliable and practical. You build solid foundations in everything you do." },
+        5: { title: "The Explorer", meaning: "You love freedom and variety. You adapt quickly and learn from diverse experiences." },
+        6: { title: "The Caregiver", meaning: "You're responsible and naturally want to help others. Family and service matter deeply to you." },
+        7: { title: "The Thinker", meaning: "You're analytical and spiritual. You seek deeper understanding in life's mysteries." },
+        8: { title: "The Achiever", meaning: "You're ambitious and focused on success. You have strong business and leadership abilities." },
+        9: { title: "The Humanitarian", meaning: "You care about the world and want to make a positive difference. Compassion guides you." },
+        11: { title: "The Visionary", meaning: "You see beyond ordinary things. You inspire others and carry spiritual messages." },
+        22: { title: "The Master Builder", meaning: "You have big ambitions to create something lasting. You turn dreams into reality on a large scale." },
+      },
 
       descriptions: {
         lifePath: "Your soul's primary journey and purpose",
@@ -272,6 +380,13 @@ export const translations = {
       spiritualHarmony: "Spiritual Harmony",
       elementalHarmony: "Elemental Harmony",
       planetaryCompatibility: "Planetary Compatibility",
+      
+      // Core vs Cosmic sections
+      coreCompatibility: "Core Compatibility (Personal Names)",
+      coreCompatibilityDesc: "How your conscious personalities interact",
+      cosmicLayer: "Cosmic Layer (Maternal Influences)",
+      cosmicLayerDesc: "How your inherited energies interact together",
+      cosmicLayerExplanation: "Your mother's element represents cosmic conditions affecting your soul connection. This is about inherited emotional patterns, not your core personality.",
 
       ratings: {
         excellent: "Excellent",
@@ -283,6 +398,15 @@ export const translations = {
 
     // Name Destiny
     nameDestiny: {
+      // Core vs Inherited Analysis Labels
+      coreAnalysis: "Core Analysis (Your Name Only)",
+      coreAnalysisDesc: "These reflect your inner nature and personal identity.",
+      inheritedInfluences: "Inherited Influences",
+      inheritedInfluencesDesc: "Shows how your mother's energy influences your external conditions.",
+      whyMotherName: "Why add mother's name?",
+      motherNameExplanation: "Your personal name reveals WHO you are (inner identity). Your mother's name reveals external conditions that surround you—obstacles, protection, and family inheritance.",
+      motherNameInfo: "Personal Name = WHO you are | Name + Mother = WHAT surrounds you",
+      
       nameChart: {
         title: "Name Chart",
         subtitle: "Spiritual Blueprint of Your Name",
@@ -300,10 +424,23 @@ export const translations = {
         transformative: "⚡ Transformative",
         unified: "💫 Unified",
       },
+      destinyNumber: {
+        title: "Your Life Destiny Number",
+        subtitle: "Core Destiny Number & Station",
+        sumOfLetters: "Sum of all letter values",
+        reducedRoot: "Reduced digital root",
+      },
+      quranicResonance: {
+        title: "Qur'anic Resonance",
+        subtitle: "Divine Connection Through Your Number",
+      },
+      motherOrigin: {
+        subtitle: "Your inherited energetic foundation",
+      },
       inputs: {
         motherName: "Mother's Name",
-        motherHint: "Required for complete Ḥadad calculation (included in total).",
-        motherOptional: "Mother's Name (for complete analysis)",
+        motherHint: "Optional — add to see inherited influences and family harmony.",
+        motherOptional: "Mother's Name (optional for inherited influences)",
       },
       origin: {
         title: "Your Spiritual Origin",
@@ -377,6 +514,30 @@ export const translations = {
           water: "Yā Nūr (The Light) — to illuminate emotions",
           earth: "Yā Fattāḥ (The Opener) — to invite flow",
         },
+      },
+      // Higher Resonance Insights
+      higherResonance: {
+        title: "Higher Resonance Insights",
+        subtitle: "Divine Name & Color Energy in Your Name",
+      },
+      divineNameResonance: {
+        title: "Divine Name Resonance",
+        subtitle: "Your name carries the vibration of:",
+        meaning: "Meaning",
+        spiritualInfluence: "Spiritual Influence",
+        reflection: "What this means for you",
+        reflectionTip: "Reflection Tip",
+      },
+      colorResonance: {
+        title: "Name Color Resonance",
+        subtitle: "Your name's natural color energy is:",
+        primary: "Primary Color",
+        secondary: "Secondary Color",
+        meaning: "Meaning",
+        bestColors: "Best colors to wear / use",
+        avoidColors: "Colors to avoid",
+        tip: "Tip",
+        tipIntro: "Use these colors for clothing, journaling, meditation, or personal spaces.",
       },
     },
 
@@ -560,6 +721,14 @@ export const translations = {
       
       // Footer message
       reflectiveGuidance: "Reflective guidance to plan your week. Use your own judgment. This is a rhythm and planning helper, not a prediction or medical/financial advice.",
+      
+      // Error messages
+      unableToGenerateWeekly: "Unable to generate weekly forecast. Please enter a valid Arabic name.",
+      
+      // Day badges
+      best: "Best",
+      gentle: "Gentle",
+      focus: "Focus",
       
       // Day details
       yourGuidanceForThisDay: "Your Guidance for This Day",
@@ -964,6 +1133,301 @@ export const translations = {
         airEffect: "Focuses the mind, brings wisdom",
         waterEffect: "Lifts emotion into clarity",
         earthEffect: "Softens rigidity, opens possibilities"
+      },
+      
+      // UI Labels for Four-Layer Compatibility
+      accuracy: "Accuracy",
+      precision: "Accuracy",
+      weight: "weight",
+      motherOf: "Mother of",
+      
+      // Four-Layer UI Text
+      whatThisMeans: "💡 What This Means",
+      showCalculationDetails: "Show Calculation Details",
+      understandingTerms: "Understanding the Terms",
+      hoverToLearnMore: "Hover over ℹ️ icons to learn more",
+      fourLayersTitle: "Four Layers of Compatibility",
+      inDailyLife: "🏠 In Daily Life:",
+      challenge: "⚠️ Challenge:",
+      tip: "💡 Tip:",
+      mostImportantForMarriage: "💜 MOST IMPORTANT FOR MARRIAGE",
+      dailyImpact: "🏠 Daily Impact:",
+      innerTemperament: "💡 Inner Temperament (الطبع الباطن)",
+      cosmicTemperament: "💡 Cosmic Temperament (الطبع الفلكي)",
+      harmony: "Harmony"
+    },
+
+    // ============================================================================
+    // FOUR-LAYER COMPATIBILITY SYSTEM
+    // ============================================================================
+    
+    fourLayerCompatibility: {
+      // Form Header
+      title: "Four-Layer Compatibility Analysis",
+      titleArabic: "تحليل التوافق الرباعي",
+      subtitle: "The complete traditional West African method",
+      description: "This analysis examines both your conscious personalities (from your names) and your inherited emotional patterns (from your mothers' names) to give the most accurate compatibility reading.",
+      
+      // Input Fields
+      person1Name: "First Person's Name",
+      person2Name: "Second Person's Name",
+      person1MotherName: "First Person's Mother's Name",
+      person2MotherName: "Second Person's Mother's Name",
+      optional: "(Optional for deeper analysis)",
+      
+      // Tooltips
+      nameTooltip: "💡 Your name reveals your conscious self — how you show up in the world, your active personality, and how others see you.",
+      motherNameTooltip: `💡 Your mother's name reveals your emotional blueprint — the subconscious patterns, feelings, and needs you inherited. This is the foundation beneath your personality.
+
+📊 Analysis depth:
+• With names only: 70% accuracy
+• With mothers' names: 90-95% accuracy
+
+🌍 This is the traditional method preserved by West African Islamic scholars for serious marriage compatibility.
+
+🔒 Privacy: Mother's names are used only for calculation and never stored.`,
+      
+      // Analysis Mode Selection
+      analysisMode: "Analysis Mode",
+      quickAnalysis: "Quick Analysis (Names Only)",
+      quickAnalysisDesc: "See how your conscious personalities interact in daily life. Good for initial curiosity.",
+      quickAccuracy: "70-75% accuracy",
+      completeAnalysis: "Complete Analysis (Names + Mothers) ⭐ Recommended",
+      completeAnalysisDesc: "The traditional West African method. Reveals both surface chemistry and deep emotional compatibility. Essential for serious relationships.",
+      completeAccuracy: "90-95% accuracy",
+      
+      // Overall Score Section
+      overallCompatibilityTitle: "Overall Compatibility",
+      overallCompatibilityArabic: "التوافق الشامل",
+      overallExplanation: "This score is calculated from all four layers of your connection, weighted to prioritize emotional foundation (most important for long-term harmony).",
+      
+      // Score Interpretations
+      excellent: "EXCELLENT",
+      excellentRange: "85-100%",
+      excellentMeaning: "Outstanding compatibility on both surface and soul levels. Your energies complement each other beautifully.",
+      
+      veryGood: "VERY GOOD",
+      veryGoodRange: "70-84%",
+      veryGoodMeaning: "Strong compatibility with minor areas to nurture. This connection has great potential with mutual effort.",
+      
+      good: "GOOD",
+      goodRange: "55-69%",
+      goodMeaning: "Moderate compatibility. You can build a harmonious relationship with understanding, communication, and compromise.",
+      
+      challenging: "CHALLENGING",
+      challengingRange: "40-54%",
+      challengingMeaning: "Significant differences in energy and approach. This relationship requires substantial effort, patience, and mutual growth.",
+      
+      difficult: "DIFFICULT",
+      difficultRange: "0-39%",
+      difficultMeaning: "Major elemental conflicts. While not impossible, this pairing faces fundamental challenges that require deep commitment to overcome.",
+      
+      // Layer Headers
+      layer1Title: "Daily Life Compatibility",
+      layer1TitleArabic: "التوافق اليومي",
+      layer1Subtitle: "Surface Dynamic (الديناميكية الظاهرة - al-Dīnāmīkīya al-Ẓāhira)",
+      
+      layer2Title: "Emotional Foundation",
+      layer2TitleArabic: "الأساس العاطفي",
+      layer2Subtitle: "Deep Dynamic (الديناميكية العميقة - al-Dīnāmīkīya al-ʿAmīqa)",
+      layer2Badge: "🌟 MOST IMPORTANT FOR LONG-TERM HARMONY",
+      
+      layer3Title: "Person 1's Effect on Person 2's Emotional Core",
+      layer4Title: "Person 2's Effect on Person 1's Emotional Core",
+      crossDynamicsTitle: "Cross-Influence Dynamics",
+      crossDynamicsArabic: "الديناميكيات المتقاطعة",
+      crossDynamicsExplanation: "These layers show how each person's conscious energy affects the other's emotional core. Think of it as: 'How does your personality land on their heart?'",
+      
+      // What It Means Sections
+      whatItMeasures: "📖 What This Measures:",
+      basedOn: "🔍 Based On:",
+      whyItMatters: "💡 Why It Matters:",
+      
+      // Layer 1 Explanations
+      layer1WhatItMeans: "How your conscious personalities interact day-to-day. This is the energy you actively bring to conversations, decisions, and shared activities. It's what people see when they look at your relationship.",
+      layer1BasedOn: "The elemental temperaments from both of your names (calculated using Ḥadath ÷ 4 method)",
+      layer1WhyItMatters: "This determines your communication style, conflict resolution, and whether you naturally 'get' each other in everyday moments. High scores here mean easy, natural flow in daily life.",
+      
+      // Layer 2 Explanations
+      layer2WhatItMeans: "The subconscious emotional compatibility inherited from your mothers. This is the 'feeling of home' you create together—the unspoken comfort, safety, and deep bond that either naturally exists or must be built.",
+      layer2BasedOn: "The elemental temperaments from both of your mothers' names (calculated using Ḥadath ÷ 4 method)",
+      layer2WhyItMatters: `This is THE most important layer for marriage and long-term partnership. Here's why:
+
+• Your mother's emotional patterns shaped how you give and receive love
+• This layer determines if you feel "safe" together emotionally
+• High scores here mean you intuitively understand each other's needs
+• Low scores mean you'll need conscious work to meet each other's emotional needs
+
+Many couples with great surface chemistry struggle because this layer isn't harmonious. Knowing this in advance helps you prepare.`,
+      
+      layer2ExampleTitle: "🎭 Real-World Example:",
+      layer2Example: `Ahmad and Layla have great daily chemistry (Fire + Air = 85%).
+
+But when stress hits:
+• Ahmad's Water roots (from mother) need emotional processing and talking
+• Layla's Fire roots (from mother) need space and action to feel better
+
+Without knowing this, they hurt each other:
+• Ahmad feels abandoned when Layla takes space
+• Layla feels suffocated when Ahmad wants to talk
+
+WITH this knowledge, they understand: "We're both trying to feel safe—just in different ways."`,
+      
+      // Dual Temperament
+      dualTemperamentTitle: "🎭 Your Individual Temperaments",
+      dualTemperamentArabic: "طبائعكم الفردية",
+      dualTemperamentExplanation: "Understanding each person's inner (conscious) and cosmic (subconscious) temperaments helps you see the complete person—not just the surface.",
+      
+      innerTemperament: "Inner Temperament",
+      innerTemperamentArabic: "الطبع الباطن",
+      innerTemperamentDef: "Your conscious self—how you actively show up in the world. Calculated from YOUR name.",
+      
+      cosmicTemperament: "Cosmic Temperament",
+      cosmicTemperamentArabic: "الطبع الفلكي",
+      cosmicTemperamentDef: "Your inherited emotional blueprint—the subconscious patterns from your lineage. Calculated from your MOTHER'S name.",
+      
+      // Integration Types
+      fullyAligned: "Fully Aligned",
+      fullyAlignedMeaning: "You are authentically who you appear to be. What people see matches what you feel inside. This creates strong, consistent energy.",
+      fullyAlignedChallenge: "May be TOO much of that element—lacking balance from others.",
+      
+      naturallyBalanced: "Naturally Balanced",
+      naturallyBalancedMeaning: "Your inner and cosmic sides support each other. You have access to multiple energies that work together harmoniously.",
+      
+      internalComplexity: "Internal Complexity",
+      internalComplexityMeaning: "There's a gap between how you show up and what you need emotionally. Others may not see your full depth. You may feel misunderstood.",
+      internalComplexityAdvice: "💡 Your work is integration: letting your inner self express through your outer self. Honor both sides.",
+      
+      // Recommendations
+      yourPersonalizedGuidance: "💡 Your Personalized Guidance",
+      yourPersonalizedGuidanceArabic: "إرشاداتكم الشخصية",
+      guidanceIntro: "Based on all four layers of your compatibility, here's specific advice to strengthen your connection:",
+      
+      yourNaturalStrengths: "🌟 Your Natural Strengths",
+      strengthsDesc: "These areas come easily to you. Celebrate and maintain them:",
+      
+      areasToNurture: "⚠️ Areas to Nurture",
+      challengesDesc: "These areas need conscious attention, but awareness is half the solution:",
+      
+      specificPractices: "🛠️ Specific Practices",
+      practicesDesc: "Try these activities to balance your elemental dynamics:",
+      
+      spiritualBalancing: "🤲 Spiritual Balancing",
+      dhikrDesc: "These sacred phrases help harmonize your elemental energies:",
+      
+      // Educational Glossary
+      understandingTheTerms: "[ℹ️ Understanding the Terms]",
+      glossaryTitle: "📚 ʿIlm al-Ḥurūf Glossary",
+      glossaryTitleArabic: "مسرد علم الحروف",
+      
+      ilmAlHuruf: "ʿIlm al-Ḥurūf",
+      ilmAlHurufArabic: "علم الحروف",
+      ilmAlHurufDef: "The Science of Letters — An ancient Islamic science that studies the mystical properties of Arabic letters and their numerical values. Each letter carries specific energy (Fire, Air, Water, or Earth) and a numerical value used for spiritual calculations.",
+      
+      hadath: "al-Ḥadath",
+      hadathArabic: "الحدث",
+      hadathDef: "The Numerical Essence — The sum of all letter values in a name using the Abjad (أبجد) system. This number reveals spiritual essence and destiny patterns.",
+      
+      hadathDiv4: "al-Ḥadath ÷ 4",
+      hadathDiv4Def: `The classical method for determining elemental temperament. The remainder when Ḥadath is divided by 4 indicates the dominant element:
+• Remainder 1 = Fire (النار)
+• Remainder 2 = Air (الهواء)  
+• Remainder 3 = Water (الماء)
+• Remainder 0 = Earth (الأرض)`,
+      
+      zawajAlHuruf: "Zawāj al-Ḥurūf",
+      zawajAlHurufArabic: "زواج الحروف",
+      zawajAlHurufDef: "Marriage of Letters — The compatibility analysis between two names based on their elemental harmony. How the letters 'marry' or interact between two people.",
+      
+      // Calculation Transparency
+      showCalculation: "[📊 Show How We Calculated This]",
+      calculationBreakdown: "🔢 Calculation Breakdown",
+      calculationBreakdownArabic: "تفصيل الحسابات",
+      
+      step1: "Step 1: Convert name to Abjad values",
+      step2: "Step 2: Sum all values",
+      step3: "Step 3: Divide by 4",
+      step4: "Step 4: Map remainder to element",
+      
+      totalHadath: "Total (Ḥadath)",
+      quotient: "Quotient",
+      remainder: "Remainder",
+      element: "Element",
+      
+      weightingExplanation: "Why these weights? Emotional Foundation (40%) is most important for long-term harmony. Daily Life (30%) affects everyday happiness. Cross Dynamics (15% each) show how you affect each other's cores."
+    },
+
+    // Element Pairing Descriptions (for all 10 combinations)
+    elementPairings: {
+      fireFire: {
+        label: "Fire + Fire: The Power Couple",
+        description: "Intense, passionate, and fast-moving. You both bring bold energy and drive to the relationship.",
+        dailyLife: "Daily life together feels electric and exciting. Lots of action, adventure, and spontaneity.",
+        challenge: "⚠️ May compete or burn out without rest. Both want to lead.",
+        tip: "💡 Schedule calm time together. Practice listening, not just doing."
+      },
+      fireAir: {
+        label: "Fire + Air: The Visionary Duo",
+        description: "Fire sparks Air's ideas into action. Creative, energizing, and full of possibilities.",
+        dailyLife: "You inspire each other constantly. Conversations lead to projects. Ideas become reality.",
+        challenge: "⚠️ May overlook emotional depth and practical details. All vision, little grounding.",
+        tip: "💡 Weekly check-ins: 'How are you feeling?' not just 'What are you doing?'"
+      },
+      fireWater: {
+        label: "Fire + Water: Steam & Transformation",
+        description: "Passion meets depth. This creates either steam (transformation) or evaporation (conflict).",
+        dailyLife: "Your approaches to life are opposite. Fire acts fast; Water needs time to feel. This creates friction in daily decisions.",
+        challenge: "⚠️ Fire may overwhelm Water. Water may withdraw from Fire. Communication styles clash.",
+        tip: "💡 Fire: Practice active listening and patience. Water: Express needs clearly and directly."
+      },
+      fireEarth: {
+        label: "Fire + Earth: Vision Meets Foundation",
+        description: "Fire brings vision and excitement; Earth brings execution and stability. Complementary but at different paces.",
+        dailyLife: "Fire wants to start new things constantly; Earth prefers to finish what's begun. This creates planning tension but also balance.",
+        challenge: "⚠️ Different paces: Fire rushes, Earth takes time. May feel like you're pulling in opposite directions.",
+        tip: "💡 Combine planning sessions (Earth) with spontaneous adventures (Fire). Honor both approaches."
+      },
+      airAir: {
+        label: "Air + Air: The Intellectual Partnership",
+        description: "Endless conversations, shared curiosity, and mental stimulation. You understand how each other thinks.",
+        dailyLife: "You can talk for hours. Every experience becomes a discussion. Learning and exploring together is natural.",
+        challenge: "⚠️ May overthink or avoid emotional vulnerability. All head, not enough heart.",
+        tip: "💡 Set 'no-analysis' zones. Practice feeling without discussing. Touch more, talk less sometimes."
+      },
+      airWater: {
+        label: "Air + Water: Mind Meets Heart",
+        description: "Air gives words to Water's feelings. Water adds depth to Air's ideas. Beautiful when balanced.",
+        dailyLife: "Air helps Water express emotions clearly. Water reminds Air that feelings matter as much as thoughts.",
+        challenge: "⚠️ Air may rationalize feelings; Water may feel misunderstood when emotions are analyzed.",
+        tip: "💡 Air: Write love letters—use your words for emotion. Water: Share dreams aloud—trust Air to listen."
+      },
+      airEarth: {
+        label: "Air + Earth: Ideas Take Root",
+        description: "Air dreams, Earth builds. Opposite approaches that can complement or clash.",
+        dailyLife: "Air wants to explore possibilities; Earth wants to commit to one path. This creates daily decision-making friction.",
+        challenge: "⚠️ Air may seem scattered to Earth; Earth may seem rigid to Air. Different values around structure.",
+        tip: "💡 Create vision boards together (Air), then assign tasks and timelines (Earth). Meet in the middle."
+      },
+      waterWater: {
+        label: "Water + Water: The Deep Connection",
+        description: "Intuitive understanding. You feel each other's emotions without words. Natural empathy flows between you.",
+        dailyLife: "A look says everything. You nurture each other instinctively. Emotional safety comes naturally.",
+        challenge: "⚠️ May drown in emotions together. Can become isolated from the outside world. Need Air's perspective.",
+        tip: "💡 Journal together, then discuss what you wrote. Bring emotions into words. Connect with others too."
+      },
+      waterEarth: {
+        label: "Water + Earth: Nurturing Growth",
+        description: "Natural harmony. Water nourishes Earth, Earth holds Water. Like a garden—growth happens organically.",
+        dailyLife: "You support each other's growth effortlessly. Water brings feelings, Earth brings stability. Balanced and peaceful.",
+        challenge: "⚠️ May avoid conflict or become stagnant. Too comfortable can mean no growth challenges.",
+        tip: "💡 Cook together, garden, create with your hands. Embrace gentle change—try new things monthly."
+      },
+      earthEarth: {
+        label: "Earth + Earth: The Solid Foundation",
+        description: "Rock-solid stability. Loyalty, consistency, and shared practical goals. You build together brick by brick.",
+        dailyLife: "Reliable routines, shared responsibilities, and steady progress. You know what to expect from each other.",
+        challenge: "⚠️ May resist change or become too routine. Both can be stubborn. Life feels safe but may lack spontaneity.",
+        tip: "💡 Schedule monthly 'new experiences.' Break routines together intentionally. Invite Air and Fire energy."
       }
     },
 
@@ -1023,13 +1487,13 @@ export const translations = {
       todayIsRestDay: "Today is a Rest Day",
       criticalLowEnergy: "Critical low energy detected. Your spirit is recalibrating—honor this healing signal with deep physical and mental rest today.",
       lowHarmonyToday: "Low harmony today suggests this is a strategic rest day. Focus on planning and reflection rather than execution and new starts.",
-      recommendedToday: "Recommended today:",
-      viewFullWeek: "View full week",
+      recommendedToday: "Recommended Today:",
+      viewFullWeek: "View Full Week",
       dismiss: "Dismiss",
       restDayActive: "Rest Day Active",
       restDayNote: "Planetary hours below are shown for reference, but minimize activities today.",
       currentPlanetaryHour: "Current Planetary Hour",
-      favorableFor: "Favorable for:",
+      favorableFor: "Favorable For:",
       avoid: "Avoid:",
       perfectAlignment: "PERFECT ALIGNMENT!",
       strongEnergy: "STRONG ENERGY",
@@ -1045,8 +1509,63 @@ export const translations = {
       times: "times",
       bestTime: "Best time",
       benefit: "Benefit",
-      actNow: "Act now",
-      realTimeGuidance: "Real-time Guidance"
+      actNow: "Act Now",
+      realTimeGuidance: "Real-time Guidance",
+      
+      // Optimal Sequence translations
+      optimalSequenceFor: "Optimal Sequence for {day}",
+      morning: "Morning",
+      midday: "Midday",
+      afternoon: "Afternoon",
+      evening: "Evening",
+      bestFor: "Best For:",
+      avoidLabel: "Avoid:",
+      
+      // New additions for better UX
+      harmony: "Harmony:",
+      harmonyScore: "Harmony",
+      planetEnergy: "{planet} energy",
+      yourElement: "Your {element}",
+      hourElement: "Hour's {element}",
+      classicalWisdom: "Classical Wisdom:",
+      deepRestQuote: "Man ʿarafa infisāl waqtihi, faqad ḥafaẓa ṭāqatahu",
+      deepRestTranslation: "Who knows the time for disconnection, preserves their energy",
+      restDayQuote: "Al-sukūn qabl al-ḥaraka",
+      restDayTranslation: "Stillness before motion brings blessed action",
+      minutesLeft: "{minutes} minutes left",
+      hoursLeft: "{hours} hours left",
+      alignment: "Alignment",
+      energyStatus: "Energy Status",
+      timeRemaining: "Time Remaining",
+      
+      // Color guidance
+      whatToWearToday: "What to Wear Today",
+      wearTheseColors: "Wear these colors:",
+      tryThis: "Try this:",
+      you: "You",
+      today: "Today",
+      perfectFit: "Perfect fit",
+      goingWell: "Going well",
+      balanced: "Balanced",
+      needCare: "Need care",
+      
+      // Act Now section
+      actNowRealTimeGuidance: "Act Now - Real-Time Guidance",
+      useThisTimeFor: "Use this time for:",
+      handleRoutineTasks: "Handle routine tasks",
+      continueOngoingWork: "Continue ongoing work",
+      waitForBetterTiming: "Wait for better timing",
+      plentyOfTime: "Plenty of time remaining in this window",
+      actNowWarning: "ACT NOW! Optimal time ending soon.",
+      howWeFiguredThisOut: "How we figured this out",
+      howItWorks: "How it works:",
+      planetaryRulerExplanation: "We look at today's planetary ruler ({planet}) and which element controls most of today's hours ({element}). Together they create today's energy personality.",
+      yourFitExplanation: "Your fit: Your {userElement} nature and today's {dayElement} energy are {harmonyPercent}% aligned - like two personalities getting along.",
+      dayRuler: "Day Ruler:",
+      mostActive: "Most Active:",
+      dominantElement: "Dominant:",
+      harmonyLabel: "Harmony:",
+      ancientWisdomMessage: "Ancient wisdom says colors and energy work together. Wear what feels right to you! 🌀"
     },
 
     // ACTION BUTTONS & ALIGNMENT
@@ -1060,7 +1579,16 @@ export const translations = {
       waitFor: "Wait for {element}",
       handleRoutineTasks: "Handle routine tasks",
       continueOngoingWork: "Continue ongoing work",
-      waitForBetterTiming: "Wait for better timing"
+      waitForBetterTiming: "Wait for better timing",
+      takeBoldAction: "Take bold action",
+      writeOrCommunicate: "Write or communicate",
+      brainstormIdeas: "Brainstorm ideas",
+      creativeWork: "Creative work",
+      deepReflection: "Deep reflection",
+      buildOrOrganize: "Build or organize",
+      completeTasks: "Complete tasks",
+      lowStakesActivities: "Low-stakes activities",
+      preparationWork: "Preparation work"
     },
 
     // HARMONY & ALIGNMENT
@@ -1707,6 +2235,25 @@ export const translations = {
       earthDesc: "Froid et Sec - Stable et ancré",
     },
 
+    // Profils de Tempérament Améliorés (Psychologie + Carrière)
+    temperament: {
+      title: "Profil de Tempérament",
+      psychologyTitle: "Profil Psychologique",
+      careerTitle: "Guidance Professionnelle",
+      
+      traits: "Traits Principaux",
+      strengths: "Forces",
+      watchOuts: "Points de Vigilance",
+      balanceTips: "Conseils d'Équilibre",
+      
+      careerGoodFits: "Carrières Adaptées",
+      careerAvoid: "Peut Trouver Difficile",
+      careerRationale: "Pourquoi Cela Convient",
+      
+      // Note: Les données individuelles de tempérament sont dans temperamentProfiles.ts
+      // Cette section contient uniquement les étiquettes de l'interface utilisateur
+    },
+
     lifePath: {
       title: "Numérologie du Chemin de Vie",
       lifePathNumber: "Nombre du Chemin de Vie",
@@ -1718,6 +2265,95 @@ export const translations = {
       karmicDebt: "Nombres de Dette Karmique",
       sacredNumbers: "Nombres Sacrés",
       cycle: "Cycle de Vie",
+      
+      // Sections de Base vs Externes
+      coreNumbers: "Vos Nombres de Vie Fondamentaux",
+      coreNumbersDesc: "Ces quatre nombres révèlent votre personnalité fondamentale, vos désirs intérieurs, comment les autres vous voient et le but de votre vie. Calculés uniquement à partir de votre nom personnel.",
+      externalInfluences: "Influences Externes",
+      maternalInfluence: "INFLUENCE MATERNELLE",
+      maternalInfluenceDesc: "Ce nombre montre comment l'énergie de votre mère affecte votre chemin externe et les conditions qui vous entourent.",
+      maternalInfluenceExplanation: "Le nom de votre mère révèle les conditions externes et les influences héritées qui entourent votre chemin, mais ne définissent pas votre identité fondamentale.",
+
+      // Étiquettes de nombres dans les cartes
+      lifePathLabel: "NOMBRE DU CHEMIN DE VIE",
+      soulUrgeLabel: "NOMBRE DE L'ÉLAN DE L'ÂME",
+      personalityLabel: "NOMBRE DE PERSONNALITÉ",
+      destinyLabel: "NOMBRE DE DESTINÉE",
+
+      // Explications simples
+      lifePathSimple: "Votre talent naturel et direction de vie. Cela montre ce en quoi vous êtes doué et ce qui vous vient naturellement.",
+      soulUrgeSimple: "Votre motivation intérieure. Ce que vous recherchez dans la vie et ce qui vous apporte une vraie joie et satisfaction.",
+      personalitySimple: "Votre visage public. Comment vous apparaissez aux autres et l'énergie que vous dégagez quand vous entrez dans une pièce.",
+      destinySimple: "Votre but de vie et objectif ultime. Ce que vous êtes destiné à accomplir et donner au monde.",
+
+      // Titres de sections
+      whatItMeans: "Ce que cela signifie :",
+      important: "Important :",
+      externalEnergy: "Énergie Externe",
+      importantNote: "Cela représente ce qui vous entoure, pas qui vous êtes. Vos nombres fondamentaux ci-dessus définissent votre vraie identité.",
+
+      // Boîtes de guide rapide
+      quickGuideTitle: "Guide Rapide :",
+      lifePathQuick: "Vos talents de base et forces naturelles. Les capacités avec lesquelles vous êtes né.",
+      soulUrgeQuick: "Ce qui vous rend vraiment heureux. Vos désirs les plus profonds et épanouissement intérieur.",
+      personalityQuick: "L'impression que vous donnez. Comment les gens vous voient et vous vivent au premier abord.",
+      destinyQuick: "Votre but de vie et ce que vous êtes destiné à accomplir. Votre objectif ultime.",
+
+      // Section Cycle
+      whereYouAreNow: "Où Vous Êtes Maintenant",
+      currentLifePhase: "Phase de Vie Actuelle",
+      phaseOf9: "Phase {number} sur 9",
+      yearTheme: "Année {position}/9 :",
+      focusAreas: "Domaines de Focus :",
+      yourAge: "Votre Âge",
+      years: "{age} ans",
+      yearMonthEnergy: "L'Énergie de Cette Année et de Ce Mois",
+      personalYearLabel: "Année Personnelle",
+      personalMonthLabel: "Mois Personnel",
+      overallEnergy: "Énergie globale",
+      monthFlow: "Le flux de ce mois",
+
+      // Forces et Défis
+      strengthsAndGrowth: "Vos Forces et Opportunités de Croissance",
+      strengthsIntro: "Chaque nombre de 1 à 9 représente différentes qualités de vie. Vos forces montrent ce en quoi vous excellez naturellement. Les domaines de croissance montrent où vous pouvez vous développer davantage.",
+      whatYouAreStrongAt: "Ce en Quoi Vous Êtes Fort",
+      whereYouCanGrow: "Où Vous Pouvez Grandir",
+      strength: "Force {number}",
+      growthArea: "Domaine de Croissance {number}",
+      strengthDesc1: "Ce qui vous rend capable et fiable",
+      strengthDesc2: "Ce qui vous donne un avantage",
+      strengthDesc3: "Votre talent naturel",
+      strengthDesc4: "Ce en quoi vous excellez",
+      growthDesc1: "Une qualité à développer",
+      growthDesc2: "Un domaine à améliorer",
+      growthDesc3: "Quelque chose sur quoi travailler",
+      growthDesc4: "Une leçon de vie clé",
+      currentStrength: "En Ce Moment (Votre Force Actuelle) :",
+      currentStrengthDesc: "C'est la force principale qui vous soutient en cette saison",
+      currentChallenge: "En Cours de Travail (Votre Focus Principal) :",
+      currentChallengeDesc: "C'est ce que la vie vous enseigne maintenant—embrassez-le !",
+
+      // Nombres Spéciaux
+      specialNumbers: "Nombres Spéciaux et Leçons",
+      lessonsToLearn: "Leçons à Apprendre",
+      lessonsDesc: "Ces nombres représentent les leçons que votre âme veut apprendre dans cette vie. Ce ne sont pas des obstacles — ce sont des opportunités de croissance.",
+      blessedNumbers: "Nombres Bénis",
+      blessedDesc: "Ce sont des nombres puissants liés à la tradition spirituelle. Ils apportent des bénédictions spéciales et une protection spirituelle à votre vie.",
+
+      // Archétypes de Nombres (1-11, 22)
+      numberArchetypes: {
+        1: { title: "Le Leader", meaning: "Vous êtes naturellement indépendant et poussé à créer de nouvelles choses. Vous préférez prendre vos propres décisions." },
+        2: { title: "Le Pacificateur", meaning: "Vous excellez à rassembler les gens et à trouver l'harmonie. Vous êtes sensible aux sentiments des autres." },
+        3: { title: "Le Créateur", meaning: "Vous vous exprimez facilement et apportez de la joie partout où vous allez. La communication est votre force." },
+        4: { title: "Le Bâtisseur", meaning: "Vous êtes fiable et pratique. Vous construisez des fondations solides dans tout ce que vous faites." },
+        5: { title: "L'Explorateur", meaning: "Vous aimez la liberté et la variété. Vous vous adaptez rapidement et apprenez d'expériences diverses." },
+        6: { title: "Le Soignant", meaning: "Vous êtes responsable et voulez naturellement aider les autres. La famille et le service vous tiennent profondément à cœur." },
+        7: { title: "Le Penseur", meaning: "Vous êtes analytique et spirituel. Vous cherchez une compréhension plus profonde des mystères de la vie." },
+        8: { title: "Le Réalisateur", meaning: "Vous êtes ambitieux et concentré sur le succès. Vous avez de fortes capacités commerciales et de leadership." },
+        9: { title: "L'Humanitaire", meaning: "Vous vous souciez du monde et voulez faire une différence positive. La compassion vous guide." },
+        11: { title: "Le Visionnaire", meaning: "Vous voyez au-delà des choses ordinaires. Vous inspirez les autres et portez des messages spirituels." },
+        22: { title: "Le Maître Bâtisseur", meaning: "Vous avez de grandes ambitions pour créer quelque chose de durable. Vous transformez les rêves en réalité à grande échelle." },
+      },
 
       descriptions: {
         lifePath: "Le voyage principal et le but de votre âme",
@@ -1928,6 +2564,13 @@ export const translations = {
       spiritualHarmony: "Harmonie Spirituelle",
       elementalHarmony: "Harmonie Élémentaire",
       planetaryCompatibility: "Compatibilité Planétaire",
+      
+      // Sections de Base vs Cosmique
+      coreCompatibility: "Compatibilité de Base (Noms personnels)",
+      coreCompatibilityDesc: "Comment vos personnalités conscientes interagissent",
+      cosmicLayer: "Couche Cosmique (Influences Maternelles)",
+      cosmicLayerDesc: "Comment vos énergies héritées interagissent ensemble",
+      cosmicLayerExplanation: "L'élément de votre mère représente les conditions cosmiques affectant votre connexion d'âme. Cela concerne les schémas émotionnels hérités, pas votre personnalité fondamentale.",
 
       ratings: {
         excellent: "Excellent",
@@ -1939,6 +2582,15 @@ export const translations = {
 
     // Name Destiny
     nameDestiny: {
+      // Étiquettes d'Analyse de Base vs Héritée
+      coreAnalysis: "Analyse de Base (Votre nom seulement)",
+      coreAnalysisDesc: "Reflète votre nature intérieure et identité personnelle.",
+      inheritedInfluences: "Influences Héritées",
+      inheritedInfluencesDesc: "Montre comment l'énergie de votre mère influence vos conditions externes.",
+      whyMotherName: "Pourquoi ajouter le nom de mère?",
+      motherNameExplanation: "Votre nom personnel révèle QUI vous êtes (identité intérieure). Le nom de votre mère révèle les conditions externes qui vous entourent—obstacles, protection et héritage familial.",
+      motherNameInfo: "Nom Personnel = QUI vous êtes | Nom + Mère = CE qui vous entoure",
+      
       nameChart: {
         title: "Carte du nom",
         subtitle: "Plan spirituel de votre nom",
@@ -1956,10 +2608,23 @@ export const translations = {
         transformative: "⚡ Transformatif",
         unified: "💫 Unifié",
       },
+      destinyNumber: {
+        title: "Votre Nombre de Destinée",
+        subtitle: "Nombre et Station de Destinée Centrale",
+        sumOfLetters: "Somme de toutes les valeurs des lettres",
+        reducedRoot: "Racine numérique réduite",
+      },
+      quranicResonance: {
+        title: "Résonance Coranique",
+        subtitle: "Connexion Divine à Travers Votre Nombre",
+      },
+      motherOrigin: {
+        subtitle: "Votre fondation énergétique héritée",
+      },
       inputs: {
         motherName: "Nom de la mère",
-        motherHint: "Requis pour le calcul complet du Ḥadad (inclus dans le total).",
-        motherOptional: "Nom de la mère (pour l'analyse complète)",
+        motherHint: "Optionnel — ajoutez pour voir les influences héritées et l'harmonie familiale.",
+        motherOptional: "Nom de la mère (optionnel pour les influences héritées)",
       },
       origin: {
         title: "Votre origine spirituelle",
@@ -2033,6 +2698,30 @@ export const translations = {
           water: "Yā Nūr (La Lumière) — pour illuminer les émotions",
           earth: "Yā Fattāḥ (Celui qui ouvre) — pour inviter le flux",
         },
+      },
+      // Aperçus de Résonance Supérieure
+      higherResonance: {
+        title: "Aperçus de Résonance Supérieure",
+        subtitle: "Nom Divin et Énergie de Couleur dans Votre Nom",
+      },
+      divineNameResonance: {
+        title: "Résonance du Nom Divin",
+        subtitle: "Votre nom porte la vibration de :",
+        meaning: "Signification",
+        spiritualInfluence: "Influence Spirituelle",
+        reflection: "Ce que cela signifie pour vous",
+        reflectionTip: "Conseil de Réflexion",
+      },
+      colorResonance: {
+        title: "Résonance de Couleur du Nom",
+        subtitle: "L'énergie de couleur naturelle de votre nom est :",
+        primary: "Couleur Primaire",
+        secondary: "Couleur Secondaire",
+        meaning: "Signification",
+        bestColors: "Meilleures couleurs à porter / utiliser",
+        avoidColors: "Couleurs à éviter",
+        tip: "Conseil",
+        tipIntro: "Utilisez ces couleurs pour les vêtements, l'écriture, la méditation ou les espaces personnels.",
       },
     },
 
@@ -2431,6 +3120,301 @@ export const translations = {
         airEffect: "Concentre l'esprit, apporte la sagesse",
         waterEffect: "Élève l'émotion vers la clarté",
         earthEffect: "Adoucit la rigidité, ouvre les possibilités"
+      },
+      
+      // UI Labels for Four-Layer Compatibility
+      accuracy: "Précision",
+      precision: "Précision",
+      weight: "poids",
+      motherOf: "Mère de",
+      
+      // Four-Layer UI Text
+      whatThisMeans: "💡 Ce que cela signifie",
+      showCalculationDetails: "Voir les calculs détaillés",
+      understandingTerms: "Comprendre les termes",
+      hoverToLearnMore: "Survolez les ℹ️ pour en savoir plus",
+      fourLayersTitle: "Quatre Niveaux de Compatibilité",
+      inDailyLife: "🏠 Dans la vie quotidienne :",
+      challenge: "⚠️ Défi :",
+      tip: "💡 Conseil :",
+      mostImportantForMarriage: "💜 LE PLUS IMPORTANT POUR LE MARIAGE",
+      dailyImpact: "🏠 Impact au quotidien :",
+      innerTemperament: "💡 Tempérament Intérieur (الطبع الباطن)",
+      cosmicTemperament: "💡 Tempérament Cosmique (الطبع الفلكي)",
+      harmony: "Harmonie"
+    },
+
+    // ============================================================================
+    // SYSTÈME DE COMPATIBILITÉ À QUATRE NIVEAUX
+    // ============================================================================
+    
+    fourLayerCompatibility: {
+      // En-tête du formulaire
+      title: "Analyse de Compatibilité à Quatre Niveaux",
+      titleArabic: "تحليل التوافق الرباعي",
+      subtitle: "La méthode traditionnelle complète d'Afrique de l'Ouest",
+      description: "Cette analyse examine à la fois vos personnalités conscientes (de vos noms) et vos schémas émotionnels hérités (des noms de vos mères) pour donner la lecture de compatibilité la plus précise.",
+      
+      // Champs de saisie
+      person1Name: "Nom de la Première Personne",
+      person2Name: "Nom de la Deuxième Personne",
+      person1MotherName: "Nom de la Mère de la Première Personne",
+      person2MotherName: "Nom de la Mère de la Deuxième Personne",
+      optional: "(Optionnel pour une analyse plus profonde)",
+      
+      // Info-bulles
+      nameTooltip: "💡 Votre nom révèle votre moi conscient — comment vous vous présentez au monde, votre personnalité active et comment les autres vous voient.",
+      motherNameTooltip: `💡 Le nom de votre mère révèle votre empreinte émotionnelle — les schémas subconscients, les sentiments et les besoins que vous avez hérités. C'est la fondation sous votre personnalité.
+
+📊 Profondeur de l'analyse :
+• Avec les noms seulement : 70% de précision
+• Avec les noms des mères : 90-95% de précision
+
+🌍 C'est la méthode traditionnelle préservée par les érudits islamiques d'Afrique de l'Ouest pour la compatibilité matrimoniale sérieuse.
+
+🔒 Confidentialité : Les noms des mères ne sont utilisés que pour le calcul et jamais stockés.`,
+      
+      // Sélection du mode d'analyse
+      analysisMode: "Mode d'Analyse",
+      quickAnalysis: "Analyse Rapide (Noms Seulement)",
+      quickAnalysisDesc: "Voyez comment vos personnalités conscientes interagissent dans la vie quotidienne. Bon pour la curiosité initiale.",
+      quickAccuracy: "70-75% de précision",
+      completeAnalysis: "Analyse Complète (Noms + Mères) ⭐ Recommandé",
+      completeAnalysisDesc: "La méthode traditionnelle d'Afrique de l'Ouest. Révèle à la fois la chimie de surface et la compatibilité émotionnelle profonde. Essentiel pour les relations sérieuses.",
+      completeAccuracy: "90-95% de précision",
+      
+      // Section du score global
+      overallCompatibilityTitle: "Compatibilité Globale",
+      overallCompatibilityArabic: "التوافق الشامل",
+      overallExplanation: "Ce score est calculé à partir des quatre niveaux de votre connexion, pondéré pour prioriser la fondation émotionnelle (le plus important pour l'harmonie à long terme).",
+      
+      // Interprétations des scores
+      excellent: "EXCELLENT",
+      excellentRange: "85-100%",
+      excellentMeaning: "Compatibilité exceptionnelle aux niveaux de surface et d'âme. Vos énergies se complètent magnifiquement.",
+      
+      veryGood: "TRÈS BIEN",
+      veryGoodRange: "70-84%",
+      veryGoodMeaning: "Forte compatibilité avec des domaines mineurs à cultiver. Cette connexion a un grand potentiel avec un effort mutuel.",
+      
+      good: "BIEN",
+      goodRange: "55-69%",
+      goodMeaning: "Compatibilité modérée. Vous pouvez construire une relation harmonieuse avec compréhension, communication et compromis.",
+      
+      challenging: "DIFFICILE",
+      challengingRange: "40-54%",
+      challengingMeaning: "Différences significatives d'énergie et d'approche. Cette relation nécessite un effort substantiel, de la patience et une croissance mutuelle.",
+      
+      difficult: "TRÈS DIFFICILE",
+      difficultRange: "0-39%",
+      difficultMeaning: "Conflits élémentaires majeurs. Bien que non impossible, ce jumelage fait face à des défis fondamentaux qui nécessitent un engagement profond pour être surmontés.",
+      
+      // En-têtes des niveaux
+      layer1Title: "Compatibilité Quotidienne",
+      layer1TitleArabic: "التوافق اليومي",
+      layer1Subtitle: "Dynamique de Surface (الديناميكية الظاهرة - al-Dīnāmīkīya al-Ẓāhira)",
+      
+      layer2Title: "Fondation Émotionnelle",
+      layer2TitleArabic: "الأساس العاطفي",
+      layer2Subtitle: "Dynamique Profonde (الديناميكية العميقة - al-Dīnāmīkīya al-ʿAmīqa)",
+      layer2Badge: "🌟 LE PLUS IMPORTANT POUR L'HARMONIE À LONG TERME",
+      
+      layer3Title: "Effet de la Personne 1 sur le Noyau Émotionnel de la Personne 2",
+      layer4Title: "Effet de la Personne 2 sur le Noyau Émotionnel de la Personne 1",
+      crossDynamicsTitle: "Dynamiques d'Influence Croisée",
+      crossDynamicsArabic: "الديناميكيات المتقاطعة",
+      crossDynamicsExplanation: "Ces niveaux montrent comment l'énergie consciente de chaque personne affecte le noyau émotionnel de l'autre. Pensez-y comme : 'Comment votre personnalité touche-t-elle leur cœur ?'",
+      
+      // Sections "Ce Que Cela Mesure"
+      whatItMeasures: "📖 Ce Que Cela Mesure :",
+      basedOn: "🔍 Basé Sur :",
+      whyItMatters: "💡 Pourquoi C'est Important :",
+      
+      // Explications du Niveau 1
+      layer1WhatItMeans: "Comment vos personnalités conscientes interagissent au quotidien. C'est l'énergie que vous apportez activement aux conversations, décisions et activités partagées. C'est ce que les gens voient quand ils regardent votre relation.",
+      layer1BasedOn: "Les tempéraments élémentaires de vos deux noms (calculés en utilisant la méthode Ḥadath ÷ 4)",
+      layer1WhyItMatters: "Cela détermine votre style de communication, la résolution des conflits et si vous vous 'comprenez' naturellement dans les moments quotidiens. Des scores élevés ici signifient un flux facile et naturel dans la vie quotidienne.",
+      
+      // Explications du Niveau 2
+      layer2WhatItMeans: "La compatibilité émotionnelle subconsciente héritée de vos mères. C'est le 'sentiment de chez-soi' que vous créez ensemble—le confort non dit, la sécurité et le lien profond qui existe naturellement ou doit être construit.",
+      layer2BasedOn: "Les tempéraments élémentaires des noms de vos deux mères (calculés en utilisant la méthode Ḥadath ÷ 4)",
+      layer2WhyItMatters: `C'est LE niveau le plus important pour le mariage et le partenariat à long terme. Voici pourquoi :
+
+• Les schémas émotionnels de votre mère ont façonné comment vous donnez et recevez l'amour
+• Ce niveau détermine si vous vous sentez émotionnellement "en sécurité" ensemble
+• Des scores élevés ici signifient que vous comprenez intuitivement les besoins de l'autre
+• Des scores faibles signifient que vous aurez besoin de travail conscient pour répondre aux besoins émotionnels de l'autre
+
+De nombreux couples avec une grande chimie de surface luttent parce que ce niveau n'est pas harmonieux. Savoir cela à l'avance vous aide à vous préparer.`,
+      
+      layer2ExampleTitle: "🎭 Exemple Concret :",
+      layer2Example: `Ahmad et Layla ont une excellente chimie quotidienne (Feu + Air = 85%).
+
+Mais quand le stress frappe :
+• Les racines Eau d'Ahmad (de sa mère) ont besoin de traitement émotionnel et de parole
+• Les racines Feu de Layla (de sa mère) ont besoin d'espace et d'action pour se sentir mieux
+
+Sans savoir cela, ils se blessent mutuellement :
+• Ahmad se sent abandonné quand Layla prend de l'espace
+• Layla se sent étouffée quand Ahmad veut parler
+
+AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous sentir en sécurité—juste de différentes manières."`,
+      
+      // Tempérament Dual
+      dualTemperamentTitle: "🎭 Vos Tempéraments Individuels",
+      dualTemperamentArabic: "طبائعكم الفردية",
+      dualTemperamentExplanation: "Comprendre le tempérament intérieur (conscient) et cosmique (subconscient) de chaque personne vous aide à voir la personne complète—pas seulement la surface.",
+      
+      innerTemperament: "Tempérament Intérieur",
+      innerTemperamentArabic: "الطبع الباطن",
+      innerTemperamentDef: "Votre moi conscient—comment vous vous présentez activement dans le monde. Calculé à partir de VOTRE nom.",
+      
+      cosmicTemperament: "Tempérament Cosmique",
+      cosmicTemperamentArabic: "الطبع الفلكي",
+      cosmicTemperamentDef: "Votre empreinte émotionnelle héritée—les schémas subconscients de votre lignée. Calculé à partir du nom de VOTRE MÈRE.",
+      
+      // Types d'intégration
+      fullyAligned: "Pleinement Aligné",
+      fullyAlignedMeaning: "Vous êtes authentiquement qui vous semblez être. Ce que les gens voient correspond à ce que vous ressentez à l'intérieur. Cela crée une énergie forte et cohérente.",
+      fullyAlignedChallenge: "Peut être TROP de cet élément—manquant d'équilibre des autres.",
+      
+      naturallyBalanced: "Naturellement Équilibré",
+      naturallyBalancedMeaning: "Vos côtés intérieurs et cosmiques se soutiennent mutuellement. Vous avez accès à plusieurs énergies qui fonctionnent ensemble harmonieusement.",
+      
+      internalComplexity: "Complexité Interne",
+      internalComplexityMeaning: "Il y a un écart entre comment vous vous présentez et ce dont vous avez besoin émotionnellement. Les autres peuvent ne pas voir toute votre profondeur. Vous pouvez vous sentir incompris.",
+      internalComplexityAdvice: "💡 Votre travail est l'intégration : laisser votre moi intérieur s'exprimer à travers votre moi extérieur. Honorez les deux côtés.",
+      
+      // Recommandations
+      yourPersonalizedGuidance: "💡 Votre Guidance Personnalisée",
+      yourPersonalizedGuidanceArabic: "إرشاداتكم الشخصية",
+      guidanceIntro: "Basé sur les quatre niveaux de votre compatibilité, voici des conseils spécifiques pour renforcer votre connexion :",
+      
+      yourNaturalStrengths: "🌟 Vos Forces Naturelles",
+      strengthsDesc: "Ces domaines vous viennent facilement. Célébrez-les et maintenez-les :",
+      
+      areasToNurture: "⚠️ Domaines à Cultiver",
+      challengesDesc: "Ces domaines nécessitent une attention consciente, mais la conscience est la moitié de la solution :",
+      
+      specificPractices: "🛠️ Pratiques Spécifiques",
+      practicesDesc: "Essayez ces activités pour équilibrer vos dynamiques élémentaires :",
+      
+      spiritualBalancing: "🤲 Équilibrage Spirituel",
+      dhikrDesc: "Ces phrases sacrées aident à harmoniser vos énergies élémentaires :",
+      
+      // Glossaire Éducatif
+      understandingTheTerms: "[ℹ️ Comprendre les Termes]",
+      glossaryTitle: "📚 Glossaire ʿIlm al-Ḥurūf",
+      glossaryTitleArabic: "مسرد علم الحروف",
+      
+      ilmAlHuruf: "ʿIlm al-Ḥurūf",
+      ilmAlHurufArabic: "علم الحروف",
+      ilmAlHurufDef: "La Science des Lettres — Une science islamique ancienne qui étudie les propriétés mystiques des lettres arabes et leurs valeurs numériques. Chaque lettre porte une énergie spécifique (Feu, Air, Eau ou Terre) et une valeur numérique utilisée pour les calculs spirituels.",
+      
+      hadath: "al-Ḥadath",
+      hadathArabic: "الحدث",
+      hadathDef: "L'Essence Numérique — La somme de toutes les valeurs de lettres dans un nom utilisant le système Abjad (أبجد). Ce nombre révèle l'essence spirituelle et les schémas de destin.",
+      
+      hadathDiv4: "al-Ḥadath ÷ 4",
+      hadathDiv4Def: `La méthode classique pour déterminer le tempérament élémentaire. Le reste quand Ḥadath est divisé par 4 indique l'élément dominant :
+• Reste 1 = Feu (النار)
+• Reste 2 = Air (الهواء)
+• Reste 3 = Eau (الماء)
+• Reste 0 = Terre (الأرض)`,
+      
+      zawajAlHuruf: "Zawāj al-Ḥurūf",
+      zawajAlHurufArabic: "زواج الحروف",
+      zawajAlHurufDef: "Mariage des Lettres — L'analyse de compatibilité entre deux noms basée sur leur harmonie élémentaire. Comment les lettres se 'marient' ou interagissent entre deux personnes.",
+      
+      // Transparence des Calculs
+      showCalculation: "[📊 Montrer Comment Nous Avons Calculé Cela]",
+      calculationBreakdown: "🔢 Détail des Calculs",
+      calculationBreakdownArabic: "تفصيل الحسابات",
+      
+      step1: "Étape 1 : Convertir le nom en valeurs Abjad",
+      step2: "Étape 2 : Additionner toutes les valeurs",
+      step3: "Étape 3 : Diviser par 4",
+      step4: "Étape 4 : Associer le reste à l'élément",
+      
+      totalHadath: "Total (Ḥadath)",
+      quotient: "Quotient",
+      remainder: "Reste",
+      element: "Élément",
+      
+      weightingExplanation: "Pourquoi ces poids ? La Fondation Émotionnelle (40%) est la plus importante pour l'harmonie à long terme. La Vie Quotidienne (30%) affecte le bonheur quotidien. Les Dynamiques Croisées (15% chacune) montrent comment vous affectez les noyaux de l'autre."
+    },
+
+    // Descriptions des Jumelages d'Éléments (pour les 10 combinaisons)
+    elementPairings: {
+      fireFire: {
+        label: "Feu + Feu : Le Couple Puissant",
+        description: "Intense, passionné et rapide. Vous apportez tous les deux une énergie audacieuse et de la détermination à la relation.",
+        dailyLife: "La vie quotidienne ensemble semble électrique et excitante. Beaucoup d'action, d'aventure et de spontanéité.",
+        challenge: "⚠️ Peut rivaliser ou s'épuiser sans repos. Tous les deux veulent diriger.",
+        tip: "💡 Planifiez du temps calme ensemble. Pratiquez l'écoute, pas seulement l'action."
+      },
+      fireAir: {
+        label: "Feu + Air : Le Duo Visionnaire",
+        description: "Le Feu transforme les idées de l'Air en action. Créatif, énergisant et plein de possibilités.",
+        dailyLife: "Vous vous inspirez constamment. Les conversations mènent à des projets. Les idées deviennent réalité.",
+        challenge: "⚠️ Peut négliger la profondeur émotionnelle et les détails pratiques. Toute vision, peu d'ancrage.",
+        tip: "💡 Bilans hebdomadaires : 'Comment te sens-tu ?' pas seulement 'Que fais-tu ?'"
+      },
+      fireWater: {
+        label: "Feu + Eau : Vapeur et Transformation",
+        description: "La passion rencontre la profondeur. Cela crée soit de la vapeur (transformation) soit de l'évaporation (conflit).",
+        dailyLife: "Vos approches de la vie sont opposées. Le Feu agit vite ; l'Eau a besoin de temps pour ressentir. Cela crée des frictions dans les décisions quotidiennes.",
+        challenge: "⚠️ Le Feu peut submerger l'Eau. L'Eau peut se retirer du Feu. Les styles de communication s'affrontent.",
+        tip: "💡 Feu : Pratiquez l'écoute active et la patience. Eau : Exprimez vos besoins clairement et directement."
+      },
+      fireEarth: {
+        label: "Feu + Terre : La Vision Rencontre la Fondation",
+        description: "Le Feu apporte vision et excitation ; la Terre apporte exécution et stabilité. Complémentaire mais à des rythmes différents.",
+        dailyLife: "Le Feu veut constamment commencer de nouvelles choses ; la Terre préfère finir ce qui est commencé. Cela crée une tension de planification mais aussi de l'équilibre.",
+        challenge: "⚠️ Rythmes différents : Le Feu se précipite, la Terre prend son temps. Peut sembler tirer dans des directions opposées.",
+        tip: "💡 Combinez des sessions de planification (Terre) avec des aventures spontanées (Feu). Honorez les deux approches."
+      },
+      airAir: {
+        label: "Air + Air : Le Partenariat Intellectuel",
+        description: "Conversations infinies, curiosité partagée et stimulation mentale. Vous comprenez comment l'autre pense.",
+        dailyLife: "Vous pouvez parler pendant des heures. Chaque expérience devient une discussion. Apprendre et explorer ensemble est naturel.",
+        challenge: "⚠️ Peut trop réfléchir ou éviter la vulnérabilité émotionnelle. Tout dans la tête, pas assez dans le cœur.",
+        tip: "💡 Créez des 'zones sans analyse'. Pratiquez le ressenti sans discussion. Touchez plus, parlez moins parfois."
+      },
+      airWater: {
+        label: "Air + Eau : L'Esprit Rencontre le Cœur",
+        description: "L'Air donne des mots aux sentiments de l'Eau. L'Eau ajoute de la profondeur aux idées de l'Air. Magnifique quand équilibré.",
+        dailyLife: "L'Air aide l'Eau à exprimer les émotions clairement. L'Eau rappelle à l'Air que les sentiments comptent autant que les pensées.",
+        challenge: "⚠️ L'Air peut rationaliser les sentiments ; l'Eau peut se sentir incomprise lorsque les émotions sont analysées.",
+        tip: "💡 Air : Écrivez des lettres d'amour—utilisez vos mots pour l'émotion. Eau : Partagez vos rêves à voix haute—faites confiance à l'Air pour écouter."
+      },
+      airEarth: {
+        label: "Air + Terre : Les Idées Prennent Racine",
+        description: "L'Air rêve, la Terre construit. Des approches opposées qui peuvent se compléter ou s'affronter.",
+        dailyLife: "L'Air veut explorer les possibilités ; la Terre veut s'engager dans une voie. Cela crée des frictions décisionnelles quotidiennes.",
+        challenge: "⚠️ L'Air peut sembler dispersé pour la Terre ; la Terre peut sembler rigide pour l'Air. Valeurs différentes autour de la structure.",
+        tip: "💡 Créez des tableaux de vision ensemble (Air), puis assignez des tâches et des échéances (Terre). Trouvez un terrain d'entente."
+      },
+      waterWater: {
+        label: "Eau + Eau : La Connexion Profonde",
+        description: "Compréhension intuitive. Vous ressentez les émotions de l'autre sans mots. L'empathie naturelle circule entre vous.",
+        dailyLife: "Un regard dit tout. Vous vous nourrissez instinctivement. La sécurité émotionnelle vient naturellement.",
+        challenge: "⚠️ Peut se noyer dans les émotions ensemble. Peut devenir isolé du monde extérieur. Besoin de la perspective de l'Air.",
+        tip: "💡 Écrivez dans un journal ensemble, puis discutez de ce que vous avez écrit. Mettez les émotions en mots. Connectez-vous aussi avec les autres."
+      },
+      waterEarth: {
+        label: "Eau + Terre : Croissance Nourricière",
+        description: "Harmonie naturelle. L'Eau nourrit la Terre, la Terre retient l'Eau. Comme un jardin—la croissance se produit naturellement.",
+        dailyLife: "Vous soutenez la croissance de l'autre sans effort. L'Eau apporte les sentiments, la Terre apporte la stabilité. Équilibré et paisible.",
+        challenge: "⚠️ Peut éviter les conflits ou devenir stagnant. Trop confortable peut signifier aucun défi de croissance.",
+        tip: "💡 Cuisinez ensemble, jardinez, créez avec vos mains. Embrassez le changement doux—essayez de nouvelles choses mensuellement."
+      },
+      earthEarth: {
+        label: "Terre + Terre : La Fondation Solide",
+        description: "Stabilité inébranlable. Loyauté, cohérence et objectifs pratiques partagés. Vous construisez ensemble brique par brique.",
+        dailyLife: "Routines fiables, responsabilités partagées et progrès constants. Vous savez à quoi vous attendre de l'autre.",
+        challenge: "⚠️ Peut résister au changement ou devenir trop routinier. Tous deux peuvent être têtus. La vie semble sûre mais peut manquer de spontanéité.",
+        tip: "💡 Planifiez des 'nouvelles expériences' mensuelles. Brisez les routines ensemble intentionnellement. Invitez l'énergie de l'Air et du Feu."
       }
     },
 
@@ -2486,18 +3470,18 @@ export const translations = {
     // TIMING RESULTS COMPONENT
     timingResults: {
       unableToCalculate: "Impossible de calculer l'heure planétaire. Veuillez réessayer.",
-      deepRestNeededToday: "Repos profond nécessaire aujourd'hui",
-      todayIsRestDay: "Aujourd'hui est un jour de repos",
+      deepRestNeededToday: "Repos Profond Nécessaire Aujourd'hui",
+      todayIsRestDay: "Aujourd'hui est un Jour de Repos",
       criticalLowEnergy: "Énergie critique détectée. Votre esprit se recalibre—honorez ce signal de guérison avec un repos physique et mental profond aujourd'hui.",
       lowHarmonyToday: "Harmonie faible aujourd'hui suggère que c'est un jour de repos stratégique. Concentrez-vous sur la planification et la réflexion plutôt que sur l'exécution et les nouveaux départs.",
-      recommendedToday: "Recommandé aujourd'hui :",
-      viewFullWeek: "Voir la semaine complète",
+      recommendedToday: "Recommandé Aujourd'hui :",
+      viewFullWeek: "Voir la Semaine Complète",
       dismiss: "Ignorer",
-      restDayActive: "Jour de repos actif",
+      restDayActive: "Jour de Repos Actif",
       restDayNote: "Les heures planétaires ci-dessous sont affichées à titre de référence, mais minimisez les activités aujourd'hui.",
-      currentPlanetaryHour: "Heure planétaire actuelle",
-      favorableFor: "Favorable pour :",
-      avoid: "À éviter :",
+      currentPlanetaryHour: "Heure Planétaire Actuelle",
+      favorableFor: "Favorable Pour :",
+      avoid: "À Éviter :",
       perfectAlignment: "ALIGNEMENT PARFAIT !",
       strongEnergy: "ÉNERGIE FORTE",
       restTime: "TEMPS DE REPOS",
@@ -2506,14 +3490,69 @@ export const translations = {
       nextWindow: "Prochaine fenêtre {element} :",
       bestForNow: "Idéal pour MAINTENANT :",
       bestForWhenReturns: "Idéal quand votre élément revient :",
-      yourPersonalYear: "Votre année personnelle",
-      recommendedDhikr: "Dhikr recommandé aujourd'hui",
+      yourPersonalYear: "Votre Année Personnelle",
+      recommendedDhikr: "Dhikr Recommandé Aujourd'hui",
       count: "Compte",
       times: "fois",
       bestTime: "Meilleur moment",
       benefit: "Bénéfice",
-      actNow: "Agir maintenant",
-      realTimeGuidance: "Guidage en temps réel"
+      actNow: "Agir Maintenant",
+      realTimeGuidance: "Guidage en Temps Réel",
+      
+      // Optimal Sequence translations
+      optimalSequenceFor: "Séquence Optimale pour {day}",
+      morning: "Matin",
+      midday: "Midi",
+      afternoon: "Après-midi",
+      evening: "Soir",
+      bestFor: "Idéal Pour :",
+      avoidLabel: "À Éviter :",
+      
+      // Nouvelles additions pour une meilleure UX
+      harmony: "Harmonie :",
+      harmonyScore: "Harmonie",
+      planetEnergy: "Énergie {planet}",
+      yourElement: "Votre {element}",
+      hourElement: "{element} de l'heure",
+      classicalWisdom: "Sagesse Classique :",
+      deepRestQuote: "Man ʿarafa infisāl waqtihi, faqad ḥafaẓa ṭāqatahu",
+      deepRestTranslation: "Qui connaît le temps de déconnexion, préserve son énergie",
+      restDayQuote: "Al-sukūn qabl al-ḥaraka",
+      restDayTranslation: "Le calme avant le mouvement apporte une action bénie",
+      minutesLeft: "{minutes} minutes restantes",
+      hoursLeft: "{hours} heures restantes",
+      alignment: "Alignement",
+      energyStatus: "État de l'Énergie",
+      timeRemaining: "Temps Restant",
+      
+      // Guidage des couleurs
+      whatToWearToday: "Quoi Porter Aujourd'hui",
+      wearTheseColors: "Portez ces couleurs :",
+      tryThis: "Essayez ceci :",
+      you: "Vous",
+      today: "Aujourd'hui",
+      perfectFit: "Parfait",
+      goingWell: "Bien",
+      balanced: "Équilibré",
+      needCare: "Attention",
+      
+      // Section Agir Maintenant
+      actNowRealTimeGuidance: "Agir Maintenant - Guidage en Temps Réel",
+      useThisTimeFor: "Utilisez ce temps pour :",
+      handleRoutineTasks: "Gérer les tâches routinières",
+      continueOngoingWork: "Continuer le travail en cours",
+      waitForBetterTiming: "Attendre un meilleur moment",
+      plentyOfTime: "Beaucoup de temps restant dans cette fenêtre",
+      actNowWarning: "AGISSEZ MAINTENANT ! Le moment optimal se termine bientôt.",
+      howWeFiguredThisOut: "Comment nous avons déterminé cela",
+      howItWorks: "Comment ça fonctionne :",
+      planetaryRulerExplanation: "Nous regardons le maître planétaire d'aujourd'hui ({planet}) et quel élément contrôle la plupart des heures d'aujourd'hui ({element}). Ensemble, ils créent la personnalité énergétique du jour.",
+      yourFitExplanation: "Votre compatibilité : Votre nature {userElement} et l'énergie {dayElement} d'aujourd'hui sont alignées à {harmonyPercent}% - comme deux personnalités qui s'entendent.",
+      dayRuler: "Maître du Jour :",
+      mostActive: "Plus Actif :",
+      dominantElement: "Dominant :",
+      harmonyLabel: "Harmonie :",
+      ancientWisdomMessage: "La sagesse ancienne dit que les couleurs et l'énergie fonctionnent ensemble. Portez ce qui vous convient ! 🌀"
     },
 
     // ACTION BUTTONS & ALIGNMENT
@@ -2527,7 +3566,16 @@ export const translations = {
       waitFor: "Attendre {element}",
       handleRoutineTasks: "Gérer les tâches routinières",
       continueOngoingWork: "Continuer le travail en cours",
-      waitForBetterTiming: "Attendre un meilleur moment"
+      waitForBetterTiming: "Attendre un meilleur moment",
+      takeBoldAction: "Prendre une action audacieuse",
+      writeOrCommunicate: "Écrire ou communiquer",
+      brainstormIdeas: "Faire un brainstorming",
+      creativeWork: "Travail créatif",
+      deepReflection: "Réflexion profonde",
+      buildOrOrganize: "Construire ou organiser",
+      completeTasks: "Compléter les tâches",
+      lowStakesActivities: "Activités à faible enjeu",
+      preparationWork: "Travail de préparation"
     },
 
     // HARMONY & ALIGNMENT

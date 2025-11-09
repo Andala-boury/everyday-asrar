@@ -129,21 +129,51 @@ export function calculatePersonalityNumber(name: string): number {
 }
 
 /**
- * Calculate Destiny Number
- * Sum of: full birth name + mother's name + father's name
- * Your ultimate life path and mission
+ * Calculate Destiny Number - CORE LIFE PURPOSE
+ * 
+ * IMPORTANT: Uses personal name + optional father name ONLY.
+ * Mother's name is NOT included as this represents core identity (WHO you are),
+ * not external influences (WHAT surrounds you).
+ * 
+ * Authentic Ḥurūfī Tradition:
+ * - Personal Name = Your soul's mission
+ * - Father Name (optional) = Family lineage influence
+ * - Mother's Name = NOT used for core destiny (see calculateMaternalInfluence instead)
  * 
  * This represents the soul's destiny - what you're meant to accomplish
  */
 export function calculateDestinyNumber(
   firstName: string,
-  motherName: string,
-  fatherName: string
+  fatherName?: string
 ): number {
   let total = 0;
-  const fullName = `${firstName}${motherName}${fatherName}`;
+  const fullName = fatherName ? `${firstName}${fatherName}` : firstName;
+  // ✅ Mother's name deliberately excluded from core destiny calculation
   
   for (const char of fullName) {
+    total += getAbjadValue(char);
+  }
+  
+  return reduceToSingleDigit(total);
+}
+
+/**
+ * Calculate Maternal Influence Number - EXTERNAL CONDITIONS
+ * 
+ * This represents how your mother's energy affects your external path,
+ * obstacles, protection, and inherited emotional patterns.
+ * 
+ * This is separate from core destiny and should be displayed in a
+ * different section labeled "Inherited Influences" or "External Conditions".
+ */
+export function calculateMaternalInfluence(
+  firstName: string,
+  motherName: string
+): number {
+  let total = 0;
+  const combined = `${firstName}${motherName}`;
+  
+  for (const char of combined) {
     total += getAbjadValue(char);
   }
   
@@ -312,9 +342,12 @@ export function calculateAllLifePathNumbers(
     lifePathNumber: calculateLifePathNumber(firstName),
     soulUrgeNumber: calculateSoulUrgeNumber(firstName),
     personalityNumber: calculatePersonalityNumber(firstName),
-    destinyNumber: calculateDestinyNumber(firstName, motherName, fatherName),
+    destinyNumber: calculateDestinyNumber(firstName, fatherName), // ✅ Fixed: No mother's name
     cyclePosition,
     currentAge: age,
-    currentStation: getSpiritualStationForCycle(cyclePosition)
+    currentStation: getSpiritualStationForCycle(cyclePosition),
+    // Add maternal influence as separate field (optional)
+    maternalInfluence: motherName ? calculateMaternalInfluence(firstName, motherName) : undefined
   };
 }
+

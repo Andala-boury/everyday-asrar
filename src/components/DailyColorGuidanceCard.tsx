@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import { Palette, ChevronDown, ChevronUp } from 'lucide-react';
 import type { DailyColorGuidance } from '../features/ilm-huruf/core';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface DailyColorGuidanceCardProps {
   guidance: DailyColorGuidance;
 }
 
 export function DailyColorGuidanceCard({ guidance }: DailyColorGuidanceCardProps) {
+  const { t } = useLanguage();
   const [showWhy, setShowWhy] = useState(false);
   
   const getHarmonyIcon = () => {
@@ -22,10 +24,10 @@ export function DailyColorGuidanceCard({ guidance }: DailyColorGuidanceCardProps
   
   const getHarmonyLabel = () => {
     switch (guidance.harmonyLevel) {
-      case 'excellent': return 'Perfect fit';
-      case 'good': return 'Going well';
-      case 'neutral': return 'Balanced';
-      case 'challenging': return 'Need care';
+      case 'excellent': return t.timingResults.perfectFit;
+      case 'good': return t.timingResults.goingWell;
+      case 'neutral': return t.timingResults.balanced;
+      case 'challenging': return t.timingResults.needCare;
     }
   };
   
@@ -43,7 +45,7 @@ export function DailyColorGuidanceCard({ guidance }: DailyColorGuidanceCardProps
         <div className="flex items-center gap-2">
           <Palette className="w-5 h-5 text-purple-600 dark:text-purple-400" />
           <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-            What to Wear Today
+            {t.timingResults.whatToWearToday}
           </h3>
         </div>
         <span className="text-2xl">{getHarmonyIcon()}</span>
@@ -53,11 +55,11 @@ export function DailyColorGuidanceCard({ guidance }: DailyColorGuidanceCardProps
       <div className="flex items-center justify-between gap-2 p-2.5 bg-slate-50 dark:bg-slate-700/50 rounded-lg text-sm">
         <div className="flex gap-3 flex-1">
           <span className="font-semibold text-slate-700 dark:text-slate-300">
-            You: <span className="text-purple-600 dark:text-purple-400">{guidance.userElement}</span>
+            {t.timingResults.you}: <span className="text-purple-600 dark:text-purple-400">{guidance.userElement}</span>
           </span>
           <span className="text-slate-400 dark:text-slate-500">•</span>
           <span className="font-semibold text-slate-700 dark:text-slate-300">
-            Today: <span className="text-blue-600 dark:text-blue-400">{guidance.dailyDominantElement}</span>
+            {t.timingResults.today}: <span className="text-blue-600 dark:text-blue-400">{guidance.dailyDominantElement}</span>
           </span>
         </div>
         <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
@@ -71,7 +73,7 @@ export function DailyColorGuidanceCard({ guidance }: DailyColorGuidanceCardProps
 
       {/* Colors to Wear - Compact */}
       <div className="space-y-2">
-        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">🎨 Wear these colors:</p>
+        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">🎨 {t.timingResults.wearTheseColors}</p>
         <div className="flex gap-2">
           {[guidance.primaryColor, guidance.secondaryColor, guidance.accentColor].map((color, idx) => (
             <div key={idx} className="flex flex-col items-center gap-1">
@@ -89,11 +91,11 @@ export function DailyColorGuidanceCard({ guidance }: DailyColorGuidanceCardProps
       {/* Best Time + Practical Tip */}
       <div className="grid grid-cols-2 gap-2">
         <div className="p-2.5 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
-          <p className="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-0.5">⏰ Best time:</p>
+          <p className="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-0.5">⏰ {t.timingResults.bestTime}:</p>
           <p className="text-xs text-amber-900 dark:text-amber-200">{guidance.bestEnergyTimes[0]}</p>
         </div>
         <div className="p-2.5 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-          <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-0.5">💡 Try this:</p>
+          <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-0.5">💡 {t.timingResults.tryThis}:</p>
           <p className="text-xs text-blue-900 dark:text-blue-200">{guidance.practicalTips[0]}</p>
         </div>
       </div>
@@ -117,7 +119,7 @@ export function DailyColorGuidanceCard({ guidance }: DailyColorGuidanceCardProps
         onClick={() => setShowWhy(!showWhy)}
         className="w-full p-2 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors flex items-center justify-between"
       >
-        <span>📚 How we figured this out</span>
+        <span>📚 {t.timingResults.howWeFiguredThisOut}</span>
         {showWhy ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
       </button>
 
@@ -125,10 +127,10 @@ export function DailyColorGuidanceCard({ guidance }: DailyColorGuidanceCardProps
       {showWhy && (
         <div className="p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg space-y-2 text-xs text-slate-700 dark:text-slate-300">
           <p>
-            <span className="font-semibold">How it works:</span> We look at today's planetary ruler ({guidance.dayRulerElement}) and which element controls most of today's hours ({guidance.mostActiveElement}). Together they create today's energy personality.
+            <span className="font-semibold">{t.timingResults.howItWorks}</span> {t.timingResults.planetaryRulerExplanation.replace('{planet}', guidance.dayRulerElement).replace('{element}', guidance.mostActiveElement)}
           </p>
           <p>
-            <span className="font-semibold">Your fit:</span> Your {guidance.userElement} nature and today's {guidance.dailyDominantElement} energy are {guidance.harmonyScore}% aligned - like two personalities getting along.
+            <span className="font-semibold">{t.timingResults.yourFitExplanation.split(':')[0]}:</span> {t.timingResults.yourFitExplanation.split(':')[1]?.replace('{userElement}', guidance.userElement).replace('{dayElement}', guidance.dailyDominantElement).replace('{harmonyPercent}', guidance.harmonyScore.toString())}
           </p>
           <p className="text-xs text-slate-600 dark:text-slate-400 italic">
             {guidance.harmonyBreakdown}
@@ -138,7 +140,7 @@ export function DailyColorGuidanceCard({ guidance }: DailyColorGuidanceCardProps
 
       {/* Disclaimer */}
       <div className="text-xs text-slate-500 dark:text-slate-400 text-center">
-        Ancient wisdom says colors and energy work together. Wear what feels right to you! 🌍
+        {t.timingResults.ancientWisdomMessage}
       </div>
     </div>
   );

@@ -1,19 +1,23 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Sun, Moon, Star, Heart, BookOpen, Lightbulb, 
   Calendar, Clock, Compass, Users, Sparkles,
   TrendingUp, Target, MessageCircle, Home, Flame, Keyboard, ExternalLink,
-  Plus, Info, X, ArrowUp, Circle, Minus, Zap, CheckCircle2
+  Plus, Info, X, ArrowUp, Circle, Minus, Zap, CheckCircle2, User
 } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { BalanceMeter } from '../../components/BalanceMeter';
 import type { ElementType } from '../../components/BalanceMeter';
 import { HarmonyTooltip, type HarmonyBreakdown } from '../../components/HarmonyTooltip';
+import { InfoTooltip } from '../../components/InfoTooltip';
+import { GlossaryModal } from '../../components/GlossaryModal';
+import { CalculationBreakdownModal } from '../../components/CalculationBreakdownModal';
 import { ActNowButtons } from '../../components/ActNowButtons';
 import { DailyColorGuidanceCard } from '../../components/DailyColorGuidanceCard';
 import NameAutocomplete from '../../components/NameAutocomplete';
+import { TemperamentDisplay } from '../../components/TemperamentDisplay';
 import {
   analyzeNameDestiny,
   analyzeCompatibility,
@@ -70,7 +74,8 @@ import { ArabicKeyboard } from '../../components/ArabicKeyboard';
 import { useAbjad } from '../../contexts/AbjadContext';
 import { AbjadSystemSelector } from '../../components/AbjadSystemSelector';
 import { analyzeRelationshipCompatibility, getElementFromAbjadTotal } from '../../utils/relationshipCompatibility';
-import type { RelationshipCompatibility } from '../../types/compatibility';
+import { analyzeFourLayerCompatibility } from '../../utils/fourLayerCompatibility';
+import type { RelationshipCompatibility, FourLayerCompatibility } from '../../types/compatibility';
 import { CompatibilityGauge } from '../../components/CompatibilityGauge';
 import { EnhancedLifePathView } from '../../components/EnhancedLifePathView';
 import {
@@ -89,6 +94,7 @@ import {
   type LifeCycleAnalysis,
   type PinnacleChallenge
 } from '../../utils/enhancedLifePath';
+import { DivineTiming } from '../../components/divine-timing';
 
 // ============================================================================
 // ELEMENT HARMONY & LETTER CHEMISTRY CONSTANTS
@@ -104,14 +110,14 @@ const ELEMENT_HARMONY: Record<string, Record<string, number>> = {
 
 // Letter to Element mapping (28 Arabic letters)
 const LETTER_ELEMENTS: Record<string, 'fire' | 'air' | 'water' | 'earth'> = {
-  // Fire letters (hot & dry): ا د ط م ف ش ذ
-  'ا': 'fire', 'د': 'fire', 'ط': 'fire', 'م': 'fire', 'ف': 'fire', 'ش': 'fire', 'ذ': 'fire',
-  // Air letters (hot & wet): ه و ي ن ص ت ض  
-  'ه': 'air', 'و': 'air', 'ي': 'air', 'ن': 'air', 'ص': 'air', 'ت': 'air', 'ض': 'air',
-  // Water letters (cold & wet): ب ح ل ع ر ك غ
-  'ب': 'water', 'ح': 'water', 'ل': 'water', 'ع': 'water', 'ر': 'water', 'ك': 'water', 'غ': 'water',
-  // Earth letters (cold & dry): ج ز س ق ث خ ظ
-  'ج': 'earth', 'ز': 'earth', 'س': 'earth', 'ق': 'earth', 'ث': 'earth', 'خ': 'earth', 'ظ': 'earth'
+  // Fire letters (hot & dry): Ø§ Ø¯ Ø· Ù… Ù Ø´ Ø°
+  'Ø§': 'fire', 'Ø¯': 'fire', 'Ø·': 'fire', 'Ù…': 'fire', 'Ù': 'fire', 'Ø´': 'fire', 'Ø°': 'fire',
+  // Air letters (hot & wet): Ù‡ Ùˆ ÙŠ Ù† Øµ Øª Ø¶  
+  'Ù‡': 'air', 'Ùˆ': 'air', 'ÙŠ': 'air', 'Ù†': 'air', 'Øµ': 'air', 'Øª': 'air', 'Ø¶': 'air',
+  // Water letters (cold & wet): Ø¨ Ø­ Ù„ Ø¹ Ø± Ùƒ Øº
+  'Ø¨': 'water', 'Ø­': 'water', 'Ù„': 'water', 'Ø¹': 'water', 'Ø±': 'water', 'Ùƒ': 'water', 'Øº': 'water',
+  // Earth letters (cold & dry): Ø¬ Ø² Ø³ Ù‚ Ø« Ø® Ø¸
+  'Ø¬': 'earth', 'Ø²': 'earth', 'Ø³': 'earth', 'Ù‚': 'earth', 'Ø«': 'earth', 'Ø®': 'earth', 'Ø¸': 'earth'
 };
 
 // Helper function to get balance advice key from element pair
@@ -150,15 +156,15 @@ function getDhikrEffectKey(element: 'fire' | 'air' | 'water' | 'earth'): string 
 
 // Divine Names for each element (these are proper names, don't translate)
 const DHIKR_NAMES: Record<'fire' | 'air' | 'water' | 'earth', { name: string; nameFr: string; nameAr: string }> = {
-  fire: { name: 'Yā Laṭīf (يا لطيف)', nameFr: 'Yā Laṭīf (يا لطيف)', nameAr: 'يا لطيف' },
-  air: { name: 'Yā Ḥakīm (يا حكيم)', nameFr: 'Yā Ḥakīm (يا حكيم)', nameAr: 'يا حكيم' },
-  water: { name: 'Yā Nūr (يا نور)', nameFr: 'Yā Nūr (يا نور)', nameAr: 'يا نور' },
-  earth: { name: 'Yā Fattāḥ (يا فتاح)', nameFr: 'Yā Fattāḥ (يا فتاح)', nameAr: 'يا فتاح' }
+  fire: { name: 'YÄ Laá¹­Ä«f (ÙŠØ§ Ù„Ø·ÙŠÙ)', nameFr: 'YÄ Laá¹­Ä«f (ÙŠØ§ Ù„Ø·ÙŠÙ)', nameAr: 'ÙŠØ§ Ù„Ø·ÙŠÙ' },
+  air: { name: 'YÄ á¸¤akÄ«m (ÙŠØ§ Ø­ÙƒÙŠÙ…)', nameFr: 'YÄ á¸¤akÄ«m (ÙŠØ§ Ø­ÙƒÙŠÙ…)', nameAr: 'ÙŠØ§ Ø­ÙƒÙŠÙ…' },
+  water: { name: 'YÄ NÅ«r (ÙŠØ§ Ù†ÙˆØ±)', nameFr: 'YÄ NÅ«r (ÙŠØ§ Ù†ÙˆØ±)', nameAr: 'ÙŠØ§ Ù†ÙˆØ±' },
+  earth: { name: 'YÄ FattÄá¸¥ (ÙŠØ§ ÙØªØ§Ø­)', nameFr: 'YÄ FattÄá¸¥ (ÙŠØ§ ÙØªØ§Ø­)', nameAr: 'ÙŠØ§ ÙØªØ§Ø­' }
 };
 
 // Helper function to calculate element distribution from Arabic text
 function calculateElementDistribution(arabicText: string): Record<'fire' | 'air' | 'water' | 'earth', number> {
-  const normalized = arabicText.replace(/[ًٌٍَُِّْ\s]/g, '');
+  const normalized = arabicText.replace(/[Ù‹ÙŒÙÙŽÙÙÙ‘Ù’\s]/g, '');
   const letters = [...normalized];
   const total = letters.length;
   
@@ -196,17 +202,17 @@ function getDominantElement(distribution: Record<'fire' | 'air' | 'water' | 'ear
 
 // Helper function to get element icon
 function getElementIcon(element: 'fire' | 'air' | 'water' | 'earth'): string {
-  const icons = { fire: '🔥', air: '💨', water: '💧', earth: '🌍' };
+  const icons = { fire: 'ðŸ”¥', air: 'ðŸ’¨', water: 'ðŸ’§', earth: 'ðŸŒ' };
   return icons[element];
 }
 
 // Helper function to get element name in multiple languages
 function getElementName(element: 'fire' | 'air' | 'water' | 'earth', lang: 'en' | 'fr' | 'ar'): string {
   const names = {
-    fire: { en: 'Fire', fr: 'Feu', ar: 'النار' },
-    air: { en: 'Air', fr: 'Air', ar: 'الهواء' },
-    water: { en: 'Water', fr: 'Eau', ar: 'الماء' },
-    earth: { en: 'Earth', fr: 'Terre', ar: 'الأرض' }
+    fire: { en: 'Fire', fr: 'Feu', ar: 'Ø§Ù„Ù†Ø§Ø±' },
+    air: { en: 'Air', fr: 'Air', ar: 'Ø§Ù„Ù‡ÙˆØ§Ø¡' },
+    water: { en: 'Water', fr: 'Eau', ar: 'Ø§Ù„Ù…Ø§Ø¡' },
+    earth: { en: 'Earth', fr: 'Terre', ar: 'Ø§Ù„Ø£Ø±Ø¶' }
   };
   return names[element][lang];
 }
@@ -243,19 +249,19 @@ const PLANET_COLORS: Record<Planet, string> = {
 };
 
 const PLANET_ICONS_EMOJI: Record<Planet, string> = {
-  Sun: '☀️',
-  Moon: '🌙',
-  Mars: '♂️',
-  Mercury: '☿️',
-  Jupiter: '♃',
-  Venus: '♀️',
-  Saturn: '♄'
+  Sun: 'â˜€ï¸',
+  Moon: 'ðŸŒ™',
+  Mars: 'â™‚ï¸',
+  Mercury: 'â˜¿ï¸',
+  Jupiter: 'â™ƒ',
+  Venus: 'â™€ï¸',
+  Saturn: 'â™„'
 };
 
 export function IlmHurufPanel() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { abjad } = useAbjad(); // Get the current Abjad system
-  const [mode, setMode] = useState<'destiny' | 'compatibility' | 'timing' | 'life-path' | 'weekly'>('weekly');
+  const [mode, setMode] = useState<'destiny' | 'compatibility' | 'timing' | 'life-path'>('destiny');
   const [name, setName] = useState('');
   const [name2, setName2] = useState('');
   const [latinInput, setLatinInput] = useState('');
@@ -266,13 +272,25 @@ export function IlmHurufPanel() {
   const [translitWarnings, setTranslitWarnings] = useState<string[]>([]);
   const [birthDate, setBirthDate] = useState('');
   const [results, setResults] = useState<any>(null);
-  const [selectedDay, setSelectedDay] = useState<string | null>(null);
   
-  // Mother's name feature (Um Ḥadad)
+  // Mother's name feature (Um á¸¤adad)
   const [motherName, setMotherName] = useState('');
   const [motherLatinInput, setMotherLatinInput] = useState('');
   const [showMotherNameSection, setShowMotherNameSection] = useState(false);
   const [showMotherKeyboard, setShowMotherKeyboard] = useState(false);
+
+  // Four-layer compatibility: Mother's names for both people
+  const [motherName2, setMotherName2] = useState('');
+  const [motherLatinInput2, setMotherLatinInput2] = useState('');
+  const [showMotherNameSection1, setShowMotherNameSection1] = useState(false);
+  const [showMotherNameSection2, setShowMotherNameSection2] = useState(false);
+  const [showMotherKeyboard1, setShowMotherKeyboard1] = useState(false);
+  const [showMotherKeyboard2Compat, setShowMotherKeyboard2Compat] = useState(false);
+  const [compatibilityAnalysisMode, setCompatibilityAnalysisMode] = useState<'quick' | 'complete'>('quick');
+
+  // Modal states for educational features
+  const [showCalculationModal, setShowCalculationModal] = useState(false);
+  const [showGlossaryModal, setShowGlossaryModal] = useState(false);
 
   // Refs for auto-scroll and animations
   const formSectionRef = useRef<HTMLDivElement>(null);
@@ -284,7 +302,7 @@ export function IlmHurufPanel() {
   }, [mode]);
 
   // Handle mode change with auto-scroll and highlight animation
-  const handleModeChange = (newMode: 'destiny' | 'compatibility' | 'timing' | 'life-path' | 'weekly') => {
+  const handleModeChange = (newMode: 'destiny' | 'compatibility' | 'timing' | 'life-path') => {
     setMode(newMode);
     setHighlightInput(true);
     
@@ -332,7 +350,7 @@ export function IlmHurufPanel() {
   const handleKeyboardPress = (char: string, isFirstName: boolean = true) => {
     const currentName = isFirstName ? name : name2;
     
-    if (char === '⌫') {
+    if (char === 'âŒ«') {
       // Backspace
       const newValue = currentName.slice(0, -1);
       if (isFirstName) {
@@ -342,7 +360,7 @@ export function IlmHurufPanel() {
         setName2(newValue);
         setLatinInput2('');
       }
-    } else if (char === '⎵') {
+    } else if (char === 'âŽµ') {
       // Space
       if (isFirstName) {
         setName(currentName + ' ');
@@ -372,17 +390,42 @@ export function IlmHurufPanel() {
   };
 
   const handleMotherKeyboardPress = (char: string) => {
-    if (char === '⌫') {
+    if (char === 'âŒ«') {
       // Backspace
       setMotherName(motherName.slice(0, -1));
       setMotherLatinInput('');
-    } else if (char === '⎵') {
+    } else if (char === 'âŽµ') {
       // Space
       setMotherName(motherName + ' ');
     } else {
       // Regular character
       setMotherName(motherName + char);
       setMotherLatinInput('');
+    }
+  };
+
+  // Keyboard handlers for compatibility mode mother's names
+  const handleMotherKeyboardPress1 = (char: string) => {
+    if (char === 'âŒ«') {
+      setMotherName(motherName.slice(0, -1));
+      setMotherLatinInput('');
+    } else if (char === 'âŽµ') {
+      setMotherName(motherName + ' ');
+    } else {
+      setMotherName(motherName + char);
+      setMotherLatinInput('');
+    }
+  };
+
+  const handleMotherKeyboardPress2 = (char: string) => {
+    if (char === 'âŒ«') {
+      setMotherName2(motherName2.slice(0, -1));
+      setMotherLatinInput2('');
+    } else if (char === 'âŽµ') {
+      setMotherName2(motherName2 + ' ');
+    } else {
+      setMotherName2(motherName2 + char);
+      setMotherLatinInput2('');
     }
   };
 
@@ -415,7 +458,7 @@ export function IlmHurufPanel() {
       } else if (mode === 'compatibility' && name && name2) {
         // Calculate Abjad totals
         const calculateAbjadTotal = (text: string, abjadMap: Record<string, number>): number => {
-          const normalized = text.replace(/[ًٌٍَُِّْ\s]/g, '');
+          const normalized = text.replace(/[Ù‹ÙŒÙÙŽÙÙÙ‘Ù’\s]/g, '');
           return [...normalized].reduce((sum, char) => sum + (abjadMap[char] || 0), 0);
         };
         
@@ -426,7 +469,7 @@ export function IlmHurufPanel() {
         const person1Element = getElementFromAbjadTotal(person1Total);
         const person2Element = getElementFromAbjadTotal(person2Total);
         
-        // Use new three-method analysis
+        // Use traditional three-method analysis (Quick Analysis)
         const result = analyzeRelationshipCompatibility(
           name,
           name,
@@ -446,24 +489,6 @@ export function IlmHurufPanel() {
         const planetaryHour = calculatePlanetaryHour(now);
         const personalYear = birthDate ? calculatePersonalYear(new Date(birthDate), now.getFullYear()) : null;
         setResults({ planetaryHour, personalYear });
-      } else if (mode === 'weekly' && name) {
-        const profile = calculateUserProfile(name, birthDate ? new Date(birthDate) : undefined, undefined, abjad);
-        const weeklySummary = generateWeeklySummary(profile);
-        const harmonyType = calculateHarmonyType(
-          profile.element,
-          profile.kawkab,
-          profile.ruh,
-          weeklySummary.days[0].day_planet,
-          weeklySummary.days[0].ruh_phase
-        );
-        const dominantForce = calculateDominantForce(
-          profile.saghir,
-          profile.element,
-          profile.kawkab,
-          profile.letter_geometry
-        );
-        setResults({ profile, weeklySummary, harmonyType, dominantForce });
-        setSelectedDay(null);
       }
     } catch (error) {
       console.error('Analysis error:', error);
@@ -487,30 +512,7 @@ export function IlmHurufPanel() {
         </p>
         
         {/* Mode Selection Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {/* Weekly Mode */}
-          <button
-            onClick={() => handleModeChange('weekly')}
-            className={`relative group p-4 md:p-5 rounded-xl border-2 transition-all duration-300 transform ${
-              mode === 'weekly'
-                ? 'border-green-500 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/40 dark:to-green-800/40 scale-105 shadow-xl ring-2 ring-green-500 ring-offset-2 dark:ring-offset-slate-900'
-                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-green-400 hover:shadow-lg hover:scale-102 hover:bg-green-50/50 dark:hover:bg-green-900/10'
-            }`}
-            aria-pressed={mode === 'weekly'}
-          >
-            <div className="relative">
-              <Calendar className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'weekly' ? 'text-green-600' : 'text-green-500 group-hover:text-green-600'}`} />
-              <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'weekly' ? 'animate-scale-in' : ''}`}>
-                {t.ilmHuruf.weeklyGuidance}
-              </div>
-              {mode === 'weekly' && (
-                <div className="absolute top-0 right-0 animate-scale-in">
-                  <CheckCircle2 className="w-4 h-4 text-green-600" />
-                </div>
-              )}
-            </div>
-          </button>
-          
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {/* Destiny Mode */}
           <button
             onClick={() => handleModeChange('destiny')}
@@ -615,20 +617,17 @@ export function IlmHurufPanel() {
         <div className="mb-6 pb-6 border-b border-slate-200 dark:border-slate-700">
           <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <span className={`inline-block w-2 h-2 rounded-full transition-colors ${
-              mode === 'weekly' ? 'bg-green-500' : 
               mode === 'destiny' ? 'bg-purple-500' : 
               mode === 'compatibility' ? 'bg-pink-500' : 
               mode === 'life-path' ? 'bg-blue-500' : 
               'bg-amber-500'
             }`}></span>
-            {mode === 'weekly' && t.ilmHuruf.generateWeeklyGuidance}
             {mode === 'destiny' && t.ilmHuruf.discoverNameDestiny}
             {mode === 'compatibility' && t.ilmHuruf.analyzeTwoSouls}
             {mode === 'life-path' && t.ilmHuruf.calculateLifePath}
             {mode === 'timing' && t.ilmHuruf.currentPlanetaryInfluence}
           </h3>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
-            {mode === 'weekly' && t.ilmHuruf.weeklyGuidanceDesc}
             {mode === 'destiny' && t.ilmHuruf.nameDestinyDesc}
             {mode === 'compatibility' && t.ilmHuruf.compatibilityDesc}
             {mode === 'life-path' && t.ilmHuruf.lifePathDesc}
@@ -637,12 +636,12 @@ export function IlmHurufPanel() {
         </div>
         
         <div className="space-y-4 animate-slide-up">
-          {(mode === 'destiny' || mode === 'compatibility' || mode === 'weekly' || mode === 'life-path') && (
-            <div className="space-y-3">
+          {(mode === 'destiny' || mode === 'life-path') && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Latin Input with Autocomplete */}
-              <div>
+              <div className={mode === 'life-path' ? 'md:col-span-1' : 'md:col-span-2'}>
                 <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                  {mode === 'compatibility' ? t.ilmHuruf.firstPersonLatin : t.ilmHuruf.nameLatinLabel}
+                  {t.ilmHuruf.nameLatinLabel}
                 </label>
                 <NameAutocomplete
                   value={latinInput}
@@ -658,17 +657,32 @@ export function IlmHurufPanel() {
                   <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
                     <p className="text-xs text-amber-800 dark:text-amber-200">
                       {t.ilmHuruf.confidence}: {translitConfidence}% 
-                      {translitWarnings.length > 0 && ` • ${translitWarnings.join(', ')}`}
+                      {translitWarnings.length > 0 && ` â€¢ ${translitWarnings.join(', ')}`}
                     </p>
                   </div>
                 )}
               </div>
-              
+
+              {/* Birth Date field - only for life-path mode, shown inline */}
+              {mode === 'life-path' && (
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                    {t.ilmHuruf.birthDate}
+                  </label>
+                  <input
+                    type="date"
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  />
+                </div>
+              )}
+
               {/* Arabic Input */}
-              <div>
+              <div className="md:col-span-2">
                 <div className="flex items-center justify-between mb-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    {mode === 'compatibility' ? t.ilmHuruf.firstPersonArabic : t.ilmHuruf.nameArabic}
+                    {t.ilmHuruf.nameArabic}
                   </label>
                   <button
                     onClick={() => setShowKeyboard(!showKeyboard)}
@@ -713,7 +727,7 @@ export function IlmHurufPanel() {
                 <button
                   onClick={() => setShowMotherNameSection(true)}
                   className="flex items-center gap-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
-                  title={t?.tooltips?.umHadad1 || "Um Ḥadad (أم حدد) - Required for complete Name Destiny calculation"}
+                  title={t?.tooltips?.umHadad1 || "Um á¸¤adad (Ø£Ù… Ø­Ø¯Ø¯) - Required for complete Name Destiny calculation"}
                 >
                   <Plus className="h-4 w-4" />
                   <span>{t.nameDestiny.inputs.motherOptional}</span>
@@ -724,7 +738,7 @@ export function IlmHurufPanel() {
                   <div className="flex items-center justify-between">
                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                       {t.nameDestiny.inputs.motherName}
-                      <span title={t?.tooltips?.umHadad2 || "Um Ḥadad (أم حدد) - Reveals your Aṣl al-Rūḥānī (spiritual origin)"}>
+                      <span title={t?.tooltips?.umHadad2 || "Um á¸¤adad (Ø£Ù… Ø­Ø¯Ø¯) - Reveals your Aá¹£l al-RÅ«á¸¥ÄnÄ« (spiritual origin)"}>
                         <Info className="h-4 w-4 text-slate-400 inline ml-2 cursor-help" />
                       </span>
                     </label>
@@ -754,7 +768,7 @@ export function IlmHurufPanel() {
                       showHelper={false}
                     />
                     <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-medium">
-                      💡 {t.nameDestiny.inputs.motherHint}
+                      ðŸ’¡ {t.nameDestiny.inputs.motherHint}
                     </p>
                   </div>
                   
@@ -802,41 +816,110 @@ export function IlmHurufPanel() {
             </div>
           )}
           
-          {mode === 'weekly' && (
-            <div>
-              <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                {t.ilmHuruf.birthDateOptional}
-              </label>
-              <input
-                type="date"
-                value={birthDate}
-                onChange={(e) => setBirthDate(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-              />
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                {t.ilmHuruf.birthDateUsage}
-              </p>
-            </div>
-          )}
-          
           {mode === 'compatibility' && (
-            <div className="space-y-3">
-              {/* Latin Input for Second Person with Autocomplete */}
-              <div>
-                <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                  {t.ilmHuruf.secondPersonLatin}
-                </label>
-                <NameAutocomplete
-                  value={latinInput2}
-                  onChange={(value) => handleLatinInput(value, false)}
-                  onArabicSelect={(arabic, latin) => {
-                    setName2(arabic);
-                    setLatinInput2(latin);
-                  }}
-                  placeholder={t.ilmHuruf.namePlaceholderEn}
-                  showHelper={true}
-                />
+            <div className="space-y-6">
+              {/* Person 1 Inputs */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                    <span className="text-indigo-600 dark:text-indigo-400 font-bold">1</span>
+                  </div>
+                  <h4 className="font-semibold text-slate-700 dark:text-slate-300">
+                    {t.fourLayerCompatibility?.person1Name || "First Person's Name"}
+                  </h4>
+                </div>
+
+                {/* Latin Input for Person 1 with Autocomplete */}
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                    {t.ilmHuruf.yourNameLatin}
+                    <span 
+                      className="text-slate-400 cursor-help" 
+                      title={t.fourLayerCompatibility?.nameTooltip || "Your name reveals your conscious self"}
+                    >
+                      <Info className="h-4 w-4" />
+                    </span>
+                  </label>
+                  <NameAutocomplete
+                    value={latinInput}
+                    onChange={(value) => handleLatinInput(value, true)}
+                    onArabicSelect={(arabic, latin) => {
+                      setName(arabic);
+                      setLatinInput(latin);
+                    }}
+                    placeholder={t.ilmHuruf.namePlaceholderEn}
+                    showHelper={true}
+                  />
+                </div>
+
+                {/* Arabic Input for Person 1 */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                      {t.ilmHuruf.yourNameArabic}
+                    </label>
+                    <button
+                      onClick={() => setShowKeyboard(!showKeyboard)}
+                      className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                        showKeyboard
+                          ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700'
+                          : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600'
+                      }`}
+                    >
+                      <Keyboard className="w-3 h-3" />
+                      {showKeyboard ? t.ilmHuruf.hideKeyboard : t.ilmHuruf.showKeyboard}
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      setLatinInput('');
+                    }}
+                    placeholder={t.ilmHuruf.namePlaceholderAr}
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right text-xl font-arabic"
+                    dir="rtl"
+                    style={{ fontFamily: "'Noto Naskh Arabic', 'Amiri', serif" }}
+                  />
+                  {showKeyboard && (
+                    <div className="mt-3">
+                      <ArabicKeyboard 
+                        onKeyPress={(char) => handleKeyboardPress(char, true)}
+                        onClose={() => setShowKeyboard(false)}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
+
+              {/* Person 2 Inputs */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                    <span className="text-purple-600 dark:text-purple-400 font-bold">2</span>
+                  </div>
+                  <h4 className="font-semibold text-slate-700 dark:text-slate-300">
+                    {t.fourLayerCompatibility?.person2Name || "Second Person's Name"}
+                  </h4>
+                </div>
+
+                {/* Latin Input for Second Person with Autocomplete */}
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                    {t.ilmHuruf.secondPersonLatin}
+                  </label>
+                  <NameAutocomplete
+                    value={latinInput2}
+                    onChange={(value) => handleLatinInput(value, false)}
+                    onArabicSelect={(arabic, latin) => {
+                      setName2(arabic);
+                      setLatinInput2(latin);
+                    }}
+                    placeholder={t.ilmHuruf.namePlaceholderEn}
+                    showHelper={true}
+                  />
+                </div>
               
               {/* Arabic Input for Second Person */}
               <div>
@@ -878,14 +961,15 @@ export function IlmHurufPanel() {
                 )}
               </div>
             </div>
+          </div>
           )}
           
           {mode === 'timing' && (
             <div className="space-y-4">
               {/* Name fields for Rest Signal feature */}
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Latin Input with Autocomplete */}
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
                     {t.ilmHuruf.yourNameLatin} <span className="text-xs text-slate-500">({t.ilmHuruf.optionalForRestSignal})</span>
                   </label>
@@ -905,7 +989,7 @@ export function IlmHurufPanel() {
                 </div>
                 
                 {/* Arabic Input */}
-                <div>
+                <div className="md:col-span-1">
                   <div className="flex items-center justify-between mb-2">
                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                       {t.ilmHuruf.yourNameArabic} <span className="text-xs text-slate-500">({t.ilmHuruf.optional})</span>
@@ -943,33 +1027,20 @@ export function IlmHurufPanel() {
                     </div>
                   )}
                 </div>
+
+                {/* Birth Date - Inline with Arabic name */}
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                    {t.ilmHuruf.birthDate}
+                  </label>
+                  <input
+                    type="date"
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  />
+                </div>
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                  {t.ilmHuruf.birthDate}
-                </label>
-                <input
-                  type="date"
-                  value={birthDate}
-                  onChange={(e) => setBirthDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                />
-              </div>
-            </div>
-          )}
-          
-          {mode === 'life-path' && (
-            <div>
-              <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
-                {t.ilmHuruf.birthDate}
-              </label>
-              <input
-                type="date"
-                value={birthDate}
-                onChange={(e) => setBirthDate(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-              />
             </div>
           )}
           
@@ -993,11 +1064,27 @@ export function IlmHurufPanel() {
           <p className="text-red-700 dark:text-red-300">{results.message}</p>
         </div>
       )}
-      {results && !results.error && mode === 'weekly' && <WeeklyResults results={results} selectedDay={selectedDay} setSelectedDay={setSelectedDay} />}
       {results && !results.error && mode === 'destiny' && <DestinyResults results={results} />}
       {results && !results.error && mode === 'compatibility' && results.person1 && results.person2 && <CompatibilityResults results={results} />}
       {results && !results.error && mode === 'life-path' && <LifePathResults results={results} />}
-      {results && !results.error && mode === 'timing' && <TimingResults results={results} birthDate={birthDate} name={name} abjad={abjad} />}
+      {results && !results.error && mode === 'timing' && (
+        (() => {
+          // Calculate user element from name if available
+          let userElement: ElementType | null = null;
+          if (name) {
+            try {
+              const tempProfile = calculateUserProfile(name, birthDate ? new Date(birthDate) : undefined, undefined, abjad);
+              userElement = tempProfile.element;
+            } catch (e) {
+              console.error('Error calculating user element:', e);
+            }
+          }
+          // Convert ElementType ('Fire') to Element ('fire') for DivineTiming component
+          const normalizedElement: 'fire' | 'water' | 'air' | 'earth' = 
+            userElement ? (userElement.toLowerCase() as 'fire' | 'water' | 'air' | 'earth') : 'fire';
+          return <DivineTiming userElement={normalizedElement} />;
+        })()
+      )}
     </div>
   );
 }
@@ -1019,7 +1106,7 @@ interface WeeklyResultsProps {
 
 function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsProps) {
   const { profile, weeklySummary, harmonyType, dominantForce } = results;
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [expandedRestDay, setExpandedRestDay] = useState<string | null>(null);
   
   const toggleRestSignal = (dayDate: string) => {
@@ -1050,6 +1137,352 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
     Complete: 'text-green-600 bg-green-50 dark:bg-green-900/30',
     Partial: 'text-amber-600 bg-amber-50 dark:bg-amber-900/30',
     Conflict: 'text-red-600 bg-red-50 dark:bg-red-900/30'
+  };
+
+  // Helper: localized weekday from ISO date
+  const getTranslatedWeekday = (isoDate?: string) => {
+    if (!isoDate) return '';
+    try {
+      const d = new Date(isoDate);
+      return d.toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US', { weekday: 'long' });
+    } catch (e) {
+      return isoDate;
+    }
+  };
+
+  // Helper: localized planet name
+  const getPlanetName = (planetName: string) => {
+    const names: Record<string, { en: string; fr: string }> = {
+      Sun: { en: 'Sun', fr: 'Soleil' },
+      Moon: { en: 'Moon', fr: 'Lune' },
+      Mars: { en: 'Mars', fr: 'Mars' },
+      Mercury: { en: 'Mercury', fr: 'Mercure' },
+      Jupiter: { en: 'Jupiter', fr: 'Jupiter' },
+      Venus: { en: 'Venus', fr: 'VÃ©nus' },
+      Saturn: { en: 'Saturn', fr: 'Saturne' }
+    };
+    return language === 'fr' ? (names[planetName]?.fr || planetName) : (names[planetName]?.en || planetName);
+  };
+
+  // Helper: translate generated tips (mapping English -> French)
+  const translateTip = (tip: string) => {
+    if (!tip) return tip;
+    if (language !== 'fr') return tip;
+
+    const map: Record<string, string> = {
+      // Sun
+      'Excellent for leadershipâ€”schedule important meetings and presentations': 'Excellent pour le leadership â€” planifiez des rÃ©unions et prÃ©sentations importantes',
+      'Lead projects and take initiativeâ€”high energy for achievements': 'Dirigez des projets et prenez l\'initiative â€” Ã©nergie Ã©levÃ©e pour les rÃ©alisations',
+      'Challenging for visibilityâ€”lead quietly, support others today': 'Difficile pour la visibilitÃ© â€” dirigez discrÃ¨tement, soutenez les autres aujourd\'hui',
+      // Moon
+      'Perfect for reflectionâ€”trust your intuition and emotional wisdom': 'Parfait pour la rÃ©flexion â€” faites confiance Ã  votre intuition et sagesse Ã©motionnelle',
+      'Gentle dayâ€”plan, review, nurture relationships, avoid overload': 'JournÃ©e douce â€” planifiez, rÃ©visez, entretenez les relations, Ã©vitez la surcharge',
+      'Rest neededâ€”minimize commitments, process emotions, be kind to yourself': 'Repos nÃ©cessaire â€” rÃ©duisez les engagements, traitez les Ã©motions, soyez bienveillant avec vous-mÃªme',
+      // Mars
+      'Fierce energyâ€”tackle tough challenges and push through obstacles boldly': 'Ã‰nergie fÃ©roce â€” relevez les dÃ©fis difficiles et surmontez les obstacles avec audace',
+      'Take action on difficult tasksâ€”courage and determination favored': 'Agissez sur les tÃ¢ches difficiles â€” le courage et la dÃ©termination sont favorisÃ©s',
+      'Channel carefullyâ€”physical activity helps, avoid conflicts and rushing': 'Canalisez prudemment â€” l\'activitÃ© physique aide, Ã©vitez les conflits et la prÃ©cipitation',
+      // Mercury
+      'Sharp mindâ€”perfect for writing, calls, learning, and travel plans': 'Esprit vif â€” parfait pour l\'Ã©criture, les appels, l\'apprentissage et les projets de voyage',
+      'Communicate clearlyâ€”good for emails, meetings, and study sessions': 'Communiquez clairement â€” bon pour les e-mails, rÃ©unions et sessions d\'Ã©tude',
+      'Mental fog possibleâ€”double-check messages, postpone major decisions': 'Brouillard mental possible â€” vÃ©rifiez les messages, reportez les dÃ©cisions majeures',
+      // Jupiter
+      'Timing is perfectâ€”make big decisions, start new ventures, expand horizons': 'Le moment est parfait â€” prenez de grandes dÃ©cisions, lancez de nouvelles entreprises, Ã©largissez vos horizons',
+      'Growth dayâ€”great for planning expansion and seeking opportunities': 'JournÃ©e de croissance â€” idÃ©ale pour planifier l\'expansion et rechercher des opportunitÃ©s',
+      'Temper optimismâ€”research thoroughly before committing to anything big': 'ModÃ©rez l\'optimisme â€” recherchez soigneusement avant de vous engager dans de grandes choses',
+      // Venus
+      'Excellent for connectionâ€”ideal for relationships, creativity, and beauty': 'Excellent pour la connexion â€” idÃ©al pour les relations, la crÃ©ativitÃ© et la beautÃ©',
+      'Harmonious dayâ€”connect with others, enjoy art, balance work-pleasure': 'JournÃ©e harmonieuse â€” connectez-vous aux autres, apprÃ©ciez l\'art, Ã©quilibrer travail et plaisir',
+      'Social challengesâ€”focus on self-care, solo creative work, gentle interactions': 'DÃ©fis sociaux â€” concentrez-vous sur les soins personnels, travail crÃ©atif en solo, interactions douces',
+      // Saturn
+      'Build strong foundationsâ€”organize, plan long-term, establish structures': 'Construisez des bases solides â€” organisez, planifiez Ã  long terme, Ã©tablissez des structures',
+      'Structure your weekâ€”discipline and planning bring good results': 'Structurez votre semaine â€” la discipline et la planification apportent de bons rÃ©sultats',
+      'Heavy responsibilitiesâ€”break tasks into small steps, be patient with delays': 'ResponsabilitÃ©s lourdes â€” dÃ©composez les tÃ¢ches en petites Ã©tapes, soyez patient face aux retards',
+      // Element tips
+      'Balance heatâ€”practice calm speech, charity, time near water': 'Ã‰quilibrez la chaleur â€” pratiquez la parole calme, la charitÃ©, du temps prÃ¨s de l\'eau',
+      'Activate energyâ€”light exercise, sunlight, decisive action': 'Activez l\'Ã©nergie â€” exercice lÃ©ger, lumiÃ¨re du soleil, action dÃ©cisive',
+      'Ground yourselfâ€”stick to routine, nature walk, one task at a time': 'Ancrez-vous â€” respectez la routine, promenade dans la nature, une tÃ¢che Ã  la fois',
+      'Add lightnessâ€”try creativity, flexibility, or a short change of scenery': 'Ajoutez de la lÃ©gÃ¨retÃ© â€” essayez la crÃ©ativitÃ©, la flexibilitÃ© ou un court changement de dÃ©cor',
+      // Planet secondary tips
+      'Shine your lightâ€”but stay humble and generous with recognition': 'Faites briller votre lumiÃ¨re â€” restez humble et gÃ©nÃ©reux dans la reconnaissance',
+      'Honor your feelingsâ€”they guide you to what truly matters': 'Honorez vos sentiments â€” ils vous guident vers ce qui compte vraiment',
+      'Channel warrior energyâ€”protect boundaries, pursue goals with courage': 'Canalisez l\'Ã©nergie guerriÃ¨re â€” protÃ©gez les limites, poursuivez vos objectifs avec courage',
+      'Mental agility peaksâ€”network, negotiate, adapt quickly': 'L\'agilitÃ© mentale atteint son apogÃ©e â€” rÃ©seauter, nÃ©gocier, s\'adapter rapidement',
+      'Seek wisdom and growthâ€”mentor others or learn from teachers': 'Recherchez la sagesse et la croissance â€” mentorat ou apprentissage auprÃ¨s des enseignants',
+      'Appreciate beautyâ€”create harmony in your environment and relationships': 'ApprÃ©ciez la beautÃ© â€” crÃ©ez l\'harmonie dans votre environnement et vos relations',
+      'Master disciplineâ€”small consistent efforts build lasting success': 'MaÃ®trisez la discipline â€” de petits efforts constants construisent un succÃ¨s durable'
+    };
+
+    return map[tip] || tip;
+  };
+
+  // Helper: translate rest practice items
+  const translatePractice = (practice: string) => {
+    if (!practice) return practice;
+    if (language !== 'fr') return practice;
+    const m: Record<string, string> = {
+      '20min Silence': '20min de silence',
+      'Nature Walk': 'Promenade en nature',
+      'Journal Freely': 'Journal libre',
+      'Read Sacred Texts': 'Lire des textes sacrÃ©s',
+      'Mindful Tea': 'ThÃ© conscient',
+      'Early Sleep': 'Dormir tÃ´t'
+    };
+    return m[practice] || practice;
+  };
+
+  // Translation helper for energy types
+  const translateEnergyType = (energyType: string): string => {
+    if (language === 'en') return energyType;
+    
+    const m: Record<string, string> = {
+      // Mercury
+      'Mental sharpness': 'AcuitÃ© mentale',
+      'Communication peak': 'Pic de communication',
+      'Quick connections': 'Connexions rapides',
+      'Integration time': 'Temps d\'intÃ©gration',
+      
+      // Sun
+      'Peak leadership energy': 'Pic d\'Ã©nergie de leadership',
+      'High visibility': 'Haute visibilitÃ©',
+      'Delegation phase': 'Phase de dÃ©lÃ©gation',
+      'Reflection time': 'Temps de rÃ©flexion',
+      
+      // Moon
+      'Emotional clarity': 'ClartÃ© Ã©motionnelle',
+      'Nurturing peak': 'Pic de soin',
+      'Intuitive window': 'FenÃªtre intuitive',
+      'Release & rest': 'RelÃ¢chement & repos',
+      
+      // Mars
+      'Peak action energy': 'Pic d\'Ã©nergie d\'action',
+      'Competitive drive': 'Esprit de compÃ©tition',
+      'Courage window': 'FenÃªtre de courage',
+      'Power-down time': 'Temps de rÃ©cupÃ©ration',
+      
+      // Venus
+      'Beauty & connection': 'BeautÃ© & connexion',
+      'Pleasure peak': 'Pic de plaisir',
+      'Relationship time': 'Temps relationnel',
+      'Art & beauty': 'Art & beautÃ©',
+      
+      // Jupiter
+      'Expansion begins': 'L\'expansion commence',
+      'Opportunity window': 'FenÃªtre d\'opportunitÃ©',
+      'Growth momentum': 'Momentum de croissance',
+      'Wisdom integration': 'IntÃ©gration de la sagesse',
+      
+      // Saturn
+      'Structure setting': 'Mise en place de structure',
+      'Discipline peak': 'Pic de discipline',
+      'Responsibility time': 'Temps de responsabilitÃ©',
+      'Completion energy': 'Ã‰nergie de completion'
+    };
+    
+    return m[energyType] || energyType;
+  };
+
+  // Translation helper for task items (bestFor and avoid lists)
+  const translateTask = (task: string): string => {
+    if (language === 'en') return task;
+    
+    const m: Record<string, string> = {
+      // Mercury tasks
+      'Writing tasks': 'TÃ¢ches d\'Ã©criture',
+      'Study complex topics': 'Ã‰tudier des sujets complexes',
+      'Plan communications': 'Planifier les communications',
+      'Learn new skills': 'Apprendre de nouvelles compÃ©tences',
+      'Mindless work': 'Travail machinal',
+      'Physical-only tasks': 'TÃ¢ches uniquement physiques',
+      'Important calls': 'Appels importants',
+      'Presentations': 'PrÃ©sentations',
+      'Teach or explain': 'Enseigner ou expliquer',
+      'Networking': 'RÃ©seautage',
+      'Solo work': 'Travail en solo',
+      'Silence': 'Silence',
+      'Short trips/errands': 'Courts trajets/courses',
+      'Email responses': 'RÃ©ponses aux e-mails',
+      'Quick meetings': 'RÃ©unions rapides',
+      'Social media': 'MÃ©dias sociaux',
+      'Deep focus': 'Concentration profonde',
+      'Long commitments': 'Engagements longs',
+      'Review what you learned': 'Revoir ce que vous avez appris',
+      'Journal insights': 'Noter les perspectives',
+      'Organize notes': 'Organiser les notes',
+      'Light reading': 'Lecture lÃ©gÃ¨re',
+      'New information': 'Nouvelles informations',
+      'Complex learning': 'Apprentissage complexe',
+      
+      // Sun tasks
+      'Important decisions': 'DÃ©cisions importantes',
+      'Set daily direction': 'DÃ©finir la direction du jour',
+      'Lead team meetings': 'Diriger des rÃ©unions d\'Ã©quipe',
+      'Strategic planning': 'Planification stratÃ©gique',
+      'Routine tasks': 'TÃ¢ches routiniÃ¨res',
+      'Following others': 'Suivre les autres',
+      'Public presentations': 'PrÃ©sentations publiques',
+      'Client meetings': 'RÃ©unions avec clients',
+      'Performance reviews': 'Ã‰valuations de performance',
+      'Launch initiatives': 'Lancer des initiatives',
+      'Background work': 'Travail en arriÃ¨re-plan',
+      'Hiding mistakes': 'Cacher les erreurs',
+      'Delegate tasks': 'DÃ©lÃ©guer des tÃ¢ches',
+      'Teach and mentor': 'Enseigner et encadrer',
+      'Review team work': 'RÃ©viser le travail d\'Ã©quipe',
+      'Empower others': 'Responsabiliser les autres',
+      'Micromanaging': 'Microgestion',
+      'Reflect on the day': 'RÃ©flÃ©chir sur la journÃ©e',
+      'Celebrate wins': 'CÃ©lÃ©brer les victoires',
+      'Plan tomorrow': 'Planifier demain',
+      'Rest with pride': 'Se reposer avec fiertÃ©',
+      'Self-criticism': 'Auto-critique',
+      'Dim your light': 'Diminuer votre lumiÃ¨re',
+      
+      // Moon tasks
+      'Check in with feelings': 'VÃ©rifier vos sentiments',
+      'Care for family': 'Prendre soin de la famille',
+      'Gentle morning ritual': 'Rituel matinal doux',
+      'Cook nourishing food': 'Cuisiner des aliments nourrissants',
+      'Harsh decisions': 'DÃ©cisions dures',
+      'Ignore emotions': 'Ignorer les Ã©motions',
+      'Mother/nurture others': 'Materner/prendre soin des autres',
+      'Create safe space': 'CrÃ©er un espace sÃ»r',
+      'Listen deeply': 'Ã‰couter profondÃ©ment',
+      'Comfort someone': 'RÃ©conforter quelqu\'un',
+      'Aggression': 'Agression',
+      'Emotional coldness': 'Froideur Ã©motionnelle',
+      'Trust your gut': 'Faire confiance Ã  votre instinct',
+      'Dream journaling': 'Journal des rÃªves',
+      'Water activities': 'ActivitÃ©s aquatiques',
+      'Meditate': 'MÃ©diter',
+      'Logic-only thinking': 'PensÃ©e uniquement logique',
+      'Ignore intuition': 'Ignorer l\'intuition',
+      'Let go of the day': 'LÃ¢cher prise sur la journÃ©e',
+      'Forgive conflicts': 'Pardonner les conflits',
+      'New fights': 'Nouvelles disputes',
+      'Revenge planning': 'Planification de vengeance',
+      'Alcohol': 'Alcool',
+      
+      // Mars tasks
+      'Start difficult tasks': 'Commencer les tÃ¢ches difficiles',
+      'Physical exercise': 'Exercice physique',
+      'Tackle challenges': 'Relever des dÃ©fis',
+      'Assert yourself': 'S\'affirmer',
+      'Passive activities': 'ActivitÃ©s passives',
+      'Procrastination': 'Procrastination',
+      'Compete or debate': 'CompÃ©tition ou dÃ©bat',
+      'Sales pitches': 'PrÃ©sentations de vente',
+      'Push through obstacles': 'Surmonter les obstacles',
+      'Take action': 'Passer Ã  l\'action',
+      'Avoid conflict': 'Ã‰viter les conflits',
+      'Fence-sitting': 'IndÃ©cision',
+      'Face your fear': 'Affronter votre peur',
+      'Bold moves': 'Mouvements audacieux',
+      'Defend boundaries': 'DÃ©fendre les limites',
+      'Stand up for yourself': 'DÃ©fendre vos droits',
+      'Cowardice': 'LÃ¢chetÃ©',
+      'People-pleasing': 'Plaire aux autres',
+      'Wind down intensity': 'RÃ©duire l\'intensitÃ©',
+      'Repair any damage': 'RÃ©parer les dÃ©gÃ¢ts',
+      'Cool down': 'Se calmer',
+      'Forgive self': 'Se pardonner',
+      'Stir up conflict': 'Attiser les conflits',
+      'Reckless action': 'Action imprudente',
+      
+      // Venus tasks
+      'Beautify space': 'Embellir l\'espace',
+      'Dress nicely': 'S\'habiller joliment',
+      'Enjoy breakfast': 'Savourer le petit dÃ©jeuner',
+      'Appreciate beauty': 'ApprÃ©cier la beautÃ©',
+      'Ugliness': 'Laideur',
+      'Harshness': 'DuretÃ©',
+      'Socialize': 'Socialiser',
+      'Express affection': 'Exprimer l\'affection',
+      'Enjoy pleasures': 'ApprÃ©cier les plaisirs',
+      'Share love': 'Partager l\'amour',
+      'Isolation': 'Isolation',
+      'Rudeness': 'Impolitesse',
+      'Connect deeply': 'Se connecter profondÃ©ment',
+      'Date night': 'SoirÃ©e en amoureux',
+      'Quality time': 'Temps de qualitÃ©',
+      'Relationship talk': 'Discussion relationnelle',
+      'Conflict': 'Conflit',
+      'Distance': 'Distance',
+      'Create art': 'CrÃ©er de l\'art',
+      'Listen to music': 'Ã‰couter de la musique',
+      'Indulge senses': 'Se faire plaisir',
+      'Luxury bath': 'Bain de luxe',
+      'Frugality': 'FrugalitÃ©',
+      'Denial': 'DÃ©ni',
+      
+      // Jupiter tasks
+      'Think big picture': 'Penser Ã  long terme',
+      'Study philosophy': 'Ã‰tudier la philosophie',
+      'Set ambitious goals': 'Fixer des objectifs ambitieux',
+      'Small thinking': 'PensÃ©e limitÃ©e',
+      'Petty details': 'DÃ©tails insignifiants',
+      'Seek opportunities': 'Chercher des opportunitÃ©s',
+      'Make connections': 'CrÃ©er des connexions',
+      'Generous acts': 'Actes gÃ©nÃ©reux',
+      'Teaching': 'Enseignement',
+      'Stinginess': 'Avarice',
+      'Narrowness': 'Ã‰troitesse d\'esprit',
+      'Expand projects': 'Ã‰tendre les projets',
+      'Take calculated risks': 'Prendre des risques calculÃ©s',
+      'Travel planning': 'Planification de voyage',
+      'Cultural exploration': 'Exploration culturelle',
+      'Contraction': 'Contraction',
+      'Fear-based decisions': 'DÃ©cisions basÃ©es sur la peur',
+      'Philosophical reflection': 'RÃ©flexion philosophique',
+      'Gratitude practice': 'Pratique de gratitude',
+      'Mentor someone': 'Encadrer quelqu\'un',
+      'Spiritual study': 'Ã‰tude spirituelle',
+      'Materialism': 'MatÃ©rialisme',
+      'Pessimism': 'Pessimisme',
+      
+      // Saturn tasks
+      'Build structure': 'Construire une structure',
+      'Long-term planning': 'Planification Ã  long terme',
+      'Set boundaries': 'DÃ©finir des limites',
+      'Serious work': 'Travail sÃ©rieux',
+      'Chaos': 'Chaos',
+      'Frivolity': 'FrivolitÃ©',
+      'Focused work': 'Travail concentrÃ©',
+      'Meet deadlines': 'Respecter les dÃ©lais',
+      'Quality control': 'ContrÃ´le qualitÃ©',
+      'Professional duties': 'Devoirs professionnels',
+      'Slacking': 'Paresse',
+      'Shortcuts': 'Raccourcis',
+      'Take responsibility': 'Prendre ses responsabilitÃ©s',
+      'Difficult conversations': 'Conversations difficiles',
+      'Face consequences': 'Faire face aux consÃ©quences',
+      'Do what you must': 'Faire ce qui doit Ãªtre fait',
+      'Blame others': 'BlÃ¢mer les autres',
+      'Avoid duty': 'Ã‰viter le devoir',
+      'Complete projects': 'Terminer les projets',
+      'Tie up loose ends': 'RÃ©gler les dÃ©tails',
+      'Archive & organize': 'Archiver & organiser',
+      'Review progress': 'RÃ©viser les progrÃ¨s',
+      'Start new things': 'Commencer de nouvelles choses',
+      'Rush': 'PrÃ©cipitation'
+    };
+    
+    return m[task] || task;
+  };
+
+  // Translation helper for planetal phases
+  const translatePlanetalPhase = (phase: string): string => {
+    if (language === 'en') return phase;
+    
+    const m: Record<string, string> = {
+      'Sun rises - authority peaks': 'Le soleil se lÃ¨ve - pic d\'autoritÃ©',
+      'Solar noon - maximum presence': 'Midi solaire - prÃ©sence maximale',
+      'Moon opens heart': 'La lune ouvre le cÅ“ur',
+      'Emotional tide peaks': 'Pic de marÃ©e Ã©motionnelle',
+      'Mars fuels courage': 'Mars alimente le courage'
+    };
+    
+    return m[phase] || phase;
   };
 
   return (
@@ -1118,12 +1551,12 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
             <div>
               <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">{t.ilmHuruf.peakDayThisWeek}</p>
               <div className="flex items-center gap-2">
-                <span className="text-2xl">⭐</span>
+                <span className="text-2xl">â­</span>
                 <div>
                   {weeklySummary?.days?.find(d => d.date === weeklySummary?.best_day) && (
                     <>
                       <div className="font-bold text-slate-900 dark:text-slate-100">
-                        {weeklySummary?.days?.find(d => d.date === weeklySummary?.best_day)?.weekday}
+                        {getTranslatedWeekday(weeklySummary?.days?.find(d => d.date === weeklySummary?.best_day)?.date)}
                       </div>
                       <div className="text-sm text-slate-600 dark:text-slate-400">
                         {t.ilmHuruf.harmony}: {weeklySummary?.days?.find(d => d.date === weeklySummary?.best_day)?.harmony_score}/10
@@ -1139,16 +1572,16 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
             <div>
               <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2">{t.ilmHuruf.focusDay}</p>
               <div className="flex items-center gap-2">
-                <span className="text-2xl">🎯</span>
+                <span className="text-2xl">ðŸŽ¯</span>
                 <div>
                   {weeklySummary?.days?.find(d => d.date === weeklySummary?.focus_day) && (
                     <>
                       <div className="font-bold text-slate-900 dark:text-slate-100">
-                        {weeklySummary?.days?.find(d => d.date === weeklySummary?.focus_day)?.weekday}
+                        {getTranslatedWeekday(weeklySummary?.days?.find(d => d.date === weeklySummary?.focus_day)?.date)}
                       </div>
-                      <div className="text-sm text-slate-600 dark:text-slate-400">
-                        {t.ilmHuruf.planet}: {weeklySummary?.days?.find(d => d.date === weeklySummary?.focus_day)?.day_planet}
-                      </div>
+                              <div className="text-sm text-slate-600 dark:text-slate-400">
+                                {t.ilmHuruf.planet}: {getPlanetName(weeklySummary?.days?.find(d => d.date === weeklySummary?.focus_day)?.day_planet || '')}
+                              </div>
                     </>
                   )}
                 </div>
@@ -1165,7 +1598,8 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
             const isFocus = day.date === weeklySummary?.focus_day;
             const isSelected = day.date === selectedDay;
             const firstTip = day.tips?.[0] || t.ilmHuruf.planMindfully;
-            const truncatedTip = firstTip.length > 45 ? firstTip.slice(0, 45) + '...' : firstTip;
+            const displayedFirstTip = translateTip(firstTip);
+            const truncatedTip = displayedFirstTip.length > 45 ? displayedFirstTip.slice(0, 45) + '...' : displayedFirstTip;
             
             return (
               <button
@@ -1179,7 +1613,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
               >
                 {/* Day name */}
                 <div className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-2">
-                  {day.weekday}
+                  {getTranslatedWeekday(day.date)}
                 </div>
                 
                 {/* Score display with bar */}
@@ -1219,14 +1653,14 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 <div className="flex items-center gap-1.5 mb-2 py-1.5 px-2 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
                   <span className="text-lg">{PLANET_ICONS_EMOJI[day.day_planet]}</span>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
-                    {day.day_planet}
+                    {getPlanetName(day.day_planet)}
                   </span>
                 </div>
                 
                 {/* Key tip preview */}
                 <div className="mb-2 min-h-[2.5rem]">
                   <div className="flex items-start gap-1">
-                    <span className="text-xs flex-shrink-0">💡</span>
+                    <span className="text-xs flex-shrink-0">ðŸ’¡</span>
                     <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight text-left">
                       {truncatedTip}
                     </p>
@@ -1247,19 +1681,19 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                           : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50'
                       }`}
                     >
-                      {day.restLevel === 'deep' ? `🛑 ${t.ilmHuruf.deepRest}` : `🌙 ${t.ilmHuruf.restSignalBadge}`}
+                      {day.restLevel === 'deep' ? `ðŸ›‘ ${t.ilmHuruf.deepRest}` : `ðŸŒ™ ${t.ilmHuruf.restSignalBadge}`}
                     </div>
                   </div>
                 )}
                 
-                {/* Energy Return Speed (Irtiṭāb) - Lesson 25 */}
+                {/* Energy Return Speed (Irtiá¹­Äb) - Lesson 25 */}
                 <div className="mb-2 p-2 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-lg border border-purple-200 dark:border-purple-700/50">
                   <div className="flex items-start gap-1.5">
                     <span className="text-sm flex-shrink-0">
-                      {day.energyReturn.speed === 'instant' && '⚡'}
-                      {day.energyReturn.speed === 'quick' && '💨'}
-                      {day.energyReturn.speed === 'gradual' && '🌊'}
-                      {day.energyReturn.speed === 'delayed' && '🌱'}
+                      {day.energyReturn.speed === 'instant' && 'âš¡'}
+                      {day.energyReturn.speed === 'quick' && 'ðŸ’¨'}
+                      {day.energyReturn.speed === 'gradual' && 'ðŸŒŠ'}
+                      {day.energyReturn.speed === 'delayed' && 'ðŸŒ±'}
                     </span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1 mb-0.5">
@@ -1287,17 +1721,17 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 <div className="flex flex-wrap gap-1">
                   {isBest && (
                     <div className="text-[10px] px-1.5 py-0.5 rounded-full bg-green-500 text-white font-bold">
-                      Best
+                      {t.ilmHuruf.best}
                     </div>
                   )}
                   {isGentle && (
                     <div className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-400 text-white font-bold">
-                      Gentle
+                      {t.ilmHuruf.gentle}
                     </div>
                   )}
                   {isFocus && !isBest && (
                     <div className="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-500 text-white font-bold">
-                      Focus
+                      {t.ilmHuruf.focus}
                     </div>
                   )}
                 </div>
@@ -1305,7 +1739,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 {/* Click indicator */}
                 {!isSelected && (
                   <div className="absolute bottom-1 right-1 text-[10px] text-slate-400 dark:text-slate-600">
-                    ▼
+                    â–¼
                   </div>
                 )}
               </button>
@@ -1313,10 +1747,10 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
           })}
         </div>
         
-        {/* Energy Return Speeds Overview (Irtiṭāb) */}
+        {/* Energy Return Speeds Overview (Irtiá¹­Äb) */}
         <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-lg border border-blue-200 dark:border-blue-800">
           <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
-            <span className="text-lg">⚡</span>
+            <span className="text-lg">âš¡</span>
             {t.ilmHuruf.energyReturnSpeedsThisWeek}
           </h4>
           <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
@@ -1333,13 +1767,17 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
               return Object.entries(speedCounts).map(([speed, count]) => (
                 <div key={speed} className="bg-white dark:bg-slate-700/50 rounded-lg p-3 text-center">
                   <div className="flex justify-center text-2xl mb-1">
-                    {speed === 'instant' && '⚡'}
-                    {speed === 'quick' && '💨'}
-                    {speed === 'gradual' && '🌊'}
-                    {speed === 'delayed' && '🌱'}
+                    {speed === 'instant' && 'âš¡'}
+                    {speed === 'quick' && 'ðŸ’¨'}
+                    {speed === 'gradual' && 'ðŸŒŠ'}
+                    {speed === 'delayed' && 'ðŸŒ±'}
                   </div>
-                  <div className="text-sm font-bold text-slate-900 dark:text-slate-100 capitalize">{speed}</div>
-                  <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">{count} day{count !== 1 ? 's' : ''}</div>
+                  <div className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                    {speed === 'instant' ? t.ilmHuruf.instant : speed === 'quick' ? t.ilmHuruf.fewHours : speed === 'gradual' ? t.ilmHuruf.twoDays : t.ilmHuruf.oneToTwoWeeks}
+                  </div>
+                  <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    {language === 'fr' ? `${count} jour${count !== 1 ? 's' : ''}` : `${count} day${count !== 1 ? 's' : ''}`}
+                  </div>
                   <div className="text-[11px] text-slate-500 dark:text-slate-500 mt-2">
                     {speed === 'instant' && t.ilmHuruf.sameDay}
                     {speed === 'quick' && t.ilmHuruf.fewHours}
@@ -1361,7 +1799,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
             <div className="mt-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-5 border-2 border-blue-200 dark:border-blue-800 animate-in slide-in-from-top duration-300">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl">{restDay.restLevel === 'deep' ? '🛑' : '🌙'}</span>
+                  <span className="text-2xl">{restDay.restLevel === 'deep' ? 'ðŸ›‘' : 'ðŸŒ™'}</span>
                   <h4 className="font-bold text-blue-900 dark:text-blue-100">
                     {restDay.restLevel === 'deep' ? t.ilmHuruf.deepRestNeeded : t.ilmHuruf.restSignal}
                   </h4>
@@ -1370,14 +1808,14 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   onClick={() => setExpandedRestDay(null)}
                   className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 text-sm"
                 >
-                  ✕
+                  âœ•
                 </button>
               </div>
               
               <p className="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
                 {restDay.restLevel === 'deep' 
                   ? t.ilmHuruf.criticalLowEnergy
-                  : t.ilmHuruf.lowHarmonyPause.replace('{planet}', restDay.day_planet)
+                  : t.ilmHuruf.lowHarmonyPause.replace('{planet}', getPlanetName(restDay.day_planet))
                 }
               </p>
               
@@ -1389,8 +1827,8 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                 <ul className="space-y-2">
                   {restDay.restPractices?.map((practice, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
-                      <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">□</span>
-                      <span>{practice}</span>
+                      <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">â–¡</span>
+                      <span>{translatePractice(practice)}</span>
                     </li>
                   ))}
                 </ul>
@@ -1400,13 +1838,13 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
               {restDay.betterDays && restDay.betterDays.length > 0 && (
                 <div className="pt-4 border-t border-blue-200 dark:border-blue-700">
                   <p className="text-xs font-semibold text-slate-700 dark:text-slate-400 mb-2 flex items-center gap-1">
-                    <span>💡</span>
+                    <span>ðŸ’¡</span>
                     <span className="uppercase tracking-wide">{t.ilmHuruf.betterDaysThisWeek}</span>
                   </p>
                   <ul className="space-y-1">
                     {restDay.betterDays.map((betterDay, i) => (
                       <li key={i} className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                        <span className="text-green-500">•</span>
+                        <span className="text-green-500">â€¢</span>
                         <span>{betterDay}</span>
                       </li>
                     ))}
@@ -1499,9 +1937,9 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   <div className="bg-white/10 backdrop-blur rounded-lg p-3">
                     <div className="text-xs opacity-75 mb-1">{t.ilmHuruf.energyBand}</div>
                     <div className={`font-bold flex items-center gap-2`}>
-                      {day.band === 'High' && '🔥 High'}
-                      {day.band === 'Moderate' && '⚖️ Moderate'}
-                      {day.band === 'Low' && '🌊 Gentle'}
+                      {day.band === 'High' && 'ðŸ”¥ High'}
+                      {day.band === 'Moderate' && 'âš–ï¸ Moderate'}
+                      {day.band === 'Low' && 'ðŸŒŠ Gentle'}
                     </div>
                     <div className="text-xs opacity-75 mt-1">
                       {day.band === 'High' && 'Peak performance day'}
@@ -1518,14 +1956,14 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   <h4 className="font-bold text-slate-900 dark:text-slate-100">{t.ilmHuruf.yourGuidanceForThisDay}</h4>
                 </div>
                 
-                {/* Energy Return - Detailed (Irtiṭāb) */}
+                {/* Energy Return - Detailed (Irtiá¹­Äb) */}
                 <div className="mb-5 p-4 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/30 dark:to-indigo-900/30 rounded-lg border border-purple-200 dark:border-purple-700">
                   <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3 flex items-center gap-2">
                     <span className="text-2xl">
-                      {day.energyReturn.speed === 'instant' && '⚡'}
-                      {day.energyReturn.speed === 'quick' && '💨'}
-                      {day.energyReturn.speed === 'gradual' && '🌊'}
-                      {day.energyReturn.speed === 'delayed' && '🌱'}
+                      {day.energyReturn.speed === 'instant' && 'âš¡'}
+                      {day.energyReturn.speed === 'quick' && 'ðŸ’¨'}
+                      {day.energyReturn.speed === 'gradual' && 'ðŸŒŠ'}
+                      {day.energyReturn.speed === 'delayed' && 'ðŸŒ±'}
                     </span>
                     <span>{t.ilmHuruf.energyReturnWisdom}</span>
                   </h4>
@@ -1552,7 +1990,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                     
                     <div className="pt-3 border-t border-purple-200 dark:border-purple-700">
                       <p className="text-xs font-semibold text-purple-800 dark:text-purple-200 mb-2 uppercase tracking-wide flex items-center gap-1">
-                        <span>🎯</span>
+                        <span>ðŸŽ¯</span>
                         <span>{t.ilmHuruf.todaysPractice}</span>
                       </p>
                       <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -1569,18 +2007,20 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   </div>
                 </div>
                 
-                {/* Task Sequencer (Niẓām - Lesson 28) - Only for high-harmony days */}
+                {/* Task Sequencer (Niáº“Äm - Lesson 28) - Only for high-harmony days */}
                 {day.taskSequence && (
                   <div className="p-5 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg border-2 border-purple-200 dark:border-purple-700">
                     
                     {/* Header */}
                     <div className="mb-4">
                       <h4 className="text-lg font-bold text-purple-900 dark:text-purple-100 flex items-center gap-2">
-                        <span className="text-2xl">📋</span>
-                        <span>Optimal Sequence for {day.weekday}</span>
+                        <span className="text-2xl">ðŸ“‹</span>
+                        <span>
+                          {language === 'fr' ? 'SÃ©quence Optimale pour' : 'Optimal Sequence for'} {getTranslatedWeekday(day.date)}
+                        </span>
                       </h4>
                       <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                        {day.day_planet} day • Harmony {day.harmony_score}/10
+                        {getPlanetName(day.day_planet)} {language === 'fr' ? 'jour' : 'day'} â€¢ {t.ilmHuruf.harmony} {day.harmony_score}/10
                       </p>
                     </div>
                     
@@ -1591,7 +2031,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-yellow-400">
                         <div className="flex items-center justify-between mb-2">
                           <h5 className="font-semibold text-slate-900 dark:text-slate-100">
-                            🌅 Morning
+                            ðŸŒ… {language === 'fr' ? 'Matin' : 'Morning'}
                           </h5>
                           <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded text-yellow-800 dark:text-yellow-200 font-medium">
                             {day.taskSequence.morning.timeRange}
@@ -1599,27 +2039,27 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         </div>
                         
                         <p className="text-sm text-purple-700 dark:text-purple-300 mb-3 font-medium">
-                          {day.taskSequence.morning.energyType}
+                          {translateEnergyType(day.taskSequence.morning.energyType)}
                         </p>
                         
                         <div className="grid md:grid-cols-2 gap-3">
                           <div>
                             <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
-                              ✓ Best For:
+                              âœ“ {language === 'fr' ? 'IdÃ©al Pour :' : 'Best For:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.morning.bestFor.map((task, i) => (
-                                <li key={i}>• {task}</li>
+                                <li key={i}>â€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              ✗ Avoid:
+                              âœ— {language === 'fr' ? 'Ã€ Ã‰viter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.morning.avoid.map((task, i) => (
-                                <li key={i}>• {task}</li>
+                                <li key={i}>â€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -1627,7 +2067,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         
                         {day.taskSequence.morning.planetalPhase && (
                           <p className="text-xs text-purple-600 dark:text-purple-400 mt-2 italic">
-                            {day.taskSequence.morning.planetalPhase}
+                            {translatePlanetalPhase(day.taskSequence.morning.planetalPhase)}
                           </p>
                         )}
                       </div>
@@ -1636,7 +2076,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-blue-400">
                         <div className="flex items-center justify-between mb-2">
                           <h5 className="font-semibold text-slate-900 dark:text-slate-100">
-                            ☀️ Midday
+                            â˜€ï¸ {language === 'fr' ? 'Midi' : 'Midday'}
                           </h5>
                           <span className="text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded text-blue-800 dark:text-blue-200 font-medium">
                             {day.taskSequence.midday.timeRange}
@@ -1644,27 +2084,27 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         </div>
                         
                         <p className="text-sm text-purple-700 dark:text-purple-300 mb-3 font-medium">
-                          {day.taskSequence.midday.energyType}
+                          {translateEnergyType(day.taskSequence.midday.energyType)}
                         </p>
                         
                         <div className="grid md:grid-cols-2 gap-3">
                           <div>
                             <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
-                              ✓ Best For:
+                              âœ“ {language === 'fr' ? 'IdÃ©al Pour :' : 'Best For:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.midday.bestFor.map((task, i) => (
-                                <li key={i}>• {task}</li>
+                                <li key={i}>â€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              ✗ Avoid:
+                              âœ— {language === 'fr' ? 'Ã€ Ã‰viter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.midday.avoid.map((task, i) => (
-                                <li key={i}>• {task}</li>
+                                <li key={i}>â€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -1672,7 +2112,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         
                         {day.taskSequence.midday.planetalPhase && (
                           <p className="text-xs text-purple-600 dark:text-purple-400 mt-2 italic">
-                            {day.taskSequence.midday.planetalPhase}
+                            {translatePlanetalPhase(day.taskSequence.midday.planetalPhase)}
                           </p>
                         )}
                       </div>
@@ -1681,7 +2121,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-orange-400">
                         <div className="flex items-center justify-between mb-2">
                           <h5 className="font-semibold text-slate-900 dark:text-slate-100">
-                            🌆 Afternoon
+                            ðŸŒ† {language === 'fr' ? 'AprÃ¨s-midi' : 'Afternoon'}
                           </h5>
                           <span className="text-xs bg-orange-100 dark:bg-orange-900/30 px-2 py-1 rounded text-orange-800 dark:text-orange-200 font-medium">
                             {day.taskSequence.afternoon.timeRange}
@@ -1689,27 +2129,27 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         </div>
                         
                         <p className="text-sm text-purple-700 dark:text-purple-300 mb-3 font-medium">
-                          {day.taskSequence.afternoon.energyType}
+                          {translateEnergyType(day.taskSequence.afternoon.energyType)}
                         </p>
                         
                         <div className="grid md:grid-cols-2 gap-3">
                           <div>
                             <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
-                              ✓ Best For:
+                              âœ“ {language === 'fr' ? 'IdÃ©al Pour :' : 'Best For:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.afternoon.bestFor.map((task, i) => (
-                                <li key={i}>• {task}</li>
+                                <li key={i}>â€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              ✗ Avoid:
+                              âœ— {language === 'fr' ? 'Ã€ Ã‰viter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.afternoon.avoid.map((task, i) => (
-                                <li key={i}>• {task}</li>
+                                <li key={i}>â€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -1717,7 +2157,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         
                         {day.taskSequence.afternoon.planetalPhase && (
                           <p className="text-xs text-purple-600 dark:text-purple-400 mt-2 italic">
-                            {day.taskSequence.afternoon.planetalPhase}
+                            {translatePlanetalPhase(day.taskSequence.afternoon.planetalPhase)}
                           </p>
                         )}
                       </div>
@@ -1726,7 +2166,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                       <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-purple-400">
                         <div className="flex items-center justify-between mb-2">
                           <h5 className="font-semibold text-slate-900 dark:text-slate-100">
-                            🌙 Evening
+                            ðŸŒ™ {language === 'fr' ? 'Soir' : 'Evening'}
                           </h5>
                           <span className="text-xs bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded text-purple-800 dark:text-purple-200 font-medium">
                             {day.taskSequence.evening.timeRange}
@@ -1734,27 +2174,27 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         </div>
                         
                         <p className="text-sm text-purple-700 dark:text-purple-300 mb-3 font-medium">
-                          {day.taskSequence.evening.energyType}
+                          {translateEnergyType(day.taskSequence.evening.energyType)}
                         </p>
                         
                         <div className="grid md:grid-cols-2 gap-3">
                           <div>
                             <p className="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">
-                              ✓ Best For:
+                              âœ“ {language === 'fr' ? 'IdÃ©al Pour :' : 'Best For:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.evening.bestFor.map((task, i) => (
-                                <li key={i}>• {task}</li>
+                                <li key={i}>â€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              ✗ Avoid:
+                              âœ— {language === 'fr' ? 'Ã€ Ã‰viter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.evening.avoid.map((task, i) => (
-                                <li key={i}>• {task}</li>
+                                <li key={i}>â€¢ {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -1762,7 +2202,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         
                         {day.taskSequence.evening.planetalPhase && (
                           <p className="text-xs text-purple-600 dark:text-purple-400 mt-2 italic">
-                            {day.taskSequence.evening.planetalPhase}
+                            {translatePlanetalPhase(day.taskSequence.evening.planetalPhase)}
                           </p>
                         )}
                       </div>
@@ -1773,7 +2213,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                     <div className="mt-4 pt-4 border-t border-purple-200 dark:border-purple-700">
                       <p className="text-xs italic text-slate-500 dark:text-slate-400">
                         <span className="font-semibold">Classical teaching (Lesson 28):</span> "Li-kulli shay'in waqtun" 
-                        (For everything there is a time) — Success comes from right action at right time.
+                        (For everything there is a time) â€” Success comes from right action at right time.
                       </p>
                     </div>
                   </div>
@@ -1795,7 +2235,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   onClick={() => setSelectedDay(null)}
                   className="mt-4 w-full px-4 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
                 >
-                  <span>▲</span>
+                  <span>â–²</span>
                   Close Details
                 </button>
               </div>
@@ -1815,7 +2255,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
 }
 
 function DestinyResults({ results }: { results: any }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [verseText, setVerseText] = useState<VerseText | null>(null);
   const [loadingVerse, setLoadingVerse] = useState(false);
   const [verseError, setVerseError] = useState<string | null>(null);
@@ -1823,7 +2263,7 @@ function DestinyResults({ results }: { results: any }) {
   // Fetch Quranic verse when quranResonance is available
   useEffect(() => {
     if (results?.quranResonance) {
-      console.log('🕌 Fetching Quranic Resonance:', results.quranResonance);
+      console.log('ðŸ•Œ Fetching Quranic Resonance:', results.quranResonance);
       setLoadingVerse(true);
       setVerseError(null);
       setVerseText(null);
@@ -1835,17 +2275,17 @@ function DestinyResults({ results }: { results: any }) {
         );
         
         if (verse) {
-          console.log('✅ Successfully fetched verse:', verse);
+          console.log('âœ… Successfully fetched verse:', verse);
           setVerseText(verse);
         } else {
-          console.warn('⚠️ Verse fetch returned null');
+          console.warn('âš ï¸ Verse fetch returned null');
           setVerseError('Unable to load verse at this moment. Please refresh or visit Quran.com directly.');
         }
         setLoadingVerse(false);
       };
       
       fetchVerse().catch(err => {
-        console.error('❌ Error fetching verse:', err);
+        console.error('âŒ Error fetching verse:', err);
         setVerseError(t?.errors?.verseLoadError || 'Unable to load verse text. Please try again.');
         setLoadingVerse(false);
       });
@@ -1866,30 +2306,54 @@ function DestinyResults({ results }: { results: any }) {
   // Debug log
   console.log('DestinyResults rendering. Has quranResonance?', !!results.quranResonance, results.quranResonance);
   
-  // Extract language from useLanguage hook
-  const { language } = useLanguage();
+  // Extract language - already imported at top
   const isFr = language === 'fr';
+  
+  // Get localized station data
+  const localizedStation = isFr && results.saghir in t.spiritualStations
+    ? t.spiritualStations[results.saghir as keyof typeof t.spiritualStations]
+    : station;
   
   return (
     <div className="space-y-6">
-      {/* Name Chart - New Section */}
+      {/* ========== NAME DESTINY RESULTS ========== */}
       {results.nameDestiny && (
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-6 border-2 border-indigo-200 dark:border-indigo-700 shadow-lg">
-          <div className="flex items-center gap-3 mb-5">
-            <Star className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
-            <div>
-              <h3 className="text-2xl font-bold text-indigo-900 dark:text-indigo-200">
-                {t.nameDestiny.nameChart.title}
-              </h3>
-              <p className="text-sm text-indigo-700 dark:text-indigo-300">
-                {t.nameDestiny.nameChart.subtitle}
-              </p>
+        <div className="space-y-6">
+          {/* Header Section */}
+          <div className="bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900/40 dark:to-purple-900/40 rounded-xl p-6 border-2 border-indigo-300 dark:border-indigo-600">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <User className="w-7 h-7 text-indigo-700 dark:text-indigo-300" />
+                <div>
+                  <h2 className="text-2xl font-bold text-indigo-900 dark:text-indigo-100">
+                    {t.nameDestiny.coreAnalysis}
+                  </h2>
+                  <p className="text-sm text-indigo-700 dark:text-indigo-300 mt-1">
+                    {t.nameDestiny.coreAnalysisDesc}
+                  </p>
+                </div>
+              </div>
+              <InfoTooltip content={t.nameDestiny.motherNameInfo} />
             </div>
           </div>
 
-          {/* Grid of chart values */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-            {/* Total Ḥadad Kabīr */}
+          {/* Section 1: Core Numerology Values */}
+          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-6 border-2 border-indigo-200 dark:border-indigo-700 shadow-lg">
+            <div className="flex items-center gap-3 mb-6">
+              <Star className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
+              <div>
+                <h3 className="text-2xl font-bold text-indigo-900 dark:text-indigo-200">
+                  {t.nameDestiny.nameChart.title}
+                </h3>
+                <p className="text-sm text-indigo-700 dark:text-indigo-300">
+                  {t.nameDestiny.nameChart.subtitle}
+                </p>
+              </div>
+            </div>
+
+            {/* Primary Numerology Values */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            {/* Total á¸¤adad KabÄ«r */}
             <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-indigo-200 dark:border-indigo-700">
               <div className="text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-semibold mb-1">
                 {t.nameDestiny.nameChart.total}
@@ -1904,7 +2368,7 @@ function DestinyResults({ results }: { results: any }) {
               )}
             </div>
 
-            {/* Digital Root (Ṣaghīr) */}
+            {/* Digital Root (á¹¢aghÄ«r) */}
             <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-purple-200 dark:border-purple-700">
               <div className="text-xs uppercase tracking-wider text-purple-600 dark:text-purple-400 font-semibold mb-1">
                 {t.nameDestiny.nameChart.saghir}
@@ -1914,7 +2378,7 @@ function DestinyResults({ results }: { results: any }) {
               </div>
             </div>
 
-            {/* Element (Ṭabʿ) */}
+            {/* Element (á¹¬abÊ¿) */}
             <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-emerald-200 dark:border-emerald-700">
               <div className="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold mb-1">
                 {t.nameDestiny.nameChart.tabh}
@@ -1990,10 +2454,29 @@ function DestinyResults({ results }: { results: any }) {
 
           {/* Element Inheritance (if mother's name provided) */}
           {results.nameDestiny.foundation && (
-            <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-lg p-4 border border-rose-200 dark:border-rose-700">
-              <div className="text-sm uppercase tracking-wider text-rose-700 dark:text-rose-300 font-semibold mb-3">
-                {t.nameDestiny.origin.inheritance}
+            <>
+              {/* ========== INHERITED INFLUENCES SECTION (Mother's Name Impact) ========== */}
+              <div className="mt-6 mb-4 bg-gradient-to-r from-rose-100 to-pink-100 dark:from-rose-900/40 dark:to-pink-900/40 rounded-xl p-4 border-2 border-rose-300 dark:border-rose-600">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Users className="w-5 h-5 text-rose-700 dark:text-rose-300" />
+                    <div>
+                      <h2 className="text-lg font-bold text-rose-900 dark:text-rose-100">
+                        {t.nameDestiny.inheritedInfluences}
+                      </h2>
+                      <p className="text-xs text-rose-700 dark:text-rose-300">
+                        {t.nameDestiny.inheritedInfluencesDesc}
+                      </p>
+                    </div>
+                  </div>
+                  <InfoTooltip content={t.nameDestiny.motherNameExplanation} />
+                </div>
               </div>
+
+              <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-lg p-4 border border-rose-200 dark:border-rose-700">
+                <div className="text-sm uppercase tracking-wider text-rose-700 dark:text-rose-300 font-semibold mb-3">
+                  {t.nameDestiny.origin.inheritance}
+                </div>
               <div className="flex items-center justify-center gap-6 mb-3">
                 {/* Expression (Person) */}
                 <div className="text-center">
@@ -2009,7 +2492,7 @@ function DestinyResults({ results }: { results: any }) {
                 </div>
 
                 {/* Arrow */}
-                <div className="text-3xl text-rose-400">↔</div>
+                <div className="text-3xl text-rose-400">â†”</div>
 
                 {/* Foundation (Mother) */}
                 <div className="text-center">
@@ -2066,7 +2549,8 @@ function DestinyResults({ results }: { results: any }) {
                   </div>
                 );
               })()}
-            </div>
+              </div>
+            </>
           )}
 
           {/* Disclaimer */}
@@ -2074,12 +2558,13 @@ function DestinyResults({ results }: { results: any }) {
             {t.nameDestiny.disclaimer.reflectionOnly}
           </div>
         </div>
+        </div>
       )}
 
-      {/* Name Element Chart */}
+      {/* Section 2: Element Distribution Chart */}
       {results.nameDestiny && results.nameDestiny.arabicName && (
         <div className="bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 rounded-xl p-6 border-2 border-teal-200 dark:border-teal-700 shadow-lg">
-          <div className="flex items-center gap-3 mb-5">
+          <div className="flex items-center gap-3 mb-6">
             <Flame className="w-7 h-7 text-teal-600 dark:text-teal-400" />
             <div>
               <h3 className="text-2xl font-bold text-teal-900 dark:text-teal-200">
@@ -2108,10 +2593,10 @@ function DestinyResults({ results }: { results: any }) {
 
             // Element visual config
             const elementConfig = {
-              fire: { icon: '🔥', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30', bar: 'bg-red-500' },
-              air: { icon: '💨', color: 'text-sky-600 dark:text-sky-400', bg: 'bg-sky-100 dark:bg-sky-900/30', bar: 'bg-sky-500' },
-              water: { icon: '💧', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30', bar: 'bg-blue-500' },
-              earth: { icon: '🌍', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/30', bar: 'bg-amber-500' }
+              fire: { icon: 'ðŸ”¥', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30', bar: 'bg-red-500' },
+              air: { icon: 'ðŸ’¨', color: 'text-sky-600 dark:text-sky-400', bg: 'bg-sky-100 dark:bg-sky-900/30', bar: 'bg-sky-500' },
+              water: { icon: 'ðŸ’§', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30', bar: 'bg-blue-500' },
+              earth: { icon: 'ðŸŒ', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/30', bar: 'bg-amber-500' }
             };
 
             return (
@@ -2190,38 +2675,246 @@ function DestinyResults({ results }: { results: any }) {
         </div>
       )}
 
-      {/* Main Destiny */}
-      <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl p-6 text-black shadow-xl">
-        <div className="text-center">
-          <div className="text-6xl font-bold mb-2">{results.saghir}</div>
-          <div className="text-2xl font-bold mb-2">{station.name}</div>
-          <div className="text-xl opacity-90 mb-4 font-arabic">{station.arabic}</div>
-          <div className="text-lg opacity-90">{station.meaning}</div>
+      {/* Section 3: Temperament & Personality Profile */}
+      {results.nameDestiny && results.nameDestiny.arabicName && (
+        (() => {
+          // Calculate dominant element from the name
+          const elementDist = calculateElementDistribution(results.nameDestiny.arabicName);
+          let dominantElement: 'fire' | 'air' | 'water' | 'earth' = 'fire';
+          let maxPercentage = 0;
+          
+          Object.entries(elementDist).forEach(([elem, pct]) => {
+            if (pct > maxPercentage) {
+              maxPercentage = pct;
+              dominantElement = elem as 'fire' | 'air' | 'water' | 'earth';
+            }
+          });
+
+          return (
+            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-6 border-2 border-indigo-200 dark:border-indigo-700 shadow-lg">
+              <TemperamentDisplay 
+                element={dominantElement}
+                compact={false}
+                showCareer={true}
+                showPsychology={true}
+              />
+            </div>
+          );
+        })()
+      )}
+
+      {/* Section 4: Spiritual & Color Resonance */}
+      {results.nameDestiny && (results.nameDestiny.divineNameResonance || results.nameDestiny.colorResonance) && (
+        <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 border-2 border-purple-200 dark:border-purple-700 shadow-lg">
+          <div className="mb-6 text-center">
+            <h3 className="text-2xl font-bold text-purple-900 dark:text-purple-200 mb-1">
+              âœ¨ {t.nameDestiny.higherResonance.title}
+            </h3>
+            <p className="text-sm text-purple-700 dark:text-purple-300">
+              {t.nameDestiny.higherResonance.subtitle}
+            </p>
+          </div>
+
+          {/* Divine Name Resonance */}
+          {results.nameDestiny.divineNameResonance && (
+            <div className="mb-6 bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-purple-300 dark:border-purple-700">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-3xl">ðŸ•Šï¸</span>
+                <h4 className="text-xl font-bold text-purple-900 dark:text-purple-200">
+                  {t.nameDestiny.divineNameResonance.title}
+                </h4>
+              </div>
+              
+              <div className="text-center mb-4">
+                <p className="text-sm text-purple-700 dark:text-purple-300 mb-2">
+                  {t.nameDestiny.divineNameResonance.subtitle}
+                </p>
+                <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg p-4 text-white">
+                  <div className="text-3xl font-bold mb-2 font-arabic">
+                    {results.nameDestiny.divineNameResonance.arabic}
+                  </div>
+                  <div className="text-xl font-semibold mb-1">
+                    {results.nameDestiny.divineNameResonance.transliteration}
+                  </div>
+                  <div className="text-lg">
+                    {isFr ? results.nameDestiny.divineNameResonance.meaningFr : results.nameDestiny.divineNameResonance.meaningEn}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-4">
+                  <div className="text-sm font-semibold text-purple-900 dark:text-purple-200 mb-1 flex items-center gap-2">
+                    <span>ðŸ”¹</span> {t.nameDestiny.divineNameResonance.spiritualInfluence}
+                  </div>
+                  <p className="text-sm text-purple-800 dark:text-purple-300">
+                    {isFr ? results.nameDestiny.divineNameResonance.spiritualInfluenceFr : results.nameDestiny.divineNameResonance.spiritualInfluence}
+                  </p>
+                </div>
+
+                <div className="bg-pink-50 dark:bg-pink-900/30 rounded-lg p-4">
+                  <div className="text-sm font-semibold text-pink-900 dark:text-pink-200 mb-1 flex items-center gap-2">
+                    <span>ðŸ”¹</span> {t.nameDestiny.divineNameResonance.reflection}
+                  </div>
+                  <p className="text-sm text-pink-800 dark:text-pink-300">
+                    {isFr ? results.nameDestiny.divineNameResonance.reflectionFr : results.nameDestiny.divineNameResonance.reflection}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Color Resonance */}
+          {results.nameDestiny.colorResonance && (
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-pink-300 dark:border-pink-700">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-3xl">ðŸŽ¨</span>
+                <h4 className="text-xl font-bold text-pink-900 dark:text-pink-200">
+                  {t.nameDestiny.colorResonance.title}
+                </h4>
+              </div>
+              
+              <p className="text-sm text-pink-700 dark:text-pink-300 mb-4">
+                {t.nameDestiny.colorResonance.subtitle}
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                {/* Primary Color */}
+                <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                  <div className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">
+                    ðŸŽ¨ {t.nameDestiny.colorResonance.primary}
+                  </div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div 
+                      className="w-12 h-12 rounded-lg border-2 border-slate-300 dark:border-slate-600 shadow-md"
+                      style={{ backgroundColor: results.nameDestiny.colorResonance.primary.hex }}
+                    ></div>
+                    <div>
+                      <div className="font-bold text-lg text-slate-900 dark:text-slate-100">
+                        {results.nameDestiny.colorResonance.primary.color}
+                      </div>
+                      <div className="text-xs text-slate-600 dark:text-slate-400">
+                        {results.nameDestiny.colorResonance.primary.percentage}%
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-700 dark:text-slate-300">
+                    {isFr ? results.nameDestiny.colorResonance.primary.meaningFr : results.nameDestiny.colorResonance.primary.meaning}
+                  </p>
+                </div>
+
+                {/* Secondary Color */}
+                {results.nameDestiny.colorResonance.secondary && (
+                  <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                    <div className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">
+                      ðŸŽ¨ {t.nameDestiny.colorResonance.secondary}
+                    </div>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div 
+                        className="w-12 h-12 rounded-lg border-2 border-slate-300 dark:border-slate-600 shadow-md"
+                        style={{ backgroundColor: results.nameDestiny.colorResonance.secondary.hex }}
+                      ></div>
+                      <div>
+                        <div className="font-bold text-lg text-slate-900 dark:text-slate-100">
+                          {results.nameDestiny.colorResonance.secondary.color}
+                        </div>
+                        <div className="text-xs text-slate-600 dark:text-slate-400">
+                          {results.nameDestiny.colorResonance.secondary.percentage}%
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-700 dark:text-slate-300">
+                      {isFr ? results.nameDestiny.colorResonance.secondary.meaningFr : results.nameDestiny.colorResonance.secondary.meaning}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Best Colors */}
+              <div className="mb-4 bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-200 dark:border-green-700">
+                <div className="text-sm font-semibold text-green-900 dark:text-green-200 mb-2">
+                  âœ… {t.nameDestiny.colorResonance.bestColors}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {(isFr ? results.nameDestiny.colorResonance.bestColorsFr : results.nameDestiny.colorResonance.bestColorsEn).map((color: string, idx: number) => (
+                    <span key={idx} className="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 rounded-full text-sm font-medium border border-green-300 dark:border-green-600">
+                      {color}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Colors to Avoid */}
+              <div className="mb-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-700">
+                <div className="text-sm font-semibold text-amber-900 dark:text-amber-200 mb-2">
+                  âš ï¸ {t.nameDestiny.colorResonance.avoidColors}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {(isFr ? results.nameDestiny.colorResonance.avoidColorsFr : results.nameDestiny.colorResonance.avoidColorsEn).map((color: string, idx: number) => (
+                    <span key={idx} className="px-3 py-1 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 rounded-full text-sm font-medium border border-amber-300 dark:border-amber-600">
+                      {color}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tip */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
+                <div className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
+                  <span>ðŸ’¡</span> {t.nameDestiny.colorResonance.tip}
+                </div>
+                <p className="text-sm text-blue-800 dark:text-blue-300">
+                  {isFr ? results.nameDestiny.colorResonance.tipFr : results.nameDestiny.colorResonance.tipEn}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Disclaimer */}
+          <div className="mt-4 text-xs text-center text-purple-600 dark:text-purple-400 italic">
+            {t.nameDestiny.disclaimer.reflectionOnly}
+          </div>
+        </div>
+      )}
+
+      {/* Section 5: Core Destiny Number & Station */}
+      <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl p-8 text-white shadow-xl">
+        <div className="text-center space-y-3">
+          <div className="text-sm uppercase tracking-wider opacity-90 mb-2">{t.nameDestiny.destinyNumber.title}</div>
+          <div className="text-7xl font-bold mb-3">{results.saghir}</div>
+          <div className="text-3xl font-bold mb-2">{localizedStation.name}</div>
+          <div className="text-2xl opacity-95 mb-4 font-arabic">{station.arabic}</div>
+          <div className="text-lg opacity-90 max-w-2xl mx-auto">{localizedStation.meaning}</div>
         </div>
       </div>
 
-      {/* Kabir & Hadath */}
+      {/* Section 6: Supporting Numerology Values */}
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-          <div className="text-sm text-black dark:text-slate-400">Kabīr (Grand Total)</div>
-          <div className="text-3xl font-bold text-black dark:text-purple-400">{results.kabir}</div>
+        <div className="bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-700 shadow-md">
+          <div className="text-xs uppercase tracking-wider text-purple-600 dark:text-purple-400 font-semibold mb-2">KabÄ«r (Grand Total)</div>
+          <div className="text-4xl font-bold text-purple-900 dark:text-purple-400">{results.kabir}</div>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">{t.nameDestiny.destinyNumber.sumOfLetters}</p>
         </div>
         
-        <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-          <div className="text-sm text-black dark:text-slate-400">Ḥadath (Element)</div>
-          <div className="text-3xl font-bold text-black dark:text-blue-400">{results.hadath}</div>
+        <div className="bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-700 shadow-md">
+          <div className="text-xs uppercase tracking-wider text-blue-600 dark:text-blue-400 font-semibold mb-2">á¸¤adath (Elemental Value)</div>
+          <div className="text-4xl font-bold text-blue-900 dark:text-blue-400">{results.hadath}</div>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">{t.nameDestiny.destinyNumber.reducedRoot}</p>
         </div>
       </div>
 
-      {/* Qur'anic Resonance */}
+      {/* Section 7: Qur'anic Resonance */}
       {results.quranResonance && (
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border-2 border-emerald-500 dark:border-emerald-600 overflow-hidden">
-          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-4">
-            <div className="flex items-center gap-2">
-              <BookOpen className="w-6 h-6 text-white" />
-              <h3 className="text-xl font-bold text-white">
-                Qur'anic Resonance
-              </h3>
+          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-5">
+            <div className="flex items-center gap-3">
+              <BookOpen className="w-7 h-7 text-white" />
+              <div>
+                <h3 className="text-2xl font-bold text-white">
+                  {t.nameDestiny.quranicResonance.title}
+                </h3>
+                <p className="text-sm text-emerald-100 mt-1">{t.nameDestiny.quranicResonance.subtitle}</p>
+              </div>
             </div>
           </div>
           
@@ -2281,7 +2974,7 @@ function DestinyResults({ results }: { results: any }) {
                         "{verseText.translation}"
                       </p>
                       <p className="text-xs text-slate-600 dark:text-slate-400 italic">
-                        — {verseText.translationName}
+                        â€” {verseText.translationName}
                       </p>
                     </div>
                   </div>
@@ -2317,13 +3010,20 @@ function DestinyResults({ results }: { results: any }) {
         </div>
       )}
 
-      {/* Spiritual Origin - Mother's Name Analysis */}
+      {/* Section 8: Spiritual Origin (Mother's Name Analysis) */}
       {results.motherAnalysis && (
-        <div className="bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-xl border border-rose-200 dark:border-rose-800 p-6 shadow-lg">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-black dark:text-slate-100">
-            <Heart className="h-5 w-5 text-rose-500" />
-            {t.nameDestiny.origin.title}
-          </h3>
+        <div className="bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-xl border-2 border-rose-200 dark:border-rose-800 p-6 shadow-lg">
+          <div className="flex items-center gap-3 mb-5">
+            <Heart className="h-6 w-6 text-rose-500" />
+            <div>
+              <h3 className="text-2xl font-bold text-rose-900 dark:text-rose-100">
+                {t.nameDestiny.origin.title}
+              </h3>
+              <p className="text-sm text-rose-700 dark:text-rose-300 mt-1">
+                {t.nameDestiny.motherOrigin.subtitle}
+              </p>
+            </div>
+          </div>
           
           <div className="space-y-4">
             {/* Mother's Element */}
@@ -2340,7 +3040,7 @@ function DestinyResults({ results }: { results: any }) {
                 </div>
               </div>
               <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                {t.nameDestiny.origin.kabir}: {results.motherAnalysis.kabir} • {t.nameDestiny.origin.saghir}: {results.motherAnalysis.saghir} • {t.nameDestiny.origin.hadath}: {results.motherAnalysis.hadath}
+                {t.nameDestiny.origin.kabir}: {results.motherAnalysis.kabir} â€¢ {t.nameDestiny.origin.saghir}: {results.motherAnalysis.saghir} â€¢ {t.nameDestiny.origin.hadath}: {results.motherAnalysis.hadath}
               </div>
             </div>
             
@@ -2364,7 +3064,7 @@ function DestinyResults({ results }: { results: any }) {
                     })()}
                   </p>
                 </div>
-                <div className="text-3xl text-slate-400">↔</div>
+                <div className="text-3xl text-slate-400">â†”</div>
                 <div className="flex-1 text-center p-3 bg-rose-50 dark:bg-rose-900/20 rounded-lg">
                   <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">{t.nameDestiny.origin.yourFoundation}</p>
                   <p className="font-bold text-rose-600 dark:text-rose-400">
@@ -2428,14 +3128,20 @@ function DestinyResults({ results }: { results: any }) {
         </div>
       )}
 
-      {/* Letter Geometry Visualization */}
+      {/* Section 9: Letter Geometry & Form Analysis */}
       {results.geometry && (
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl shadow-md border border-indigo-200 dark:border-indigo-800 p-6">
-          <h3 className="text-lg font-bold mb-4 text-black dark:text-slate-100 flex items-center gap-2">
-            <Compass className="w-5 h-5 text-indigo-500" />
-            {t.nameDestiny.geometry.title}
-          </h3>
-          
+        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl shadow-lg border-2 border-indigo-200 dark:border-indigo-800 p-6">
+          <div className="flex items-center gap-3 mb-5">
+            <Compass className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+            <div>
+              <h3 className="text-2xl font-bold text-indigo-900 dark:text-indigo-100">
+                {t.nameDestiny.geometry.title}
+              </h3>
+              <p className="text-sm text-indigo-700 dark:text-indigo-300 mt-1">
+                The shapes and forms within your name
+              </p>
+            </div>
+          </div>
           <div className="space-y-5">
             {/* Vertical */}
             <div>
@@ -2460,7 +3166,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.vertical.join(' • ')}
+                    {GEOMETRY_KEYWORDS.vertical.join(' â€¢ ')}
                   </p>
                 </>
               ) : (
@@ -2493,7 +3199,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.round.join(' • ')}
+                    {GEOMETRY_KEYWORDS.round.join(' â€¢ ')}
                   </p>
                 </>
               ) : (
@@ -2526,7 +3232,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.flat.join(' • ')}
+                    {GEOMETRY_KEYWORDS.flat.join(' â€¢ ')}
                   </p>
                 </>
               ) : (
@@ -2559,7 +3265,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.angular.join(' • ')}
+                    {GEOMETRY_KEYWORDS.angular.join(' â€¢ ')}
                   </p>
                 </>
               ) : (
@@ -2576,7 +3282,19 @@ function DestinyResults({ results }: { results: any }) {
                     {t.nameDestiny.geometry.profile}
                   </div>
                   <p className="text-sm text-black dark:text-indigo-300 leading-relaxed">
-                    {results.geometry.profile}
+                    {(() => {
+                      // Determine the profile type based on geometry percentages
+                      const { vertical, round, flat, angular } = results.geometry;
+                      const dominantType = results.geometry.dominant;
+                      const dominantPct = results.geometry[dominantType].percentage;
+                      
+                      // Map to translation key
+                      if (dominantPct > 60) {
+                        return t.geometryProfiles[`${dominantType}Dominant` as keyof typeof t.geometryProfiles];
+                      } else {
+                        return t.geometryProfiles.balanced;
+                      }
+                    })()}
                   </p>
                 </div>
               </div>
@@ -2598,9 +3316,7 @@ function DestinyResults({ results }: { results: any }) {
               {t.nameDestiny.triad.lifeDestiny} ({results.saghir})
             </div>
             <div className="text-sm text-black dark:text-slate-300">
-              {language === 'fr' && t.spiritualStations?.[results.saghir as keyof typeof t.spiritualStations]?.quality 
-                ? t.spiritualStations[results.saghir as keyof typeof t.spiritualStations].quality 
-                : station.quality}
+              {localizedStation.quality}
             </div>
           </div>
           
@@ -2609,9 +3325,13 @@ function DestinyResults({ results }: { results: any }) {
               {t.nameDestiny.triad.soulUrge} ({results.soulUrge?.name})
             </div>
             <div className="text-sm text-black dark:text-slate-300">
-              {language === 'fr' && results.soulUrge && t.spiritualStations?.[results.soulUrge.name as keyof typeof t.spiritualStations]?.quality
-                ? t.spiritualStations[results.soulUrge.name as keyof typeof t.spiritualStations].quality
-                : results.soulUrge?.quality}
+              {(() => {
+                if (!results.soulUrge) return '';
+                const soulNumber = results.soulUrge.name;
+                return isFr && soulNumber in t.spiritualStations
+                  ? t.spiritualStations[soulNumber as keyof typeof t.spiritualStations].quality
+                  : results.soulUrge.quality;
+              })()}
             </div>
           </div>
           
@@ -2620,9 +3340,13 @@ function DestinyResults({ results }: { results: any }) {
               {t.nameDestiny.triad.outerPersonality} ({results.personality?.name})
             </div>
             <div className="text-sm text-black dark:text-slate-300">
-              {language === 'fr' && results.personality && t.spiritualStations?.[results.personality.name as keyof typeof t.spiritualStations]?.quality
-                ? t.spiritualStations[results.personality.name as keyof typeof t.spiritualStations].quality
-                : results.personality?.quality}
+              {(() => {
+                if (!results.personality) return '';
+                const personalityNumber = results.personality.name;
+                return isFr && personalityNumber in t.spiritualStations
+                  ? t.spiritualStations[personalityNumber as keyof typeof t.spiritualStations].quality
+                  : results.personality.quality;
+              })()}
             </div>
           </div>
         </div>
@@ -2638,67 +3362,79 @@ function DestinyResults({ results }: { results: any }) {
         <div className="space-y-5">
           <div>
             <div className="font-semibold text-yellow-700 dark:text-yellow-400 mb-1 flex items-center gap-2">
-              ✨ {t.nameDestiny.guidance.yourPath}
+              âœ¨ {t.nameDestiny.guidance.yourPath}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.yourPathDesc}
             </p>
-            <p className="text-slate-700 dark:text-slate-300">{results.interpretation}</p>
+            <p className="text-slate-700 dark:text-slate-300">
+              {(() => {
+                // Build localized interpretation
+                const destinyStation = localizedStation;
+                const soulStation = isFr && results.soulUrge && results.soulUrge.name in t.spiritualStations
+                  ? t.spiritualStations[results.soulUrge.name as keyof typeof t.spiritualStations]
+                  : results.soulUrge;
+                const personalityStation = isFr && results.personality && results.personality.name in t.spiritualStations
+                  ? t.spiritualStations[results.personality.name as keyof typeof t.spiritualStations]
+                  : results.personality;
+                
+                if (isFr) {
+                  return `Votre destin de vie (${destinyStation.name}) vous appelle Ã  ${destinyStation.quality.toLowerCase()}. ` +
+                    `Votre Ã¢me aspire profondÃ©ment Ã  ${soulStation?.quality.toLowerCase()}, ` +
+                    `tandis qu'extÃ©rieurement vous exprimez ${personalityStation?.quality.toLowerCase()}. ` +
+                    `L'intÃ©gration se produit lorsque vous alignez ces trois dimensions.`;
+                } else {
+                  return results.interpretation;
+                }
+              })()}
+            </p>
           </div>
           
           <div>
             <div className="font-semibold text-indigo-700 dark:text-indigo-400 mb-1 flex items-center gap-2">
-              🕊 {t.nameDestiny.guidance.spiritualPractice}
+              ðŸ•Š {t.nameDestiny.guidance.spiritualPractice}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.spiritualPracticeDesc}
             </p>
             <p className="text-slate-700 dark:text-slate-300">
-              {language === 'fr' && results.saghir in t.spiritualStations
-                ? (t.spiritualStations as any)[results.saghir]?.practice
-                : station.practice}
+              {localizedStation.practice}
             </p>
           </div>
           
           <div>
             <div className="font-semibold text-blue-700 dark:text-blue-400 mb-1 flex items-center gap-2">
-              📖 {t.nameDestiny.guidance.quranicGuidance}
+              ðŸ“– {t.nameDestiny.guidance.quranicGuidance}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.quranicGuidanceDesc}
             </p>
             <p className="text-slate-700 dark:text-slate-300 italic">
-              {language === 'fr' && results.saghir in t.spiritualStations
-                ? (t.spiritualStations as any)[results.saghir]?.verse
-                : station.verse}
+              {localizedStation.verse}
             </p>
           </div>
           
           <div>
             <div className="font-semibold text-emerald-700 dark:text-emerald-400 mb-1 flex items-center gap-2">
-              🧭 {t.nameDestiny.guidance.practicalAction}
+              ðŸ§­ {t.nameDestiny.guidance.practicalAction}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.practicalActionDesc}
             </p>
             <p className="text-slate-700 dark:text-slate-300">
-              {language === 'fr' && results.saghir in t.spiritualStations
-                ? (t.spiritualStations as any)[results.saghir]?.practical
-                : station.practical}
+              {localizedStation.practical}
             </p>
           </div>
           
           <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border-l-4 border-amber-500">
             <div className="font-semibold text-amber-900 dark:text-amber-300 mb-1 flex items-center gap-2">
-              ⚠️ {t.nameDestiny.guidance.shadowToWatch}
+              âš ï¸ {t.nameDestiny.guidance.shadowToWatch}
             </div>
             <p className="text-xs text-amber-700 dark:text-amber-400 mb-2 italic">
               {t.nameDestiny.guidance.shadowToWatchDesc}
             </p>
             <p className="text-amber-800 dark:text-amber-200">
-              {language === 'fr' && results.saghir in t.spiritualStations
-                ? (t.spiritualStations as any)[results.saghir]?.shadow
-                : station.shadow}
+              {localizedStation.shadow}
             </p>
           </div>
         </div>
@@ -2709,8 +3445,146 @@ function DestinyResults({ results }: { results: any }) {
 
 function CompatibilityResults({ results }: { results: any }) {
   const { t, language } = useLanguage();
-  // Check if it's the new RelationshipCompatibility format
-  const isNewFormat = results?.mode === 'relationship' && results?.methods;
+  
+  // Helper function to get score interpretation
+  const getScoreInterpretation = (score: number, quality: string): string[] => {
+    if (language === 'fr') {
+      if (score >= 85) {
+        return [
+          'ðŸŒŸ CompatibilitÃ© exceptionnelle',
+          '',
+          'Ce que cela signifie :',
+          'Harmonie exceptionnelle aux niveaux de surface et d\'Ã¢me. Vos Ã©nergies se complÃ¨tent magnifiquement. Cette relation a un potentiel extraordinaire pour la croissance mutuelle et le bonheur.',
+          '',
+          'Attente rÃ©aliste :',
+          'â€¢ La communication coule naturellement',
+          'â€¢ Vous vous "comprenez" intuitivement',
+          'â€¢ Les dÃ©fis sont gÃ©rables ensemble',
+          'â€¢ Concentrez-vous sur la croissance continue'
+        ];
+      } else if (score >= 70) {
+        return [
+          'ðŸ’« TrÃ¨s bonne compatibilitÃ©',
+          '',
+          'Ce que cela signifie :',
+          'Forte compatibilitÃ© avec des domaines mineurs Ã  cultiver. Cette connexion a un grand potentiel avec un effort mutuel. Vos forces dÃ©passent largement vos dÃ©fis.',
+          '',
+          'Attente rÃ©aliste :',
+          'â€¢ Excellent potentiel Ã  long terme',
+          'â€¢ Quelques domaines nÃ©cessitent une attention consciente',
+          'â€¢ La communication et le compromis sont essentiels',
+          'â€¢ Cultivez ce que vous avez construit ensemble'
+        ];
+      } else if (score >= 55) {
+        return [
+          'âœ¨ Bonne compatibilitÃ©',
+          '',
+          'Ce que cela signifie :',
+          'CompatibilitÃ© modÃ©rÃ©e. Vous pouvez construire une relation harmonieuse avec comprÃ©hension, communication et compromis. Vos diffÃ©rences sont gÃ©rablesâ€”pas des obstaclesâ€”mais nÃ©cessitent un effort conscient.',
+          '',
+          'Attente rÃ©aliste :',
+          score >= 60 
+            ? 'â€¢ La vie quotidienne peut avoir des frictions\nâ€¢ Mais votre fondation Ã©motionnelle est solide\nâ€¢ Concentrez-vous sur le lien profond que vous partagez'
+            : 'â€¢ Les deux partenaires doivent Ãªtre engagÃ©s\nâ€¢ Les diffÃ©rences enrichissent quand honorÃ©es\nâ€¢ La patience et la comprÃ©hension sont essentielles'
+        ];
+      } else if (score >= 40) {
+        return [
+          'âš ï¸ CompatibilitÃ© difficile',
+          '',
+          'Ce que cela signifie :',
+          'DiffÃ©rences significatives d\'Ã©nergie et d\'approche. Cette relation nÃ©cessite un effort substantiel, de la patience et une croissance mutuelle. Possible, mais les deux partenaires doivent Ãªtre pleinement engagÃ©s.',
+          '',
+          'Attente rÃ©aliste :',
+          'â€¢ NÃ©cessite un travail conscient quotidien',
+          'â€¢ Les deux doivent vouloir grandir ensemble',
+          'â€¢ Cherchez des conseils professionnels si nÃ©cessaire',
+          'â€¢ CÃ©lÃ©brez les petites victoires'
+        ];
+      } else {
+        return [
+          'ðŸš¨ TrÃ¨s difficile',
+          '',
+          'Ce que cela signifie :',
+          'Conflits Ã©lÃ©mentaires majeurs. Bien que non impossible, ce jumelage fait face Ã  des dÃ©fis fondamentaux qui nÃ©cessitent un engagement profond pour Ãªtre surmontÃ©s.',
+          '',
+          'ConsidÃ©ration sÃ©rieuse :',
+          'â€¢ ÃŠtes-vous tous deux pleinement engagÃ©s Ã  grandir ?',
+          'â€¢ Le conseil professionnel est fortement recommandÃ©',
+          'â€¢ Fixez des attentes rÃ©alistes',
+          'â€¢ Honorez vos besoins individuels aussi'
+        ];
+      }
+    } else {
+      if (score >= 85) {
+        return [
+          'ðŸŒŸ Exceptional Compatibility',
+          '',
+          'What This Means:',
+          'Outstanding compatibility on both surface and soul levels. Your energies complement each other beautifully. This relationship has extraordinary potential for mutual growth and happiness.',
+          '',
+          'Realistic Expectation:',
+          'â€¢ Communication flows naturally',
+          'â€¢ You "get" each other intuitively',
+          'â€¢ Challenges are manageable together',
+          'â€¢ Focus on continuous growth'
+        ];
+      } else if (score >= 70) {
+        return [
+          'ðŸ’« Very Good Compatibility',
+          '',
+          'What This Means:',
+          'Strong compatibility with minor areas to nurture. This connection has great potential with mutual effort. Your strengths far outweigh your challenges.',
+          '',
+          'Realistic Expectation:',
+          'â€¢ Excellent long-term potential',
+          'â€¢ Some areas need conscious attention',
+          'â€¢ Communication and compromise are key',
+          'â€¢ Nurture what you\'ve built together'
+        ];
+      } else if (score >= 55) {
+        return [
+          'âœ¨ Good Compatibility',
+          '',
+          'What This Means:',
+          'Moderate compatibility. You can build a harmonious relationship with understanding, communication, and compromise. Your differences are workableâ€”not deal-breakersâ€”but require conscious effort.',
+          '',
+          'Realistic Expectation:',
+          score >= 60 
+            ? 'â€¢ Daily life may have friction\nâ€¢ But your emotional foundation is strong\nâ€¢ Focus on nurturing the deep bond you share'
+            : 'â€¢ Both partners need to be committed\nâ€¢ Differences enrich when honored\nâ€¢ Patience and understanding are essential'
+        ];
+      } else if (score >= 40) {
+        return [
+          'âš ï¸ Challenging Compatibility',
+          '',
+          'What This Means:',
+          'Significant differences in energy and approach. This relationship requires substantial effort, patience, and mutual growth. Possible, but both partners must be fully committed.',
+          '',
+          'Realistic Expectation:',
+          'â€¢ Requires conscious daily work',
+          'â€¢ Both must want to grow together',
+          'â€¢ Seek professional guidance if needed',
+          'â€¢ Celebrate small victories'
+        ];
+      } else {
+        return [
+          'ðŸš¨ Very Difficult',
+          '',
+          'What This Means:',
+          'Major elemental conflicts. While not impossible, this pairing faces fundamental challenges that require deep commitment to overcome.',
+          '',
+          'Serious Consideration:',
+          'â€¢ Are you both fully committed to growth?',
+          'â€¢ Professional counseling is strongly recommended',
+          'â€¢ Set realistic expectations',
+          'â€¢ Honor your individual needs too'
+        ];
+      }
+    }
+  };
+  
+  // Check format type
+  const isNewThreeMethod = results?.mode === 'relationship' && results?.methods;
   
   if (!results || !results.person1 || !results.person2) {
     return (
@@ -2720,8 +3594,8 @@ function CompatibilityResults({ results }: { results: any }) {
     );
   }
 
-  // New format with three methods
-  if (isNewFormat) {
+  // New format with four methods (Spiritual, Elemental, Planetary, Daily Interaction)
+  if (isNewThreeMethod) {
     const { person1, person2, methods, overallScore, overallQuality, overallQualityFrench, summary, summaryFrench, recommendations, recommendationsFrench } = results as RelationshipCompatibility;
     
     const qualityColors: Record<string, string> = {
@@ -2760,13 +3634,13 @@ function CompatibilityResults({ results }: { results: any }) {
           </div>
         </div>
 
-        {/* Three Methods */}
+        {/* Four Methods */}
         <div className="space-y-4">
           <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 text-center">
-            Three Analysis Methods
+            {language === 'fr' ? 'Quatre MÃ©thodes d\'Analyse' : 'Four Analysis Methods'}
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Spiritual-Destiny */}
             <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg space-y-3">
               <div className="flex items-center justify-center">
@@ -2780,7 +3654,7 @@ function CompatibilityResults({ results }: { results: any }) {
                 />
               </div>
               <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                🌙 Spiritual Destiny
+                ðŸŒ™ Spiritual Destiny
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
                 Remainder: {methods.spiritualDestiny.remainder}
@@ -2802,7 +3676,7 @@ function CompatibilityResults({ results }: { results: any }) {
                 />
               </div>
               <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                🌊 Elemental Temperament
+                ðŸŒŠ Elemental Temperament
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
                 Element: {language === 'fr' ? methods.elementalTemperament.sharedElementFrench : methods.elementalTemperament.sharedElement}
@@ -2824,13 +3698,38 @@ function CompatibilityResults({ results }: { results: any }) {
                 />
               </div>
               <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                ⭐ Planetary Cosmic
+                {language === 'fr' ? 'â­ Cosmique PlanÃ©taire' : 'â­ Planetary Cosmic'}
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                {methods.planetaryCosmic.person1Planet.name} × {methods.planetaryCosmic.person2Planet.name}
+                {methods.planetaryCosmic.person1Planet.name} Ã— {methods.planetaryCosmic.person2Planet.name}
               </p>
               <p className="text-xs text-gray-700 dark:text-gray-300">
                 {language === 'fr' ? methods.planetaryCosmic.descriptionFrench : methods.planetaryCosmic.description}
+              </p>
+            </div>
+
+            {/* Daily Interaction (NEW) */}
+            <div className="p-4 bg-amber-50 dark:bg-amber-950/20 rounded-lg space-y-3">
+              <div className="flex items-center justify-center">
+                <CompatibilityGauge 
+                  score={methods.dailyInteraction.score}
+                  size="md"
+                  color={methods.dailyInteraction.color === 'green' ? '#10b981' :
+                         methods.dailyInteraction.color === 'blue' ? '#3b82f6' :
+                         methods.dailyInteraction.color === 'yellow' ? '#eab308' : '#f97316'}
+                />
+              </div>
+              <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
+                {language === 'fr' ? 'ðŸ¤ Interaction Quotidienne' : 'ðŸ¤ Daily Interaction'}
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                {language === 'fr' 
+                  ? `${methods.dailyInteraction.person1DominantFrench} Ã— ${methods.dailyInteraction.person2DominantFrench}`
+                  : `${methods.dailyInteraction.person1Dominant} Ã— ${methods.dailyInteraction.person2Dominant}`
+                }
+              </p>
+              <p className="text-xs text-gray-700 dark:text-gray-300">
+                {language === 'fr' ? methods.dailyInteraction.descriptionFrench : methods.dailyInteraction.description}
               </p>
             </div>
           </div>
@@ -2841,10 +3740,10 @@ function CompatibilityResults({ results }: { results: any }) {
           {/* Title with Explanation */}
           <div className="text-center space-y-2 mb-4">
             <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-2">
-              <span>✨</span>
+              <span>âœ¨</span>
               <span>{t.compatibilityResults.letterChemistry}</span>
               <span className="text-sm font-normal text-gray-600 dark:text-gray-400">
-                ({t.compatibilityResults.letterChemistryArabic} • زواج الحروف)
+                ({t.compatibilityResults.letterChemistryArabic} â€¢ Ø²ÙˆØ§Ø¬ Ø§Ù„Ø­Ø±ÙˆÙ)
               </span>
             </h3>
             {/* Description Line */}
@@ -2883,7 +3782,7 @@ function CompatibilityResults({ results }: { results: any }) {
                       {t.compatibilityResults.combinedHarmony}
                     </span>
                     <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
-                      {language === 'fr' ? 'Harmonie' : 'Harmony'}: {harmonyPercentage}%
+                      {t.ilmHuruf.harmony}: {harmonyPercentage}%
                     </span>
                   </div>
                   {/* Harmony explanation */}
@@ -2897,7 +3796,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('fire', language === 'fr' ? 'fr' : 'en')} ${combined.fire}%`}
                       >
-                        {combined.fire >= 15 && `🔥 ${combined.fire}%`}
+                        {combined.fire >= 15 && `ðŸ”¥ ${combined.fire}%`}
                       </div>
                     )}
                     {combined.air > 0 && (
@@ -2906,7 +3805,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-cyan-400 to-blue-400 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('air', language === 'fr' ? 'fr' : 'en')} ${combined.air}%`}
                       >
-                        {combined.air >= 15 && `💨 ${combined.air}%`}
+                        {combined.air >= 15 && `ðŸ’¨ ${combined.air}%`}
                       </div>
                     )}
                     {combined.water > 0 && (
@@ -2915,7 +3814,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('water', language === 'fr' ? 'fr' : 'en')} ${combined.water}%`}
                       >
-                        {combined.water >= 15 && `💧 ${combined.water}%`}
+                        {combined.water >= 15 && `ðŸ’§ ${combined.water}%`}
                       </div>
                     )}
                     {combined.earth > 0 && (
@@ -2924,7 +3823,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-green-600 to-emerald-600 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('earth', language === 'fr' ? 'fr' : 'en')} ${combined.earth}%`}
                       >
-                        {combined.earth >= 15 && `🌍 ${combined.earth}%`}
+                        {combined.earth >= 15 && `ðŸŒ ${combined.earth}%`}
                       </div>
                     )}
                   </div>
@@ -2937,7 +3836,7 @@ function CompatibilityResults({ results }: { results: any }) {
                     <span className="text-xl font-bold text-gray-700 dark:text-gray-300">
                       {getElementName(dominant1, language === 'fr' ? 'fr' : 'en')}
                     </span>
-                    <span className="text-2xl">×</span>
+                    <span className="text-2xl">Ã—</span>
                     <span className="text-xl font-bold text-gray-700 dark:text-gray-300">
                       {getElementName(dominant2, language === 'fr' ? 'fr' : 'en')}
                     </span>
@@ -3038,7 +3937,7 @@ function CompatibilityResults({ results }: { results: any }) {
         {/* NEW FEATURE 3: Balancing Dhikr Recommendation */}
         <div className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 rounded-xl">
           <h3 className="text-lg font-bold text-center text-gray-900 dark:text-gray-100 mb-2 flex items-center justify-center gap-2">
-            <span>🤲</span>
+            <span>ðŸ¤²</span>
             <span>{t.compatibilityResults.balancingDhikr}</span>
           </h3>
           {/* Contextual Sentence */}
@@ -3116,7 +4015,7 @@ function CompatibilityResults({ results }: { results: any }) {
                 key={idx}
                 className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg"
               >
-                <span className="text-amber-600 dark:text-amber-400 font-bold">•</span>
+                <span className="text-amber-600 dark:text-amber-400 font-bold">â€¢</span>
                 <span className="text-sm text-gray-700 dark:text-gray-300">{rec}</span>
               </li>
             ))}
@@ -3184,7 +4083,7 @@ function CompatibilityResults({ results }: { results: any }) {
           <ul className="space-y-2">
             {results.strengths.map((strength: string, idx: number) => (
               <li key={idx} className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
+                <span className="text-green-500 mt-0.5">âœ“</span>
                 {strength}
               </li>
             ))}
@@ -3199,7 +4098,7 @@ function CompatibilityResults({ results }: { results: any }) {
           <ul className="space-y-2">
             {results.challenges.map((challenge: string, idx: number) => (
               <li key={idx} className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
-                <span className="text-amber-500 mt-0.5">⚡</span>
+                <span className="text-amber-500 mt-0.5">âš¡</span>
                 {challenge}
               </li>
             ))}
@@ -3211,7 +4110,8 @@ function CompatibilityResults({ results }: { results: any }) {
 }
 
 function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isFr = language === 'fr';
   const {
     lifePathNumber,
     soulUrgeNumber,
@@ -3222,49 +4122,37 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
     cycle,
     karmicDebts,
     sacredNumbers,
-    pinnaclesAndChallenges
+    pinnaclesAndChallenges,
+    maternalInfluence
   } = results;
-
-  // Real-life explanations for core numbers
-  const numberExplanations: Record<number, { title: string; meaning: string }> = {
-    1: { title: "The Leader", meaning: "You're naturally independent and drive to create new things. You prefer making decisions yourself." },
-    2: { title: "The Peacemaker", meaning: "You're great at bringing people together and finding harmony. You're sensitive to others' feelings." },
-    3: { title: "The Creator", meaning: "You express yourself easily and bring joy wherever you go. Communication is your strength." },
-    4: { title: "The Builder", meaning: "You're reliable and practical. You build solid foundations in everything you do." },
-    5: { title: "The Explorer", meaning: "You love freedom and variety. You adapt quickly and learn from diverse experiences." },
-    6: { title: "The Caregiver", meaning: "You're responsible and naturally want to help others. Family and service matter deeply to you." },
-    7: { title: "The Thinker", meaning: "You're analytical and spiritual. You seek deeper understanding in life's mysteries." },
-    8: { title: "The Achiever", meaning: "You're ambitious and focused on success. You have strong business and leadership abilities." },
-    9: { title: "The Humanitarian", meaning: "You care about the world and want to make a positive difference. Compassion guides you." },
-    11: { title: "The Visionary", meaning: "You see beyond ordinary things. You inspire others and carry spiritual messages." },
-    22: { title: "The Master Builder", meaning: "You have big ambitions to create something lasting. You turn dreams into reality on a large scale." }
-  };
   
   return (
     <div className="space-y-6">
       {/* Introduction Section */}
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
-        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">Your Life Numbers</h3>
+        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">
+          {t.lifePath.coreNumbers}
+        </h3>
         <p className="text-sm text-slate-700 dark:text-slate-300 mb-4">
-          These four numbers reveal your core personality, inner desires, how others see you, and your life's purpose. Think of them as the main traits that shape who you are and the path you're meant to walk.
+          {t.lifePath.coreNumbersDesc}
         </p>
         
         <div className="grid md:grid-cols-2 gap-3 text-xs">
           <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-blue-500">
-            <span className="font-semibold text-slate-900 dark:text-slate-100">Life Path:</span>
-            <p className="text-slate-600 dark:text-slate-400 mt-1">Your core talents & natural strengths. The abilities you're born with.</p>
+            <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.lifePathNumber}:</span>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.lifePathQuick}</p>
           </div>
           <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-purple-500">
-            <span className="font-semibold text-slate-900 dark:text-slate-100">Soul Urge:</span>
-            <p className="text-slate-600 dark:text-slate-400 mt-1">What truly makes you happy. Your deepest desires & inner fulfillment.</p>
+            <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.soulUrge}:</span>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.soulUrgeQuick}</p>
           </div>
           <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-pink-500">
-            <span className="font-semibold text-slate-900 dark:text-slate-100">Personality:</span>
-            <p className="text-slate-600 dark:text-slate-400 mt-1">The impression you give. How people see & experience you at first.</p>
+            <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.personality}:</span>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.personalityQuick}</p>
           </div>
           <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-amber-500">
-            <span className="font-semibold text-slate-900 dark:text-slate-100">Destiny:</span>
-            <p className="text-slate-600 dark:text-slate-400 mt-1">Your life purpose & what you're meant to achieve. Your ultimate goal.</p>
+            <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.destiny}:</span>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.destinyQuick}</p>
           </div>
         </div>
       </div>
@@ -3273,105 +4161,162 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Life Path Number */}
         <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg p-5 text-black shadow-lg border-2 border-blue-700">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">LIFE PATH NUMBER</div>
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">{t.lifePath.lifePathLabel}</div>
           <div className="text-4xl font-bold text-black mb-2">{lifePathNumber}</div>
           <div className="text-xs text-black opacity-75 mb-3 font-semibold">
-            {numberExplanations[lifePathNumber as keyof typeof numberExplanations]?.title || "Your Core Path"}
+            {isFr && t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]
+              ? t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes].title
+              : t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "Your Core Path"}
           </div>
           <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
-            {numberExplanations[lifePathNumber as keyof typeof numberExplanations]?.meaning || "This is your main life purpose and natural talents."}
+            {isFr && t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]
+              ? t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes].meaning
+              : t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This is your main life purpose and natural talents."}
           </p>
           <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
-            <span className="font-semibold">What it means:</span> This is your natural talent and life direction. It shows what you're good at and what comes naturally to you.
+            <span className="font-semibold">{t.lifePath.whatItMeans}</span> {t.lifePath.lifePathSimple}
           </div>
         </div>
 
         {/* Soul Urge Number */}
         <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg p-5 text-black shadow-lg border-2 border-purple-700">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">SOUL URGE NUMBER</div>
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">{t.lifePath.soulUrgeLabel}</div>
           <div className="text-4xl font-bold text-black mb-2">{soulUrgeNumber}</div>
-          <div className="text-xs text-black opacity-75 mb-3 font-semibold">What You Truly Want</div>
+          <div className="text-xs text-black opacity-75 mb-3 font-semibold">
+            {isFr && t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]
+              ? t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes].title
+              : t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "What You Truly Want"}
+          </div>
           <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
-            This reveals your deepest desires and what makes you feel fulfilled. It's what your heart is always pushing you toward — your true inner calling.
+            {isFr && t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]
+              ? t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes].meaning
+              : t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This reveals your deepest desires and what makes you feel fulfilled."}
           </p>
           <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
-            <span className="font-semibold">What it means:</span> Your inner motivation. What you're seeking in life and what brings you real joy & satisfaction.
+            <span className="font-semibold">{t.lifePath.whatItMeans}</span> {t.lifePath.soulUrgeSimple}
           </div>
         </div>
 
         {/* Personality Number */}
         <div className="bg-gradient-to-br from-pink-400 to-pink-600 rounded-lg p-5 text-black shadow-lg border-2 border-pink-700">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">PERSONALITY NUMBER</div>
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">{t.lifePath.personalityLabel}</div>
           <div className="text-4xl font-bold text-black mb-2">{personalityNumber}</div>
-          <div className="text-xs text-black opacity-75 mb-3 font-semibold">How People See You</div>
+          <div className="text-xs text-black opacity-75 mb-3 font-semibold">
+            {isFr && t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]
+              ? t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes].title
+              : t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "How People See You"}
+          </div>
           <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
-            This is the impression you make when people meet you — your external personality, your style, and the first energy people sense from you.
+            {isFr && t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]
+              ? t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes].meaning
+              : t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This is the impression you make when people meet you."}
           </p>
           <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
-            <span className="font-semibold">What it means:</span> Your public face. How you appear to others & the energy you give off when you walk into a room.
+            <span className="font-semibold">{t.lifePath.whatItMeans}</span> {t.lifePath.personalitySimple}
           </div>
         </div>
 
         {/* Destiny Number */}
         <div className="bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg p-5 text-black shadow-lg border-2 border-amber-700">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">DESTINY NUMBER</div>
+          <div className="text-sm font-semibold text-black opacity-90 mb-1">{t.lifePath.destinyLabel}</div>
           <div className="text-4xl font-bold text-black mb-2">{destinyNumber}</div>
-          <div className="text-xs text-black opacity-75 mb-3 font-semibold">Your Life Mission</div>
+          <div className="text-xs text-black opacity-75 mb-3 font-semibold">
+            {isFr && t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]
+              ? t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes].title
+              : t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "Your Life Mission"}
+          </div>
           <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
-            This is what you're meant to achieve and contribute to the world. It's your ultimate life purpose and the legacy you're meant to leave.
+            {isFr && t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]
+              ? t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes].meaning
+              : t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This is what you're meant to achieve and contribute to the world."}
           </p>
           <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
-            <span className="font-semibold">What it means:</span> Your life purpose & ultimate goal. What you're meant to accomplish and give to the world.
+            <span className="font-semibold">{t.lifePath.whatItMeans}</span> {t.lifePath.destinySimple}
           </div>
         </div>
       </div>
+
+      {/* Maternal Influence Section - Only shown if available */}
+      {maternalInfluence !== undefined && (
+        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-xl p-6 border border-indigo-200 dark:border-indigo-800">
+          <div className="flex items-start gap-3 mb-4">
+            <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+                {t.lifePath.externalInfluences}
+              </h3>
+              <p className="text-sm text-slate-700 dark:text-slate-300">
+                {t.lifePath.maternalInfluenceExplanation}
+              </p>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-indigo-400 to-purple-500 rounded-lg p-5 text-black shadow-lg border-2 border-indigo-600">
+            <div className="text-sm font-semibold text-black opacity-90 mb-1">
+              {t.lifePath.maternalInfluence}
+            </div>
+            <div className="text-4xl font-bold text-black mb-2">{maternalInfluence}</div>
+            <div className="text-xs text-black opacity-75 mb-3 font-semibold">
+              {isFr && t.lifePath.numberArchetypes[maternalInfluence as keyof typeof t.lifePath.numberArchetypes]
+                ? t.lifePath.numberArchetypes[maternalInfluence as keyof typeof t.lifePath.numberArchetypes].title
+                : t.lifePath.numberArchetypes[maternalInfluence as keyof typeof t.lifePath.numberArchetypes]?.title || t.lifePath.externalEnergy}
+            </div>
+            <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
+              {t.lifePath.maternalInfluenceDesc}
+            </p>
+            <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
+              <span className="font-semibold">{t.lifePath.important}</span> {t.lifePath.importantNote}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Current Life Cycle */}
       {cycle && (
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
           <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-          Where You Are Right Now
+          {t.lifePath.whereYouAreNow}
         </h3>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Current Life Phase</div>
+            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">{t.lifePath.currentLifePhase}</div>
             <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
-              Phase {cycle.cycleNumber} of 9
+              {t.lifePath.phaseOf9.replace('{number}', cycle.cycleNumber.toString())}
             </div>
             <div className="text-slate-700 dark:text-slate-300 mb-3">
               <span className="font-semibold">{cycle.cycleStage}</span>
             </div>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-              Year {cycle.positionInCycle}/9: <span className="font-semibold">{cycle.yearTheme}</span>
+              {t.lifePath.yearTheme.replace('{position}', cycle.positionInCycle.toString())} <span className="font-semibold">{cycle.yearTheme}</span>
             </p>
             <div className="bg-blue-50 dark:bg-blue-900/30 rounded p-3 border-l-4 border-blue-500">
-              <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Focus Areas:</div>
+              <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">{t.lifePath.focusAreas}</div>
               <div className="text-sm text-slate-700 dark:text-slate-300">
-                {cycle.focus.join(' • ')}
+                {cycle.focus.join(' â€¢ ')}
               </div>
             </div>
           </div>
           
           <div>
-            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Your Age</div>
+            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">{t.lifePath.yourAge}</div>
             <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-              {cycle.age} years
+              {t.lifePath.years.replace('{age}', cycle.age.toString())}
             </div>
             
             <div>
-              <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">This Year & Month's Energy</div>
+              <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">{t.lifePath.yearMonthEnergy}</div>
               <div className="flex gap-3">
                 <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 flex-1 border border-amber-200 dark:border-amber-800">
-                  <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold">Personal Year</div>
+                  <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold">{t.lifePath.personalYearLabel}</div>
                   <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">{personalYear}</div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Overall energy</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.overallEnergy}</p>
                 </div>
                 <div className="bg-purple-50 dark:bg-purple-900/30 rounded p-3 flex-1 border border-purple-200 dark:border-purple-800">
-                  <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold">Personal Month</div>
+                  <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold">{t.lifePath.personalMonthLabel}</div>
                   <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{personalMonth}</div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">This month's flow</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.monthFlow}</p>
                 </div>
               </div>
             </div>
@@ -3380,103 +4325,121 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
       </div>
       )}
 
-      {/* Strengths and Challenges */}
+      {/* Strengths and Challenges - Only show if data is available */}
+      {pinnaclesAndChallenges && (
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-slate-100 flex items-center gap-2">
           <Target className="w-5 h-5 text-green-600 dark:text-green-400" />
-          Your Strengths & Growth Opportunities
+          {t.lifePath.strengthsAndGrowth}
         </h3>
         
         <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 pb-3 border-b border-slate-200 dark:border-slate-700">
-          Each number from 1-9 represents different life qualities. Your strengths show what you naturally excel at. Growth areas show where you can develop further.
+          {t.lifePath.strengthsIntro}
         </p>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 text-green-700 dark:text-green-400">What You're Strong At</h4>
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 text-green-700 dark:text-green-400">{t.lifePath.whatYouAreStrongAt}</h4>
             <div className="space-y-2">
+              {pinnaclesAndChallenges.pinnacle1 && (
               <div className="bg-green-50 dark:bg-green-900/30 rounded p-3 border-l-4 border-green-500">
-                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Strength 1</div>
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.strength.replace('{number}', '1')}</div>
                 <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle1}</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">What makes you capable and reliable</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.strengthDesc1}</p>
               </div>
+              )}
+              {pinnaclesAndChallenges.pinnacle2 && (
               <div className="bg-green-50 dark:bg-green-900/30 rounded p-3 border-l-4 border-green-500">
-                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Strength 2</div>
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.strength.replace('{number}', '2')}</div>
                 <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle2}</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">What gives you an edge</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.strengthDesc2}</p>
               </div>
+              )}
+              {pinnaclesAndChallenges.pinnacle3 && (
               <div className="bg-green-50 dark:bg-green-900/30 rounded p-3 border-l-4 border-green-500">
-                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Strength 3</div>
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.strength.replace('{number}', '3')}</div>
                 <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle3}</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Your natural talent</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.strengthDesc3}</p>
               </div>
+              )}
+              {pinnaclesAndChallenges.pinnacle4 && (
               <div className="bg-green-50 dark:bg-green-900/30 rounded p-3 border-l-4 border-green-500">
-                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Strength 4</div>
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.strength.replace('{number}', '4')}</div>
                 <span className="font-bold text-green-700 dark:text-green-400">{pinnaclesAndChallenges.pinnacle4}</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">What you excel at</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.strengthDesc4}</p>
               </div>
+              )}
               {pinnaclesAndChallenges.currentPinnacle && (
               <div className="bg-emerald-100 dark:bg-emerald-900/50 rounded p-3 mt-3 border-2 border-emerald-500">
-                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Right Now (Your Current Strength):</span>
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.currentStrength}</span>
                 <div className="text-emerald-700 dark:text-emerald-300 font-bold mt-1">{pinnaclesAndChallenges.currentPinnacle}</div>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">This is the main strength supporting you this season</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.currentStrengthDesc}</p>
               </div>
               )}
             </div>
           </div>
           
           <div>
-            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 text-amber-700 dark:text-amber-400">Where You Can Grow</h4>
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 text-amber-700 dark:text-amber-400">{t.lifePath.whereYouCanGrow}</h4>
             <div className="space-y-2">
+              {pinnaclesAndChallenges.challenge1 && (
               <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 border-l-4 border-amber-500">
-                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Growth Area 1</div>
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.growthArea.replace('{number}', '1')}</div>
                 <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge1}</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">A quality to develop</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.growthDesc1}</p>
               </div>
+              )}
+              {pinnaclesAndChallenges.challenge2 && (
               <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 border-l-4 border-amber-500">
-                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Growth Area 2</div>
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.growthArea.replace('{number}', '2')}</div>
                 <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge2}</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">An area for improvement</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.growthDesc2}</p>
               </div>
+              )}
+              {pinnaclesAndChallenges.challenge3 && (
               <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 border-l-4 border-amber-500">
-                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Growth Area 3</div>
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.growthArea.replace('{number}', '3')}</div>
                 <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge3}</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Something to work on</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.growthDesc3}</p>
               </div>
+              )}
+              {pinnaclesAndChallenges.challenge4 && (
               <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 border-l-4 border-amber-500">
-                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">Growth Area 4</div>
+                <div className="text-xs font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.growthArea.replace('{number}', '4')}</div>
                 <span className="font-bold text-amber-700 dark:text-amber-400">{pinnaclesAndChallenges.challenge4}</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">A key life lesson</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.growthDesc4}</p>
               </div>
+              )}
               {pinnaclesAndChallenges.currentChallenge && (
               <div className="bg-orange-100 dark:bg-orange-900/50 rounded p-3 mt-3 border-2 border-orange-500">
-                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Currently Working On (Your Main Focus):</span>
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.currentChallenge}</span>
                 <div className="text-orange-700 dark:text-orange-300 font-bold mt-1">{pinnaclesAndChallenges.currentChallenge}</div>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">This is what life is teaching you right now—embrace it!</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.currentChallengeDesc}</p>
               </div>
               )}
             </div>
           </div>
         </div>
       </div>
+      )}
 
       {/* Special Numbers */}
-      {(karmicDebts.length > 0 || sacredNumbers.length > 0) && (
+      {(karmicDebts?.length > 0 || sacredNumbers?.length > 0) && (
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
           <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
-            Special Numbers & Lessons
+            {t.lifePath.specialNumbers}
           </h3>
           
           <div className="grid md:grid-cols-2 gap-6">
-            {karmicDebts.length > 0 && (
+            {karmicDebts?.length > 0 && (
               <div>
-                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Lessons to Learn</h4>
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">{t.lifePath.lessonsToLearn}</h4>
                 <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                  These numbers represent lessons your soul wants to learn in this lifetime. They're not obstacles — they're opportunities for growth.
+                  {t.lifePath.lessonsDesc}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {karmicDebts.map((debt) => (
+                  {karmicDebts?.map((debt) => (
                     <div key={debt} className="bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 rounded-full px-4 py-2 text-sm font-semibold border border-red-300 dark:border-red-700">
                       {debt}
                     </div>
@@ -3485,14 +4448,14 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
               </div>
             )}
             
-            {sacredNumbers.length > 0 && (
+            {sacredNumbers?.length > 0 && (
               <div>
-                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">Blessed Numbers</h4>
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">{t.lifePath.blessedNumbers}</h4>
                 <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                  These are powerful numbers connected to spiritual tradition. They bring special blessings and spiritual protection to your life.
+                  {t.lifePath.blessedDesc}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {sacredNumbers.map((sacred) => (
+                  {sacredNumbers?.map((sacred) => (
                     <div key={sacred} className="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 rounded-full px-4 py-2 text-sm font-semibold border border-indigo-300 dark:border-indigo-700">
                       {sacred}
                     </div>
@@ -3508,7 +4471,8 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
 }
 
 function TimingResults({ results, birthDate, name, abjad }: { results: any; birthDate: string; name: string; abjad: any }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isFr = language === 'fr';
   const { planetaryHour, personalYear } = results;
   const [restAlertDismissed, setRestAlertDismissed] = useState(false);
   
@@ -3622,7 +4586,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
     return (
       <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
         <p className="text-red-800 dark:text-red-200">
-          Unable to calculate planetary hour. Please try again.
+          {t.timingResults.unableToCalculate}
         </p>
       </div>
     );
@@ -3645,14 +4609,14 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3">
               <span className="text-4xl">
-                {todayReading.restLevel === 'deep' ? '🛑' : '🌙'}
+                {todayReading.restLevel === 'deep' ? 'ðŸ›‘' : 'ðŸŒ™'}
               </span>
               <div>
                 <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                  {todayReading.restLevel === 'deep' ? 'Deep Rest Needed Today' : 'Today is a Rest Day'}
+                  {todayReading.restLevel === 'deep' ? t.timingResults.deepRestNeededToday : t.timingResults.todayIsRestDay}
                 </h3>
                 <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 flex items-center gap-1">
-                  <span>Harmony: {todayReading.harmony_score}/10</span>
+                  <span>{t.timingResults.harmonyScore}: {todayReading.harmony_score}/10</span>
                   {birthDate && name && (
                     <HarmonyTooltip
                       breakdown={(() => {
@@ -3664,7 +4628,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                             tempProfile.kawkab,
                             todayReading.ruh_phase,
                             tempProfile.ruh,
-                            `${todayReading.day_planet} energy`
+                            t.timingResults.planetEnergy.replace('{planet}', todayReading.day_planet)
                           ) as HarmonyBreakdown;
                         } catch {
                           // Fallback if profile calculation fails
@@ -3672,7 +4636,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                             score: todayReading.harmony_score,
                             userElement: 'Fire' as ElementType,
                             contextElement: 'Fire' as ElementType,
-                            contextLabel: `${todayReading.day_planet} energy`,
+                            contextLabel: t.timingResults.planetEnergy.replace('{planet}', todayReading.day_planet),
                             ruhPhase: todayReading.ruh_phase,
                             connectionType: 'weak' as const,
                             elementMatch: 25,
@@ -3684,9 +4648,9 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                       context="daily"
                     />
                   )}
-                  <span className="mx-1">•</span>
-                  <span>{todayReading.day_planet} energy</span>
-                  <span className="mx-1">•</span>
+                  <span className="mx-1">â€¢</span>
+                  <span>{t.timingResults.planetEnergy.replace('{planet}', todayReading.day_planet)}</span>
+                  <span className="mx-1">â€¢</span>
                   <span>{todayReading.weekday}</span>
                 </p>
               </div>
@@ -3697,8 +4661,8 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           <div className="mb-4">
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
               {todayReading.restLevel === 'deep' 
-                ? 'Critical low energy detected. Your spirit is recalibrating—honor this healing signal with deep physical and mental rest today.'
-                : 'Low harmony today suggests this is a strategic rest day. Focus on planning and reflection rather than execution and new starts.'
+                ? t.timingResults.criticalLowEnergy
+                : t.timingResults.lowHarmonyToday
               }
             </p>
           </div>
@@ -3707,12 +4671,12 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           {todayReading.restPractices && todayReading.restPractices.length > 0 && (
             <div className="bg-white dark:bg-slate-800 rounded-lg p-4 mb-4">
               <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wide">
-                Recommended Today:
+                {t.timingResults.recommendedToday}
               </p>
               <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-2">
                 {todayReading.restPractices.slice(0, 3).map((practice, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">•</span>
+                    <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">â€¢</span>
                     <span>{practice}</span>
                   </li>
                 ))}
@@ -3727,14 +4691,14 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
               className="text-sm px-4 py-2 bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-2 font-medium"
             >
               <Calendar className="w-4 h-4" />
-              View Full Week
+              {t.timingResults.viewFullWeek}
             </button>
             
             <button 
               onClick={dismissRestAlert}
               className="text-sm px-4 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors"
             >
-              Dismiss
+              {t.timingResults.dismiss}
             </button>
           </div>
           
@@ -3742,14 +4706,14 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           <p className="text-xs italic text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-200 dark:border-slate-700">
             <span className="font-semibold">
               "{todayReading.restLevel === 'deep' 
-                ? 'Man ʿarafa infisāl waqtihi, faqad ḥafaẓa ṭāqatahu' 
-                : 'Al-sukūn qabl al-ḥaraka'
+                ? t.timingResults.deepRestQuote
+                : t.timingResults.restDayQuote
               }"
             </span>
-            {' — '}
+            {' â€” '}
             {todayReading.restLevel === 'deep'
-              ? 'Who knows the time for disconnection, preserves their energy'
-              : 'Stillness before motion brings blessed action'
+              ? t.timingResults.deepRestTranslation
+              : t.timingResults.restDayTranslation
             }
           </p>
         </div>
@@ -3759,7 +4723,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
       {todayReading?.isRestDay && !restAlertDismissed && (
         <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
           <p className="text-sm text-amber-800 dark:text-amber-200">
-            <strong>⚠️ Rest day active</strong> — Planetary hours below are shown for reference, but minimize activities today.
+            <strong>âš ï¸ {t.timingResults.restDayActive}</strong> â€” {t.timingResults.restDayNote}
           </p>
         </div>
       )}
@@ -3771,7 +4735,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
         <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
           <Clock className="w-5 h-5 text-amber-500" />
-          Current Planetary Hour {currentHour && '⚡'}
+          {t.timingResults.currentPlanetaryHour} {currentHour && 'âš¡'}
         </h3>
         
         <div className="text-center mb-6">
@@ -3788,12 +4752,12 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <div className="font-bold text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
               <TrendingUp className="w-4 w-4" />
-              Favorable For:
+              {t.timingResults.favorableFor}
             </div>
             <ul className="space-y-1">
               {planetaryHour.favorable.map((item: string, idx: number) => (
                 <li key={idx} className="text-sm text-slate-700 dark:text-slate-300">
-                  • {item}
+                  â€¢ {item}
                 </li>
               ))}
             </ul>
@@ -3801,12 +4765,12 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           
           <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
             <div className="font-bold text-amber-700 dark:text-amber-300 mb-2">
-              Avoid:
+              {t.timingResults.avoid}
             </div>
             <ul className="space-y-1">
               {planetaryHour.avoid.map((item: string, idx: number) => (
                 <li key={idx} className="text-sm text-slate-700 dark:text-slate-300">
-                  • {item}
+                  â€¢ {item}
                 </li>
               ))}
             </ul>
@@ -3827,16 +4791,16 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
             }`}>
               <div className="text-center">
                 <div className="text-2xl mb-2 font-bold">
-                  {alignment.quality === 'perfect' ? '✨ PERFECT ALIGNMENT!' : 
-                   alignment.quality === 'strong' ? '💫 STRONG ENERGY' :
-                   alignment.quality === 'opposing' ? '⏸️ REST TIME' : '📊 MODERATE'}
+                  {alignment.quality === 'perfect' ? `âœ¨ ${t.timingResults.perfectAlignment}` : 
+                   alignment.quality === 'strong' ? `ðŸ’« ${t.timingResults.strongEnergy}` :
+                   alignment.quality === 'opposing' ? `â¸ï¸ ${t.timingResults.restTime}` : `ðŸ“Š ${t.timingResults.moderate}`}
                 </div>
                 <p className={`text-sm mb-2 font-medium ${
                   alignment.quality === 'perfect' || alignment.quality === 'strong' 
                     ? 'opacity-90' 
                     : 'text-slate-800'
                 }`}>
-                  Your {userElement} + Hour's {currentHour.element} = {alignment.quality.toUpperCase()}
+                  {t.timingResults.yourElement.replace('{element}', userElement)} + {t.timingResults.hourElement.replace('{element}', currentHour.element)} = {alignment.quality.toUpperCase()}
                 </p>
                 <div className={`flex items-center justify-center gap-2 text-sm font-bold ${
                   alignment.quality === 'perfect' || alignment.quality === 'strong'
@@ -3844,8 +4808,8 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                     : 'text-slate-900'
                 }`}>
                   <Clock className={`h-4 w-4 ${timeWindow.urgency === 'high' ? 'animate-pulse' : ''}`} />
-                  <span>Window closes in: {timeWindow.closesIn}</span>
-                  {timeWindow.urgency === 'high' && <span>⚠️</span>}
+                  <span>{t.timingResults.windowClosesIn} {timeWindow.closesIn}</span>
+                  {timeWindow.urgency === 'high' && <span>âš ï¸</span>}
                 </div>
               </div>
             </div>
@@ -3874,7 +4838,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
                 <p className="text-sm text-blue-900 dark:text-blue-100 font-medium flex items-center gap-2">
                   <Calendar className="h-4 w-4" />
-                  📍 Next {userElement} window: {timeWindow.nextWindowIn}
+                  ðŸ“ {t.timingResults.nextWindow.replace('{element}', userElement)} {timeWindow.nextWindowIn}
                 </p>
               </div>
             )}
@@ -3884,12 +4848,12 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
               <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-lg p-4 border border-indigo-200 dark:border-indigo-800">
                 <h4 className="font-bold text-indigo-900 dark:text-indigo-100 mb-2 flex items-center gap-2 text-sm">
                   <Lightbulb className="w-4 h-4" />
-                  Best for {alignment.quality === 'perfect' || alignment.quality === 'strong' ? 'NOW' : 'when your element returns'}:
+                  {alignment.quality === 'perfect' || alignment.quality === 'strong' ? t.timingResults.bestForNow : t.timingResults.bestForWhenReturns}
                 </h4>
                 <ul className="space-y-1">
                   {ELEMENT_GUIDANCE_MAP[userElement].bestFor.slice(0, 3).map((item, idx) => (
                     <li key={idx} className="text-xs text-indigo-900 dark:text-indigo-200 flex items-start gap-2 font-medium">
-                      <span className="text-green-600 dark:text-green-400 flex-shrink-0">•</span>
+                      <span className="text-green-600 dark:text-green-400 flex-shrink-0">â€¢</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -3905,7 +4869,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
           <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Calendar className="w-5 h-5 text-purple-500" />
-            Your Personal Year
+            {t.timingResults.yourPersonalYear}
           </h3>
           
           <div className="text-center mb-4">
@@ -3932,7 +4896,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
       <div className="bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-600 dark:to-teal-700 rounded-xl p-6 shadow-xl border-2 border-emerald-400 dark:border-emerald-500">
         <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-emerald-900 dark:text-white">
           <BookOpen className="w-5 h-5" />
-          Recommended Dhikr Today
+          {t.timingResults.recommendedDhikr}
         </h3>
         
         <div className="text-center">
@@ -3944,14 +4908,14 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
           </div>
           <div className="bg-white/70 dark:bg-white/20 backdrop-blur-sm rounded-lg p-3 mb-4">
             <p className="font-medium text-emerald-900 dark:text-white">
-              Count: <span className="font-bold text-xl">{getDailyDhikr(new Date().getDate() % 12).count}</span> times
+              {t.timingResults.count}: <span className="font-bold text-xl">{getDailyDhikr(new Date().getDate() % 12).count}</span> {t.timingResults.times}
             </p>
             <p className="text-sm mt-1 text-emerald-800 dark:text-white">
-              Best time: {getDailyDhikr(new Date().getDate() % 12).time}
+              {t.timingResults.bestTime}: {getDailyDhikr(new Date().getDate() % 12).time}
             </p>
           </div>
           <div className="text-base bg-emerald-200/70 dark:bg-emerald-800/50 rounded-lg p-3 text-emerald-900 dark:text-white">
-            <strong>Benefit:</strong> {getDailyDhikr(new Date().getDate() % 12).benefit}
+            <strong>{t.timingResults.benefit}:</strong> {getDailyDhikr(new Date().getDate() % 12).benefit}
           </div>
         </div>
       </div>
@@ -3961,7 +4925,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
           <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Zap className="w-5 h-5 text-amber-500" />
-            🎯 Act Now - Real-Time Guidance
+            ðŸŽ¯ {t.timingResults.actNowRealTimeGuidance}
           </h3>
           <ActNowButtons userElement={userElement as 'fire' | 'water' | 'air' | 'earth'} />
         </div>
@@ -3969,3 +4933,12 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
     </div>
   );
 }
+
+
+
+
+
+
+
+
+

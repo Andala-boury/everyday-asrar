@@ -20,16 +20,17 @@ export function calculateSpiritualDestiny(
   const remainder = sum % 9 === 0 ? 9 : sum % 9; // Treat 0 as 9
   
   // Score mapping based on classical interpretations
+  // Updated January 2025 based on consultation with Asrār master
   const scoreMap: Record<number, { score: number; quality: SpiritualDestinyResult['quality']; qualityArabic: string; qualityFrench: string }> = {
     1: { score: 65, quality: 'moderate', qualityArabic: 'متوسط', qualityFrench: 'Modéré' },
     2: { score: 70, quality: 'good', qualityArabic: 'جيد', qualityFrench: 'Bon' },
-    3: { score: 75, quality: 'good', qualityArabic: 'جيد', qualityFrench: 'Bon' },
+    3: { score: 40, quality: 'challenging', qualityArabic: 'العداوة', qualityFrench: 'Difficile' }, // FIXED: Represents friction/enmity
     4: { score: 70, quality: 'good', qualityArabic: 'جيد', qualityFrench: 'Bon' },
     5: { score: 60, quality: 'moderate', qualityArabic: 'متوسط', qualityFrench: 'Modéré' },
     6: { score: 55, quality: 'challenging', qualityArabic: 'تحدي', qualityFrench: 'Difficile' },
-    7: { score: 95, quality: 'excellent', qualityArabic: 'ممتاز', qualityFrench: 'Excellent' },
-    8: { score: 90, quality: 'excellent', qualityArabic: 'ممتاز جداً', qualityFrench: 'Très excellent' },
-    9: { score: 50, quality: 'completion', qualityArabic: 'إتمام دورة', qualityFrench: 'Achèvement' }
+    7: { score: 95, quality: 'excellent', qualityArabic: 'ممتاز', qualityFrench: 'Excellent' }, // BEST MATCH
+    8: { score: 90, quality: 'excellent', qualityArabic: 'ممتاز جداً', qualityFrench: 'Très excellent' }, // BEST MATCH
+    9: { score: 45, quality: 'challenging', qualityArabic: 'الإنتهاء', qualityFrench: 'Difficile' } // FIXED: Cycle ending
   };
   
   const result = scoreMap[remainder];
@@ -47,9 +48,9 @@ export function calculateSpiritualDestiny(
       ar: 'توازن وثنائية. كلا الطرفين يكمل الآخر من خلال التعاون.'
     },
     3: {
-      en: 'Creative expression and growth. This combination fosters creativity and expansion.',
-      fr: 'Expression créative et croissance. Cette combinaison favorise la créativité et l\'expansion.',
-      ar: 'تعبير إبداعي ونمو. هذا المزيج يعزز الإبداع والتوسع.'
+      en: 'Friction and discord. This pairing faces fundamental differences that require careful navigation.',
+      fr: 'Friction et discorde. Ce duo fait face à des différences fondamentales nécessitant une navigation prudente.',
+      ar: 'احتكاك وخلاف. هذا الزوج يواجه اختلافات أساسية تتطلب تعاملاً حذراً.'
     },
     4: {
       en: 'Stability and structure. A grounded partnership built on solid foundations.',
@@ -77,9 +78,9 @@ export function calculateSpiritualDestiny(
       ar: 'وفرة وتجسيد. هذا الثنائي لديه إمكانات قوية للإنجاز.'
     },
     9: {
-      en: 'Completion and transformation. A karmic connection bringing cycles to close.',
-      fr: 'Achèvement et transformation. Une connexion karmique qui clôture les cycles.',
-      ar: 'إتمام وتحول. ارتباط كارمي يجلب الدورات إلى نهايتها.'
+      en: 'Cycle ending and completion. This connection may represent a karmic conclusion or natural closure.',
+      fr: 'Fin de cycle et achèvement. Cette connexion peut représenter une conclusion karmique ou une clôture naturelle.',
+      ar: 'نهاية دورة وإتمام. هذا الارتباط قد يمثل خاتمة كارمية أو إغلاقاً طبيعياً.'
     }
   };
   
@@ -88,8 +89,7 @@ export function calculateSpiritualDestiny(
     excellent: 'green',
     good: 'blue',
     moderate: 'yellow',
-    challenging: 'orange',
-    completion: 'purple'
+    challenging: 'orange'
   };
   
   return {
@@ -342,17 +342,19 @@ export function analyzeRelationshipCompatibility(
   person2Element: 'fire' | 'water' | 'air' | 'earth'
 ): RelationshipCompatibility {
   
-  // Calculate using all three methods
+  // Calculate using all four methods
   const spiritualDestiny = calculateSpiritualDestiny(person1AbjadTotal, person2AbjadTotal);
   const elementalTemperament = calculateElementalTemperament(person1AbjadTotal, person2AbjadTotal);
   const planetaryCosmic = calculatePlanetaryCosmic(person1AbjadTotal, person2AbjadTotal);
+  const dailyInteraction = analyzeDailyInteraction(person1Arabic, person2Arabic);
   
   // Calculate overall score (weighted average)
-  // Spiritual-Destiny: 35%, Elemental-Temperament: 35%, Planetary-Cosmic: 30%
+  // Spiritual-Destiny: 30%, Elemental-Temperament: 25%, Planetary-Cosmic: 25%, Daily-Interaction: 20%
   const overallScore = Math.round(
-    (spiritualDestiny.score * 0.35) + 
-    (elementalTemperament.score * 0.35) + 
-    (planetaryCosmic.score * 0.30)
+    (spiritualDestiny.score * 0.30) + 
+    (elementalTemperament.score * 0.25) + 
+    (planetaryCosmic.score * 0.25) +
+    (dailyInteraction.score * 0.20)
   );
   
   // Determine overall quality
@@ -486,8 +488,8 @@ export function analyzeRelationshipCompatibility(
     return `${elements[0]}-${elements[1]}`;
   };
   
-  // Add dominant pair reflection first
-  const pairKey = getPairKey(person1Element, person2Element);
+  // Add dominant pair reflection first (using Daily Interaction letter-counting, not Mod-4)
+  const pairKey = getPairKey(dailyInteraction.person1Dominant, dailyInteraction.person2Dominant);
   const pairReflection = dominantPairReflections[pairKey];
   if (pairReflection) {
     recommendations.unshift(pairReflection.en);
@@ -528,6 +530,17 @@ export function analyzeRelationshipCompatibility(
     recommendationsArabic.push(`${planetaryCosmic.person1Planet.nameArabic} و ${planetaryCosmic.person2Planet.nameArabic} يخلقان توتراً. استخدما هذا كفرصة للتعلم من وجهات نظر مختلفة.`);
   }
   
+  // Daily Interaction recommendations based on elemental blend
+  if (dailyInteraction.interactionType === 'harmonious') {
+    recommendations.push(`Your ${dailyInteraction.person1Dominant} energy harmonizes beautifully in daily life. Celebrate your natural understanding.`);
+    recommendationsFrench.push(`Votre énergie ${dailyInteraction.person1DominantFrench} s'harmonise magnifiquement au quotidien. Célébrez votre compréhension naturelle.`);
+    recommendationsArabic.push(`طاقة ${dailyInteraction.person1DominantArabic} تتناغم بشكل جميل في الحياة اليومية. احتفلا بفهمكما الطبيعي.`);
+  } else if (dailyInteraction.interactionType === 'challenging') {
+    recommendations.push(`${dailyInteraction.person1Dominant} and ${dailyInteraction.person2Dominant} energies require conscious balance in daily routines. Create space for both styles.`);
+    recommendationsFrench.push(`Les énergies ${dailyInteraction.person1DominantFrench} et ${dailyInteraction.person2DominantFrench} nécessitent un équilibre conscient dans les routines quotidiennes. Créez de l'espace pour les deux styles.`);
+    recommendationsArabic.push(`طاقات ${dailyInteraction.person1DominantArabic} و ${dailyInteraction.person2DominantArabic} تتطلب توازناً واعياً في الروتين اليومي. أنشئا مساحة لكلا الأسلوبين.`);
+  }
+  
   // Universal recommendation
   recommendations.push('Practice patience, kindness, and open communication to nurture your connection.');
   recommendationsFrench.push('Pratiquez la patience, la gentillesse et la communication ouverte pour nourrir votre connexion.');
@@ -550,7 +563,8 @@ export function analyzeRelationshipCompatibility(
     methods: {
       spiritualDestiny,
       elementalTemperament,
-      planetaryCosmic
+      planetaryCosmic,
+      dailyInteraction
     },
     overallScore,
     overallQuality,
@@ -582,4 +596,263 @@ export function getElementFromAbjadTotal(abjadTotal: number): 'fire' | 'water' |
   };
   
   return elementMap[hadath];
+}
+
+// ============================================================================
+// HELPER: Letter-to-Element Distribution (Classical Method)
+// ============================================================================
+
+// Letter-to-element mapping based on classical tradition
+const LETTER_ELEMENTS: Record<string, 'fire' | 'air' | 'water' | 'earth'> = {
+  // Fire letters (hot & dry): ا د ط م ف ش ذ
+  'ا': 'fire', 'د': 'fire', 'ط': 'fire', 'م': 'fire', 'ف': 'fire', 'ش': 'fire', 'ذ': 'fire',
+  // Air letters (hot & wet): ه و ي ن ص ت ض  
+  'ه': 'air', 'و': 'air', 'ي': 'air', 'ن': 'air', 'ص': 'air', 'ت': 'air', 'ض': 'air',
+  // Water letters (cold & wet): ب ح ل ع ر ك غ
+  'ب': 'water', 'ح': 'water', 'ل': 'water', 'ع': 'water', 'ر': 'water', 'ك': 'water', 'غ': 'water',
+  // Earth letters (cold & dry): ج ز س ق ث خ ظ
+  'ج': 'earth', 'ز': 'earth', 'س': 'earth', 'ق': 'earth', 'ث': 'earth', 'خ': 'earth', 'ظ': 'earth'
+};
+
+export interface ElementDistribution {
+  fire: number;
+  air: number;
+  water: number;
+  earth: number;
+}
+
+/**
+ * Calculate elemental distribution by counting letters
+ * Returns percentage of each element in the name
+ */
+export function calculateLetterElementDistribution(arabicText: string): ElementDistribution {
+  const normalized = arabicText.replace(/[ًٌٍَُِّْ\s]/g, '');
+  const letters = [...normalized];
+  const total = letters.length;
+  
+  const counts = { fire: 0, air: 0, water: 0, earth: 0 };
+  
+  letters.forEach(letter => {
+    const element = LETTER_ELEMENTS[letter];
+    if (element) {
+      counts[element]++;
+    }
+  });
+  
+  return {
+    fire: total > 0 ? Math.round((counts.fire / total) * 100) : 0,
+    air: total > 0 ? Math.round((counts.air / total) * 100) : 0,
+    water: total > 0 ? Math.round((counts.water / total) * 100) : 0,
+    earth: total > 0 ? Math.round((counts.earth / total) * 100) : 0
+  };
+}
+
+/**
+ * Get dominant element from distribution
+ */
+export function getDominantElement(dist: ElementDistribution): 'fire' | 'air' | 'water' | 'earth' {
+  const elements = ['fire', 'air', 'water', 'earth'] as const;
+  let maxElement: 'fire' | 'air' | 'water' | 'earth' = 'fire';
+  let maxValue = 0;
+  
+  elements.forEach(element => {
+    if (dist[element] > maxValue) {
+      maxValue = dist[element];
+      maxElement = element;
+    }
+  });
+  
+  return maxElement;
+}
+
+/**
+ * Analyze day-to-day compatibility based on letter-counting
+ * Classical method for determining interaction dynamics
+ */
+export interface DailyInteractionResult {
+  method: 'daily-interaction';
+  methodArabic: 'التفاعل اليومي';
+  person1Distribution: ElementDistribution;
+  person2Distribution: ElementDistribution;
+  person1Dominant: 'fire' | 'air' | 'water' | 'earth';
+  person2Dominant: 'fire' | 'air' | 'water' | 'earth';
+  person1DominantArabic: string;
+  person2DominantArabic: string;
+  person1DominantFrench: string;
+  person2DominantFrench: string;
+  interactionType: 'harmonious' | 'complementary' | 'challenging' | 'neutral';
+  interactionTypeArabic: string;
+  interactionTypeFrench: string;
+  score: number;
+  quality: 'excellent' | 'good' | 'moderate' | 'challenging';
+  qualityArabic: string;
+  qualityFrench: string;
+  description: string;
+  descriptionFrench: string;
+  descriptionArabic: string;
+  color: string;
+}
+
+export function analyzeDailyInteraction(
+  person1Arabic: string,
+  person2Arabic: string
+): DailyInteractionResult {
+  
+  const dist1 = calculateLetterElementDistribution(person1Arabic);
+  const dist2 = calculateLetterElementDistribution(person2Arabic);
+  
+  const dom1 = getDominantElement(dist1);
+  const dom2 = getDominantElement(dist2);
+  
+  // Element names in different languages
+  const elementNames = {
+    fire: { ar: 'نار', fr: 'Feu' },
+    air: { ar: 'هواء', fr: 'Air' },
+    water: { ar: 'ماء', fr: 'Eau' },
+    earth: { ar: 'تراب', fr: 'Terre' }
+  };
+  
+  // Determine interaction type and score
+  let interactionType: DailyInteractionResult['interactionType'];
+  let interactionTypeArabic: string;
+  let interactionTypeFrench: string;
+  let score: number;
+  let quality: DailyInteractionResult['quality'];
+  let qualityArabic: string;
+  let qualityFrench: string;
+  
+  // Same element = Harmonious
+  if (dom1 === dom2) {
+    interactionType = 'harmonious';
+    interactionTypeArabic = 'متناغم';
+    interactionTypeFrench = 'Harmonieux';
+    score = 85;
+    quality = 'excellent';
+    qualityArabic = 'ممتاز';
+    qualityFrench = 'Excellent';
+  }
+  // Complementary pairs
+  else if (
+    (dom1 === 'fire' && dom2 === 'air') || (dom1 === 'air' && dom2 === 'fire') ||
+    (dom1 === 'earth' && dom2 === 'water') || (dom1 === 'water' && dom2 === 'earth')
+  ) {
+    interactionType = 'complementary';
+    interactionTypeArabic = 'تكميلي';
+    interactionTypeFrench = 'Complémentaire';
+    score = 75;
+    quality = 'good';
+    qualityArabic = 'جيد';
+    qualityFrench = 'Bon';
+  }
+  // Challenging pairs (opposing)
+  else if (
+    (dom1 === 'fire' && dom2 === 'water') || (dom1 === 'water' && dom2 === 'fire') ||
+    (dom1 === 'air' && dom2 === 'earth') || (dom1 === 'earth' && dom2 === 'air')
+  ) {
+    interactionType = 'challenging';
+    interactionTypeArabic = 'صعب';
+    interactionTypeFrench = 'Difficile';
+    score = 50;
+    quality = 'challenging';
+    qualityArabic = 'تحدي';
+    qualityFrench = 'Difficile';
+  }
+  // Neutral
+  else {
+    interactionType = 'neutral';
+    interactionTypeArabic = 'محايد';
+    interactionTypeFrench = 'Neutre';
+    score = 65;
+    quality = 'moderate';
+    qualityArabic = 'متوسط';
+    qualityFrench = 'Modéré';
+  }
+  
+  // Generate descriptions based on combination
+  const descriptions: Record<string, { en: string; fr: string; ar: string }> = {
+    'fire-fire': {
+      en: 'Both partners share Fire energy. Expect passion, enthusiasm, and dynamic action in daily life. May need to manage intensity.',
+      fr: 'Les deux partenaires partagent l\'énergie du Feu. Attendez-vous à la passion, l\'enthousiasme et l\'action dynamique au quotidien. Peut nécessiter de gérer l\'intensité.',
+      ar: 'كلا الشريكين يشتركان في طاقة النار. توقع الشغف والحماس والعمل الديناميكي في الحياة اليومية. قد يحتاج لإدارة الحدة.'
+    },
+    'air-air': {
+      en: 'Both partners share Air energy. Daily interactions focus on communication, ideas, and mental stimulation. Keep conversations grounded.',
+      fr: 'Les deux partenaires partagent l\'énergie de l\'Air. Les interactions quotidiennes se concentrent sur la communication, les idées et la stimulation mentale. Gardez les conversations ancrées.',
+      ar: 'كلا الشريكين يشتركان في طاقة الهواء. التفاعلات اليومية تركز على التواصل والأفكار والتحفيز الذهني. حافظ على المحادثات متجذرة.'
+    },
+    'water-water': {
+      en: 'Both partners share Water energy. Emotional depth and intuition guide daily life. Create healthy boundaries to avoid emotional overwhelm.',
+      fr: 'Les deux partenaires partagent l\'énergie de l\'Eau. La profondeur émotionnelle et l\'intuition guident la vie quotidienne. Créez des limites saines pour éviter la surcharge émotionnelle.',
+      ar: 'كلا الشريكين يشتركان في طاقة الماء. العمق العاطفي والحدس يوجهان الحياة اليومية. أنشئ حدوداً صحية لتجنب الطغيان العاطفي.'
+    },
+    'earth-earth': {
+      en: 'Both partners share Earth energy. Daily life is practical, stable, and grounded. Remember to embrace spontaneity and change.',
+      fr: 'Les deux partenaires partagent l\'énergie de la Terre. La vie quotidienne est pratique, stable et ancrée. N\'oubliez pas d\'embrasser la spontanéité et le changement.',
+      ar: 'كلا الشريكين يشتركان في طاقة الأرض. الحياة اليومية عملية ومستقرة ومتجذرة. تذكر احتضان العفوية والتغيير.'
+    },
+    'fire-air': {
+      en: 'Fire and Air energies fuel each other. Daily interactions are stimulating, creative, and full of movement. Channel this energy constructively.',
+      fr: 'Les énergies du Feu et de l\'Air s\'alimentent mutuellement. Les interactions quotidiennes sont stimulantes, créatives et pleines de mouvement. Canalisez cette énergie de manière constructive.',
+      ar: 'طاقات النار والهواء تغذي بعضها. التفاعلات اليومية محفزة وإبداعية ومليئة بالحركة. وجه هذه الطاقة بشكل بناء.'
+    },
+    'earth-water': {
+      en: 'Earth and Water blend for growth and nurturing. Daily life balances practicality with emotional care. A naturally supportive combination.',
+      fr: 'La Terre et l\'Eau se mélangent pour la croissance et le soin. La vie quotidienne équilibre praticité et attention émotionnelle. Une combinaison naturellement soutenante.',
+      ar: 'الأرض والماء يمتزجان للنمو والرعاية. الحياة اليومية توازن بين العملية والرعاية العاطفية. مزيج داعم بشكل طبيعي.'
+    },
+    'fire-water': {
+      en: 'Fire and Water create steam and tension. Daily interactions may alternate between passion and cooling. Requires patience and understanding.',
+      fr: 'Le Feu et l\'Eau créent vapeur et tension. Les interactions quotidiennes peuvent alterner entre passion et refroidissement. Nécessite patience et compréhension.',
+      ar: 'النار والماء يخلقان بخاراً وتوتراً. التفاعلات اليومية قد تتناوب بين الشغف والتبريد. تتطلب الصبر والفهم.'
+    },
+    'air-earth': {
+      en: 'Air and Earth represent ideas meeting practicality. Daily life requires balancing vision with execution. Communication is key.',
+      fr: 'L\'Air et la Terre représentent les idées rencontrant la praticité. La vie quotidienne nécessite d\'équilibrer vision et exécution. La communication est essentielle.',
+      ar: 'الهواء والأرض يمثلان الأفكار تلتقي بالواقعية. الحياة اليومية تتطلب موازنة الرؤية مع التنفيذ. التواصل هو المفتاح.'
+    },
+    'fire-earth': {
+      en: 'Fire and Earth combine action with stability. Daily interactions balance passion with practicality. Respect each other\'s pace.',
+      fr: 'Le Feu et la Terre combinent action et stabilité. Les interactions quotidiennes équilibrent passion et praticité. Respectez le rythme de chacun.',
+      ar: 'النار والأرض تجمع العمل مع الاستقرار. التفاعلات اليومية توازن الشغف مع الواقعية. احترم وتيرة كل منكما.'
+    },
+    'air-water': {
+      en: 'Air and Water blend logic with emotion. Daily life requires honoring both intellect and feelings. Find balance between thinking and feeling.',
+      fr: 'L\'Air et l\'Eau mélangent logique et émotion. La vie quotidienne nécessite d\'honorer à la fois l\'intellect et les sentiments. Trouvez l\'équilibre entre penser et ressentir.',
+      ar: 'الهواء والماء يمزجان المنطق مع العاطفة. الحياة اليومية تتطلب تكريم العقل والمشاعر. اعثر على التوازن بين التفكير والشعور.'
+    }
+  };
+  
+  const pairKey = [dom1, dom2].sort().join('-');
+  const desc = descriptions[pairKey] || descriptions[`${dom1}-${dom2}`];
+  
+  const colors = {
+    excellent: 'green',
+    good: 'blue',
+    moderate: 'yellow',
+    challenging: 'orange'
+  };
+  
+  return {
+    method: 'daily-interaction',
+    methodArabic: 'التفاعل اليومي',
+    person1Distribution: dist1,
+    person2Distribution: dist2,
+    person1Dominant: dom1,
+    person2Dominant: dom2,
+    person1DominantArabic: elementNames[dom1].ar,
+    person2DominantArabic: elementNames[dom2].ar,
+    person1DominantFrench: elementNames[dom1].fr,
+    person2DominantFrench: elementNames[dom2].fr,
+    interactionType,
+    interactionTypeArabic,
+    interactionTypeFrench,
+    score,
+    quality,
+    qualityArabic,
+    qualityFrench,
+    description: desc.en,
+    descriptionFrench: desc.fr,
+    descriptionArabic: desc.ar,
+    color: colors[quality]
+  };
 }
