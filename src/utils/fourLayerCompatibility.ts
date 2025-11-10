@@ -180,8 +180,8 @@ function calculateLayerResult(
       dailyLifeFrench: 'L\'Air aide l\'Eau à exprimer les émotions clairement. L\'Eau rappelle à l\'Air que les sentiments comptent autant que les pensées.',
       challenge: 'Air may rationalize feelings; Water may feel misunderstood when emotions are analyzed.',
       challengeFrench: 'L\'Air peut rationaliser les sentiments ; l\'Eau peut se sentir incomprise lorsque les émotions sont analysées.',
-      tip: 'Air: Write love letters—use your words for emotion. Water: Share dreams aloud—trust Air to listen.',
-      tipFrench: 'Air : Écrivez des lettres d\'amour—utilisez vos mots pour l\'émotion. Eau : Partagez vos rêves à voix haute—faites confiance à l\'Air pour écouter.'
+      tip: 'Air: Write love letters, use your words for emotion. Water: Share dreams aloud. Trust Air to listen.',
+      tipFrench: 'Air : Écrivez des lettres d\'amour, utilisez vos mots pour l\'émotion. Eau : Partagez vos rêves à voix haute. Faites confiance à l\'Air pour écouter.'
     },
     'air-earth': {
       description: 'Air dreams, Earth builds. Opposite approaches that can complement or clash.',
@@ -210,8 +210,8 @@ function calculateLayerResult(
       dailyLifeFrench: 'Vous soutenez la croissance de l\'autre sans effort. L\'Eau apporte les sentiments, la Terre apporte la stabilité. Équilibré et paisible.',
       challenge: 'May avoid conflict or become stagnant. Too comfortable can mean no growth challenges.',
       challengeFrench: 'Peut éviter les conflits ou devenir stagnant. Trop confortable peut signifier aucun défi de croissance.',
-      tip: 'Cook together, garden, create with your hands. Embrace gentle change—try new things monthly.',
-      tipFrench: 'Cuisinez ensemble, jardinez, créez avec vos mains. Embrassez le changement doux—essayez de nouvelles choses mensuellement.'
+      tip: 'Cook together, garden, create with your hands. Embrace gentle change. Try new things monthly.',
+      tipFrench: 'Cuisinez ensemble, jardinez, créez avec vos mains. Embrassez le changement doux. Essayez de nouvelles choses mensuellement.'
     },
     'earth-earth': {
       description: 'Rock-solid stability. Loyalty, consistency, and shared practical goals. You build together brick by brick.',

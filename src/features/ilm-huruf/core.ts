@@ -2018,53 +2018,53 @@ function getEnergyReturnDetails(
     },
     'delayed': {
       timeframe: '1-2 weeks',
-      description: 'Building foundations—results come later'
+      description: 'Building foundations×results come later'
     }
   };
   
   // Planet-specific practices for each speed
   const planetPractices: Record<Planet, Record<EnergyReturnSpeed, string>> = {
     'Sun': {
-      instant: 'Lead with generosity—authority returns respect today',
-      quick: 'Lead with generosity—results come quickly',
-      gradual: 'Lead with patience—influence grows steadily',
-      delayed: 'Lead with consistency—reputation builds over time'
+      instant: 'Lead with generosity×authority returns respect today',
+      quick: 'Lead with generosity×results come quickly',
+      gradual: 'Lead with patience×influence grows steadily',
+      delayed: 'Lead with consistency×reputation builds over time'
     },
     'Mars': {
-      instant: 'Act with courage—strength returns strength immediately',
-      quick: 'Act boldly—momentum builds fast',
-      gradual: 'Push forward—progress shows in days',
-      delayed: 'Train consistently—power builds gradually'
+      instant: 'Act with courage×strength returns strength immediately',
+      quick: 'Act boldly×momentum builds fast',
+      gradual: 'Push forward×progress shows in days',
+      delayed: 'Train consistently×power builds gradually'
     },
     'Mercury': {
-      instant: 'Speak clearly—understanding comes back instantly',
-      quick: 'Communicate well—replies come swiftly',
-      gradual: 'Share knowledge—learning compounds over days',
-      delayed: 'Write persistently—wisdom accumulates slowly'
+      instant: 'Speak clearly×understanding comes back instantly',
+      quick: 'Communicate well×replies come swiftly',
+      gradual: 'Share knowledge×learning compounds over days',
+      delayed: 'Write persistently×wisdom accumulates slowly'
     },
     'Moon': {
-      instant: 'Give care—comfort returns quickly today',
-      quick: 'Give care—warmth returns in hours',
-      gradual: 'Nurture bonds—emotional depth grows over days',
-      delayed: 'Tend relationships—trust builds with time'
+      instant: 'Give care×comfort returns quickly today',
+      quick: 'Give care×warmth returns in hours',
+      gradual: 'Nurture bonds×emotional depth grows over days',
+      delayed: 'Tend relationships×trust builds with time'
     },
     'Venus': {
-      instant: 'Show love—beauty reflects back today',
-      quick: 'Show love—joy returns soon',
-      gradual: 'Create beauty—appreciation deepens over days',
-      delayed: 'Invest in art—value increases with time'
+      instant: 'Show love×beauty reflects back today',
+      quick: 'Show love×joy returns soon',
+      gradual: 'Create beauty×appreciation deepens over days',
+      delayed: 'Invest in art×value increases with time'
     },
     'Jupiter': {
-      instant: 'Think big—opportunities appear today',
-      quick: 'Expand horizons—doors open quickly',
-      gradual: 'Study deeply—wisdom unfolds over days',
-      delayed: 'Build legacy—growth compounds over time'
+      instant: 'Think big×opportunities appear today',
+      quick: 'Expand horizons×doors open quickly',
+      gradual: 'Study deeply×wisdom unfolds over days',
+      delayed: 'Build legacy×growth compounds over time'
     },
     'Saturn': {
-      instant: 'Structure well—stability shows today',
-      quick: 'Organize now—order appears soon',
-      gradual: 'Plan carefully—results manifest in days',
-      delayed: 'Build foundations—lasting results take weeks'
+      instant: 'Structure well×stability shows today',
+      quick: 'Organize now×order appears soon',
+      gradual: 'Plan carefully×results manifest in days',
+      delayed: 'Build foundations×lasting results take weeks'
     }
   };
   
@@ -2534,9 +2534,9 @@ export function calculateDominantForce(
  */
 export function getBalanceTip(dominant: DominantForce): string {
   const tips = {
-    Rūḥ: 'Your inner compass guides you—balance introspection with outer engagement.',
-    Element: 'Your temperament leads—balance feelings with mindful structure.',
-    Kawkab: 'External timing shapes you—balance receptivity with inner purpose.'
+    Rūḥ: 'Your inner compass guides you×balance introspection with outer engagement.',
+    Element: 'Your temperament leads×balance feelings with mindful structure.',
+    Kawkab: 'External timing shapes you×balance receptivity with inner purpose.'
   };
   return tips[dominant];
 }
@@ -2720,39 +2720,39 @@ function generateDailyTips(
   // Planet-specific primary guidance (unique for each planet)
   const planetGuidance: Record<Planet, { high: string; moderate: string; low: string }> = {
     Sun: {
-      high: 'Excellent for leadership—schedule important meetings and presentations',
-      moderate: 'Lead projects and take initiative—high energy for achievements',
-      low: 'Challenging for visibility—lead quietly, support others today'
+      high: 'Excellent for leadership×schedule important meetings and presentations',
+      moderate: 'Lead projects and take initiative×high energy for achievements',
+      low: 'Challenging for visibility×lead quietly, support others today'
     },
     Moon: {
-      high: 'Perfect for reflection—trust your intuition and emotional wisdom',
-      moderate: 'Gentle day—plan, review, nurture relationships, avoid overload',
-      low: 'Rest needed—minimize commitments, process emotions, be kind to yourself'
+      high: 'Perfect for reflection×trust your intuition and emotional wisdom',
+      moderate: 'Gentle day×plan, review, nurture relationships, avoid overload',
+      low: 'Rest needed×minimize commitments, process emotions, be kind to yourself'
     },
     Mars: {
-      high: 'Fierce energy—tackle tough challenges and push through obstacles boldly',
-      moderate: 'Take action on difficult tasks—courage and determination favored',
-      low: 'Channel carefully—physical activity helps, avoid conflicts and rushing'
+      high: 'Fierce energy×tackle tough challenges and push through obstacles boldly',
+      moderate: 'Take action on difficult tasks×courage and determination favored',
+      low: 'Channel carefully×physical activity helps, avoid conflicts and rushing'
     },
     Mercury: {
-      high: 'Sharp mind—perfect for writing, calls, learning, and travel plans',
-      moderate: 'Communicate clearly—good for emails, meetings, and study sessions',
-      low: 'Mental fog possible—double-check messages, postpone major decisions'
+      high: 'Sharp mind×perfect for writing, calls, learning, and travel plans',
+      moderate: 'Communicate clearly×good for emails, meetings, and study sessions',
+      low: 'Mental fog possible×double-check messages, postpone major decisions'
     },
     Jupiter: {
-      high: 'Timing is perfect—make big decisions, start new ventures, expand horizons',
-      moderate: 'Growth day—great for planning expansion and seeking opportunities',
-      low: 'Temper optimism—research thoroughly before committing to anything big'
+      high: 'Timing is perfect×make big decisions, start new ventures, expand horizons',
+      moderate: 'Growth day×great for planning expansion and seeking opportunities',
+      low: 'Temper optimism×research thoroughly before committing to anything big'
     },
     Venus: {
-      high: 'Excellent for connection—ideal for relationships, creativity, and beauty',
-      moderate: 'Harmonious day—connect with others, enjoy art, balance work-pleasure',
-      low: 'Social challenges—focus on self-care, solo creative work, gentle interactions'
+      high: 'Excellent for connection×ideal for relationships, creativity, and beauty',
+      moderate: 'Harmonious day×connect with others, enjoy art, balance work-pleasure',
+      low: 'Social challenges×focus on self-care, solo creative work, gentle interactions'
     },
     Saturn: {
-      high: 'Build strong foundations—organize, plan long-term, establish structures',
-      moderate: 'Structure your week—discipline and planning bring good results',
-      low: 'Heavy responsibilities—break tasks into small steps, be patient with delays'
+      high: 'Build strong foundations×organize, plan long-term, establish structures',
+      moderate: 'Structure your week×discipline and planning bring good results',
+      low: 'Heavy responsibilities×break tasks into small steps, be patient with delays'
     }
   };
   
@@ -2761,22 +2761,22 @@ function generateDailyTips(
   
   // Element balance tip (shorter, supportive advice)
   const elementTips: Record<ElementType, string> = {
-    Fire: 'Balance heat—practice calm speech, charity, time near water',
-    Water: 'Activate energy—light exercise, sunlight, decisive action',
-    Air: 'Ground yourself—stick to routine, nature walk, one task at a time',
-    Earth: 'Add lightness—try creativity, flexibility, or a short change of scenery'
+    Fire: 'Balance heat×practice calm speech, charity, time near water',
+    Water: 'Activate energy×light exercise, sunlight, decisive action',
+    Air: 'Ground yourself×stick to routine, nature walk, one task at a time',
+    Earth: 'Add lightness×try creativity, flexibility, or a short change of scenery'
   };
   tips.push(elementTips[element]);
   
   // Planet secondary tip (alternative actionable advice)
   const planetSecondaryTips: Record<Planet, string> = {
-    Sun: 'Shine your light—but stay humble and generous with recognition',
-    Moon: 'Honor your feelings—they guide you to what truly matters',
-    Mars: 'Channel warrior energy—protect boundaries, pursue goals with courage',
-    Mercury: 'Mental agility peaks—network, negotiate, adapt quickly',
-    Jupiter: 'Seek wisdom and growth—mentor others or learn from teachers',
-    Venus: 'Appreciate beauty—create harmony in your environment and relationships',
-    Saturn: 'Master discipline—small consistent efforts build lasting success'
+    Sun: 'Shine your light×but stay humble and generous with recognition',
+    Moon: 'Honor your feelings×they guide you to what truly matters',
+    Mars: 'Channel warrior energy×protect boundaries, pursue goals with courage',
+    Mercury: 'Mental agility peaks×network, negotiate, adapt quickly',
+    Jupiter: 'Seek wisdom and growth×mentor others or learn from teachers',
+    Venus: 'Appreciate beauty×create harmony in your environment and relationships',
+    Saturn: 'Master discipline×small consistent efforts build lasting success'
   };
   tips.push(planetSecondaryTips[planet]);
   

@@ -222,7 +222,7 @@ export const HadadSummaryPanel: React.FC<HadadSummaryProps> = ({
           
           {sacred.delta === 0 ? (
             <div className="text-lg text-amber-900 dark:text-amber-100">
-              ✨ <strong>Exact match: {sacred.nearest}</strong> — {sacredSignificance[sacred.nearest]}
+              ✨ <strong>Exact match: {sacred.nearest}</strong> × {sacredSignificance[sacred.nearest]}
             </div>
           ) : (
             <div className="text-sm text-amber-800 dark:text-amber-200">
@@ -342,7 +342,7 @@ export const HadadSummaryPanel: React.FC<HadadSummaryProps> = ({
         <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
           <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-2">Magic Grid</h4>
           <div className="text-xs text-slate-500 dark:text-slate-400 mb-3 italic">
-            Educational display only — Sequential grid starting from Kabīr ({kabir})
+            Educational display only × Sequential grid starting from Kabīr ({kabir})
           </div>
           <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto">
             {magicGrid.map((row, i) => (

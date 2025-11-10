@@ -109,14 +109,14 @@ const ELEMENT_HARMONY: Record<string, Record<string, number>> = {
 
 // Letter to Element mapping (28 Arabic letters)
 const LETTER_ELEMENTS: Record<string, 'fire' | 'air' | 'water' | 'earth'> = {
-  // Fire letters (hot & dry): Ø§ Ø¯ Ø· Ù… Ù Ø´ Ø°
-  'Ø§': 'fire', 'Ø¯': 'fire', 'Ø·': 'fire', 'Ù…': 'fire', 'Ù': 'fire', 'Ø´': 'fire', 'Ø°': 'fire',
-  // Air letters (hot & wet): Ù‡ Ùˆ ÙŠ Ù† Øµ Øª Ø¶  
-  'Ù‡': 'air', 'Ùˆ': 'air', 'ÙŠ': 'air', 'Ù†': 'air', 'Øµ': 'air', 'Øª': 'air', 'Ø¶': 'air',
-  // Water letters (cold & wet): Ø¨ Ø⭐ Ù„ Ø¹ Ø± Ùƒ Øº
-  'Ø¨': 'water', 'Ø⭐': 'water', 'Ù„': 'water', 'Ø¹': 'water', 'Ø±': 'water', 'Ùƒ': 'water', 'Øº': 'water',
-  // Earth letters (cold & dry): Ø¬ Ø² Ø³ Ù‚ Ø« Ø® Ø¸
-  'Ø¬': 'earth', 'Ø²': 'earth', 'Ø³': 'earth', 'Ù‚': 'earth', 'Ø«': 'earth', 'Ø®': 'earth', 'Ø¸': 'earth'
+  // Fire letters (hot & dry): ا د ط م ف ش ذ
+  'ا': 'fire', 'د': 'fire', 'ط': 'fire', 'م': 'fire', 'ف': 'fire', 'ش': 'fire', 'ذ': 'fire',
+  // Air letters (hot & wet): ه و ي ن ص ت ض  
+  'ه': 'air', 'و': 'air', 'ي': 'air', 'ن': 'air', 'ص': 'air', 'ت': 'air', 'ض': 'air',
+  // Water letters (cold & wet): ب ح ل ع ر ك غ
+  'ب': 'water', 'ح': 'water', 'ل': 'water', 'ع': 'water', 'ر': 'water', 'ك': 'water', 'غ': 'water',
+  // Earth letters (cold & dry): ج ز س ق ث خ ظ
+  'ج': 'earth', 'ز': 'earth', 'س': 'earth', 'ق': 'earth', 'ث': 'earth', 'خ': 'earth', 'ظ': 'earth'
 };
 
 // Helper function to get balance advice key from element pair
@@ -155,10 +155,10 @@ function getDhikrEffectKey(element: 'fire' | 'air' | 'water' | 'earth'): string 
 
 // Divine Names for each element (these are proper names, don't translate)
 const DHIKR_NAMES: Record<'fire' | 'air' | 'water' | 'earth', { name: string; nameFr: string; nameAr: string }> = {
-  fire: { name: 'YÄ Laá¹⭐Ä«f (ÙŠØ§ Ù„Ø·ÙŠÙ)', nameFr: 'YÄ Laá¹⭐Ä«f (ÙŠØ§ Ù„Ø·ÙŠÙ)', nameAr: 'ÙŠØ§ Ù„Ø·ÙŠÙ' },
-  air: { name: 'YÄ á¸🤝akÄ«m (ÙŠØ§ Ø⭐ÙƒÙŠÙ…)', nameFr: 'YÄ á¸🤝akÄ«m (ÙŠØ§ Ø⭐ÙƒÙŠÙ…)', nameAr: 'ÙŠØ§ Ø⭐ÙƒÙŠÙ…' },
-  water: { name: 'YÄ NÅ«r (ÙŠØ§ Ù†ÙˆØ±)', nameFr: 'YÄ NÅ«r (ÙŠØ§ Ù†ÙˆØ±)', nameAr: 'ÙŠØ§ Ù†ÙˆØ±' },
-  earth: { name: 'YÄ FattÄá¸¥ (ÙŠØ§ ÙØªØ§Ø⭐)', nameFr: 'YÄ FattÄá¸¥ (ÙŠØ§ ÙØªØ§Ø⭐)', nameAr: 'ÙŠØ§ ÙØªØ§Ø⭐' }
+  fire: { name: 'Yā Laṭīf (يا لطيف)', nameFr: 'Yā Laṭīf (يا لطيف)', nameAr: 'يا لطيف' },
+  air: { name: 'Yā Ḥakīm (يا حكيم)', nameFr: 'Yā Ḥakīm (يا حكيم)', nameAr: 'يا حكيم' },
+  water: { name: 'Yā Nūr (يا نور)', nameFr: 'Yā Nūr (يا نور)', nameAr: 'يا نور' },
+  earth: { name: 'Yā Fattāḥ (يا فتاح)', nameFr: 'Yā Fattāḥ (يا فتاح)', nameAr: 'يا فتاح' }
 };
 
 // Helper function to calculate element distribution from Arabic text
@@ -201,7 +201,7 @@ function getDominantElement(distribution: Record<'fire' | 'air' | 'water' | 'ear
 
 // Helper function to get element icon
 function getElementIcon(element: 'fire' | 'air' | 'water' | 'earth'): string {
-  const icons = { fire: '”¥', air: '’¨', water: '’§', earth: '' };
+  const icons = { fire: '🔥', air: '💨', water: '💧', earth: '🌍' };
   return icons[element];
 }
 
@@ -656,7 +656,7 @@ export function IlmHurufPanel() {
                   <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
                     <p className="text-xs text-amber-800 dark:text-amber-200">
                       {t.ilmHuruf.confidence}: {translitConfidence}% 
-                      {translitWarnings.length > 0 && ` €¢ ${translitWarnings.join(', ')}`}
+                      {translitWarnings.length > 0 && ` • ${translitWarnings.join(', ')}`}
                     </p>
                   </div>
                 )}
@@ -1826,7 +1826,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                   <ul className="space-y-1">
                     {restDay.betterDays.map((betterDay, i) => (
                       <li key={i} className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                        <span className="text-green-500">€¢</span>
+                        <span className="text-green-500">•</span>
                         <span>{betterDay}</span>
                       </li>
                     ))}
@@ -2002,7 +2002,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                         </span>
                       </h4>
                       <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                        {getPlanetName(day.day_planet)} {language === 'fr' ? 'jour' : 'day'} €¢ {t.ilmHuruf.harmony} {day.harmony_score}/10
+                        {getPlanetName(day.day_planet)} {language === 'fr' ? 'jour' : 'day'} • {t.ilmHuruf.harmony} {day.harmony_score}/10
                       </p>
                     </div>
                     
@@ -2031,17 +2031,17 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.morning.bestFor.map((task, i) => (
-                                <li key={i}>€¢ {translateTask(task)}</li>
+                                <li key={i}>• {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              œ× {language === 'fr' ? '€ ‰viter :' : 'Avoid:'}
+                              ✗ {language === 'fr' ? 'À Éviter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.morning.avoid.map((task, i) => (
-                                <li key={i}>€¢ {translateTask(task)}</li>
+                                <li key={i}>• {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -2076,17 +2076,17 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.midday.bestFor.map((task, i) => (
-                                <li key={i}>€¢ {translateTask(task)}</li>
+                                <li key={i}>• {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              œ× {language === 'fr' ? '€ ‰viter :' : 'Avoid:'}
+                              ✗ {language === 'fr' ? 'À Éviter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.midday.avoid.map((task, i) => (
-                                <li key={i}>€¢ {translateTask(task)}</li>
+                                <li key={i}>• {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -2121,17 +2121,17 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.afternoon.bestFor.map((task, i) => (
-                                <li key={i}>€¢ {translateTask(task)}</li>
+                                <li key={i}>• {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              œ× {language === 'fr' ? '€ ‰viter :' : 'Avoid:'}
+                              ✗ {language === 'fr' ? 'À Éviter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.afternoon.avoid.map((task, i) => (
-                                <li key={i}>€¢ {translateTask(task)}</li>
+                                <li key={i}>• {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -2166,17 +2166,17 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.evening.bestFor.map((task, i) => (
-                                <li key={i}>€¢ {translateTask(task)}</li>
+                                <li key={i}>• {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
                           <div>
                             <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
-                              œ× {language === 'fr' ? '€ ‰viter :' : 'Avoid:'}
+                              ✗ {language === 'fr' ? 'À Éviter :' : 'Avoid:'}
                             </p>
                             <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                               {day.taskSequence.evening.avoid.map((task, i) => (
-                                <li key={i}>€¢ {translateTask(task)}</li>
+                                <li key={i}>• {translateTask(task)}</li>
                               ))}
                             </ul>
                           </div>
@@ -2575,10 +2575,10 @@ function DestinyResults({ results }: { results: any }) {
 
             // Element visual config
             const elementConfig = {
-              fire: { icon: '”¥', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30', bar: 'bg-red-500' },
-              air: { icon: '’¨', color: 'text-sky-600 dark:text-sky-400', bg: 'bg-sky-100 dark:bg-sky-900/30', bar: 'bg-sky-500' },
-              water: { icon: '’§', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30', bar: 'bg-blue-500' },
-              earth: { icon: '', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/30', bar: 'bg-amber-500' }
+              fire: { icon: '🔥', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30', bar: 'bg-red-500' },
+              air: { icon: '💨', color: 'text-sky-600 dark:text-sky-400', bg: 'bg-sky-100 dark:bg-sky-900/30', bar: 'bg-sky-500' },
+              water: { icon: '💧', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30', bar: 'bg-blue-500' },
+              earth: { icon: '🌍', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/30', bar: 'bg-amber-500' }
             };
 
             return (
@@ -2701,7 +2701,7 @@ function DestinyResults({ results }: { results: any }) {
           {results.nameDestiny.divineNameResonance && (
             <div className="mb-6 bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-purple-300 dark:border-purple-700">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-3xl">•Šï¸</span>
+                <span className="text-3xl">🕌</span>
                 <h4 className="text-xl font-bold text-purple-900 dark:text-purple-200">
                   {t.nameDestiny.divineNameResonance.title}
                 </h4>
@@ -2727,7 +2727,7 @@ function DestinyResults({ results }: { results: any }) {
               <div className="space-y-3">
                 <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-4">
                   <div className="text-sm font-semibold text-purple-900 dark:text-purple-200 mb-1 flex items-center gap-2">
-                    <span>”¹</span> {t.nameDestiny.divineNameResonance.spiritualInfluence}
+                    <span>✨</span> {t.nameDestiny.divineNameResonance.spiritualInfluence}
                   </div>
                   <p className="text-sm text-purple-800 dark:text-purple-300">
                     {isFr ? results.nameDestiny.divineNameResonance.spiritualInfluenceFr : results.nameDestiny.divineNameResonance.spiritualInfluence}
@@ -2736,7 +2736,7 @@ function DestinyResults({ results }: { results: any }) {
 
                 <div className="bg-pink-50 dark:bg-pink-900/30 rounded-lg p-4">
                   <div className="text-sm font-semibold text-pink-900 dark:text-pink-200 mb-1 flex items-center gap-2">
-                    <span>”¹</span> {t.nameDestiny.divineNameResonance.reflection}
+                    <span>✨</span> {t.nameDestiny.divineNameResonance.reflection}
                   </div>
                   <p className="text-sm text-pink-800 dark:text-pink-300">
                     {isFr ? results.nameDestiny.divineNameResonance.reflectionFr : results.nameDestiny.divineNameResonance.reflection}
@@ -2750,7 +2750,7 @@ function DestinyResults({ results }: { results: any }) {
           {results.nameDestiny.colorResonance && (
             <div className="bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-pink-300 dark:border-pink-700">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-3xl">Ž¨</span>
+                <span className="text-3xl">🎨</span>
                 <h4 className="text-xl font-bold text-pink-900 dark:text-pink-200">
                   {t.nameDestiny.colorResonance.title}
                 </h4>
@@ -2764,7 +2764,7 @@ function DestinyResults({ results }: { results: any }) {
                 {/* Primary Color */}
                 <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
                   <div className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">
-                    Ž¨ {t.nameDestiny.colorResonance.primary}
+                    🎨 {t.nameDestiny.colorResonance.primary}
                   </div>
                   <div className="flex items-center gap-3 mb-2">
                     <div 
@@ -2789,7 +2789,7 @@ function DestinyResults({ results }: { results: any }) {
                 {results.nameDestiny.colorResonance.secondary && (
                   <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
                     <div className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">
-                      Ž¨ {t.nameDestiny.colorResonance.secondary}
+                      🎨 {t.nameDestiny.colorResonance.secondary}
                     </div>
                     <div className="flex items-center gap-3 mb-2">
                       <div 
@@ -2815,7 +2815,7 @@ function DestinyResults({ results }: { results: any }) {
               {/* Best Colors */}
               <div className="mb-4 bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-200 dark:border-green-700">
                 <div className="text-sm font-semibold text-green-900 dark:text-green-200 mb-2">
-                  œ… {t.nameDestiny.colorResonance.bestColors}
+                  ✅ {t.nameDestiny.colorResonance.bestColors}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {(isFr ? results.nameDestiny.colorResonance.bestColorsFr : results.nameDestiny.colorResonance.bestColorsEn).map((color: string, idx: number) => (
@@ -2829,7 +2829,7 @@ function DestinyResults({ results }: { results: any }) {
               {/* Colors to Avoid */}
               <div className="mb-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-700">
                 <div className="text-sm font-semibold text-amber-900 dark:text-amber-200 mb-2">
-                  š ï¸ {t.nameDestiny.colorResonance.avoidColors}
+                  ⚠️ {t.nameDestiny.colorResonance.avoidColors}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {(isFr ? results.nameDestiny.colorResonance.avoidColorsFr : results.nameDestiny.colorResonance.avoidColorsEn).map((color: string, idx: number) => (
@@ -2843,7 +2843,7 @@ function DestinyResults({ results }: { results: any }) {
               {/* Tip */}
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
                 <div className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
-                  <span>’¡</span> {t.nameDestiny.colorResonance.tip}
+                  <span>💡</span> {t.nameDestiny.colorResonance.tip}
                 </div>
                 <p className="text-sm text-blue-800 dark:text-blue-300">
                   {isFr ? results.nameDestiny.colorResonance.tipFr : results.nameDestiny.colorResonance.tipEn}
@@ -3022,7 +3022,7 @@ function DestinyResults({ results }: { results: any }) {
                 </div>
               </div>
               <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                {t.nameDestiny.origin.kabir}: {results.motherAnalysis.kabir} €¢ {t.nameDestiny.origin.saghir}: {results.motherAnalysis.saghir} €¢ {t.nameDestiny.origin.hadath}: {results.motherAnalysis.hadath}
+                {t.nameDestiny.origin.kabir}: {results.motherAnalysis.kabir} • {t.nameDestiny.origin.saghir}: {results.motherAnalysis.saghir} • {t.nameDestiny.origin.hadath}: {results.motherAnalysis.hadath}
               </div>
             </div>
             
@@ -3148,7 +3148,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.vertical.join(' €¢ ')}
+                    {GEOMETRY_KEYWORDS.vertical.join(' • ')}
                   </p>
                 </>
               ) : (
@@ -3181,7 +3181,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.round.join(' €¢ ')}
+                    {GEOMETRY_KEYWORDS.round.join(' • ')}
                   </p>
                 </>
               ) : (
@@ -3214,7 +3214,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.flat.join(' €¢ ')}
+                    {GEOMETRY_KEYWORDS.flat.join(' • ')}
                   </p>
                 </>
               ) : (
@@ -3247,7 +3247,7 @@ function DestinyResults({ results }: { results: any }) {
                     ))}
                   </div>
                   <p className="text-sm text-black dark:text-gray-400">
-                    {GEOMETRY_KEYWORDS.angular.join(' €¢ ')}
+                    {GEOMETRY_KEYWORDS.angular.join(' • ')}
                   </p>
                 </>
               ) : (
@@ -3344,7 +3344,7 @@ function DestinyResults({ results }: { results: any }) {
         <div className="space-y-5">
           <div>
             <div className="font-semibold text-yellow-700 dark:text-yellow-400 mb-1 flex items-center gap-2">
-              œ¨ {t.nameDestiny.guidance.yourPath}
+              🧭 {t.nameDestiny.guidance.yourPath}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.yourPathDesc}
@@ -3362,7 +3362,7 @@ function DestinyResults({ results }: { results: any }) {
                 
                 if (isFr) {
                   return `Votre destin de vie (${destinyStation.name}) vous appelle   ${destinyStation.quality.toLowerCase()}. ` +
-                    `Votre ¢me aspire profondément   ${soulStation?.quality.toLowerCase()}, ` +
+                    `Votre âme aspire profondément   ${soulStation?.quality.toLowerCase()}, ` +
                     `tandis qu'extérieurement vous exprimez ${personalityStation?.quality.toLowerCase()}. ` +
                     `L'intégration se produit lorsque vous alignez ces trois dimensions.`;
                 } else {
@@ -3374,7 +3374,7 @@ function DestinyResults({ results }: { results: any }) {
           
           <div>
             <div className="font-semibold text-indigo-700 dark:text-indigo-400 mb-1 flex items-center gap-2">
-              •Š {t.nameDestiny.guidance.spiritualPractice}
+              🕌 {t.nameDestiny.guidance.spiritualPractice}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.spiritualPracticeDesc}
@@ -3386,7 +3386,7 @@ function DestinyResults({ results }: { results: any }) {
           
           <div>
             <div className="font-semibold text-blue-700 dark:text-blue-400 mb-1 flex items-center gap-2">
-              “– {t.nameDestiny.guidance.quranicGuidance}
+              📖 {t.nameDestiny.guidance.quranicGuidance}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.quranicGuidanceDesc}
@@ -3398,7 +3398,7 @@ function DestinyResults({ results }: { results: any }) {
           
           <div>
             <div className="font-semibold text-emerald-700 dark:text-emerald-400 mb-1 flex items-center gap-2">
-              §⭐ {t.nameDestiny.guidance.practicalAction}
+              🛠️ {t.nameDestiny.guidance.practicalAction}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
               {t.nameDestiny.guidance.practicalActionDesc}
@@ -3410,7 +3410,7 @@ function DestinyResults({ results }: { results: any }) {
           
           <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border-l-4 border-amber-500">
             <div className="font-semibold text-amber-900 dark:text-amber-300 mb-1 flex items-center gap-2">
-              š ï¸ {t.nameDestiny.guidance.shadowToWatch}
+              ⚠️ {t.nameDestiny.guidance.shadowToWatch}
             </div>
             <p className="text-xs text-amber-700 dark:text-amber-400 mb-2 italic">
               {t.nameDestiny.guidance.shadowToWatchDesc}
@@ -3439,10 +3439,10 @@ function CompatibilityResults({ results }: { results: any }) {
           'Harmonie exceptionnelle aux niveaux de surface et d\'¢me. Vos énergies se compl¨tent magnifiquement. Cette relation a un potentiel extraordinaire pour la croissance mutuelle et le bonheur.',
           '',
           'Attente réaliste :',
-          '€¢ La communication coule naturellement',
-          '€¢ Vous vous "comprenez" intuitivement',
-          '€¢ Les défis sont gérables ensemble',
-          '€¢ Concentrez-vous sur la croissance continue'
+          '• La communication coule naturellement',
+          '• Vous vous "comprenez" intuitivement',
+          '• Les défis sont gérables ensemble',
+          '• Concentrez-vous sur la croissance continue'
         ];
       } else if (score >= 70) {
         return [
@@ -3452,10 +3452,10 @@ function CompatibilityResults({ results }: { results: any }) {
           'Forte compatibilité avec des domaines mineurs   cultiver. Cette connexion a un grand potentiel avec un effort mutuel. Vos forces dépassent largement vos défis.',
           '',
           'Attente réaliste :',
-          '€¢ Excellent potentiel   long terme',
-          '€¢ Quelques domaines nécessitent une attention consciente',
-          '€¢ La communication et le compromis sont essentiels',
-          '€¢ Cultivez ce que vous avez construit ensemble'
+          '• Excellent potentiel   long terme',
+          '• Quelques domaines nécessitent une attention consciente',
+          '• La communication et le compromis sont essentiels',
+          '• Cultivez ce que vous avez construit ensemble'
         ];
       } else if (score >= 55) {
         return [
@@ -3466,8 +3466,8 @@ function CompatibilityResults({ results }: { results: any }) {
           '',
           'Attente réaliste :',
           score >= 60 
-            ? '€¢ La vie quotidienne peut avoir des frictions\n€¢ Mais votre fondation émotionnelle est solide\n€¢ Concentrez-vous sur le lien profond que vous partagez'
-            : '€¢ Les deux partenaires doivent ªtre engagés\n€¢ Les différences enrichissent quand honorées\n€¢ La patience et la compréhension sont essentielles'
+            ? '• La vie quotidienne peut avoir des frictions\n• Mais votre fondation émotionnelle est solide\n• Concentrez-vous sur le lien profond que vous partagez'
+            : '• Les deux partenaires doivent ªtre engagés\n• Les différences enrichissent quand honorées\n• La patience et la compréhension sont essentielles'
         ];
       } else if (score >= 40) {
         return [
@@ -3477,10 +3477,10 @@ function CompatibilityResults({ results }: { results: any }) {
           'Différences significatives d\'énergie et d\'approche. Cette relation nécessite un effort substantiel, de la patience et une croissance mutuelle. Possible, mais les deux partenaires doivent ªtre pleinement engagés.',
           '',
           'Attente réaliste :',
-          '€¢ Nécessite un travail conscient quotidien',
-          '€¢ Les deux doivent vouloir grandir ensemble',
-          '€¢ Cherchez des conseils professionnels si nécessaire',
-          '€¢ Célébrez les petites victoires'
+          '• Nécessite un travail conscient quotidien',
+          '• Les deux doivent vouloir grandir ensemble',
+          '• Cherchez des conseils professionnels si nécessaire',
+          '• Célébrez les petites victoires'
         ];
       } else {
         return [
@@ -3490,10 +3490,10 @@ function CompatibilityResults({ results }: { results: any }) {
           'Conflits élémentaires majeurs. Bien que non impossible, ce jumelage fait face   des défis fondamentaux qui nécessitent un engagement profond pour ªtre surmontés.',
           '',
           'Considération sérieuse :',
-          '€¢ Štes-vous tous deux pleinement engagés   grandir ?',
-          '€¢ Le conseil professionnel est fortement recommandé',
-          '€¢ Fixez des attentes réalistes',
-          '€¢ Honorez vos besoins individuels aussi'
+          '• Štes-vous tous deux pleinement engagés   grandir ?',
+          '• Le conseil professionnel est fortement recommandé',
+          '• Fixez des attentes réalistes',
+          '• Honorez vos besoins individuels aussi'
         ];
       }
     } else {
@@ -3505,10 +3505,10 @@ function CompatibilityResults({ results }: { results: any }) {
           'Outstanding compatibility on both surface and soul levels. Your energies complement each other beautifully. This relationship has extraordinary potential for mutual growth and happiness.',
           '',
           'Realistic Expectation:',
-          '€¢ Communication flows naturally',
-          '€¢ You "get" each other intuitively',
-          '€¢ Challenges are manageable together',
-          '€¢ Focus on continuous growth'
+          '• Communication flows naturally',
+          '• You "get" each other intuitively',
+          '• Challenges are manageable together',
+          '• Focus on continuous growth'
         ];
       } else if (score >= 70) {
         return [
@@ -3518,10 +3518,10 @@ function CompatibilityResults({ results }: { results: any }) {
           'Strong compatibility with minor areas to nurture. This connection has great potential with mutual effort. Your strengths far outweigh your challenges.',
           '',
           'Realistic Expectation:',
-          '€¢ Excellent long-term potential',
-          '€¢ Some areas need conscious attention',
-          '€¢ Communication and compromise are key',
-          '€¢ Nurture what you\'ve built together'
+          '• Excellent long-term potential',
+          '• Some areas need conscious attention',
+          '• Communication and compromise are key',
+          '• Nurture what you\'ve built together'
         ];
       } else if (score >= 55) {
         return [
@@ -3532,8 +3532,8 @@ function CompatibilityResults({ results }: { results: any }) {
           '',
           'Realistic Expectation:',
           score >= 60 
-            ? '€¢ Daily life may have friction\n€¢ But your emotional foundation is strong\n€¢ Focus on nurturing the deep bond you share'
-            : '€¢ Both partners need to be committed\n€¢ Differences enrich when honored\n€¢ Patience and understanding are essential'
+            ? '• Daily life may have friction\n• But your emotional foundation is strong\n• Focus on nurturing the deep bond you share'
+            : '• Both partners need to be committed\n• Differences enrich when honored\n• Patience and understanding are essential'
         ];
       } else if (score >= 40) {
         return [
@@ -3543,10 +3543,10 @@ function CompatibilityResults({ results }: { results: any }) {
           'Significant differences in energy and approach. This relationship requires substantial effort, patience, and mutual growth. Possible, but both partners must be fully committed.',
           '',
           'Realistic Expectation:',
-          '€¢ Requires conscious daily work',
-          '€¢ Both must want to grow together',
-          '€¢ Seek professional guidance if needed',
-          '€¢ Celebrate small victories'
+          '• Requires conscious daily work',
+          '• Both must want to grow together',
+          '• Seek professional guidance if needed',
+          '• Celebrate small victories'
         ];
       } else {
         return [
@@ -3556,10 +3556,10 @@ function CompatibilityResults({ results }: { results: any }) {
           'Major elemental conflicts. While not impossible, this pairing faces fundamental challenges that require deep commitment to overcome.',
           '',
           'Serious Consideration:',
-          '€¢ Are you both fully committed to growth?',
-          '€¢ Professional counseling is strongly recommended',
-          '€¢ Set realistic expectations',
-          '€¢ Honor your individual needs too'
+          '• Are you both fully committed to growth?',
+          '• Professional counseling is strongly recommended',
+          '• Set realistic expectations',
+          '• Honor your individual needs too'
         ];
       }
     }
@@ -3722,10 +3722,9 @@ function CompatibilityResults({ results }: { results: any }) {
           {/* Title with Explanation */}
           <div className="text-center space-y-2 mb-4">
             <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-2">
-              <span>œ¨</span>
-              <span>{t.compatibilityResults.letterChemistry}</span>
+              <span>🧪 {t.compatibilityResults.letterChemistry}</span>
               <span className="text-sm font-normal text-gray-600 dark:text-gray-400">
-                ({t.compatibilityResults.letterChemistryArabic} €¢ Ø²ÙˆØ§Ø¬ Ø§Ù„Ø⭐Ø±ÙˆÙ)
+                ({t.compatibilityResults.letterChemistryArabic} • زواج الحروف)
               </span>
             </h3>
             {/* Description Line */}
@@ -3919,7 +3918,7 @@ function CompatibilityResults({ results }: { results: any }) {
         {/* NEW FEATURE 3: Balancing Dhikr Recommendation */}
         <div className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 rounded-xl">
           <h3 className="text-lg font-bold text-center text-gray-900 dark:text-gray-100 mb-2 flex items-center justify-center gap-2">
-            <span>🤝²</span>
+            <span>🕊️</span>
             <span>{t.compatibilityResults.balancingDhikr}</span>
           </h3>
           {/* Contextual Sentence */}
@@ -3997,7 +3996,7 @@ function CompatibilityResults({ results }: { results: any }) {
                 key={idx}
                 className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg"
               >
-                <span className="text-amber-600 dark:text-amber-400 font-bold">€¢</span>
+                <span className="text-amber-600 dark:text-amber-400 font-bold">•</span>
                 <span className="text-sm text-gray-700 dark:text-gray-300">{rec}</span>
               </li>
             ))}
@@ -4276,7 +4275,7 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
             <div className="bg-blue-50 dark:bg-blue-900/30 rounded p-3 border-l-4 border-blue-500">
               <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">{t.lifePath.focusAreas}</div>
               <div className="text-sm text-slate-700 dark:text-slate-300">
-                {cycle.focus.join(' €¢ ')}
+                {cycle.focus.join(' • ')}
               </div>
             </div>
           </div>
@@ -4630,9 +4629,9 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                       context="daily"
                     />
                   )}
-                  <span className="mx-1">€¢</span>
+                  <span className="mx-1">•</span>
                   <span>{t.timingResults.planetEnergy.replace('{planet}', todayReading.day_planet)}</span>
-                  <span className="mx-1">€¢</span>
+                  <span className="mx-1">•</span>
                   <span>{todayReading.weekday}</span>
                 </p>
               </div>
@@ -4658,7 +4657,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
               <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-2">
                 {todayReading.restPractices.slice(0, 3).map((practice, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">€¢</span>
+                    <span className="text-blue-500 dark:text-blue-400 flex-shrink-0">•</span>
                     <span>{practice}</span>
                   </li>
                 ))}
@@ -4739,7 +4738,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
             <ul className="space-y-1">
               {planetaryHour.favorable.map((item: string, idx: number) => (
                 <li key={idx} className="text-sm text-slate-700 dark:text-slate-300">
-                  €¢ {item}
+                  • {item}
                 </li>
               ))}
             </ul>
@@ -4752,7 +4751,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
             <ul className="space-y-1">
               {planetaryHour.avoid.map((item: string, idx: number) => (
                 <li key={idx} className="text-sm text-slate-700 dark:text-slate-300">
-                  €¢ {item}
+                  • {item}
                 </li>
               ))}
             </ul>
@@ -4835,7 +4834,7 @@ function TimingResults({ results, birthDate, name, abjad }: { results: any; birt
                 <ul className="space-y-1">
                   {ELEMENT_GUIDANCE_MAP[userElement].bestFor.slice(0, 3).map((item, idx) => (
                     <li key={idx} className="text-xs text-indigo-900 dark:text-indigo-200 flex items-start gap-2 font-medium">
-                      <span className="text-green-600 dark:text-green-400 flex-shrink-0">€¢</span>
+                      <span className="text-green-600 dark:text-green-400 flex-shrink-0">•</span>
                       <span>{item}</span>
                     </li>
                   ))}

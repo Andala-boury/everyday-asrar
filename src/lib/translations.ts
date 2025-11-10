@@ -209,7 +209,7 @@ export const translations = {
       earthDesc: "Grounded, practical, reliable, solid and steady",
       
       // Guidance message
-      guidanceMessage: "These numbers and elements offer guidance for self-reflection. Remember that you are more than numbers—your choices, values, and character shape your destiny.",
+      guidanceMessage: "These numbers and elements offer guidance for self-reflection. Remember that you are more than numbers×your choices, values, and character shape your destiny.",
     },
     
     // Celestial Signature
@@ -336,12 +336,12 @@ export const translations = {
       currentStrength: "Right Now (Your Current Strength):",
       currentStrengthDesc: "This is the main strength supporting you this season",
       currentChallenge: "Currently Working On (Your Main Focus):",
-      currentChallengeDesc: "This is what life is teaching you right now—embrace it!",
+      currentChallengeDesc: "This is what life is teaching you right now×embrace it!",
 
       // Special Numbers
       specialNumbers: "Special Numbers & Lessons",
       lessonsToLearn: "Lessons to Learn",
-      lessonsDesc: "These numbers represent lessons your soul wants to learn in this lifetime. They're not obstacles — they're opportunities for growth.",
+      lessonsDesc: "These numbers represent lessons your soul wants to learn in this lifetime. They're not obstacles × they're opportunities for growth.",
       blessedNumbers: "Blessed Numbers",
       blessedDesc: "These are powerful numbers connected to spiritual tradition. They bring special blessings and spiritual protection to your life.",
 
@@ -404,7 +404,7 @@ export const translations = {
       inheritedInfluences: "Inherited Influences",
       inheritedInfluencesDesc: "Shows how your mother's energy influences your external conditions.",
       whyMotherName: "Why add mother's name?",
-      motherNameExplanation: "Your personal name reveals WHO you are (inner identity). Your mother's name reveals external conditions that surround you—obstacles, protection, and family inheritance.",
+      motherNameExplanation: "Your personal name reveals WHO you are (inner identity). Your mother's name reveals external conditions that surround you×obstacles, protection, and family inheritance.",
       motherNameInfo: "Personal Name = WHO you are | Name + Mother = WHAT surrounds you",
       
       nameChart: {
@@ -439,7 +439,7 @@ export const translations = {
       },
       inputs: {
         motherName: "Mother's Name",
-        motherHint: "Optional — add to see inherited influences and family harmony.",
+        motherHint: "Optional × add to see inherited influences and family harmony.",
         motherOptional: "Mother's Name (optional for inherited influences)",
       },
       origin: {
@@ -484,7 +484,7 @@ export const translations = {
         shadowToWatchDesc: "Tendencies to be aware of that may hinder your growth.",
       },
       disclaimer: {
-        reflectionOnly: "For reflection only — not divination or legal ruling.",
+        reflectionOnly: "For reflection only × not divination or legal ruling.",
       },
       elementChart: {
         title: "Name Element Chart",
@@ -509,10 +509,10 @@ export const translations = {
           personality: "Your name grounds you in practicality, reliability, and patience. You excel at building, organizing, and bringing stability.",
         },
         dhikr: {
-          fire: "Yā Laṭīf (The Gentle) — to soften intensity",
-          air: "Yā Ḥakīm (The Wise) — to ground thoughts",
-          water: "Yā Nūr (The Light) — to illuminate emotions",
-          earth: "Yā Fattāḥ (The Opener) — to invite flow",
+          fire: "Yā Laṭīf (The Gentle) × to soften intensity",
+          air: "Yā Ḥakīm (The Wise) × to ground thoughts",
+          water: "Yā Nūr (The Light) × to illuminate emotions",
+          earth: "Yā Fattāḥ (The Opener) × to invite flow",
         },
       },
       // Higher Resonance Insights
@@ -661,9 +661,9 @@ export const translations = {
       ruh: "Rūḥ",
       element: "Element",
       currentHarmony: "Current Harmony",
-      allForcesAligned: "All forces aligned—excellent flow",
-      mixedSignals: "Mixed signals—proceed mindfully",
-      challengingEnergies: "Challenging energies—patience needed",
+      allForcesAligned: "All forces aligned×excellent flow",
+      mixedSignals: "Mixed signals×proceed mindfully",
+      challengingEnergies: "Challenging energies×patience needed",
       dominantForce: "Dominant Force",
       weekAtAGlance: "Week at a Glance",
       peakDayThisWeek: "Peak Day This Week",
@@ -737,7 +737,7 @@ export const translations = {
       todaysPractice: "Today's Practice:",
       classicalTeaching: "Classical teaching (Lesson 25):",
       classicalQuote: "Man zaraʿa khayran ḥaṣada khayran",
-      classicalMeaning: "(Who plants good, harvests good) — The timing of harvest depends on the seed and season.",
+      classicalMeaning: "(Who plants good, harvests good) × The timing of harvest depends on the seed and season.",
       optimalSequence: "Optimal Sequence for {day}",
       timeWindows: "Time Windows",
     },
@@ -913,17 +913,17 @@ export const translations = {
     inheritanceSame: "You express and inherit the same {element} energy. Strong, coherent elemental identity with deep roots.",
     
     inheritanceCompatible: {
-      fireAir: "You express with Fire but have Air roots. Your Air foundation fuels your Fire action—like wind fanning flames.",
-      airFire: "You express with Air but have Fire roots. Your Fire foundation energizes your Air movement—like heat creating wind.",
-      waterEarth: "You express with Water but have Earth roots. Your Earth foundation contains your Water flow—like a riverbed holding water.",
-      earthWater: "You express with Earth but have Water roots. Your Water foundation nourishes your Earth structure—like rain feeding soil."
+      fireAir: "You express with Fire but have Air roots. Your Air foundation fuels your Fire action×like wind fanning flames.",
+      airFire: "You express with Air but have Fire roots. Your Fire foundation energizes your Air movement×like heat creating wind.",
+      waterEarth: "You express with Water but have Earth roots. Your Earth foundation contains your Water flow×like a riverbed holding water.",
+      earthWater: "You express with Earth but have Water roots. Your Water foundation nourishes your Earth structure×like rain feeding soil."
     },
     
     inheritanceOpposing: {
-      fireWater: "You express with Fire but have Water roots. This creates dynamic tension—passion balanced by emotional depth.",
-      waterFire: "You express with Water but have Fire roots. This creates dynamic tension—emotional depth fueled by inner passion.",
-      airEarth: "You express with Air but have Earth roots. This creates dynamic tension—movement balanced by stability.",
-      earthAir: "You express with Earth but have Air roots. This creates dynamic tension—structure built on freedom."
+      fireWater: "You express with Fire but have Water roots. This creates dynamic tension×passion balanced by emotional depth.",
+      waterFire: "You express with Water but have Fire roots. This creates dynamic tension×emotional depth fueled by inner passion.",
+      airEarth: "You express with Air but have Earth roots. This creates dynamic tension×movement balanced by stability.",
+      earthAir: "You express with Earth but have Air roots. This creates dynamic tension×structure built on freedom."
     },
 
     // PLANETARY QUALITIES
@@ -1076,7 +1076,7 @@ export const translations = {
       ultimateGoal: "Your life purpose & what you're meant to accomplish. Your ultimate goal.",
       specialNumbers: "Special Numbers & Lessons",
       lessonsToLearn: "Lessons to Learn",
-      lessonsDescription: "These numbers represent lessons your soul wants to learn in this life. They're not obstacles—they're opportunities for growth.",
+      lessonsDescription: "These numbers represent lessons your soul wants to learn in this life. They're not obstacles×they're opportunities for growth.",
       blessedNumbers: "Blessed Numbers",
       blessedDescription: "These are powerful numbers linked to spiritual tradition. They bring special blessings and spiritual protection to your life."
     },
@@ -1097,7 +1097,7 @@ export const translations = {
       // Letter Chemistry Feature
       letterChemistry: "Letter Chemistry",
       letterChemistryArabic: "Zawāj al-Ḥurūf",
-      letterChemistryDesc: "Shows the elemental temperament between the two names. Each letter carries Fire, Air, Water, or Earth energy — their blend forms the emotional and energetic balance of your connection.",
+      letterChemistryDesc: "Shows the elemental temperament between the two names. Each letter carries Fire, Air, Water, or Earth energy × their blend forms the emotional and energetic balance of your connection.",
       combinedHarmony: "Combined Harmony",
       combinedHarmonyExplain: "Higher means smoother elemental flow between you",
       balancingDhikr: "Balancing Dhikr",
@@ -1110,10 +1110,10 @@ export const translations = {
       water: "Water",
       earth: "Earth",
       // Element temperament descriptions
-      fireTemperament: "Fire Temperament — passionate, creative, bold",
-      airTemperament: "Air Temperament — quick, intellectual, communicative",
-      waterTemperament: "Water Temperament — calm, emotional, intuitive",
-      earthTemperament: "Earth Temperament — stable, practical, grounded",
+      fireTemperament: "Fire Temperament × passionate, creative, bold",
+      airTemperament: "Air Temperament × quick, intellectual, communicative",
+      waterTemperament: "Water Temperament × calm, emotional, intuitive",
+      earthTemperament: "Earth Temperament × stable, practical, grounded",
       // Balance Advice for Element Pairs
       balanceAdvice: {
         fireFire: "Practice calm dhikr together, avoid rushing decisions.",
@@ -1176,8 +1176,8 @@ export const translations = {
       optional: "(Optional for deeper analysis)",
       
       // Tooltips
-      nameTooltip: "💡 Your name reveals your conscious self — how you show up in the world, your active personality, and how others see you.",
-      motherNameTooltip: `💡 Your mother's name reveals your emotional blueprint — the subconscious patterns, feelings, and needs you inherited. This is the foundation beneath your personality.
+      nameTooltip: "💡 Your name reveals your conscious self × how you show up in the world, your active personality, and how others see you.",
+      motherNameTooltip: `💡 Your mother's name reveals your emotional blueprint × the subconscious patterns, feelings, and needs you inherited. This is the foundation beneath your personality.
 
 📊 Analysis depth:
 • With names only: 70% accuracy
@@ -1249,7 +1249,7 @@ export const translations = {
       layer1WhyItMatters: "This determines your communication style, conflict resolution, and whether you naturally 'get' each other in everyday moments. High scores here mean easy, natural flow in daily life.",
       
       // Layer 2 Explanations
-      layer2WhatItMeans: "The subconscious emotional compatibility inherited from your mothers. This is the 'feeling of home' you create together—the unspoken comfort, safety, and deep bond that either naturally exists or must be built.",
+      layer2WhatItMeans: "The subconscious emotional compatibility inherited from your mothers. This is the 'feeling of home' you create together×the unspoken comfort, safety, and deep bond that either naturally exists or must be built.",
       layer2BasedOn: "The elemental temperaments from both of your mothers' names (calculated using Ḥadath ÷ 4 method)",
       layer2WhyItMatters: `This is THE most important layer for marriage and long-term partnership. Here's why:
 
@@ -1271,25 +1271,25 @@ Without knowing this, they hurt each other:
 • Ahmad feels abandoned when Layla takes space
 • Layla feels suffocated when Ahmad wants to talk
 
-WITH this knowledge, they understand: "We're both trying to feel safe—just in different ways."`,
+WITH this knowledge, they understand: "We're both trying to feel safe×just in different ways."`,
       
       // Dual Temperament
       dualTemperamentTitle: "🎭 Your Individual Temperaments",
       dualTemperamentArabic: "طبائعكم الفردية",
-      dualTemperamentExplanation: "Understanding each person's inner (conscious) and cosmic (subconscious) temperaments helps you see the complete person—not just the surface.",
+      dualTemperamentExplanation: "Understanding each person's inner (conscious) and cosmic (subconscious) temperaments helps you see the complete person×not just the surface.",
       
       innerTemperament: "Inner Temperament",
       innerTemperamentArabic: "الطبع الباطن",
-      innerTemperamentDef: "Your conscious self—how you actively show up in the world. Calculated from YOUR name.",
+      innerTemperamentDef: "Your conscious self×how you actively show up in the world. Calculated from YOUR name.",
       
       cosmicTemperament: "Cosmic Temperament",
       cosmicTemperamentArabic: "الطبع الفلكي",
-      cosmicTemperamentDef: "Your inherited emotional blueprint—the subconscious patterns from your lineage. Calculated from your MOTHER'S name.",
+      cosmicTemperamentDef: "Your inherited emotional blueprint×the subconscious patterns from your lineage. Calculated from your MOTHER'S name.",
       
       // Integration Types
       fullyAligned: "Fully Aligned",
       fullyAlignedMeaning: "You are authentically who you appear to be. What people see matches what you feel inside. This creates strong, consistent energy.",
-      fullyAlignedChallenge: "May be TOO much of that element—lacking balance from others.",
+      fullyAlignedChallenge: "May be TOO much of that element×lacking balance from others.",
       
       naturallyBalanced: "Naturally Balanced",
       naturallyBalancedMeaning: "Your inner and cosmic sides support each other. You have access to multiple energies that work together harmoniously.",
@@ -1322,11 +1322,11 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       
       ilmAlHuruf: "ʿIlm al-Ḥurūf",
       ilmAlHurufArabic: "علم الحروف",
-      ilmAlHurufDef: "The Science of Letters — An ancient Islamic science that studies the mystical properties of Arabic letters and their numerical values. Each letter carries specific energy (Fire, Air, Water, or Earth) and a numerical value used for spiritual calculations.",
+      ilmAlHurufDef: "The Science of Letters × An ancient Islamic science that studies the mystical properties of Arabic letters and their numerical values. Each letter carries specific energy (Fire, Air, Water, or Earth) and a numerical value used for spiritual calculations.",
       
       hadath: "al-Ḥadath",
       hadathArabic: "الحدث",
-      hadathDef: "The Numerical Essence — The sum of all letter values in a name using the Abjad (أبجد) system. This number reveals spiritual essence and destiny patterns.",
+      hadathDef: "The Numerical Essence × The sum of all letter values in a name using the Abjad (أبجد) system. This number reveals spiritual essence and destiny patterns.",
       
       hadathDiv4: "al-Ḥadath ÷ 4",
       hadathDiv4Def: `The classical method for determining elemental temperament. The remainder when Ḥadath is divided by 4 indicates the dominant element:
@@ -1337,7 +1337,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       
       zawajAlHuruf: "Zawāj al-Ḥurūf",
       zawajAlHurufArabic: "زواج الحروف",
-      zawajAlHurufDef: "Marriage of Letters — The compatibility analysis between two names based on their elemental harmony. How the letters 'marry' or interact between two people.",
+      zawajAlHurufDef: "Marriage of Letters × The compatibility analysis between two names based on their elemental harmony. How the letters 'marry' or interact between two people.",
       
       // Calculation Transparency
       showCalculation: "[📊 Show How We Calculated This]",
@@ -1399,7 +1399,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
         description: "Air gives words to Water's feelings. Water adds depth to Air's ideas. Beautiful when balanced.",
         dailyLife: "Air helps Water express emotions clearly. Water reminds Air that feelings matter as much as thoughts.",
         challenge: "⚠️ Air may rationalize feelings; Water may feel misunderstood when emotions are analyzed.",
-        tip: "💡 Air: Write love letters—use your words for emotion. Water: Share dreams aloud—trust Air to listen."
+        tip: "💡 Air: Write love letters×use your words for emotion. Water: Share dreams aloud×trust Air to listen."
       },
       airEarth: {
         label: "Air + Earth: Ideas Take Root",
@@ -1417,10 +1417,10 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       },
       waterEarth: {
         label: "Water + Earth: Nurturing Growth",
-        description: "Natural harmony. Water nourishes Earth, Earth holds Water. Like a garden—growth happens organically.",
+        description: "Natural harmony. Water nourishes Earth, Earth holds Water. Like a garden×growth happens organically.",
         dailyLife: "You support each other's growth effortlessly. Water brings feelings, Earth brings stability. Balanced and peaceful.",
         challenge: "⚠️ May avoid conflict or become stagnant. Too comfortable can mean no growth challenges.",
-        tip: "💡 Cook together, garden, create with your hands. Embrace gentle change—try new things monthly."
+        tip: "💡 Cook together, garden, create with your hands. Embrace gentle change×try new things monthly."
       },
       earthEarth: {
         label: "Earth + Earth: The Solid Foundation",
@@ -1464,7 +1464,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       mainStrengthSupporting: "This is the main strength supporting you this season",
       currentlyWorkingOn: "Currently working on",
       yourMainFocus: "Your main focus",
-      whatLifeTeaching: "This is what life is teaching you now—embrace it!",
+      whatLifeTeaching: "This is what life is teaching you now×embrace it!",
       numberExplanations: {
         1: { title: "The Leader", meaning: "You're naturally independent and driven to create new things. You prefer making your own decisions." },
         2: { title: "The Peacemaker", meaning: "You're good at bringing people together and finding harmony. You're sensitive to others' feelings." },
@@ -1485,7 +1485,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       unableToCalculate: "Unable to calculate planetary hour. Please try again.",
       deepRestNeededToday: "Deep Rest Needed Today",
       todayIsRestDay: "Today is a Rest Day",
-      criticalLowEnergy: "Critical low energy detected. Your spirit is recalibrating—honor this healing signal with deep physical and mental rest today.",
+      criticalLowEnergy: "Critical low energy detected. Your spirit is recalibrating×honor this healing signal with deep physical and mental rest today.",
       lowHarmonyToday: "Low harmony today suggests this is a strategic rest day. Focus on planning and reflection rather than execution and new starts.",
       recommendedToday: "Recommended Today:",
       viewFullWeek: "View Full Week",
@@ -1740,9 +1740,9 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       peakPerformanceDay: "Peak Performance Day",
       steadyProgressDay: "Steady Progress Day",
       restReflectionDay: "Rest & Reflection Day",
-      allForcesAligned: "All forces aligned—excellent flow",
-      mixedSignals: "Mixed signals—proceed mindfully",
-      challengingEnergies: "Challenging energies—patience needed",
+      allForcesAligned: "All forces aligned×excellent flow",
+      mixedSignals: "Mixed signals×proceed mindfully",
+      challengingEnergies: "Challenging energies×patience needed",
       morning: "🌅 Morning",
       midday: "☀️ Midday",
       afternoon: "🌆 Afternoon",
@@ -1782,7 +1782,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       reviewTime: "Review time",
       classicalTeaching: "Classical teaching (Lesson 28):",
       forEverythingTime: "\"Li-kulli shay'in waqtun\"",
-      successFromTiming: "(For everything there is a time) — Success comes from right action at the right time."
+      successFromTiming: "(For everything there is a time) × Success comes from right action at the right time."
     },
 
     // ============================================================================
@@ -1862,7 +1862,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       practicalActionDesc: "Steps you can take in everyday life that align with your destiny.",
       shadowToWatch: "Shadow to Watch",
       shadowToWatchDesc: "Tendencies to be aware of that may hinder your growth.",
-      reflectionOnly: "For reflection only — not divination or legal ruling."
+      reflectionOnly: "For reflection only × not divination or legal ruling."
     },
 
     // ============================================================================
@@ -1940,9 +1940,9 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       stillnessBeforeMotion: "Al-sukūn qabl al-ḥaraka",
       stillnessExplanation: "(Stillness before motion brings blessed action)",
       whoPlants: "Man zaraʿa khayran ḥaṣada khayran",
-      whoPlantsExplanation: "(Who plants good, harvests good) — The timing of harvest depends on the seed and season.",
+      whoPlantsExplanation: "(Who plants good, harvests good) × The timing of harvest depends on the seed and season.",
       forEverything: "Li-kulli shay'in waqtun",
-      forEverythingExplanation: "(For everything there is a time) — Success comes from right action at the right time.",
+      forEverythingExplanation: "(For everything there is a time) × Success comes from right action at the right time.",
       whoKnowsDisconnection: "Man ʿarafa infisāl waqtihi, faqad ḥafaẓa ṭāqatahu",
       whoKnowsExplanation: "(Who knows the time of disconnection, preserves his energy)"
     },
@@ -2206,7 +2206,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       earthDesc: "Ancré, pratique, fiable, solide et stable",
       
       // Guidance message
-      guidanceMessage: "Ces nombres et éléments offrent une guidance pour l'auto-réflexion. Rappelez-vous que vous êtes plus que des nombres—vos choix, valeurs et caractère façonnent votre destin.",
+      guidanceMessage: "Ces nombres et éléments offrent une guidance pour l'auto-réflexion. Rappelez-vous que vous êtes plus que des nombres×vos choix, valeurs et caractère façonnent votre destin.",
     },
     
     // Celestial Signature
@@ -2331,12 +2331,12 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       currentStrength: "En Ce Moment (Votre Force Actuelle) :",
       currentStrengthDesc: "C'est la force principale qui vous soutient en cette saison",
       currentChallenge: "En Cours de Travail (Votre Focus Principal) :",
-      currentChallengeDesc: "C'est ce que la vie vous enseigne maintenant—embrassez-le !",
+      currentChallengeDesc: "C'est ce que la vie vous enseigne maintenant×embrassez-le !",
 
       // Nombres Spéciaux
       specialNumbers: "Nombres Spéciaux et Leçons",
       lessonsToLearn: "Leçons à Apprendre",
-      lessonsDesc: "Ces nombres représentent les leçons que votre âme veut apprendre dans cette vie. Ce ne sont pas des obstacles — ce sont des opportunités de croissance.",
+      lessonsDesc: "Ces nombres représentent les leçons que votre âme veut apprendre dans cette vie. Ce ne sont pas des obstacles × ce sont des opportunités de croissance.",
       blessedNumbers: "Nombres Bénis",
       blessedDesc: "Ce sont des nombres puissants liés à la tradition spirituelle. Ils apportent des bénédictions spéciales et une protection spirituelle à votre vie.",
 
@@ -2452,9 +2452,9 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       ruh: "Rūḥ",
       element: "Élément",
       currentHarmony: "Harmonie Actuelle",
-      allForcesAligned: "Toutes les forces alignées—excellent flux",
-      mixedSignals: "Signaux mélangés—procédez avec prudence",
-      challengingEnergies: "Énergies difficiles—la patience est nécessaire",
+      allForcesAligned: "Toutes les forces alignées×excellent flux",
+      mixedSignals: "Signaux mélangés×procédez avec prudence",
+      challengingEnergies: "Énergies difficiles×la patience est nécessaire",
       dominantForce: "Force Dominante",
       weekAtAGlance: "Vue d'ensemble de la semaine",
       peakDayThisWeek: "Jour Culminant de la Semaine",
@@ -2528,7 +2528,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       todaysPractice: "Pratique d'Aujourd'hui:",
       classicalTeaching: "Enseignement classique (Leçon 25):",
       classicalQuote: "Man zaraʿa khayran ḥaṣada khayran",
-      classicalMeaning: "(Qui plante le bien, récolte le bien) — Le moment de la moisson dépend de la graine et de la saison.",
+      classicalMeaning: "(Qui plante le bien, récolte le bien) × Le moment de la moisson dépend de la graine et de la saison.",
       optimalSequence: "Séquence Optimale pour {day}",
       timeWindows: "Fenêtres de Temps",
     },
@@ -2596,7 +2596,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       inheritedInfluences: "Influences Héritées",
       inheritedInfluencesDesc: "Montre comment l'énergie de votre mère influence vos conditions externes.",
       whyMotherName: "Pourquoi ajouter le nom de mère?",
-      motherNameExplanation: "Votre nom personnel révèle QUI vous êtes (identité intérieure). Le nom de votre mère révèle les conditions externes qui vous entourent—obstacles, protection et héritage familial.",
+      motherNameExplanation: "Votre nom personnel révèle QUI vous êtes (identité intérieure). Le nom de votre mère révèle les conditions externes qui vous entourent×obstacles, protection et héritage familial.",
       motherNameInfo: "Nom Personnel = QUI vous êtes | Nom + Mère = CE qui vous entoure",
       
       nameChart: {
@@ -2631,7 +2631,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       },
       inputs: {
         motherName: "Nom de la mère",
-        motherHint: "Optionnel — ajoutez pour voir les influences héritées et l'harmonie familiale.",
+        motherHint: "Optionnel × ajoutez pour voir les influences héritées et l'harmonie familiale.",
         motherOptional: "Nom de la mère (optionnel pour les influences héritées)",
       },
       origin: {
@@ -2676,7 +2676,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
         shadowToWatchDesc: "Tendances dont il faut être conscient qui peuvent entraver votre croissance.",
       },
       disclaimer: {
-        reflectionOnly: "Pour la réflexion uniquement — aucune divination ni avis juridique.",
+        reflectionOnly: "Pour la réflexion uniquement × aucune divination ni avis juridique.",
       },
       elementChart: {
         title: "Carte des éléments du nom",
@@ -2701,10 +2701,10 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
           personality: "Votre nom vous ancre dans le pragmatisme, la fiabilité et la patience. Vous excellez à construire, organiser et apporter de la stabilité.",
         },
         dhikr: {
-          fire: "Yā Laṭīf (Le Doux) — pour adoucir l'intensité",
-          air: "Yā Ḥakīm (Le Sage) — pour ancrer les pensées",
-          water: "Yā Nūr (La Lumière) — pour illuminer les émotions",
-          earth: "Yā Fattāḥ (Celui qui ouvre) — pour inviter le flux",
+          fire: "Yā Laṭīf (Le Doux) × pour adoucir l'intensité",
+          air: "Yā Ḥakīm (Le Sage) × pour ancrer les pensées",
+          water: "Yā Nūr (La Lumière) × pour illuminer les émotions",
+          earth: "Yā Fattāḥ (Celui qui ouvre) × pour inviter le flux",
         },
       },
       // Aperçus de Résonance Supérieure
@@ -3092,7 +3092,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       // Letter Chemistry Feature
       letterChemistry: "Chimie des Lettres",
       letterChemistryArabic: "Zawāj al-Ḥurūf",
-      letterChemistryDesc: "Montre le tempérament élémentaire entre les deux noms. Chaque lettre porte une énergie de Feu, Air, Eau ou Terre — leur mélange forme l'équilibre émotionnel et énergétique de votre connexion.",
+      letterChemistryDesc: "Montre le tempérament élémentaire entre les deux noms. Chaque lettre porte une énergie de Feu, Air, Eau ou Terre × leur mélange forme l'équilibre émotionnel et énergétique de votre connexion.",
       combinedHarmony: "Harmonie Combinée",
       combinedHarmonyExplain: "Plus le pourcentage est élevé, plus le flux des éléments est harmonieux",
       balancingDhikr: "Dhikr d'Équilibre",
@@ -3105,10 +3105,10 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       water: "Eau",
       earth: "Terre",
       // Element temperament descriptions
-      fireTemperament: "Tempérament Feu — passionné, créatif, audacieux",
-      airTemperament: "Tempérament Air — rapide, intellectuel, communicatif",
-      waterTemperament: "Tempérament Eau — calme, émotionnel, intuitif",
-      earthTemperament: "Tempérament Terre — stable, pratique, ancré",
+      fireTemperament: "Tempérament Feu × passionné, créatif, audacieux",
+      airTemperament: "Tempérament Air × rapide, intellectuel, communicatif",
+      waterTemperament: "Tempérament Eau × calme, émotionnel, intuitif",
+      earthTemperament: "Tempérament Terre × stable, pratique, ancré",
       // Balance Advice for Element Pairs
       balanceAdvice: {
         fireFire: "Pratiquez le dhikr calmement ensemble, évitez les décisions hâtives.",
@@ -3171,8 +3171,8 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       optional: "(Optionnel pour une analyse plus profonde)",
       
       // Info-bulles
-      nameTooltip: "💡 Votre nom révèle votre moi conscient — comment vous vous présentez au monde, votre personnalité active et comment les autres vous voient.",
-      motherNameTooltip: `💡 Le nom de votre mère révèle votre empreinte émotionnelle — les schémas subconscients, les sentiments et les besoins que vous avez hérités. C'est la fondation sous votre personnalité.
+      nameTooltip: "💡 Votre nom révèle votre moi conscient × comment vous vous présentez au monde, votre personnalité active et comment les autres vous voient.",
+      motherNameTooltip: `💡 Le nom de votre mère révèle votre empreinte émotionnelle × les schémas subconscients, les sentiments et les besoins que vous avez hérités. C'est la fondation sous votre personnalité.
 
 📊 Profondeur de l'analyse :
 • Avec les noms seulement : 70% de précision
@@ -3244,7 +3244,7 @@ WITH this knowledge, they understand: "We're both trying to feel safe—just in 
       layer1WhyItMatters: "Cela détermine votre style de communication, la résolution des conflits et si vous vous 'comprenez' naturellement dans les moments quotidiens. Des scores élevés ici signifient un flux facile et naturel dans la vie quotidienne.",
       
       // Explications du Niveau 2
-      layer2WhatItMeans: "La compatibilité émotionnelle subconsciente héritée de vos mères. C'est le 'sentiment de chez-soi' que vous créez ensemble—le confort non dit, la sécurité et le lien profond qui existe naturellement ou doit être construit.",
+      layer2WhatItMeans: "La compatibilité émotionnelle subconsciente héritée de vos mères. C'est le 'sentiment de chez-soi' que vous créez ensemble×le confort non dit, la sécurité et le lien profond qui existe naturellement ou doit être construit.",
       layer2BasedOn: "Les tempéraments élémentaires des noms de vos deux mères (calculés en utilisant la méthode Ḥadath ÷ 4)",
       layer2WhyItMatters: `C'est LE niveau le plus important pour le mariage et le partenariat à long terme. Voici pourquoi :
 
@@ -3266,25 +3266,25 @@ Sans savoir cela, ils se blessent mutuellement :
 • Ahmad se sent abandonné quand Layla prend de l'espace
 • Layla se sent étouffée quand Ahmad veut parler
 
-AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous sentir en sécurité—juste de différentes manières."`,
+AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous sentir en sécurité×juste de différentes manières."`,
       
       // Tempérament Dual
       dualTemperamentTitle: "🎭 Vos Tempéraments Individuels",
       dualTemperamentArabic: "طبائعكم الفردية",
-      dualTemperamentExplanation: "Comprendre le tempérament intérieur (conscient) et cosmique (subconscient) de chaque personne vous aide à voir la personne complète—pas seulement la surface.",
+      dualTemperamentExplanation: "Comprendre le tempérament intérieur (conscient) et cosmique (subconscient) de chaque personne vous aide à voir la personne complète×pas seulement la surface.",
       
       innerTemperament: "Tempérament Intérieur",
       innerTemperamentArabic: "الطبع الباطن",
-      innerTemperamentDef: "Votre moi conscient—comment vous vous présentez activement dans le monde. Calculé à partir de VOTRE nom.",
+      innerTemperamentDef: "Votre moi conscient×comment vous vous présentez activement dans le monde. Calculé à partir de VOTRE nom.",
       
       cosmicTemperament: "Tempérament Cosmique",
       cosmicTemperamentArabic: "الطبع الفلكي",
-      cosmicTemperamentDef: "Votre empreinte émotionnelle héritée—les schémas subconscients de votre lignée. Calculé à partir du nom de VOTRE MÈRE.",
+      cosmicTemperamentDef: "Votre empreinte émotionnelle héritée×les schémas subconscients de votre lignée. Calculé à partir du nom de VOTRE MÈRE.",
       
       // Types d'intégration
       fullyAligned: "Pleinement Aligné",
       fullyAlignedMeaning: "Vous êtes authentiquement qui vous semblez être. Ce que les gens voient correspond à ce que vous ressentez à l'intérieur. Cela crée une énergie forte et cohérente.",
-      fullyAlignedChallenge: "Peut être TROP de cet élément—manquant d'équilibre des autres.",
+      fullyAlignedChallenge: "Peut être TROP de cet élément×manquant d'équilibre des autres.",
       
       naturallyBalanced: "Naturellement Équilibré",
       naturallyBalancedMeaning: "Vos côtés intérieurs et cosmiques se soutiennent mutuellement. Vous avez accès à plusieurs énergies qui fonctionnent ensemble harmonieusement.",
@@ -3317,11 +3317,11 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
       
       ilmAlHuruf: "ʿIlm al-Ḥurūf",
       ilmAlHurufArabic: "علم الحروف",
-      ilmAlHurufDef: "La Science des Lettres — Une science islamique ancienne qui étudie les propriétés mystiques des lettres arabes et leurs valeurs numériques. Chaque lettre porte une énergie spécifique (Feu, Air, Eau ou Terre) et une valeur numérique utilisée pour les calculs spirituels.",
+      ilmAlHurufDef: "La Science des Lettres × Une science islamique ancienne qui étudie les propriétés mystiques des lettres arabes et leurs valeurs numériques. Chaque lettre porte une énergie spécifique (Feu, Air, Eau ou Terre) et une valeur numérique utilisée pour les calculs spirituels.",
       
       hadath: "al-Ḥadath",
       hadathArabic: "الحدث",
-      hadathDef: "L'Essence Numérique — La somme de toutes les valeurs de lettres dans un nom utilisant le système Abjad (أبجد). Ce nombre révèle l'essence spirituelle et les schémas de destin.",
+      hadathDef: "L'Essence Numérique × La somme de toutes les valeurs de lettres dans un nom utilisant le système Abjad (أبجد). Ce nombre révèle l'essence spirituelle et les schémas de destin.",
       
       hadathDiv4: "al-Ḥadath ÷ 4",
       hadathDiv4Def: `La méthode classique pour déterminer le tempérament élémentaire. Le reste quand Ḥadath est divisé par 4 indique l'élément dominant :
@@ -3332,7 +3332,7 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
       
       zawajAlHuruf: "Zawāj al-Ḥurūf",
       zawajAlHurufArabic: "زواج الحروف",
-      zawajAlHurufDef: "Mariage des Lettres — L'analyse de compatibilité entre deux noms basée sur leur harmonie élémentaire. Comment les lettres se 'marient' ou interagissent entre deux personnes.",
+      zawajAlHurufDef: "Mariage des Lettres × L'analyse de compatibilité entre deux noms basée sur leur harmonie élémentaire. Comment les lettres se 'marient' ou interagissent entre deux personnes.",
       
       // Transparence des Calculs
       showCalculation: "[📊 Montrer Comment Nous Avons Calculé Cela]",
@@ -3394,7 +3394,7 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
         description: "L'Air donne des mots aux sentiments de l'Eau. L'Eau ajoute de la profondeur aux idées de l'Air. Magnifique quand équilibré.",
         dailyLife: "L'Air aide l'Eau à exprimer les émotions clairement. L'Eau rappelle à l'Air que les sentiments comptent autant que les pensées.",
         challenge: "⚠️ L'Air peut rationaliser les sentiments ; l'Eau peut se sentir incomprise lorsque les émotions sont analysées.",
-        tip: "💡 Air : Écrivez des lettres d'amour—utilisez vos mots pour l'émotion. Eau : Partagez vos rêves à voix haute—faites confiance à l'Air pour écouter."
+        tip: "💡 Air : Écrivez des lettres d'amour×utilisez vos mots pour l'émotion. Eau : Partagez vos rêves à voix haute×faites confiance à l'Air pour écouter."
       },
       airEarth: {
         label: "Air + Terre : Les Idées Prennent Racine",
@@ -3412,10 +3412,10 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
       },
       waterEarth: {
         label: "Eau + Terre : Croissance Nourricière",
-        description: "Harmonie naturelle. L'Eau nourrit la Terre, la Terre retient l'Eau. Comme un jardin—la croissance se produit naturellement.",
+        description: "Harmonie naturelle. L'Eau nourrit la Terre, la Terre retient l'Eau. Comme un jardin×la croissance se produit naturellement.",
         dailyLife: "Vous soutenez la croissance de l'autre sans effort. L'Eau apporte les sentiments, la Terre apporte la stabilité. Équilibré et paisible.",
         challenge: "⚠️ Peut éviter les conflits ou devenir stagnant. Trop confortable peut signifier aucun défi de croissance.",
-        tip: "💡 Cuisinez ensemble, jardinez, créez avec vos mains. Embrassez le changement doux—essayez de nouvelles choses mensuellement."
+        tip: "💡 Cuisinez ensemble, jardinez, créez avec vos mains. Embrassez le changement doux×essayez de nouvelles choses mensuellement."
       },
       earthEarth: {
         label: "Terre + Terre : La Fondation Solide",
@@ -3459,7 +3459,7 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
       mainStrengthSupporting: "C'est la force principale qui vous soutient en cette saison",
       currentlyWorkingOn: "Actuellement en train de travailler sur",
       yourMainFocus: "Votre focus principal",
-      whatLifeTeaching: "C'est ce que la vie vous enseigne maintenant—embrassez-le !",
+      whatLifeTeaching: "C'est ce que la vie vous enseigne maintenant×embrassez-le !",
       numberExplanations: {
         1: { title: "Le Leader", meaning: "Vous êtes naturellement indépendant et motivé à créer de nouvelles choses. Vous préférez prendre vos propres décisions." },
         2: { title: "Le Pacificateur", meaning: "Vous êtes doué pour rassembler les gens et trouver l'harmonie. Vous êtes sensible aux sentiments des autres." },
@@ -3480,7 +3480,7 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
       unableToCalculate: "Impossible de calculer l'heure planétaire. Veuillez réessayer.",
       deepRestNeededToday: "Repos Profond Nécessaire Aujourd'hui",
       todayIsRestDay: "Aujourd'hui est un Jour de Repos",
-      criticalLowEnergy: "Énergie critique détectée. Votre esprit se recalibre—honorez ce signal de guérison avec un repos physique et mental profond aujourd'hui.",
+      criticalLowEnergy: "Énergie critique détectée. Votre esprit se recalibre×honorez ce signal de guérison avec un repos physique et mental profond aujourd'hui.",
       lowHarmonyToday: "Harmonie faible aujourd'hui suggère que c'est un jour de repos stratégique. Concentrez-vous sur la planification et la réflexion plutôt que sur l'exécution et les nouveaux départs.",
       recommendedToday: "Recommandé Aujourd'hui :",
       viewFullWeek: "Voir la Semaine Complète",
@@ -3735,9 +3735,9 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
       peakPerformanceDay: "Jour de performance maximale",
       steadyProgressDay: "Jour de progrès régulier",
       restReflectionDay: "Jour de repos et réflexion",
-      allForcesAligned: "Toutes les forces alignées—excellent flux",
-      mixedSignals: "Signaux mélangés—procédez avec prudence",
-      challengingEnergies: "Énergies difficiles—la patience est nécessaire",
+      allForcesAligned: "Toutes les forces alignées×excellent flux",
+      mixedSignals: "Signaux mélangés×procédez avec prudence",
+      challengingEnergies: "Énergies difficiles×la patience est nécessaire",
       morning: "🌅 Matin",
       midday: "☀️ Midi",
       afternoon: "🌆 Après-midi",
@@ -3777,7 +3777,7 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
       reviewTime: "Temps de révision",
       classicalTeaching: "Enseignement classique (Leçon 28) :",
       forEverythingTime: "\"Li-kulli shay'in waqtun\"",
-      successFromTiming: "(Pour chaque chose il y a un temps) — Le succès vient de la bonne action au bon moment."
+      successFromTiming: "(Pour chaque chose il y a un temps) × Le succès vient de la bonne action au bon moment."
     },
 
     // ============================================================================
@@ -3857,7 +3857,7 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
       practicalActionDesc: "Étapes que vous pouvez entreprendre dans la vie quotidienne qui s'alignent avec votre destinée.",
       shadowToWatch: "Ombre à surveiller",
       shadowToWatchDesc: "Tendances dont il faut être conscient qui peuvent entraver votre croissance.",
-      reflectionOnly: "Pour réflexion uniquement — pas de divination ni de jugement juridique."
+      reflectionOnly: "Pour réflexion uniquement × pas de divination ni de jugement juridique."
     },
 
     // ============================================================================
@@ -3935,9 +3935,9 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
       stillnessBeforeMotion: "Al-sukūn qabl al-ḥaraka",
       stillnessExplanation: "(L'immobilité avant le mouvement apporte l'action bénie)",
       whoPlants: "Man zaraʿa khayran ḥaṣada khayran",
-      whoPlantsExplanation: "(Qui plante le bien, récolte le bien) — Le moment de la moisson dépend de la graine et de la saison.",
+      whoPlantsExplanation: "(Qui plante le bien, récolte le bien) × Le moment de la moisson dépend de la graine et de la saison.",
       forEverything: "Li-kulli shay'in waqtun",
-      forEverythingExplanation: "(Pour chaque chose il y a un temps) — Le succès vient de la bonne action au bon moment.",
+      forEverythingExplanation: "(Pour chaque chose il y a un temps) × Le succès vient de la bonne action au bon moment.",
       whoKnowsDisconnection: "Man ʿarafa infisāl waqtihi, faqad ḥafaẓa ṭāqatahu",
       whoKnowsExplanation: "(Qui connaît le moment de la déconnexion, préserve son énergie)"
     },
