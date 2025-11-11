@@ -104,7 +104,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
         <LanguageProvider>
           <AbjadProvider>
             {children}

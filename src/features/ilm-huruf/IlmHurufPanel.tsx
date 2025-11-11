@@ -5,7 +5,7 @@ import {
   Sun, Moon, Star, Heart, BookOpen, Lightbulb, 
   Calendar, Clock, Compass, Users, Sparkles,
   TrendingUp, Target, MessageCircle, Home, Flame, Keyboard, ExternalLink,
-  Plus, Info, X, ArrowUp, Circle, Minus, Zap, CheckCircle2, User
+  Plus, Info, X, ArrowUp, Circle, Minus, Zap, CheckCircle2, User, AlertCircle
 } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { BalanceMeter } from '../../components/BalanceMeter';
@@ -18,6 +18,7 @@ import { ActNowButtons } from '../../components/ActNowButtons';
 import { DailyColorGuidanceCard } from '../../components/DailyColorGuidanceCard';
 import NameAutocomplete from '../../components/NameAutocomplete';
 import { TemperamentDisplay } from '../../components/TemperamentDisplay';
+import { DivineTiming } from '../../components/divine-timing';
 import {
   analyzeNameDestiny,
   analyzeCompatibility,
@@ -78,6 +79,7 @@ import { analyzeFourLayerCompatibility } from '../../utils/fourLayerCompatibilit
 import type { RelationshipCompatibility, FourLayerCompatibility } from '../../types/compatibility';
 import { CompatibilityGauge } from '../../components/CompatibilityGauge';
 import { EnhancedLifePathView } from '../../components/EnhancedLifePathView';
+import EnhancedLifePathDisplay from '../../components/EnhancedLifePathDisplay';
 import {
   calculateEnhancedLifePath,
   calculateLifePathNumber,
@@ -94,6 +96,10 @@ import {
   type LifeCycleAnalysis,
   type PinnacleChallenge
 } from '../../utils/enhancedLifePath';
+import { CompatibilityLearningCenter } from '../../components/CompatibilityLearningCenter';
+import { MethodGuidePanel } from '../../components/MethodGuidePanel';
+import { CompatibilityGlossary } from '../../components/CompatibilityGlossary';
+import { BookMarked } from 'lucide-react';
 
 // ============================================================================
 // ELEMENT HARMONY & LETTER CHEMISTRY CONSTANTS
@@ -483,11 +489,28 @@ export function IlmHurufPanel() {
       } else if (mode === 'life-path' && birthDate && name) {
         const result = calculateEnhancedLifePath(name, new Date(birthDate));
         setResults(result);
-      } else if (mode === 'timing') {
+      } else if (mode === 'timing' && birthDate && name) {
+        // Calculate user's element from their name for personalized timing
+        // Use simple Abjad calculation to avoid complex dependencies
+        const calculateAbjadTotal = (text: string, abjadMap: Record<string, number>): number => {
+          const normalized = text.replace(/[ًٌٍَُِّْ\s]/g, '');
+          return [...normalized].reduce((sum, char) => sum + (abjadMap[char] || 0), 0);
+        };
+        
+        const nameTotal = calculateAbjadTotal(name, abjad);
+        const userElement = getElementFromAbjadTotal(nameTotal);
+        
         const now = new Date();
         const planetaryHour = calculatePlanetaryHour(now);
-        const personalYear = birthDate ? calculatePersonalYear(new Date(birthDate), now.getFullYear()) : null;
-        setResults({ planetaryHour, personalYear });
+        const personalYear = calculatePersonalYear(new Date(birthDate), now.getFullYear());
+        
+        setResults({ 
+          planetaryHour, 
+          personalYear,
+          element: userElement, // User's element for personalization
+          name: name,
+          total: nameTotal
+        });
       }
     } catch (error) {
       console.error('Analysis error:', error);
@@ -1065,8 +1088,14 @@ export function IlmHurufPanel() {
       )}
       {results && !results.error && mode === 'destiny' && <DestinyResults results={results} />}
       {results && !results.error && mode === 'compatibility' && results.person1 && results.person2 && <CompatibilityResults results={results} />}
-      {results && !results.error && mode === 'life-path' && <LifePathResults results={results} />}
-      {results && !results.error && mode === 'timing' && <TimingResults results={results} birthDate={birthDate || ''} name={name || ''} abjad={abjad} />}
+      {results && !results.error && mode === 'life-path' && <EnhancedLifePathDisplay data={results as EnhancedLifePathResult} />}
+      {results && !results.error && mode === 'timing' && results.element && (
+        <DivineTiming 
+          userElement={(results.element.toLowerCase() as 'fire' | 'air' | 'water' | 'earth')} 
+          userName={name || undefined}
+          birthDate={birthDate || undefined}
+        />
+      )}
     </div>
   );
 }
@@ -2319,117 +2348,114 @@ function DestinyResults({ results }: { results: any }) {
             </div>
           </div>
 
-          {/* Section 1: Core Numerology Values */}
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-6 border-2 border-indigo-200 dark:border-indigo-700 shadow-lg">
-            <div className="flex items-center gap-3 mb-6">
-              <Star className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
-              <div>
-                <h3 className="text-2xl font-bold text-indigo-900 dark:text-indigo-200">
-                  {t.nameDestiny.nameChart.title}
-                </h3>
-                <p className="text-sm text-indigo-700 dark:text-indigo-300">
-                  {t.nameDestiny.nameChart.subtitle}
-                </p>
-              </div>
-            </div>
 
-            {/* Primary Numerology Values */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-            {/* Total á¸🤝adad KabÄ«r */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-indigo-200 dark:border-indigo-700">
-              <div className="text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-semibold mb-1">
-                {t.nameDestiny.nameChart.total}
-              </div>
-              <div className="text-4xl font-bold text-indigo-900 dark:text-indigo-100">
-                {results.nameDestiny.totalKabir}
-              </div>
-              {results.nameDestiny.motherKabir > 0 && (
-                <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-1">
-                  ({results.nameDestiny.personKabir} + {results.nameDestiny.motherKabir})
-                </div>
-              )}
-            </div>
-
-            {/* Digital Root (á¹¢aghÄ«r) */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-purple-200 dark:border-purple-700">
-              <div className="text-xs uppercase tracking-wider text-purple-600 dark:text-purple-400 font-semibold mb-1">
-                {t.nameDestiny.nameChart.saghir}
-              </div>
-              <div className="text-4xl font-bold text-purple-900 dark:text-purple-100">
-                {results.nameDestiny.saghir}
-              </div>
-            </div>
-
-            {/* Element (á¹¬abÊ¿) */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-emerald-200 dark:border-emerald-700">
-              <div className="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold mb-1">
-                {t.nameDestiny.nameChart.tabh}
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-4xl">{results.nameDestiny.element.icon}</span>
+          {/* Section 1: Core Numerology Values - Enhanced UI */}
+          <div className="bg-gradient-to-br from-indigo-50 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-2xl p-8 border-2 border-indigo-200 dark:border-indigo-700 shadow-2xl">
+            <div className="flex flex-col md:flex-row items-center md:justify-between gap-6 mb-8">
+              <div className="flex items-center gap-4">
+                <Star className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                 <div>
-                  <div className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">
-                    {isFr ? results.nameDestiny.element.fr : results.nameDestiny.element.en}
+                  <h3 className="text-3xl font-extrabold text-indigo-900 dark:text-indigo-100">
+                    {t.nameDestiny.nameChart.title}
+                  </h3>
+                  <p className="text-base text-indigo-700 dark:text-indigo-300">
+                    {t.nameDestiny.nameChart.subtitle}
+                  </p>
+                </div>
+              </div>
+              <div className="hidden md:block h-12 w-px bg-gradient-to-b from-indigo-200 to-purple-200 dark:from-indigo-700 dark:to-purple-700" />
+            </div>
+
+            {/* Enhanced Grid: Total, Saghir, Element, Burj */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {/* Total Ḥadad Kabīr */}
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border-2 border-indigo-100 dark:border-indigo-700 flex flex-col items-center">
+                <div className="text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-semibold mb-2">
+                  {t.nameDestiny.nameChart.total}
+                </div>
+                <div className="text-5xl font-extrabold text-indigo-900 dark:text-indigo-100 mb-1">
+                  {results.nameDestiny.totalKabir}
+                </div>
+                {results.nameDestiny.motherKabir > 0 && (
+                  <div className="text-xs text-indigo-600 dark:text-indigo-400 mt-1">
+                    ({results.nameDestiny.personKabir} + {results.nameDestiny.motherKabir})
                   </div>
-                  <div className="text-xs text-emerald-700 dark:text-emerald-300">
-                    {isFr ? results.nameDestiny.element.qualityFr : results.nameDestiny.element.qualityEn}
-                  </div>
+                )}
+              </div>
+
+              {/* Digital Root (Ṣaghīr) */}
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border-2 border-purple-100 dark:border-purple-700 flex flex-col items-center">
+                <div className="text-xs uppercase tracking-wider text-purple-600 dark:text-purple-400 font-semibold mb-2">
+                  {t.nameDestiny.nameChart.saghir}
+                </div>
+                <div className="text-5xl font-extrabold text-purple-900 dark:text-purple-100 mb-1">
+                  {results.nameDestiny.saghir}
+                </div>
+              </div>
+
+              {/* Element (Ṭabʿ) */}
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border-2 border-emerald-100 dark:border-emerald-700 flex flex-col items-center">
+                <div className="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold mb-2">
+                  {t.nameDestiny.nameChart.tabh}
+                </div>
+                <span className="text-5xl mb-2">{results.nameDestiny.element.icon}</span>
+                <div className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">
+                  {isFr ? results.nameDestiny.element.fr : results.nameDestiny.element.en}
+                </div>
+                <div className="text-xs text-emerald-700 dark:text-emerald-300">
+                  {isFr ? results.nameDestiny.element.qualityFr : results.nameDestiny.element.qualityEn}
+                </div>
+              </div>
+
+              {/* Burj (Zodiac) */}
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border-2 border-amber-100 dark:border-amber-700 flex flex-col items-center">
+                <div className="text-xs uppercase tracking-wider text-amber-600 dark:text-amber-400 font-semibold mb-2">
+                  {t.nameDestiny.nameChart.burj}
+                </div>
+                <span className="text-5xl mb-2">{results.nameDestiny.burj.symbol}</span>
+                <div className="text-2xl font-bold text-amber-900 dark:text-amber-100">
+                  {isFr ? results.nameDestiny.burj.fr : results.nameDestiny.burj.en}
+                </div>
+                <div className="text-xs text-amber-700 dark:text-amber-300 font-arabic mb-1">
+                  {results.nameDestiny.burj.ar}
+                </div>
+                <div className="text-xs text-amber-600 dark:text-amber-400 italic">
+                  {isFr ? results.nameDestiny.burj.qualityFr : results.nameDestiny.burj.qualityEn}
                 </div>
               </div>
             </div>
 
-            {/* Burj (Zodiac) */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-amber-200 dark:border-amber-700">
-              <div className="text-xs uppercase tracking-wider text-amber-600 dark:text-amber-400 font-semibold mb-1">
-                {t.nameDestiny.nameChart.burj}
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-4xl">{results.nameDestiny.burj.symbol}</span>
-                <div>
-                  <div className="text-2xl font-bold text-amber-900 dark:text-amber-100">
-                    {isFr ? results.nameDestiny.burj.fr : results.nameDestiny.burj.en}
-                  </div>
-                  <div className="text-xs text-amber-700 dark:text-amber-300 font-arabic mb-1">
-                    {results.nameDestiny.burj.ar}
-                  </div>
-                  <div className="text-xs text-amber-600 dark:text-amber-400 italic">
-                    {isFr ? results.nameDestiny.burj.qualityFr : results.nameDestiny.burj.qualityEn}
-                  </div>
+            {/* Enhanced Row: Planet, Day, Hour */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-4">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-5 text-center border-2 border-slate-100 dark:border-slate-700">
+                <div className="text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-2">
+                  {t.nameDestiny.nameChart.planet}
+                </div>
+                <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  {results.nameDestiny.burj.planet}
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Planet, Day, Hour row */}
-          <div className="grid grid-cols-3 gap-3 mb-5">
-            <div className="bg-white dark:bg-slate-800 rounded-lg p-3 text-center border border-slate-200 dark:border-slate-700">
-              <div className="text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1">
-                {t.nameDestiny.nameChart.planet}
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-5 text-center border-2 border-slate-100 dark:border-slate-700">
+                <div className="text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-2">
+                  {t.nameDestiny.nameChart.day}
+                </div>
+                <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  {isFr ? results.nameDestiny.burj.dayFr : results.nameDestiny.burj.dayEn}
+                </div>
               </div>
-              <div className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                {results.nameDestiny.burj.planet}
-              </div>
-            </div>
-            <div className="bg-white dark:bg-slate-800 rounded-lg p-3 text-center border border-slate-200 dark:border-slate-700">
-              <div className="text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1">
-                {t.nameDestiny.nameChart.day}
-              </div>
-              <div className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                {isFr ? results.nameDestiny.burj.dayFr : results.nameDestiny.burj.dayEn}
-              </div>
-            </div>
-            <div className="bg-white dark:bg-slate-800 rounded-lg p-3 text-center border border-slate-200 dark:border-slate-700">
-              <div className="text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1 flex items-center justify-center gap-1">
-                {t.nameDestiny.nameChart.hour}
-                <span className="relative group">
-                  <Info className="h-3 w-3 text-slate-400 cursor-help" />
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 dark:bg-slate-700 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                    {t.nameDestiny.nameChart.hourTip}
-                  </div>
-                </span>
-              </div>
-              <div className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                {results.nameDestiny.hourIndex}
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-5 text-center border-2 border-slate-100 dark:border-slate-700">
+                <div className="text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-2 flex items-center justify-center gap-1">
+                  {t.nameDestiny.nameChart.hour}
+                  <span className="relative group">
+                    <Info className="h-3 w-3 text-slate-400 cursor-help" />
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 dark:bg-slate-700 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                      {t.nameDestiny.nameChart.hourTip}
+                    </div>
+                  </span>
+                </div>
+                <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  {results.nameDestiny.hourIndex}
+                </div>
               </div>
             </div>
           </div>
@@ -2539,7 +2565,6 @@ function DestinyResults({ results }: { results: any }) {
           <div className="mt-4 text-xs text-center text-indigo-600 dark:text-indigo-400 italic">
             {t.nameDestiny.disclaimer.reflectionOnly}
           </div>
-        </div>
         </div>
       )}
 
@@ -3427,6 +3452,24 @@ function DestinyResults({ results }: { results: any }) {
 
 function CompatibilityResults({ results }: { results: any }) {
   const { t, language } = useLanguage();
+  const [activeTab, setActiveTab] = useState<'results' | 'learning' | 'methods' | 'glossary'>('results');
+  
+  const tabs = {
+    en: {
+      results: 'Results',
+      learning: 'Learning Center',
+      methods: 'Method Guide',
+      glossary: 'Glossary'
+    },
+    fr: {
+      results: 'Résultats',
+      learning: "Centre d'Apprentissage",
+      methods: 'Guide des Méthodes',
+      glossary: 'Glossaire'
+    }
+  };
+  
+  const tabLabels = language === 'fr' ? tabs.fr : tabs.en;
   
   // Helper function to get score interpretation
   const getScoreInterpretation = (score: number, quality: string): string[] => {
@@ -3592,40 +3635,170 @@ function CompatibilityResults({ results }: { results: any }) {
     const displayRecommendations = language === 'fr' ? recommendationsFrench : recommendations;
     const displaySummary = language === 'fr' ? summaryFrench : summary;
     const displayOverallQuality = language === 'fr' ? overallQualityFrench : overallQuality.toUpperCase().replace('-', ' ');
+    
     return (
       <div className="space-y-6">
-        {/* Overall Score */}
-        <div className="flex flex-col items-center py-6 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20 rounded-lg">
-          <CompatibilityGauge 
-            score={overallScore} 
-            size="lg"
-            label="Overall Compatibility"
-          />
-          <div className={`mt-4 px-4 py-2 rounded-full font-semibold ${qualityColors[overallQuality] || qualityColors['moderate']}`}>
-            {displayOverallQuality}
+        
+        {/* Tab Navigation */}
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
+          <div className="flex gap-2 p-2 border-b border-slate-200 dark:border-slate-700">
+            <button
+              onClick={() => setActiveTab('results')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === 'results'
+                  ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <Heart className="w-5 h-5" />
+              {tabLabels.results}
+            </button>
+            
+            <button
+              onClick={() => setActiveTab('learning')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === 'learning'
+                  ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <BookOpen className="w-5 h-5" />
+              {tabLabels.learning}
+            </button>
+            
+            <button
+              onClick={() => setActiveTab('methods')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === 'methods'
+                  ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <Compass className="w-5 h-5" />
+              {tabLabels.methods}
+            </button>
+            
+            <button
+              onClick={() => setActiveTab('glossary')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                activeTab === 'glossary'
+                  ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <BookMarked className="w-5 h-5" />
+              {tabLabels.glossary}
+            </button>
           </div>
         </div>
 
-        {/* Summary */}
-        <div className="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-          <div className="flex items-start gap-2">
-            <Info className="w-5 h-5 text-indigo-500 flex-shrink-0 mt-0.5" />
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              {displaySummary}
+        {/* Tab Content */}
+        {activeTab === 'learning' && (
+          <CompatibilityLearningCenter language={language === 'fr' ? 'fr' : 'en'} />
+        )}
+        
+        {activeTab === 'methods' && (
+          <MethodGuidePanel language={language === 'fr' ? 'fr' : 'en'} />
+        )}
+        
+        {activeTab === 'glossary' && (
+          <CompatibilityGlossary language={language === 'fr' ? 'fr' : 'en'} />
+        )}
+        
+        {activeTab === 'results' && (
+        <div className="space-y-8">
+        
+        {/* Enhanced Names Header with Beautiful Gradient */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-rose-100 via-pink-50 to-purple-100 dark:from-rose-950/40 dark:via-pink-950/30 dark:to-purple-950/40 p-8 border-2 border-rose-200 dark:border-rose-800">
+          {/* Decorative Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-0 w-32 h-32 bg-rose-300 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 right-0 w-32 h-32 bg-purple-300 rounded-full blur-3xl"></div>
+          </div>
+          
+          <div className="relative space-y-2">
+            {/* Romantic Title */}
+            <p className="text-center text-sm font-medium text-gray-600 dark:text-gray-400">
+              {language === 'fr' ? 'Analyse de Compatibilité Relationnelle' : 'Relationship Compatibility Analysis'}
+            </p>
+            
+            {/* Names with Heart */}
+            <div className="flex items-center justify-center gap-4 text-2xl font-bold">
+              <span className="text-gray-900 dark:text-gray-50 bg-white/60 dark:bg-slate-800/60 px-4 py-2 rounded-xl backdrop-blur-sm">
+                {person1.name}
+              </span>
+              <div className="relative">
+                <Heart className="w-10 h-10 text-rose-500 fill-rose-500 animate-pulse" />
+                <div className="absolute inset-0 w-10 h-10 bg-rose-300 rounded-full blur-lg opacity-50"></div>
+              </div>
+              <span className="text-gray-900 dark:text-gray-50 bg-white/60 dark:bg-slate-800/60 px-4 py-2 rounded-xl backdrop-blur-sm">
+                {person2.name}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Overall Score - Enhanced */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/30 dark:via-purple-950/30 dark:to-pink-950/30 rounded-2xl p-8 border-2 border-indigo-200 dark:border-indigo-800 shadow-xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-3xl"></div>
+          <div className="relative z-10 flex flex-col items-center space-y-4">
+            <CompatibilityGauge 
+              score={overallScore} 
+              size="lg"
+              label={language === 'fr' ? "Compatibilité Globale" : "Overall Compatibility"}
+            />
+            <div className={`px-6 py-3 rounded-full font-bold text-lg ${qualityColors[overallQuality] || qualityColors['moderate']} border-2`}>
+              {displayOverallQuality}
+            </div>
+            
+            {/* What This Means - Simple Language */}
+            <div className="max-w-2xl mt-4">
+              <div className="flex items-start gap-3 p-4 bg-white/60 dark:bg-slate-800/60 rounded-xl backdrop-blur-sm">
+                <Info className="w-6 h-6 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-1" />
+                <div className="space-y-2">
+                  <p className="font-semibold text-slate-900 dark:text-slate-50">
+                    {language === 'fr' ? 'Ce que cela signifie:' : 'What This Means:'}
+                  </p>
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                    {displaySummary}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Four Methods - Enhanced Cards */}
+        <div className="space-y-6">
+          <div className="text-center space-y-2">
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+              {language === 'fr' ? 'Comment Nous Analysons Votre Compatibilité' : 'How We Analyze Your Compatibility'}
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+              {language === 'fr' 
+                ? 'Nous examinons votre relation à travers quatre dimensions différentes pour vous donner une image complète.'
+                : 'We examine your relationship through four different dimensions to give you the complete picture.'}
             </p>
           </div>
-        </div>
-
-        {/* Four Methods */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 text-center">
-            {language === 'fr' ? 'Quatre Méthodes d\'Analyse' : 'Four Analysis Methods'}
-          </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Spiritual-Destiny */}
-            <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg space-y-3">
-              <div className="flex items-center justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Spiritual Destiny - Enhanced */}
+            <div className="group hover:shadow-2xl transition-all duration-300 p-6 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/30 dark:to-purple-900/30 rounded-2xl border-2 border-purple-200 dark:border-purple-800 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center text-2xl">
+                    🌙
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-50">
+                      {language === 'fr' ? 'Connexion des Âmes' : 'Soul Connection'}
+                    </h4>
+                    <p className="text-sm text-purple-600 dark:text-purple-400">
+                      {language === 'fr' ? 'Votre alignement spirituel' : 'Your spiritual alignment'}
+                    </p>
+                  </div>
+                </div>
                 <CompatibilityGauge 
                   score={methods.spiritualDestiny.score}
                   size="md"
@@ -3635,20 +3808,35 @@ function CompatibilityResults({ results }: { results: any }) {
                          methods.spiritualDestiny.color === 'purple' ? '#a855f7' : '#f97316'}
                 />
               </div>
-              <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                🌙 Spiritual Destiny
-              </h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                Remainder: {methods.spiritualDestiny.remainder}
-              </p>
-              <p className="text-xs text-gray-700 dark:text-gray-300">
-                {language === 'fr' ? methods.spiritualDestiny.descriptionFrench : methods.spiritualDestiny.description}
-              </p>
+              
+              <div className="p-4 bg-white/50 dark:bg-slate-800/50 rounded-xl">
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {language === 'fr' ? methods.spiritualDestiny.descriptionFrench : methods.spiritualDestiny.description}
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs text-purple-600 dark:text-purple-400">
+                <Sparkles className="w-4 h-4" />
+                <span>{language === 'fr' ? 'Nombre sacré:' : 'Sacred number:'} {methods.spiritualDestiny.remainder}</span>
+              </div>
             </div>
 
-            {/* Elemental-Temperament */}
-            <div className="p-4 bg-cyan-50 dark:bg-cyan-950/20 rounded-lg space-y-3">
-              <div className="flex items-center justify-center">
+            {/* Elemental Temperament - Enhanced */}
+            <div className="group hover:shadow-2xl transition-all duration-300 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 dark:from-cyan-950/30 dark:to-cyan-900/30 rounded-2xl border-2 border-cyan-200 dark:border-cyan-800 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center text-2xl">
+                    🎨
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-50">
+                      {language === 'fr' ? 'Équilibre des Tempéraments' : 'Personality Balance'}
+                    </h4>
+                    <p className="text-sm text-cyan-600 dark:text-cyan-400">
+                      {language === 'fr' ? 'Vos natures élémentales' : 'Your elemental natures'}
+                    </p>
+                  </div>
+                </div>
                 <CompatibilityGauge 
                   score={methods.elementalTemperament.score}
                   size="md"
@@ -3657,20 +3845,35 @@ function CompatibilityResults({ results }: { results: any }) {
                          methods.elementalTemperament.color === 'cyan' ? '#06b6d4' : '#10b981'}
                 />
               </div>
-              <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                🌊 Elemental Temperament
-              </h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                Element: {language === 'fr' ? methods.elementalTemperament.sharedElementFrench : methods.elementalTemperament.sharedElement}
-              </p>
-              <p className="text-xs text-gray-700 dark:text-gray-300">
-                {language === 'fr' ? methods.elementalTemperament.descriptionFrench : methods.elementalTemperament.description}
-              </p>
+              
+              <div className="p-4 bg-white/50 dark:bg-slate-800/50 rounded-xl">
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {language === 'fr' ? methods.elementalTemperament.descriptionFrench : methods.elementalTemperament.description}
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs text-cyan-600 dark:text-cyan-400">
+                <Flame className="w-4 h-4" />
+                <span>{language === 'fr' ? 'Élément:' : 'Element:'} {language === 'fr' ? methods.elementalTemperament.sharedElementFrench : methods.elementalTemperament.sharedElement}</span>
+              </div>
             </div>
 
-            {/* Planetary-Cosmic */}
-            <div className="p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-lg space-y-3">
-              <div className="flex items-center justify-center">
+            {/* Planetary Cosmic - Enhanced */}
+            <div className="group hover:shadow-2xl transition-all duration-300 p-6 bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-950/30 dark:to-indigo-900/30 rounded-2xl border-2 border-indigo-200 dark:border-indigo-800 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center text-2xl">
+                    ⭐
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-50">
+                      {language === 'fr' ? 'Harmonie Cosmique' : 'Cosmic Harmony'}
+                    </h4>
+                    <p className="text-sm text-indigo-600 dark:text-indigo-400">
+                      {language === 'fr' ? 'Vos influences planétaires' : 'Your planetary influences'}
+                    </p>
+                  </div>
+                </div>
                 <CompatibilityGauge 
                   score={methods.planetaryCosmic.score}
                   size="md"
@@ -3679,20 +3882,35 @@ function CompatibilityResults({ results }: { results: any }) {
                          methods.planetaryCosmic.color === 'yellow' ? '#eab308' : '#f97316'}
                 />
               </div>
-              <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                {language === 'fr' ? '⭐ Cosmique Planétaire' : '⭐ Planetary Cosmic'}
-              </h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                {methods.planetaryCosmic.person1Planet.name} × {methods.planetaryCosmic.person2Planet.name}
-              </p>
-              <p className="text-xs text-gray-700 dark:text-gray-300">
-                {language === 'fr' ? methods.planetaryCosmic.descriptionFrench : methods.planetaryCosmic.description}
-              </p>
+              
+              <div className="p-4 bg-white/50 dark:bg-slate-800/50 rounded-xl">
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {language === 'fr' ? methods.planetaryCosmic.descriptionFrench : methods.planetaryCosmic.description}
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs text-indigo-600 dark:text-indigo-400">
+                <Star className="w-4 h-4" />
+                <span>{methods.planetaryCosmic.person1Planet.name} × {methods.planetaryCosmic.person2Planet.name}</span>
+              </div>
             </div>
 
-            {/* Daily Interaction (NEW) */}
-            <div className="p-4 bg-amber-50 dark:bg-amber-950/20 rounded-lg space-y-3">
-              <div className="flex items-center justify-center">
+            {/* Daily Interaction - Enhanced */}
+            <div className="group hover:shadow-2xl transition-all duration-300 p-6 bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-950/30 dark:to-amber-900/30 rounded-2xl border-2 border-amber-200 dark:border-amber-800 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-2xl">
+                    🤝
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-50">
+                      {language === 'fr' ? 'Vie Quotidienne' : 'Daily Life Together'}
+                    </h4>
+                    <p className="text-sm text-amber-600 dark:text-amber-400">
+                      {language === 'fr' ? 'Vos interactions journalières' : 'Your day-to-day dynamics'}
+                    </p>
+                  </div>
+                </div>
                 <CompatibilityGauge 
                   score={methods.dailyInteraction.score}
                   size="md"
@@ -3701,35 +3919,44 @@ function CompatibilityResults({ results }: { results: any }) {
                          methods.dailyInteraction.color === 'yellow' ? '#eab308' : '#f97316'}
                 />
               </div>
-              <h4 className="font-bold text-center text-gray-900 dark:text-gray-100">
-                {language === 'fr' ? '🤝 Interaction Quotidienne' : '🤝 Daily Interaction'}
-              </h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                {language === 'fr' 
-                  ? `${methods.dailyInteraction.person1DominantFrench} × ${methods.dailyInteraction.person2DominantFrench}`
-                  : `${methods.dailyInteraction.person1Dominant} × ${methods.dailyInteraction.person2Dominant}`
-                }
-              </p>
-              <p className="text-xs text-gray-700 dark:text-gray-300">
-                {language === 'fr' ? methods.dailyInteraction.descriptionFrench : methods.dailyInteraction.description}
-              </p>
+              
+              <div className="p-4 bg-white/50 dark:bg-slate-800/50 rounded-xl">
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {language === 'fr' ? methods.dailyInteraction.descriptionFrench : methods.dailyInteraction.description}
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-2 text-xs text-amber-600 dark:text-amber-400">
+                <Users className="w-4 h-4" />
+                <span>
+                  {language === 'fr' 
+                    ? `${methods.dailyInteraction.person1DominantFrench} × ${methods.dailyInteraction.person2DominantFrench}`
+                    : `${methods.dailyInteraction.person1Dominant} × ${methods.dailyInteraction.person2Dominant}`
+                  }
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* NEW FEATURE 1: Letter Chemistry Breakdown */}
-        <div className="p-6 bg-gradient-to-br from-rose-50 to-orange-50 dark:from-rose-950/20 dark:to-orange-950/20 rounded-xl space-y-4">
+        {/* Letter Chemistry - Your Personality Balance */}
+        <div className="p-6 bg-gradient-to-br from-rose-50 to-orange-50 dark:from-rose-950/20 dark:to-orange-950/20 rounded-xl space-y-4 border-2 border-rose-200 dark:border-rose-800">
           {/* Title with Explanation */}
-          <div className="text-center space-y-2 mb-4">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-2">
-              <span>🧪 {t.compatibilityResults.letterChemistry}</span>
-              <span className="text-sm font-normal text-gray-600 dark:text-gray-400">
-                ({t.compatibilityResults.letterChemistryArabic} • زواج الحروف)
-              </span>
-            </h3>
+          <div className="text-center space-y-3 mb-4">
+            <div className="space-y-1">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-2">
+                <span>🧪</span>
+                <span>{language === 'fr' ? 'Votre Équilibre Personnalité' : 'Your Personality Balance'}</span>
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-500">
+                {language === 'fr' ? '(Chimie des Lettres • ' : '(Letter Chemistry • '}زواج الحروف)
+              </p>
+            </div>
             {/* Description Line */}
             <p className="text-sm text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-              {t.compatibilityResults.letterChemistryDesc}
+              {language === 'fr' 
+                ? 'Chaque nom contient des énergies (Feu, Air, Eau, Terre). Nous analysons comment ces énergies se complètent entre vous deux.'
+                : 'Each name holds energies (Fire, Air, Water, Earth). We analyze how these energies complement each other between you two.'}
             </p>
           </div>
           
@@ -3777,7 +4004,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('fire', language === 'fr' ? 'fr' : 'en')} ${combined.fire}%`}
                       >
-                        {combined.fire >= 15 && `”¥ ${combined.fire}%`}
+                        {combined.fire >= 15 && `🔥 ${combined.fire}%`}
                       </div>
                     )}
                     {combined.air > 0 && (
@@ -3786,7 +4013,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-cyan-400 to-blue-400 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('air', language === 'fr' ? 'fr' : 'en')} ${combined.air}%`}
                       >
-                        {combined.air >= 15 && `’¨ ${combined.air}%`}
+                        {combined.air >= 15 && `🌬️ ${combined.air}%`}
                       </div>
                     )}
                     {combined.water > 0 && (
@@ -3795,7 +4022,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('water', language === 'fr' ? 'fr' : 'en')} ${combined.water}%`}
                       >
-                        {combined.water >= 15 && `’§ ${combined.water}%`}
+                        {combined.water >= 15 && `💧 ${combined.water}%`}
                       </div>
                     )}
                     {combined.earth > 0 && (
@@ -3804,7 +4031,7 @@ function CompatibilityResults({ results }: { results: any }) {
                         className="bg-gradient-to-r from-green-600 to-emerald-600 flex items-center justify-center text-white text-xs font-bold"
                         title={`${getElementName('earth', language === 'fr' ? 'fr' : 'en')} ${combined.earth}%`}
                       >
-                        {combined.earth >= 15 && ` ${combined.earth}%`}
+                        {combined.earth >= 15 && `🌍 ${combined.earth}%`}
                       </div>
                     )}
                   </div>
@@ -3915,16 +4142,20 @@ function CompatibilityResults({ results }: { results: any }) {
           })()}
         </div>
 
-        {/* NEW FEATURE 3: Balancing Dhikr Recommendation */}
-        <div className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 rounded-xl">
-          <h3 className="text-lg font-bold text-center text-gray-900 dark:text-gray-100 mb-2 flex items-center justify-center gap-2">
-            <span>🕊️</span>
-            <span>{t.compatibilityResults.balancingDhikr}</span>
-          </h3>
-          {/* Contextual Sentence */}
-          <p className="text-sm text-center text-gray-600 dark:text-gray-400 mb-4 italic">
-            {t.compatibilityResults.balancingDhikrContext}
-          </p>
+        {/* Spiritual Guidance for Your Relationship */}
+        <div className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 rounded-xl border-2 border-amber-200 dark:border-amber-800">
+          <div className="text-center space-y-3 mb-4">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center justify-center gap-2">
+              <span>🕊️</span>
+              <span>{language === 'fr' ? 'Guidance Spirituelle' : 'Spiritual Guidance'}</span>
+            </h3>
+            {/* Contextual Sentence */}
+            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-2xl mx-auto italic leading-relaxed">
+              {language === 'fr' 
+                ? 'Des pratiques spirituelles personnalisées pour renforcer votre harmonie relationnelle et équilibrer vos énergies.'
+                : 'Personalized spiritual practices to strengthen your relationship harmony and balance your energies.'}
+            </p>
+          </div>
           {(() => {
             const person1Dist = calculateElementDistribution(person1.arabicName);
             const person2Dist = calculateElementDistribution(person2.arabicName);
@@ -4002,6 +4233,8 @@ function CompatibilityResults({ results }: { results: any }) {
             ))}
           </ul>
         </div>
+        </div>
+        )}
       </div>
     );
   }
@@ -4108,111 +4341,182 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
   } = results;
   
   return (
-    <div className="space-y-6">
-      {/* Introduction Section */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
-        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">
-          {t.lifePath.coreNumbers}
-        </h3>
-        <p className="text-sm text-slate-700 dark:text-slate-300 mb-4">
-          {t.lifePath.coreNumbersDesc}
-        </p>
+    <div className="space-y-8">
+      {/* Enhanced Hero Header */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-8 shadow-2xl">
+        {/* Decorative elements */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+        </div>
         
-        <div className="grid md:grid-cols-2 gap-3 text-xs">
-          <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-blue-500">
-            <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.lifePathNumber}:</span>
-            <p className="text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.lifePathQuick}</p>
+        <div className="relative z-10 text-center text-white">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Star className="w-10 h-10 animate-pulse" />
+            <h2 className="text-3xl md:text-4xl font-bold">
+              {language === 'fr' ? 'Votre Chemin de Vie' : 'Your Life Path Journey'}
+            </h2>
+            <Sparkles className="w-10 h-10 animate-pulse" />
           </div>
-          <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-purple-500">
-            <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.soulUrge}:</span>
-            <p className="text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.soulUrgeQuick}</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-pink-500">
-            <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.personality}:</span>
-            <p className="text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.personalityQuick}</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900/40 rounded p-3 border-l-2 border-amber-500">
-            <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.destiny}:</span>
-            <p className="text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.destinyQuick}</p>
-          </div>
+          <p className="text-lg opacity-90 max-w-2xl mx-auto">
+            {language === 'fr' 
+              ? 'Découvrez le plan unique de votre âme et les énergies qui guident votre destinée'
+              : 'Discover your soul\'s unique blueprint and the energies guiding your destiny'}
+          </p>
         </div>
       </div>
 
-      {/* Core Numbers Grid with Explanations */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Life Path Number */}
-        <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg p-5 text-black shadow-lg border-2 border-blue-700">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">{t.lifePath.lifePathLabel}</div>
-          <div className="text-4xl font-bold text-black mb-2">{lifePathNumber}</div>
-          <div className="text-xs text-black opacity-75 mb-3 font-semibold">
-            {isFr && t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]
-              ? t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes].title
-              : t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "Your Core Path"}
-          </div>
-          <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
-            {isFr && t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]
-              ? t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes].meaning
-              : t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This is your main life purpose and natural talents."}
-          </p>
-          <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
-            <span className="font-semibold">{t.lifePath.whatItMeans}</span> {t.lifePath.lifePathSimple}
-          </div>
-        </div>
-
-        {/* Soul Urge Number */}
-        <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg p-5 text-black shadow-lg border-2 border-purple-700">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">{t.lifePath.soulUrgeLabel}</div>
-          <div className="text-4xl font-bold text-black mb-2">{soulUrgeNumber}</div>
-          <div className="text-xs text-black opacity-75 mb-3 font-semibold">
-            {isFr && t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]
-              ? t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes].title
-              : t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "What You Truly Want"}
-          </div>
-          <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
-            {isFr && t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]
-              ? t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes].meaning
-              : t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This reveals your deepest desires and what makes you feel fulfilled."}
-          </p>
-          <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
-            <span className="font-semibold">{t.lifePath.whatItMeans}</span> {t.lifePath.soulUrgeSimple}
-          </div>
-        </div>
-
-        {/* Personality Number */}
-        <div className="bg-gradient-to-br from-pink-400 to-pink-600 rounded-lg p-5 text-black shadow-lg border-2 border-pink-700">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">{t.lifePath.personalityLabel}</div>
-          <div className="text-4xl font-bold text-black mb-2">{personalityNumber}</div>
-          <div className="text-xs text-black opacity-75 mb-3 font-semibold">
-            {isFr && t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]
-              ? t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes].title
-              : t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "How People See You"}
-          </div>
-          <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
-            {isFr && t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]
-              ? t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes].meaning
-              : t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This is the impression you make when people meet you."}
-          </p>
-          <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
-            <span className="font-semibold">{t.lifePath.whatItMeans}</span> {t.lifePath.personalitySimple}
+      {/* Core Numbers - Redesigned as Large Beautiful Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Life Path Number - Your Purpose */}
+        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 p-6 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-blue-400">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+          
+          <div className="relative z-10 text-white space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <Compass className="w-7 h-7" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium opacity-90">{t.lifePath.lifePathLabel}</h3>
+                  <p className="text-xs opacity-75">{language === 'fr' ? 'Votre But Principal' : 'Your Main Purpose'}</p>
+                </div>
+              </div>
+              <div className="text-5xl font-bold">{lifePathNumber}</div>
+            </div>
+            
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+              <h4 className="font-semibold text-lg mb-2">
+                {isFr && t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]
+                  ? t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes].title
+                  : t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "Your Core Path"}
+              </h4>
+              <p className="text-sm opacity-90 leading-relaxed">
+                {isFr && t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]
+                  ? t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes].meaning
+                  : t.lifePath.numberArchetypes[lifePathNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This is your main life purpose and natural talents."}
+              </p>
+            </div>
+            
+            <div className="flex items-start gap-2 bg-white/10 rounded-lg p-3">
+              <Info className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <p className="text-xs opacity-90">{t.lifePath.lifePathSimple}</p>
+            </div>
           </div>
         </div>
 
-        {/* Destiny Number */}
-        <div className="bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg p-5 text-black shadow-lg border-2 border-amber-700">
-          <div className="text-sm font-semibold text-black opacity-90 mb-1">{t.lifePath.destinyLabel}</div>
-          <div className="text-4xl font-bold text-black mb-2">{destinyNumber}</div>
-          <div className="text-xs text-black opacity-75 mb-3 font-semibold">
-            {isFr && t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]
-              ? t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes].title
-              : t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "Your Life Mission"}
+        {/* Soul Urge Number - Your Heart's Desire */}
+        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 p-6 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-purple-400">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+          
+          <div className="relative z-10 text-white space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <Heart className="w-7 h-7" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium opacity-90">{t.lifePath.soulUrgeLabel}</h3>
+                  <p className="text-xs opacity-75">{language === 'fr' ? 'Désir du Cœur' : 'Heart\'s Desire'}</p>
+                </div>
+              </div>
+              <div className="text-5xl font-bold">{soulUrgeNumber}</div>
+            </div>
+            
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+              <h4 className="font-semibold text-lg mb-2">
+                {isFr && t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]
+                  ? t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes].title
+                  : t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "What You Truly Want"}
+              </h4>
+              <p className="text-sm opacity-90 leading-relaxed">
+                {isFr && t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]
+                  ? t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes].meaning
+                  : t.lifePath.numberArchetypes[soulUrgeNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This reveals your deepest desires and what makes you feel fulfilled."}
+              </p>
+            </div>
+            
+            <div className="flex items-start gap-2 bg-white/10 rounded-lg p-3">
+              <Info className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <p className="text-xs opacity-90">{t.lifePath.soulUrgeSimple}</p>
+            </div>
           </div>
-          <p className="text-xs text-black opacity-85 leading-relaxed mb-2">
-            {isFr && t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]
-              ? t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes].meaning
-              : t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This is what you're meant to achieve and contribute to the world."}
-          </p>
-          <div className="bg-white bg-opacity-20 rounded p-2 text-xs text-black opacity-90">
-            <span className="font-semibold">{t.lifePath.whatItMeans}</span> {t.lifePath.destinySimple}
+        </div>
+
+        {/* Personality Number - How Others See You */}
+        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500 to-pink-700 p-6 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-pink-400">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+          
+          <div className="relative z-10 text-white space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <Users className="w-7 h-7" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium opacity-90">{t.lifePath.personalityLabel}</h3>
+                  <p className="text-xs opacity-75">{language === 'fr' ? 'Image Extérieure' : 'Outer Image'}</p>
+                </div>
+              </div>
+              <div className="text-5xl font-bold">{personalityNumber}</div>
+            </div>
+            
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+              <h4 className="font-semibold text-lg mb-2">
+                {isFr && t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]
+                  ? t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes].title
+                  : t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "How People See You"}
+              </h4>
+              <p className="text-sm opacity-90 leading-relaxed">
+                {isFr && t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]
+                  ? t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes].meaning
+                  : t.lifePath.numberArchetypes[personalityNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This is the impression you make when people meet you."}
+              </p>
+            </div>
+            
+            <div className="flex items-start gap-2 bg-white/10 rounded-lg p-3">
+              <Info className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <p className="text-xs opacity-90">{t.lifePath.personalitySimple}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Destiny Number - Your Life Mission */}
+        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 p-6 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-amber-400">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+          
+          <div className="relative z-10 text-white space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <TrendingUp className="w-7 h-7" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium opacity-90">{t.lifePath.destinyLabel}</h3>
+                  <p className="text-xs opacity-75">{language === 'fr' ? 'Mission de Vie' : 'Life Mission'}</p>
+                </div>
+              </div>
+              <div className="text-5xl font-bold">{destinyNumber}</div>
+            </div>
+            
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+              <h4 className="font-semibold text-lg mb-2">
+                {isFr && t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]
+                  ? t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes].title
+                  : t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]?.title || "Your Life Mission"}
+              </h4>
+              <p className="text-sm opacity-90 leading-relaxed">
+                {isFr && t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]
+                  ? t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes].meaning
+                  : t.lifePath.numberArchetypes[destinyNumber as keyof typeof t.lifePath.numberArchetypes]?.meaning || "This is what you're meant to achieve and contribute to the world."}
+              </p>
+            </div>
+            
+            <div className="flex items-start gap-2 bg-white/10 rounded-lg p-3">
+              <Info className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <p className="text-xs opacity-90">{t.lifePath.destinySimple}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -4252,52 +4556,112 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
         </div>
       )}
 
-      {/* Current Life Cycle */}
+      {/* Enhanced Current Life Cycle - Calendar Style */}
       {cycle && (
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
-        <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-          {t.lifePath.whereYouAreNow}
-        </h3>
+      <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-800 dark:to-blue-900/30 rounded-2xl shadow-xl border-2 border-blue-200 dark:border-blue-700 p-8">
+        {/* Decorative background */}
+        <div className="absolute top-0 right-0 w-40 h-40 bg-blue-400 opacity-5 rounded-full blur-3xl"></div>
         
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">{t.lifePath.currentLifePhase}</div>
-            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
-              {t.lifePath.phaseOf9.replace('{number}', cycle.cycleNumber.toString())}
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Calendar className="w-7 h-7 text-white" />
             </div>
-            <div className="text-slate-700 dark:text-slate-300 mb-3">
-              <span className="font-semibold">{cycle.cycleStage}</span>
-            </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-              {t.lifePath.yearTheme.replace('{position}', cycle.positionInCycle.toString())} <span className="font-semibold">{cycle.yearTheme}</span>
-            </p>
-            <div className="bg-blue-50 dark:bg-blue-900/30 rounded p-3 border-l-4 border-blue-500">
-              <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">{t.lifePath.focusAreas}</div>
-              <div className="text-sm text-slate-700 dark:text-slate-300">
-                {cycle.focus.join(' • ')}
-              </div>
+            <div>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                {t.lifePath.whereYouAreNow}
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                {language === 'fr' ? 'Votre Moment dans le Temps' : 'Your Moment in Time'}
+              </p>
             </div>
           </div>
           
-          <div>
-            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">{t.lifePath.yourAge}</div>
-            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-              {t.lifePath.years.replace('{age}', cycle.age.toString())}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Life Cycle Phase */}
+            <div className="bg-white dark:bg-slate-900/40 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div className="text-sm font-semibold text-slate-600 dark:text-slate-400">{t.lifePath.currentLifePhase}</div>
+              </div>
+              
+              <div className="mb-4">
+                <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+                  {t.lifePath.phaseOf9.replace('{number}', cycle.cycleNumber.toString())}
+                </div>
+                <div className="text-lg font-semibold text-slate-700 dark:text-slate-300">
+                  {cycle.cycleStage}
+                </div>
+              </div>
+              
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                {t.lifePath.yearTheme.replace('{position}', cycle.positionInCycle.toString())} 
+                <span className="font-semibold text-indigo-600 dark:text-indigo-400"> {cycle.yearTheme}</span>
+              </p>
+              
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-lg p-4 border-l-4 border-blue-500">
+                <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                  <Target className="w-4 h-4" />
+                  {t.lifePath.focusAreas}
+                </div>
+                <div className="text-sm text-slate-700 dark:text-slate-300 font-medium">
+                  {cycle.focus.join(' • ')}
+                </div>
+              </div>
             </div>
             
-            <div>
-              <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">{t.lifePath.yearMonthEnergy}</div>
-              <div className="flex gap-3">
-                <div className="bg-amber-50 dark:bg-amber-900/30 rounded p-3 flex-1 border border-amber-200 dark:border-amber-800">
-                  <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold">{t.lifePath.personalYearLabel}</div>
-                  <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">{personalYear}</div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.overallEnergy}</p>
+            {/* Personal Year & Month - Calendar Cards */}
+            <div className="space-y-4">
+              <div className="text-sm text-slate-600 dark:text-slate-400 mb-2">
+                <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.yourAge}:</span> {t.lifePath.years.replace('{age}', cycle.age.toString())}
+              </div>
+              
+              <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-amber-500" />
+                {t.lifePath.yearMonthEnergy}
+              </div>
+              
+              {/* Personal Year Card */}
+              <div className="group relative overflow-hidden bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-amber-300">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-white opacity-20 rounded-full blur-2xl"></div>
+                
+                <div className="relative z-10 text-white">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5" />
+                      <span className="text-sm font-semibold opacity-90">{t.lifePath.personalYearLabel}</span>
+                    </div>
+                    <div className="text-5xl font-bold">{personalYear}</div>
+                  </div>
+                  <p className="text-sm opacity-90">{t.lifePath.overallEnergy}</p>
+                  <div className="mt-3 pt-3 border-t border-white/30">
+                    <p className="text-xs opacity-80">
+                      {language === 'fr' ? 'L\'énergie qui guide toute votre année' : 'The energy guiding your entire year'}
+                    </p>
+                  </div>
                 </div>
-                <div className="bg-purple-50 dark:bg-purple-900/30 rounded p-3 flex-1 border border-purple-200 dark:border-purple-800">
-                  <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold">{t.lifePath.personalMonthLabel}</div>
-                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{personalMonth}</div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.lifePath.monthFlow}</p>
+              </div>
+              
+              {/* Personal Month Card */}
+              <div className="group relative overflow-hidden bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-purple-300">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-white opacity-20 rounded-full blur-2xl"></div>
+                
+                <div className="relative z-10 text-white">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5" />
+                      <span className="text-sm font-semibold opacity-90">{t.lifePath.personalMonthLabel}</span>
+                    </div>
+                    <div className="text-5xl font-bold">{personalMonth}</div>
+                  </div>
+                  <p className="text-sm opacity-90">{t.lifePath.monthFlow}</p>
+                  <div className="mt-3 pt-3 border-t border-white/30">
+                    <p className="text-xs opacity-80">
+                      {language === 'fr' ? 'Le thème de votre mois actuel' : 'Your current month\'s theme'}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -4404,46 +4768,96 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
       </div>
       )}
 
-      {/* Special Numbers */}
+      {/* Enhanced Special Numbers with Sparkle Effects */}
       {(karmicDebts?.length > 0 || sacredNumbers?.length > 0) && (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
-          <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
-            {t.lifePath.specialNumbers}
-          </h3>
+        <div className="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-900/20 dark:via-purple-900/20 dark:to-pink-900/20 rounded-2xl shadow-xl border-2 border-purple-200 dark:border-purple-700 p-8">
+          {/* Sparkle background effect */}
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-10 left-10 w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+            <div className="absolute top-20 right-20 w-3 h-3 bg-pink-400 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
+            <div className="absolute bottom-20 left-20 w-2 h-2 bg-indigo-400 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+            <div className="absolute bottom-10 right-10 w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '1.5s'}}></div>
+          </div>
           
-          <div className="grid md:grid-cols-2 gap-6">
-            {karmicDebts?.length > 0 && (
-              <div>
-                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">{t.lifePath.lessonsToLearn}</h4>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                  {t.lifePath.lessonsDesc}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {karmicDebts?.map((debt) => (
-                    <div key={debt} className="bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 rounded-full px-4 py-2 text-sm font-semibold border border-red-300 dark:border-red-700">
-                      {debt}
-                    </div>
-                  ))}
-                </div>
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl flex items-center justify-center shadow-lg animate-pulse">
+                <Sparkles className="w-7 h-7 text-white" />
               </div>
-            )}
+              <div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  {t.lifePath.specialNumbers}
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  {language === 'fr' ? 'Nombres Uniques dans Votre Vie' : 'Unique Numbers in Your Life'}
+                </p>
+              </div>
+            </div>
             
-            {sacredNumbers?.length > 0 && (
-              <div>
-                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">{t.lifePath.blessedNumbers}</h4>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                  {t.lifePath.blessedDesc}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {sacredNumbers?.map((sacred) => (
-                    <div key={sacred} className="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 rounded-full px-4 py-2 text-sm font-semibold border border-indigo-300 dark:border-indigo-700">
-                      {sacred}
+            <div className="grid md:grid-cols-2 gap-6">
+              {karmicDebts?.length > 0 && (
+                <div className="bg-white dark:bg-slate-900/40 rounded-xl p-6 shadow-lg border border-red-200 dark:border-red-800">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-8 h-8 bg-red-100 dark:bg-red-900/50 rounded-lg flex items-center justify-center">
+                      <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
                     </div>
-                  ))}
+                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.lifePath.lessonsToLearn}</h4>
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                    {t.lifePath.lessonsDesc}
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {karmicDebts?.map((debt) => (
+                      <div key={debt} className="group relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-orange-400 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                        <div className="relative bg-gradient-to-br from-red-500 to-orange-500 text-white rounded-full px-5 py-3 text-lg font-bold shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                          {debt}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+              
+              {sacredNumbers?.length > 0 && (
+                <div className="bg-white dark:bg-slate-900/40 rounded-xl p-6 shadow-lg border border-indigo-200 dark:border-indigo-800">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg flex items-center justify-center">
+                      <Star className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                    </div>
+                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.lifePath.blessedNumbers}</h4>
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                    {t.lifePath.blessedDesc}
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {sacredNumbers?.map((sacred, index) => (
+                      <div key={sacred} className="group relative">
+                        {/* Sparkle effect on hover */}
+                        <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Sparkles className="w-4 h-4 text-yellow-400 animate-pulse" />
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                        <div 
+                          className="relative bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-full px-5 py-3 text-lg font-bold shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+                          style={{animationDelay: `${index * 0.2}s`}}
+                        >
+                          {sacred}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-indigo-200 dark:border-indigo-800">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                      <Info className="w-4 h-4" />
+                      {language === 'fr' 
+                        ? 'Ces nombres portent une énergie spéciale pour vous' 
+                        : 'These numbers carry special energy for you'}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

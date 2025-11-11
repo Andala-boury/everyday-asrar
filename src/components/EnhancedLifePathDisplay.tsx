@@ -1,12 +1,12 @@
 /**
  * Enhanced Life Path Display Component
  * Shows all 5 core numbers with spiritual meanings and interpretations
+ * Enhanced with educational tabs
  */
 
-import React from 'react';
-import { Sparkles, Heart, Zap, Shield, CircleDot, Flame } from 'lucide-react';
+import React, { useState } from 'react';
+import { Sparkles, Heart, Zap, Shield, CircleDot, Flame, ChevronDown, ChevronUp, BookOpen, Lightbulb, Library, Clock, AlertTriangle } from 'lucide-react';
 import { LIFE_PATH_MEANINGS, MASTER_NUMBERS } from '../constants/lifePathMeanings';
-import { LIFE_CYCLES, SPIRITUAL_STATIONS } from '../types/lifePath';
 import {
   calculateAllLifePathNumbers,
   isMasterNumber,
@@ -15,13 +15,19 @@ import {
   getPlanetForNumber,
   getElementForNumber
 } from '../utils/lifePathCalculator';
+import { SIMPLE_TERMS, getSimpleTerm, getTooltip } from '../constants/lifePathSimpleLanguage';
+import { InfoTooltip } from './InfoTooltip';
+import type { EnhancedLifePathResult } from '../utils/enhancedLifePath';
+import { useLanguage } from '../contexts/LanguageContext';
+
+// Import educational components
+import { LearningCenterLifePath } from './life-path/education/LearningCenterLifePath';
+import NumberGuidePanel from './life-path/education/NumberGuidePanel';
+import LifePathGlossary from './life-path/education/LifePathGlossary';
+import CycleTimeline from './life-path/visualization/CycleTimeline';
 
 interface EnhancedLifePathDisplayProps {
-  firstName: string;
-  motherName: string;
-  fatherName: string;
-  birthDate: Date;
-  isArabic?: boolean;
+  data: EnhancedLifePathResult;
 }
 
 interface NumberCard {
@@ -34,84 +40,96 @@ interface NumberCard {
 }
 
 const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
-  firstName,
-  motherName,
-  fatherName,
-  birthDate,
-  isArabic = false
+  data
 }) => {
-  // Calculate all numbers
-  const calculations = calculateAllLifePathNumbers(
-    firstName,
-    motherName,
-    fatherName,
-    birthDate
-  );
+  // Get language context and translations
+  const { language, t } = useLanguage();
+  const isArabic = false; // TODO: Add Arabic support when available
+  const isFrench = language === 'fr';
+  
+  // Tab navigation state
+  const [activeTab, setActiveTab] = useState<'overview' | 'learning' | 'numbers' | 'glossary' | 'timeline'>('overview');
+  
+  // State for progressive disclosure
+  const [expandedCards, setExpandedCards] = useState<Record<number, boolean>>({});
+  const [showColorLegend, setShowColorLegend] = useState(false);
+  const [showInterpretation, setShowInterpretation] = useState(true);
+  const [showCycleDetails, setShowCycleDetails] = useState(true);
+  const [showSynthesis, setShowSynthesis] = useState(true);
 
+  // Extract data from the result
   const {
     lifePathNumber,
     soulUrgeNumber,
     personalityNumber,
     destinyNumber,
-    cyclePosition,
-    currentAge,
-    currentStation
-  } = calculations;
+    personalYear,
+    personalMonth,
+    cycle,
+    karmicDebts,
+    sacredNumbers,
+    pinnaclesAndChallenges,
+    maternalInfluence
+  } = data;
+  
+  // Toggle card expansion
+  const toggleCard = (index: number) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
 
-  // Get meanings
+  // Get meanings with fallback
   const lifePathMeaning = LIFE_PATH_MEANINGS[lifePathNumber as keyof typeof LIFE_PATH_MEANINGS]
-    || MASTER_NUMBERS[lifePathNumber as keyof typeof MASTER_NUMBERS];
+    || MASTER_NUMBERS[lifePathNumber as keyof typeof MASTER_NUMBERS]
+    || { name: 'Unknown', qualities: [], challenges: [], planet: '', element: '' };
   
   const soulUrgeMeaning = LIFE_PATH_MEANINGS[soulUrgeNumber as keyof typeof LIFE_PATH_MEANINGS]
-    || MASTER_NUMBERS[soulUrgeNumber as keyof typeof MASTER_NUMBERS];
+    || MASTER_NUMBERS[soulUrgeNumber as keyof typeof MASTER_NUMBERS]
+    || { name: 'Unknown', qualities: [], challenges: [], planet: '', element: '' };
   
   const personalityMeaning = LIFE_PATH_MEANINGS[personalityNumber as keyof typeof LIFE_PATH_MEANINGS]
-    || MASTER_NUMBERS[personalityNumber as keyof typeof MASTER_NUMBERS];
+    || MASTER_NUMBERS[personalityNumber as keyof typeof MASTER_NUMBERS]
+    || { name: 'Unknown', qualities: [], challenges: [], planet: '', element: '' };
   
   const destinyMeaning = LIFE_PATH_MEANINGS[destinyNumber as keyof typeof LIFE_PATH_MEANINGS]
-    || MASTER_NUMBERS[destinyNumber as keyof typeof MASTER_NUMBERS];
+    || MASTER_NUMBERS[destinyNumber as keyof typeof MASTER_NUMBERS]
+    || { name: 'Unknown', qualities: [], challenges: [], planet: '', element: '' };
 
-  // Get cycle information
-  const cycle = LIFE_CYCLES[cyclePosition as keyof typeof LIFE_CYCLES];
-  const station = SPIRITUAL_STATIONS[cyclePosition as keyof typeof SPIRITUAL_STATIONS];
+  // Get cycle information from data
+  const cycleInfo = cycle;
+  const cyclePosition = cycle.positionInCycle;
 
   const numberCards: NumberCard[] = [
     {
-      title: isArabic ? 'رقم مسار الحياة' : 'Life Path Number',
+      title: t.lifePath.lifePathNumber,
       value: lifePathNumber,
-      description: isArabic
-        ? lifePathMeaning?.nameArabic || ''
-        : lifePathMeaning?.name || '',
+      description: lifePathMeaning?.name || '',
       icon: <Zap className="w-5 h-5" />,
       color: getColorForNumber(lifePathNumber),
       isMaster: isMasterNumber(lifePathNumber)
     },
     {
-      title: isArabic ? 'رقم رغبة الروح' : 'Soul Urge Number',
+      title: t.lifePath.soulUrge,
       value: soulUrgeNumber,
-      description: isArabic
-        ? soulUrgeMeaning?.nameArabic || ''
-        : soulUrgeMeaning?.name || '',
+      description: soulUrgeMeaning?.name || '',
       icon: <Heart className="w-5 h-5" />,
       color: getColorForNumber(soulUrgeNumber),
       isMaster: isMasterNumber(soulUrgeNumber)
     },
     {
-      title: isArabic ? 'رقم الشخصية' : 'Personality Number',
+      title: t.lifePath.personality,
       value: personalityNumber,
-      description: isArabic
-        ? personalityMeaning?.nameArabic || ''
-        : personalityMeaning?.name || '',
+      description: personalityMeaning?.name || '',
       icon: <Shield className="w-5 h-5" />,
       color: getColorForNumber(personalityNumber),
       isMaster: isMasterNumber(personalityNumber)
     },
     {
-      title: isArabic ? 'رقم المصير' : 'Destiny Number',
+      title: t.lifePath.destiny,
       value: destinyNumber,
-      description: isArabic
-        ? destinyMeaning?.nameArabic || ''
-        : destinyMeaning?.name || '',
+      description: destinyMeaning?.name || '',
       icon: <Sparkles className="w-5 h-5" />,
       color: getColorForNumber(destinyNumber),
       isMaster: isMasterNumber(destinyNumber)
@@ -119,170 +137,349 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
   ];
 
   return (
-    <div className="w-full space-y-6 p-4 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-lg">
+    <div className="w-full space-y-8 p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-xl shadow-lg">
       {/* Header */}
-      <div className="text-center border-b border-slate-200 dark:border-slate-700 pb-4">
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-          {isArabic ? 'تحليل مسار الحياة المحسّن' : 'Enhanced Life Path Analysis'}
-        </h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
-          {isArabic
-            ? `تاريخ الميلاد: ${birthDate.toLocaleDateString(isArabic ? 'ar-SA' : 'en-US')} | العمر: ${currentAge}`
-            : `Birth Date: ${birthDate.toLocaleDateString('en-US')} | Age: ${currentAge}`}
-        </p>
+      <div className="text-center border-b-2 border-slate-200 dark:border-slate-700 pb-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3 flex items-center justify-center gap-3">
+          {t.lifePath.title}
+        </h2>
       </div>
 
+      {/* Tab Navigation */}
+      <div className="flex gap-2 overflow-x-auto pb-2 border-b-2 border-slate-200 dark:border-slate-700">
+        <button
+          onClick={() => setActiveTab('overview')}
+          className={`flex items-center gap-2 px-5 py-3 rounded-lg font-semibold text-sm whitespace-nowrap transition-all ${
+            activeTab === 'overview'
+              ? 'bg-purple-600 dark:bg-purple-700 text-slate-50 shadow-lg scale-105'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-slate-700'
+          }`}
+        >
+          <Sparkles className="w-4 h-4" />
+          {t.common.results}
+        </button>
+        
+        <button
+          onClick={() => setActiveTab('learning')}
+          className={`flex items-center gap-2 px-5 py-3 rounded-lg font-semibold text-sm whitespace-nowrap transition-all ${
+            activeTab === 'learning'
+              ? 'bg-blue-600 dark:bg-blue-700 text-slate-50 shadow-lg scale-105'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-slate-700'
+          }`}
+        >
+          <BookOpen className="w-4 h-4" />
+          {isFrench ? 'Centre d\'Apprentissage' : 'Learning Center'}
+        </button>
+
+        <button
+          onClick={() => setActiveTab('numbers')}
+          className={`flex items-center gap-2 px-5 py-3 rounded-lg font-semibold text-sm whitespace-nowrap transition-all ${
+            activeTab === 'numbers'
+              ? 'bg-emerald-600 dark:bg-emerald-700 text-slate-50 shadow-lg scale-105'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700'
+          }`}
+        >
+          <Lightbulb className="w-4 h-4" />
+          {isFrench ? 'Guide des Nombres' : 'Number Guide'}
+        </button>
+
+        <button
+          onClick={() => setActiveTab('glossary')}
+          className={`flex items-center gap-2 px-5 py-3 rounded-lg font-semibold text-sm whitespace-nowrap transition-all ${
+            activeTab === 'glossary'
+              ? 'bg-amber-600 dark:bg-amber-700 text-slate-50 shadow-lg scale-105'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-slate-700'
+          }`}
+        >
+          <Library className="w-4 h-4" />
+          {isFrench ? 'Glossaire' : 'Glossary'}
+        </button>
+
+        <button
+          onClick={() => setActiveTab('timeline')}
+          className={`flex items-center gap-2 px-5 py-3 rounded-lg font-semibold text-sm whitespace-nowrap transition-all ${
+            activeTab === 'timeline'
+              ? 'bg-pink-600 dark:bg-pink-700 text-slate-50 shadow-lg scale-105'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-700'
+          }`}
+        >
+          <Clock className="w-4 h-4" />
+          {isFrench ? 'Chronologie' : 'Timeline'}
+        </button>
+      </div>
+
+      {/* Tab Content */}
+      {activeTab === 'overview' && (
+        <>
       {/* Core Numbers Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {numberCards.map((card) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        {numberCards.map((card, index) => {
+          // Determine which tooltip to show based on card index
+          const tooltipKey = index === 0 ? 'lifePathNumber' : 
+                            index === 1 ? 'soulUrgeNumber' :
+                            index === 2 ? 'personalityNumber' : 'destinyNumber';
+          const tooltip = isFrench 
+            ? SIMPLE_TERMS.fr[tooltipKey].tooltip 
+            : (isArabic 
+              ? SIMPLE_TERMS.ar[tooltipKey].tooltip 
+              : SIMPLE_TERMS.en[tooltipKey].tooltip);
+          
+          return (
           <div
             key={card.title}
-            className="bg-white dark:bg-slate-800 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow border-l-4"
+            className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4"
             style={{ borderLeftColor: card.color }}
           >
             {/* Icon and Number */}
-            <div className="flex items-center justify-between mb-3">
-              <div className="p-2 rounded-lg" style={{ backgroundColor: `${card.color}20` }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 rounded-xl shadow-sm" style={{ backgroundColor: `${card.color}20` }}>
                 {React.cloneElement(card.icon as React.ReactElement, {
-                  style: { color: card.color }
+                  style: { color: card.color },
+                  className: 'w-6 h-6'
                 })}
               </div>
               <div className="text-right">
                 <div
-                  className="text-3xl font-bold"
+                  className="text-4xl font-bold tracking-tight"
                   style={{ color: card.color }}
                 >
                   {formatNumberDisplay(card.value)}
                 </div>
                 {card.isMaster && (
-                  <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">
-                    {isArabic ? 'رقم رئيسي' : 'Master'}
+                  <span className="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wide mt-1 block">
+                    {isFrench ? 'Maître' : 'Master'}
                   </span>
                 )}
               </div>
             </div>
 
             {/* Title and Description */}
-            <h4 className="font-semibold text-slate-900 dark:text-white text-sm mb-1">
+            <h4 className="font-bold text-slate-900 dark:text-white text-base mb-2 flex items-center gap-1.5 leading-tight">
               {card.title}
             </h4>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
               {card.description}
             </p>
 
             {/* Quick stat */}
-            <div className="text-xs bg-slate-50 dark:bg-slate-700 p-2 rounded">
-              <span className="text-slate-700 dark:text-slate-300">
-                {isArabic ? 'العنصر: ' : 'Element: '}
+            <div className="text-sm bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg border border-slate-100 dark:border-slate-600">
+              <span className="text-slate-700 dark:text-slate-300 font-medium">
+                {isFrench ? 'Élément: ' : 'Element: '}
               </span>
-              <span style={{ color: card.color }} className="font-semibold">
+              <span style={{ color: card.color }} className="font-bold">
                 {getElementForNumber(card.value)}
               </span>
             </div>
           </div>
-        ))}
+        );
+        })}
+      </div>
+
+      {/* Color Legend */}
+      <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-600">
+        <button
+          type="button"
+          onClick={() => setShowColorLegend(!showColorLegend)}
+          className="w-full flex items-center justify-between text-left group"
+        >
+          <div className="flex items-center gap-3">
+            <Sparkles className="w-6 h-6 text-purple-500 group-hover:text-purple-600 transition-colors" />
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+              {isFrench ? 'Légende des Couleurs' : 'Number Meanings'}
+            </h3>
+          </div>
+          {showColorLegend ? (
+            <ChevronUp className="w-6 h-6 text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+          ) : (
+            <ChevronDown className="w-6 h-6 text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+          )}
+        </button>
+
+        <div 
+          className={`transition-all duration-300 overflow-hidden ${
+            showColorLegend ? 'max-h-96 mt-5' : 'max-h-0'
+          }`}
+        >
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {Object.entries(SIMPLE_TERMS[isFrench ? 'fr' : (isArabic ? 'ar' : 'en')].colorLegend.numbers).map(([num, data]) => (
+              <div
+                key={num}
+                className="flex items-center gap-3 bg-white dark:bg-slate-800 rounded-xl p-4 border-l-4 transition-all duration-200 hover:scale-105 hover:shadow-md"
+                style={{ borderLeftColor: data.color }}
+              >
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-base shadow-md"
+                  style={{ backgroundColor: data.color }}
+                >
+                  {num}
+                </div>
+                <span className="text-sm text-slate-700 dark:text-slate-300 font-semibold leading-tight">
+                  {data.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Life Path Interpretation */}
       {lifePathMeaning && (
-        <div className="bg-white dark:bg-slate-800 rounded-lg p-4 shadow-md">
-          <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-            <Flame className="w-5 h-5" style={{ color: getColorForNumber(lifePathNumber) }} />
-            {isArabic ? 'تفسير مسار الحياة' : 'Life Path Interpretation'}
-          </h4>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700">
+          <button
+            type="button"
+            onClick={() => setShowInterpretation(!showInterpretation)}
+            className="w-full flex items-center justify-between text-left mb-5 group"
+          >
+            <div className="flex items-center gap-3">
+              <Flame className="w-6 h-6 group-hover:scale-110 transition-transform" style={{ color: getColorForNumber(lifePathNumber) }} />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                {isFrench ? 'Interprétation' : 'Interpretation'}
+              </h3>
+            </div>
+            {showInterpretation ? (
+              <ChevronUp className="w-6 h-6 text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            ) : (
+              <ChevronDown className="w-6 h-6 text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            )}
+          </button>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div 
+            className={`transition-all duration-300 overflow-hidden ${
+              showInterpretation ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="grid md:grid-cols-2 gap-8">
             {/* Left Column */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               {/* Qualities */}
-              <div>
-                <h5 className="font-semibold text-slate-900 dark:text-white mb-2 text-sm">
-                  {isArabic ? 'الصفات الإيجابية' : 'Positive Qualities'}
-                </h5>
-                <div className="flex flex-wrap gap-2">
-                  {(isArabic ? lifePathMeaning.qualitiesArabic : lifePathMeaning.qualities).map(
-                    (quality: string, idx: number) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium"
-                      >
-                        {quality}
-                      </span>
-                    )
-                  )}
+              {lifePathMeaning?.qualities && (
+                <div>
+                  <h5 className="font-bold text-slate-900 dark:text-white mb-3 text-base flex items-center gap-2">
+                    {isFrench ? 'Qualités Positives' : 'Positive Qualities'}
+                    <span className="text-xs text-blue-600 dark:text-blue-400 font-normal">✨</span>
+                  </h5>
+                  <div className="flex flex-wrap gap-2.5">
+                    {(isFrench && (lifePathMeaning as any).qualitiesFrench 
+                      ? (lifePathMeaning as any).qualitiesFrench 
+                      : lifePathMeaning.qualities
+                    ).map((quality: string, idx: number) => (
+                        <span
+                          key={idx}
+                          className="px-4 py-2 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-full text-sm font-semibold border border-blue-200 dark:border-blue-800 shadow-sm"
+                        >
+                          {quality}
+                        </span>
+                      )
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Challenges */}
-              <div>
-                <h5 className="font-semibold text-slate-900 dark:text-white mb-2 text-sm">
-                  {isArabic ? 'التحديات' : 'Challenges'}
-                </h5>
-                <div className="flex flex-wrap gap-2">
-                  {(isArabic ? lifePathMeaning.challengesArabic : lifePathMeaning.challenges).map(
-                    (challenge: string, idx: number) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-full text-xs font-medium"
-                      >
-                        {challenge}
-                      </span>
-                    )
-                  )}
+              {lifePathMeaning?.challenges && (
+                <div>
+                  <h5 className="font-bold text-slate-900 dark:text-white mb-3 text-base flex items-center gap-2">
+                    {isFrench ? 'Défis' : 'Challenges'}
+                    <span className="text-xs text-amber-600 dark:text-amber-400 font-normal">⚠️</span>
+                  </h5>
+                  <div className="flex flex-wrap gap-2.5">
+                    {(isFrench && (lifePathMeaning as any).challengesFrench 
+                      ? (lifePathMeaning as any).challengesFrench 
+                      : lifePathMeaning.challenges
+                    ).map((challenge: string, idx: number) => (
+                        <span
+                          key={idx}
+                          className="px-4 py-2 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 rounded-full text-sm font-semibold border border-amber-200 dark:border-amber-800 shadow-sm"
+                        >
+                          {challenge}
+                        </span>
+                      )
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Right Column */}
-            <div className="space-y-4 text-sm">
+            <div className="space-y-6">
               {/* Life Purpose */}
-              <div>
-                <h5 className="font-semibold text-slate-900 dark:text-white mb-2">
-                  {isArabic ? 'الغرض من الحياة' : 'Life Purpose'}
+              <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-5 border border-purple-200 dark:border-purple-800">
+                <h5 className="font-bold text-slate-900 dark:text-white mb-3 text-base flex items-center gap-2">
+                  {isFrench ? 'But de Vie' : 'Life Purpose'}
+                  <span className="text-xs">🎯</span>
                 </h5>
-                <p className="text-slate-700 dark:text-slate-300 italic">
-                  {isArabic ? lifePathMeaning.lifePurposeArabic : lifePathMeaning.lifePurpose}
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-base">
+                  {isFrench && (lifePathMeaning as any).lifePurposeFrench 
+                    ? (lifePathMeaning as any).lifePurposeFrench 
+                    : lifePathMeaning.lifePurpose}
                 </p>
               </div>
 
               {/* Deepest Desire */}
-              <div>
-                <h5 className="font-semibold text-slate-900 dark:text-white mb-2">
-                  {isArabic ? 'الرغبة الأعمق' : 'Deepest Desire'}
+              {(lifePathMeaning as any).deepestDesire && (
+              <div className="bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 rounded-xl p-5 border border-pink-200 dark:border-pink-800">
+                <h5 className="font-bold text-slate-900 dark:text-white mb-3 text-base flex items-center gap-2">
+                  {isFrench ? 'Désir Profond' : 'Deepest Desire'}
+                  <span className="text-xs">💫</span>
                 </h5>
-                <p className="text-slate-700 dark:text-slate-300 italic">
-                  {isArabic ? lifePathMeaning.deepestDesireArabic : lifePathMeaning.deepestDesire}
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-base">
+                  {isFrench && (lifePathMeaning as any).deepestDesireFrench 
+                    ? (lifePathMeaning as any).deepestDesireFrench 
+                    : (lifePathMeaning as any).deepestDesire}
                 </p>
               </div>
+              )}
 
               {/* Quranic Resonance */}
-              <div>
-                <h5 className="font-semibold text-slate-900 dark:text-white mb-2">
-                  {isArabic ? 'الرنين القرآني' : 'Quranic Resonance'}
+              {(lifePathMeaning as any).quranResonance && (
+              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl p-5 border border-emerald-200 dark:border-emerald-800">
+                <h5 className="font-bold text-slate-900 dark:text-white mb-3 text-base flex items-center gap-2">
+                  {isFrench ? 'Résonance Coranique' : 'Quranic Resonance'}
+                  <span className="text-xs">📖</span>
                 </h5>
-                <p className="text-slate-700 dark:text-slate-300 italic text-xs">
-                  {isArabic
-                    ? lifePathMeaning.quranResonanceArabic
-                    : lifePathMeaning.quranResonance}
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm">
+                  {isFrench && (lifePathMeaning as any).quranResonanceFrench 
+                    ? (lifePathMeaning as any).quranResonanceFrench 
+                    : (lifePathMeaning as any).quranResonance}
                 </p>
               </div>
+              )}
             </div>
+          </div>
           </div>
         </div>
       )}
 
       {/* Current Life Cycle */}
       {cycle && typeof cycle !== 'number' && 'cycle' in cycle && (
-        <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900 dark:to-blue-900 rounded-lg p-4 shadow-md">
-          <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
-            <CircleDot className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-            {isArabic ? 'دورة الحياة الحالية' : 'Current Life Cycle'}
-          </h4>
+        <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/40 dark:to-blue-900/40 rounded-xl p-6 shadow-lg border border-purple-200 dark:border-purple-700">
+          <button
+            type="button"
+            onClick={() => setShowCycleDetails(!showCycleDetails)}
+            className="w-full flex items-center justify-between text-left mb-4 group"
+          >
+            <div className="flex items-center gap-3">
+              <CircleDot className="w-6 h-6 text-purple-600 dark:text-purple-400 group-hover:rotate-90 transition-transform duration-300" />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                {isFrench ? 'Cycle de Vie Actuel' : 'Current Life Cycle'}
+              </h3>
+            </div>
+            {showCycleDetails ? (
+              <ChevronUp className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            ) : (
+              <ChevronDown className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            )}
+          </button>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div 
+            className={`transition-all duration-300 overflow-hidden ${
+              showCycleDetails ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="grid md:grid-cols-3 gap-4">
             <div>
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
-                {isArabic ? 'السنة في الدورة' : 'Cycle Year'}
+                {isFrench ? 'Année dans le Cycle' : 'Year in Cycle'}
               </p>
               <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                 {cyclePosition}/9
@@ -290,26 +487,23 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
             </div>
 
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
-                {isArabic ? 'محطة روحية' : 'Spiritual Station'}
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-1 flex items-center gap-1">
+                {isFrench ? 'Thème de l\'Année' : 'Year Theme'}
               </p>
               <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                {isArabic ? station?.arabic : station?.name}
-              </p>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                {station?.meaning}
+                {cycle.yearTheme}
               </p>
             </div>
 
             <div>
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
-                {isArabic ? 'مرحلة الحياة' : 'Life Phase'}
+                {isFrench ? 'Phase de Vie' : 'Life Phase'}
               </p>
               <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                {isArabic ? cycle.stageArabic : cycle.stage}
+                {cycle.cycleStage}
               </p>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                {cycle.ageRange}
+                {isFrench ? `Âge: ${cycle.age}` : `Age: ${cycle.age}`}
               </p>
             </div>
           </div>
@@ -317,32 +511,77 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
           {/* Cycle Description */}
           <div className="mt-3 p-3 bg-white dark:bg-slate-800 rounded">
             <p className="text-sm text-slate-700 dark:text-slate-300">
-              {cycle.description}
+              {isArabic ? cycle.yearThemeArabic : cycle.yearTheme}
             </p>
+          </div>
           </div>
         </div>
       )}
 
       {/* Synthesis */}
-      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900 dark:to-teal-900 rounded-lg p-4 shadow-md">
-        <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-3">
-          {isArabic ? 'التركيب و التفاعل' : 'Synthesis & Integration'}
-        </h4>
+      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/40 dark:to-teal-900/40 rounded-xl p-6 shadow-lg border border-emerald-200 dark:border-emerald-700">
+        <button
+          type="button"
+          onClick={() => setShowSynthesis(!showSynthesis)}
+          className="w-full flex items-center justify-between text-left mb-4 group"
+        >
+          <div className="flex items-center gap-3">
+            <Shield className="w-6 h-6 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+              {isFrench ? 'Synthèse' : 'Synthesis'}
+            </h3>
+          </div>
+          {showSynthesis ? (
+            <ChevronUp className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+          ) : (
+            <ChevronDown className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+          )}
+        </button>
         
-        <p className="text-sm text-slate-700 dark:text-slate-300 mb-3">
-          {isArabic
-            ? `رقم مسار الحياة (${formatNumberDisplay(lifePathNumber)}) يمثل جوهرك الروحي، بينما رقم رغبة الروح (${formatNumberDisplay(soulUrgeNumber)}) يكشف عن رغباتك الأعمق. يعكس رقم الشخصية (${formatNumberDisplay(personalityNumber)}) كيفية إدراك الآخرين لك، ورقم المصير (${formatNumberDisplay(destinyNumber)}) يرشدك نحو غرض حياتك الأسمى.`
-            : `Your Life Path (${formatNumberDisplay(lifePathNumber)}) represents your spiritual essence, while your Soul Urge (${formatNumberDisplay(soulUrgeNumber)}) reveals your deepest desires. Your Personality (${formatNumberDisplay(personalityNumber)}) shows how others perceive you, and your Destiny (${formatNumberDisplay(destinyNumber)}) guides you toward your higher purpose.`}
-        </p>
-
-        {cycle && typeof cycle !== 'number' && 'cycle' in cycle && (
-          <p className="text-sm text-slate-700 dark:text-slate-300">
-            {isArabic
-              ? `أنت حالياً في السنة ${cyclePosition} من دورة التسع سنوات، في مرحلة ${station?.name} الروحية.`
-              : `You are currently in Year ${cyclePosition} of your nine-year cycle, in the spiritual phase of ${station?.name}.`}
+        <div 
+          className={`transition-all duration-300 overflow-hidden ${
+            showSynthesis ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-5 border border-emerald-200 dark:border-emerald-700">
+            <p className="text-base text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+              {isFrench
+                ? `Votre Chemin de Vie (${formatNumberDisplay(lifePathNumber)}) représente votre essence spirituelle, tandis que votre Élan de l'Âme (${formatNumberDisplay(soulUrgeNumber)}) révèle vos désirs les plus profonds. Votre Personnalité (${formatNumberDisplay(personalityNumber)}) montre comment les autres vous perçoivent, et votre Destinée (${formatNumberDisplay(destinyNumber)}) vous guide vers votre but supérieur.`
+              : `Your Life Path (${formatNumberDisplay(lifePathNumber)}) represents your spiritual essence, while your Soul Urge (${formatNumberDisplay(soulUrgeNumber)}) reveals your deepest desires. Your Personality (${formatNumberDisplay(personalityNumber)}) shows how others perceive you, and your Destiny (${formatNumberDisplay(destinyNumber)}) guides you toward your higher purpose.`}
           </p>
-        )}
+
+          {cycle && typeof cycle !== 'number' && 'cycle' in cycle && (
+            <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed pt-3 border-t border-emerald-200 dark:border-emerald-700">
+              {isFrench
+                ? `Vous êtes actuellement dans l'année ${cyclePosition} de votre cycle de neuf ans, avec un focus sur ${cycle.yearTheme}.`
+                : `You are currently in Year ${cyclePosition} of your nine-year cycle, with a focus on ${cycle.yearTheme}.`}
+            </p>
+          )}
+          </div>
+        </div>
       </div>
+      </>
+      )}
+
+      {/* Learning Center Tab */}
+      {activeTab === 'learning' && (
+        <LearningCenterLifePath />
+      )}
+
+      {/* Number Guide Tab */}
+      {activeTab === 'numbers' && (
+        <NumberGuidePanel />
+      )}
+
+      {/* Glossary Tab */}
+      {activeTab === 'glossary' && (
+        <LifePathGlossary />
+      )}
+
+      {/* Timeline Tab */}
+      {activeTab === 'timeline' && (
+        <CycleTimeline currentYear={cyclePosition} birthDate={data.birthDate} />
+      )}
     </div>
   );
 };

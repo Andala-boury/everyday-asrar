@@ -741,6 +741,10 @@ function DailyReflectionCard({ isCollapsed, onToggleCollapse }: { isCollapsed: b
 export default function AsrarEveryday() {
   const { abjad } = useAbjad(); // Get the current Abjad system
   const { t } = useLanguage(); // Get translations
+  
+  // Add mounted state to prevent hydration mismatch
+  const [mounted, setMounted] = useState(false);
+  
   const [darkMode, setDarkMode] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(true);
   const [viewMode, setViewMode] = useState<'calculator' | 'guidance' | 'advanced'>('guidance');
@@ -758,6 +762,11 @@ export default function AsrarEveryday() {
   
   // Daily Reflection State - initialize to true (collapsed by default), set from localStorage in useEffect
   const [isDailyReflectionCollapsed, setIsDailyReflectionCollapsed] = useState(true);
+  
+  // Set mounted on client side only
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   // Load daily reflection preference from localStorage
   useEffect(() => {
@@ -966,6 +975,18 @@ export default function AsrarEveryday() {
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') calculate();
   };
+  
+  // Prevent hydration mismatch by showing loading state until mounted
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <Sparkles className="w-16 h-16 text-indigo-600 dark:text-indigo-400 mx-auto mb-4 animate-pulse" />
+          <p className="text-xl font-semibold text-slate-700 dark:text-slate-300">Loading Asrār...</p>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className={darkMode ? 'dark' : ''}>

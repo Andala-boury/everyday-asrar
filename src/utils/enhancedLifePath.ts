@@ -398,6 +398,9 @@ export interface EnhancedLifePathResult {
   personalityNumber: number;
   destinyNumber: number;
   
+  // Birth Info
+  birthDate: Date;
+  
   // Timing
   personalYear: number;
   personalMonth: number;
@@ -696,6 +699,7 @@ export function calculateEnhancedLifePath(
      (currentDate.getMonth() === birthDate.getMonth() && currentDate.getDate() < birthDate.getDate()) ? 1 : 0);
   
   return {
+    birthDate,
     lifePathNumber: calculateLifePathNumber(arabicName),
     soulUrgeNumber: calculateSoulUrgeNumber(arabicName),
     personalityNumber: calculatePersonalityNumber(arabicName),

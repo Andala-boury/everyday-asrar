@@ -7,6 +7,7 @@ export const LIFE_PATH_MEANINGS = {
   1: {
     name: 'The Initiator (Al-Mubtadiʾ)',
     nameArabic: 'المبتدئ',
+    nameFrench: 'L\'Initiateur',
     planet: 'Sun',
     planetArabic: 'الشمس',
     element: 'fire',
@@ -28,6 +29,13 @@ export const LIFE_PATH_MEANINGS = {
       'الأصالة',
       'الشجاعة'
     ],
+    qualitiesFrench: [
+      'Leadership',
+      'Indépendance',
+      'Esprit pionnier',
+      'Originalité',
+      'Courage'
+    ],
     
     challenges: [
       'Overcoming ego (nafs)',
@@ -43,15 +51,25 @@ export const LIFE_PATH_MEANINGS = {
       'الكبرياء',
       'الأنانية'
     ],
+    challengesFrench: [
+      'Surmonter l\'ego (nafs)',
+      'Apprendre l\'humilité',
+      'Impatience',
+      'Arrogance',
+      'Égocentrisme'
+    ],
     
     lifePurpose: 'To lead with integrity and inspire others to their own path',
     lifePurposeArabic: 'أن تقود بنزاهة وتلهم الآخرين لطريقهم الخاص',
+    lifePurposeFrench: 'Diriger avec intégrité et inspirer les autres sur leur propre chemin',
     
     quranResonance: 'Say: He is Allah, the One (112:1) - Unity and singularity',
     quranResonanceArabic: 'قل هو الله أحد - الوحدة والفردية',
+    quranResonanceFrench: 'Dis: Il est Allah, l\'Unique (112:1) - Unité et singularité',
     
     deepestDesire: 'To achieve and accomplish great things',
     deepestDesireArabic: 'تحقيق إنجازات عظيمة',
+    deepestDesireFrench: 'Accomplir de grandes choses',
     
     color: '#FF6B35'
   },
@@ -59,6 +77,7 @@ export const LIFE_PATH_MEANINGS = {
   2: {
     name: 'The Peacemaker (Al-Muṣāliḥ)',
     nameArabic: 'المصالح',
+    nameFrench: 'Le Pacificateur',
     planet: 'Moon',
     planetArabic: 'القمر',
     element: 'water',
@@ -80,6 +99,13 @@ export const LIFE_PATH_MEANINGS = {
       'الانسجام',
       'الحدس'
     ],
+    qualitiesFrench: [
+      'Diplomatie',
+      'Coopération',
+      'Sensibilité',
+      'Harmonie',
+      'Intuition'
+    ],
     
     challenges: [
       'Indecision',
@@ -95,15 +121,25 @@ export const LIFE_PATH_MEANINGS = {
       'الخمول',
       'عدم الثقة بالنفس'
     ],
+    challengesFrench: [
+      'Indécision',
+      'Dépendance excessive',
+      'Hypersensibilité',
+      'Passivité',
+      'Doute de soi'
+    ],
     
     lifePurpose: 'To unite people and create bridges of understanding',
     lifePurposeArabic: 'توحيد الناس وبناء جسور التفاهم',
+    lifePurposeFrench: 'Unir les gens et créer des ponts de compréhension',
     
     quranResonance: 'And hold fast to the rope of Allah together (3:103)',
     quranResonanceArabic: 'واعتصموا بحبل الله جميعاً',
+    quranResonanceFrench: 'Et cramponnez-vous tous ensemble à la corde d\'Allah (3:103)',
     
     deepestDesire: 'To find peace and belonging in relationships',
     deepestDesireArabic: 'إيجاد السلام والانتماء في العلاقات',
+    deepestDesireFrench: 'Trouver la paix et l\'appartenance dans les relations',
     
     color: '#4ECDC4'
   },
@@ -111,6 +147,7 @@ export const LIFE_PATH_MEANINGS = {
   3: {
     name: 'The Creator (Al-Khallāq)',
     nameArabic: 'الخلاق',
+    nameFrench: 'Le Créateur',
     planet: 'Jupiter',
     planetArabic: 'المشتري',
     element: 'air',
@@ -132,6 +169,13 @@ export const LIFE_PATH_MEANINGS = {
       'الإلهام',
       'التواصل'
     ],
+    qualitiesFrench: [
+      'Créativité',
+      'Expression',
+      'Joie',
+      'Inspiration',
+      'Communication'
+    ],
     
     challenges: [
       'Scattered energy',
@@ -147,15 +191,25 @@ export const LIFE_PATH_MEANINGS = {
       'المواهب المتناثرة',
       'صعوبة إكمال المشاريع'
     ],
+    challengesFrench: [
+      'Énergie dispersée',
+      'Manque de concentration',
+      'Superficialité',
+      'Talents éparpillés',
+      'Difficulté à terminer les projets'
+    ],
     
     lifePurpose: 'To uplift humanity through creative expression',
     lifePurposeArabic: 'رفع مستوى الإنسانية من خلال التعبير الإبداعي',
+    lifePurposeFrench: 'Élever l\'humanité par l\'expression créative',
     
     quranResonance: 'He is the Originator of the heavens and earth (2:117)',
     quranResonanceArabic: 'بديع السماوات والأرض',
+    quranResonanceFrench: 'Il est le Créateur des cieux et de la terre (2:117)',
     
     deepestDesire: 'To express oneself freely and bring beauty to the world',
     deepestDesireArabic: 'التعبير عن الذات بحرية وإحضار الجمال للعالم',
+    deepestDesireFrench: 'S\'exprimer librement et apporter la beauté au monde',
     
     color: '#FFD93D'
   },
@@ -163,6 +217,7 @@ export const LIFE_PATH_MEANINGS = {
   4: {
     name: 'The Builder (Al-Bānī)',
     nameArabic: 'الباني',
+    nameFrench: 'Le Bâtisseur',
     planet: 'Saturn',
     planetArabic: 'زحل',
     element: 'earth',
@@ -184,6 +239,13 @@ export const LIFE_PATH_MEANINGS = {
       'الاستقرار',
       'الحكمة العملية'
     ],
+    qualitiesFrench: [
+      'Structure',
+      'Discipline',
+      'Fiabilité',
+      'Stabilité',
+      'Sagesse pratique'
+    ],
     
     challenges: [
       'Rigidity',
@@ -199,15 +261,25 @@ export const LIFE_PATH_MEANINGS = {
       'الملل',
       'المبالغة في الجدية'
     ],
+    challengesFrench: [
+      'Rigidité',
+      'Résistance au changement',
+      'Limitation',
+      'Monotonie',
+      'Trop de sérieux'
+    ],
     
     lifePurpose: 'To create lasting systems that serve humanity',
     lifePurposeArabic: 'إنشاء أنظمة دائمة تخدم الإنسانية',
+    lifePurposeFrench: 'Créer des systèmes durables au service de l\'humanité',
     
     quranResonance: 'So set your face to the religion, as one by nature upright (30:30)',
     quranResonanceArabic: 'فأقم وجهك للدين حنيفاً',
+    quranResonanceFrench: 'Tourne donc ta face vers la religion en pur monothéiste (30:30)',
     
     deepestDesire: 'To build something that lasts and provides security',
     deepestDesireArabic: 'بناء شيء يدوم ويوفر الأمان',
+    deepestDesireFrench: 'Construire quelque chose de durable qui procure sécurité',
     
     color: '#6B4423'
   },
@@ -251,15 +323,25 @@ export const LIFE_PATH_MEANINGS = {
       'الهروب',
       'الاندفاعية'
     ],
+    challengesFrench: [
+      'Agitation',
+      'Manque de concentration',
+      'Irresponsabilité',
+      'Fuite',
+      'Impulsivité'
+    ],
     
     lifePurpose: 'To teach adaptability and embrace divine will',
     lifePurposeArabic: 'تعليم القابلية للتكيف والاستسلام لإرادة الله',
+    lifePurposeFrench: 'Enseigner l\'adaptabilité et embrasser la volonté divine',
     
     quranResonance: 'Allah will bring about ease after hardship (65:7)',
     quranResonanceArabic: 'فإن مع العسر يسراً',
+    quranResonanceFrench: 'Allah apportera l\'aisance après la difficulté (65:7)',
     
     deepestDesire: 'Freedom to experience life fully and authentically',
     deepestDesireArabic: 'الحرية لتجربة الحياة بشكل كامل وحقيقي',
+    deepestDesireFrench: 'Liberté d\'expérimenter la vie pleinement et authentiquement',
     
     color: '#6C5CE7'
   },
@@ -267,6 +349,7 @@ export const LIFE_PATH_MEANINGS = {
   6: {
     name: 'The Nurturer (Al-Rāʿī)',
     nameArabic: 'الراعي',
+    nameFrench: 'Le Nourricier',
     planet: 'Venus',
     planetArabic: 'الزهرة',
     element: 'earth',
@@ -288,6 +371,13 @@ export const LIFE_PATH_MEANINGS = {
       'الولاء',
       'الخدمة'
     ],
+    qualitiesFrench: [
+      'Responsabilité',
+      'Soin',
+      'Harmonie',
+      'Loyauté',
+      'Service'
+    ],
     
     challenges: [
       'Self-sacrifice',
@@ -303,15 +393,25 @@ export const LIFE_PATH_MEANINGS = {
       'التدخل',
       'الميول السيطرة'
     ],
+    challengesFrench: [
+      'Auto-sacrifice',
+      'Codépendance',
+      'Complexe du martyr',
+      'Ingérence',
+      'Tendances contrôlantes'
+    ],
     
     lifePurpose: 'To heal and harmonize through compassionate service',
     lifePurposeArabic: 'الشفاء والانسجام من خلال الخدمة الرحيمة',
+    lifePurposeFrench: 'Guérir et harmoniser par le service compatissant',
     
     quranResonance: 'The servants of the Most Merciful are those who walk upon the earth in humility (25:63)',
     quranResonanceArabic: 'عباد الرحمن الذين يمشون على الأرض هوناً',
+    quranResonanceFrench: 'Les serviteurs du Tout Miséricordieux sont ceux qui marchent humblement sur terre (25:63)',
     
     deepestDesire: 'To be needed and to create harmony in relationships',
     deepestDesireArabic: 'أن تكون مطلوباً وخلق الانسجام في العلاقات',
+    deepestDesireFrench: 'Être nécessaire et créer l\'harmonie dans les relations',
     
     color: '#E84393'
   },
@@ -319,6 +419,7 @@ export const LIFE_PATH_MEANINGS = {
   7: {
     name: 'The Seeker (Al-Ṭālib)',
     nameArabic: 'الطالب',
+    nameFrench: 'Le Chercheur',
     planet: 'Neptune (Spiritual) / Moon (Traditional)',
     planetArabic: 'نبتون (روحاني) / القمر (تقليدي)',
     element: 'water',
@@ -340,6 +441,13 @@ export const LIFE_PATH_MEANINGS = {
       'الحكمة',
       'التمييز'
     ],
+    qualitiesFrench: [
+      'Analyse',
+      'Spiritualité',
+      'Introspection',
+      'Sagesse',
+      'Discernement'
+    ],
     
     challenges: [
       'Isolation',
@@ -355,15 +463,25 @@ export const LIFE_PATH_MEANINGS = {
       'تقلبات المزاج',
       'الانسحاب'
     ],
+    challengesFrench: [
+      'Isolement',
+      'Sur-analyse',
+      'Scepticisme',
+      'Sautes d\'humeur',
+      'Retrait'
+    ],
     
     lifePurpose: 'To uncover divine mysteries and teach spiritual truths',
     lifePurposeArabic: 'الكشف عن أسرار الله وتعليم الحقائق الروحية',
+    lifePurposeFrench: 'Révéler les mystères divins et enseigner les vérités spirituelles',
     
     quranResonance: 'Say: Travel through the earth and observe how He began creation (29:20)',
     quranResonanceArabic: 'قل سيروا في الأرض فانظروا كيف بدأ الخلق',
+    quranResonanceFrench: 'Dis: Parcourez la terre et voyez comment Il a commencé la création (29:20)',
     
     deepestDesire: 'To understand the deeper mysteries of existence',
     deepestDesireArabic: 'فهم الأسرار الأعمق للوجود',
+    deepestDesireFrench: 'Comprendre les mystères profonds de l\'existence',
     
     color: '#0984E3'
   },
@@ -371,6 +489,7 @@ export const LIFE_PATH_MEANINGS = {
   8: {
     name: 'The Master (Al-Sayyid)',
     nameArabic: 'السيد',
+    nameFrench: 'Le Maître',
     planet: 'Mars',
     planetArabic: 'المريخ',
     element: 'fire',
@@ -392,6 +511,13 @@ export const LIFE_PATH_MEANINGS = {
       'السلطة',
       'التجسيد'
     ],
+    qualitiesFrench: [
+      'Pouvoir',
+      'Abondance',
+      'Réalisation',
+      'Autorité',
+      'Manifestation'
+    ],
     
     challenges: [
       'Imbalanced power',
@@ -407,15 +533,25 @@ export const LIFE_PATH_MEANINGS = {
       'عدم الحساسية',
       'الإرهاق'
     ],
+    challengesFrench: [
+      'Pouvoir déséquilibré',
+      'Matérialisme',
+      'Dureté',
+      'Insensibilité',
+      'Épuisement'
+    ],
     
     lifePurpose: 'To demonstrate that success serves higher purpose',
     lifePurposeArabic: 'إظهار أن النجاح يخدم غرضاً أعلى',
+    lifePurposeFrench: 'Démontrer que le succès sert un but supérieur',
     
     quranResonance: 'And seek, through that which Allah has given you, the home of the Hereafter (28:77)',
     quranResonanceArabic: 'وابتغ فيما آتاك الله الدار الآخرة',
+    quranResonanceFrench: 'Et recherche à travers ce qu\'Allah t\'a donné, la Demeure dernière (28:77)',
     
     deepestDesire: 'To master material and spiritual realms',
     deepestDesireArabic: 'إتقان الحقائق المادية والروحية',
+    deepestDesireFrench: 'Maîtriser les royaumes matériel et spirituel',
     
     color: '#D63031'
   },
@@ -423,6 +559,7 @@ export const LIFE_PATH_MEANINGS = {
   9: {
     name: 'The Humanitarian (Al-Insānī)',
     nameArabic: 'الإنساني',
+    nameFrench: 'L\'Humanitaire',
     planet: 'Mars',
     planetArabic: 'المريخ',
     element: 'fire',
@@ -444,6 +581,13 @@ export const LIFE_PATH_MEANINGS = {
       'العالمية',
       'عدم الأنانية'
     ],
+    qualitiesFrench: [
+      'Accomplissement',
+      'Compassion',
+      'Sagesse',
+      'Universalité',
+      'Désintéressement'
+    ],
     
     challenges: [
       'Letting go',
@@ -459,15 +603,25 @@ export const LIFE_PATH_MEANINGS = {
       'الارتباك',
       'فقدان الهوية'
     ],
+    challengesFrench: [
+      'Lâcher prise',
+      'Accepter les fins',
+      'Distance impersonnelle',
+      'Surcharge',
+      'Perte d\'identité'
+    ],
     
     lifePurpose: 'To complete cycles and serve the collective',
     lifePurposeArabic: 'إكمال الدورات والخدمة الجماعية',
+    lifePurposeFrench: 'Accomplir les cycles et servir le collectif',
     
     quranResonance: 'We have honored the children of Adam (17:70)',
     quranResonanceArabic: 'ولقد كرمنا بني آدم',
+    quranResonanceFrench: 'Nous avons honoré les enfants d\'Adam (17:70)',
     
     deepestDesire: 'Universal compassion and global service',
     deepestDesireArabic: 'الرحمة العالمية والخدمة العالمية',
+    deepestDesireFrench: 'Compassion universelle et service global',
     
     color: '#27AE60'
   }
