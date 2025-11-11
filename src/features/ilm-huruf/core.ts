@@ -672,8 +672,8 @@ export interface NameDestinyResult {
   motherKabir: number;    // Mother's Ḥadad alone (0 if not provided)
   totalKabir: number;     // Combined total (person + mother)
   saghir: number;         // Digital root (1-9)
-  tabhIdx: ElementKey;    // Element index (1-4, where 4=Earth)
-  element: ElementData;   // Ṭabʿ (Element from ÷ 4, remainder 0→4)
+  tabhIdx: 0 | 1 | 2 | 3; // Hadath remainder (0→Earth, 1→Fire, 2→Water, 3→Air) - authentic mapping
+  element: ElementData;   // Ṭabʿ (Element from hadath mapping)
   burjIdx: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   burj: BurjData;         // Burj (Zodiac from ÷ 12, remainder 0→12)
   hourIndex: number;      // Planetary hour # (1-7)
@@ -719,6 +719,54 @@ function abjadTotalWithMother(
  * Personal Name = WHO you are (internal identity)
  * Mother's Name = WHAT surrounds you (external influences)
  */
+// Helper function to convert authentic hadath element to ElementData format
+function getElementFromHadath(kabir: number): ElementData {
+  const hadath = hadathRemainder(kabir);
+  const elementName = hadathToElement(hadath);
+  
+  // Map authentic element names to ElementData (using index 1-4 for data lookup)
+  const elementMap: Record<string, ElementData> = {
+    'Fire': {
+      index: 1,
+      en: 'Fire',
+      fr: 'Feu',
+      ar: 'نار',
+      icon: '🔥',
+      qualityEn: 'Hot & Dry',
+      qualityFr: 'Chaud & sec',
+    },
+    'Water': {
+      index: 2,
+      en: 'Water',
+      fr: 'Eau',
+      ar: 'ماء',
+      icon: '💧',
+      qualityEn: 'Cold & Moist',
+      qualityFr: 'Froid & humide',
+    },
+    'Air': {
+      index: 3,
+      en: 'Air',
+      fr: 'Air',
+      ar: 'هواء',
+      icon: '🌬️',
+      qualityEn: 'Hot & Moist',
+      qualityFr: 'Chaud & humide',
+    },
+    'Earth': {
+      index: 4,
+      en: 'Earth',
+      fr: 'Terre',
+      ar: 'تراب',
+      icon: '🌍',
+      qualityEn: 'Cold & Dry',
+      qualityFr: 'Froid & sec',
+    },
+  };
+  
+  return elementMap[elementName];
+}
+
 export function buildDestiny(
   personName: string,
   motherName?: string,
@@ -731,9 +779,9 @@ export function buildDestiny(
   // Digital root (Ṣaghīr) - person's essence
   const saghir = digitalRoot(personKabir);
   
-  // Ṭabʿ (Element) = personKabir ÷ 4, remainder 0 → 4 (Earth)
-  const tabhIdx = modIndex(personKabir, 4) as ElementKey;
-  const element = ELEMENTS[tabhIdx];
+  // Ṭabʿ (Element) - Uses authentic hadath mapping (0→Earth, 1→Fire, 2→Water, 3→Air)
+  const element = getElementFromHadath(personKabir);
+  const hadath = hadathRemainder(personKabir); // Store hadath for return value
   
   // Burj (Zodiac) = personKabir ÷ 12, remainder 0 → 12 (Pisces)
   const burjIdx = modIndex(personKabir, 12) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
@@ -744,11 +792,11 @@ export function buildDestiny(
   
   // ✅ INHERITED INFLUENCES (when mother's name provided)
   // Calculate expression (person's element alone) - same as main element
-  const expression = ELEMENTS[modIndex(personKabir, 4) as ElementKey];
+  const expression = getElementFromHadath(personKabir);
   
   // Calculate foundation (mother's element, if provided)
   const foundation = (motherName && motherName.trim() !== '') 
-    ? ELEMENTS[modIndex(motherKabir, 4) as ElementKey]
+    ? getElementFromHadath(motherKabir)
     : undefined;
   
   // Calculate element distribution for color resonance (from person's name letters)
@@ -780,7 +828,7 @@ export function buildDestiny(
     motherKabir,
     totalKabir,
     saghir,
-    tabhIdx,
+    tabhIdx: hadath, // Hadath remainder (0-3) for authentic element mapping
     element,
     burjIdx,
     burj,
