@@ -1007,10 +1007,8 @@ export default function AsrarEveryday() {
 
               {/* Mobile Controls */}
               <div className="flex items-center gap-2 flex-shrink-0">
-                {/* Language Toggle - hidden on very small screens */}
-                <div className="hidden xs:block">
-                  <LanguageToggle />
-                </div>
+                {/* Language Toggle */}
+                <LanguageToggle />
 
                 {/* History Button */}
                 <button
