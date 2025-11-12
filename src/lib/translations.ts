@@ -401,6 +401,14 @@ export const translations = {
       quranicConnection: "Quranic Connection",
       weeklyActions: "Weekly Action Steps",
       shadowToAvoid: "Main Pattern to Watch",
+      
+      // Phase 2 Enhancements
+      quranicWisdom: "Quranic Wisdom & Divine Attributes",
+      quranicWisdomDesc: "Discover how your Life Path connects to sacred verses and divine names:",
+      verse: "Quranic Verse",
+      divineAttribute: "Divine Attribute (Asma ul-Husna)",
+      spiritualMeaning: "Spiritual Meaning for Your Path",
+      dailyPractice: "Daily Spiritual Practice",
     },
 
     // Compatibility
@@ -2562,6 +2570,14 @@ WITH this knowledge, they understand: "We're both trying to feel safe×just in d
       quranicConnection: "Connexion Coranique",
       weeklyActions: "Actions Hebdomadaires",
       shadowToAvoid: "Motif Principal à Surveiller",
+      
+      // Améliorations Phase 2
+      quranicWisdom: "Sagesse Coranique et Attributs Divins",
+      quranicWisdomDesc: "Découvrez comment votre Chemin de Vie se connecte aux versets sacrés et aux noms divins :",
+      verse: "Verset Coranique",
+      divineAttribute: "Attribut Divin (Asma ul-Husna)",
+      spiritualMeaning: "Signification Spirituelle pour Votre Chemin",
+      dailyPractice: "Pratique Spirituelle Quotidienne",
     },
 
     // Ilm Huruf Panel

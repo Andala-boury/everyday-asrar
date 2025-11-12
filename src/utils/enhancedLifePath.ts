@@ -1703,6 +1703,1297 @@ const PRACTICAL_GUIDANCE: Record<number, PracticalGuidance> = {
   }
 };
 
+// ============================================================================
+// PHASE 2: Quranic Connections
+// ============================================================================
+
+interface QuranicConnection {
+  verse: { en: string; fr: string; arabic: string };
+  reference: string;
+  divineAttribute: { en: string; fr: string; arabic: string };
+  spiritualMeaning: { en: string; fr: string };
+  dailyPractice: { en: string; fr: string };
+}
+
+const QURANIC_CONNECTIONS: Record<number, QuranicConnection> = {
+  1: {
+    verse: {
+      en: `Say: He is Allah, the One and Only`,
+      fr: `Dis: Il est Allah, l'Unique`,
+      arabic: `قُلْ هُوَ اللَّهُ أَحَدٌ`
+    },
+    reference: "Surah Al-Ikhlas 112:1",
+    divineAttribute: {
+      en: "Al-Ahad (The One)",
+      fr: "Al-Ahad (L'Unique)",
+      arabic: "الأحد"
+    },
+    spiritualMeaning: {
+      en: `Life Path 1 embodies divine unity and singularity. Like Allah being Al-Ahad, you're called to stand independently in your truth and lead with authentic individuality.`,
+      fr: `Le Chemin de Vie 1 incarne l'unité et la singularité divines. Comme Allah étant Al-Ahad, vous êtes appelé à vous tenir indépendamment dans votre vérité et à diriger avec une individualité authentique.`
+    },
+    dailyPractice: {
+      en: `Recite Surah Al-Ikhlas 3 times after Fajr prayer to strengthen your connection to divine oneness and individual purpose.`,
+      fr: `Récitez la Sourate Al-Ikhlas 3 fois après la prière du Fajr pour renforcer votre connexion à l'unicité divine et votre but individuel.`
+    }
+  },
+  2: {
+    verse: {
+      en: `And We have enjoined upon man goodness to his parents`,
+      fr: `Et Nous avons enjoint à l'homme la bonté envers ses parents`,
+      arabic: `وَوَصَّيْنَا الْإِنسَانَ بِوَالِدَيْهِ إِحْسَانًا`
+    },
+    reference: "Surah Al-Ahqaf 46:15",
+    divineAttribute: {
+      en: "Al-Latif (The Subtle, The Kind)",
+      fr: "Al-Latif (Le Subtil, Le Bienveillant)",
+      arabic: "اللطيف"
+    },
+    spiritualMeaning: {
+      en: `Life Path 2 reflects divine gentleness and relational harmony. Like Al-Latif, you work through subtle kindness, diplomacy, and nurturing connections between people.`,
+      fr: `Le Chemin de Vie 2 reflète la douceur divine et l'harmonie relationnelle. Comme Al-Latif, vous travaillez à travers la gentillesse subtile, la diplomatie et l'entretien des connexions entre les gens.`
+    },
+    dailyPractice: {
+      en: `Recite "Ya Latif" 129 times after Asr prayer to cultivate divine gentleness in your relationships and mediation work.`,
+      fr: `Récitez "Ya Latif" 129 fois après la prière d'Asr pour cultiver la douceur divine dans vos relations et votre travail de médiation.`
+    }
+  },
+  3: {
+    verse: {
+      en: `So relate the stories, perhaps they will reflect`,
+      fr: `Raconte donc les récits, peut-être réfléchiront-ils`,
+      arabic: `فَاقْصُصِ الْقَصَصَ لَعَلَّهُمْ يَتَفَكَّرُونَ`
+    },
+    reference: "Surah Al-A'raf 7:176",
+    divineAttribute: {
+      en: "Al-Khabir (The All-Aware, The Well-Informed)",
+      fr: "Al-Khabir (Le Parfaitement Connaisseur)",
+      arabic: "الخبير"
+    },
+    spiritualMeaning: {
+      en: `Life Path 3 channels divine expression through creative communication. Like Al-Khabir, you're gifted with awareness that must be shared through stories, art, and joyful expression.`,
+      fr: `Le Chemin de Vie 3 canalise l'expression divine à travers la communication créative. Comme Al-Khabir, vous êtes doté d'une conscience qui doit être partagée à travers des histoires, l'art et l'expression joyeuse.`
+    },
+    dailyPractice: {
+      en: `After Maghrib, reflect on one story from the Quran and how it relates to your creative expression today.`,
+      fr: `Après le Maghrib, réfléchissez à une histoire du Coran et comment elle se rapporte à votre expression créative aujourd'hui.`
+    }
+  },
+  4: {
+    verse: {
+      en: `And We have made the heaven a guarded canopy`,
+      fr: `Et Nous avons fait du ciel un toit protégé`,
+      arabic: `وَجَعَلْنَا السَّمَاءَ سَقْفًا مَّحْفُوظًا`
+    },
+    reference: "Surah Al-Anbiya 21:32",
+    divineAttribute: {
+      en: "Al-Hafiz (The Preserver, The Guardian)",
+      fr: "Al-Hafiz (Le Préservateur, Le Gardien)",
+      arabic: "الحفيظ"
+    },
+    spiritualMeaning: {
+      en: `Life Path 4 embodies divine structure and preservation. Like Al-Hafiz, you build stable foundations, create order, and guard what is sacred through disciplined work.`,
+      fr: `Le Chemin de Vie 4 incarne la structure divine et la préservation. Comme Al-Hafiz, vous construisez des fondations stables, créez de l'ordre et gardez ce qui est sacré par un travail discipliné.`
+    },
+    dailyPractice: {
+      en: `Perform your 5 daily prayers at their exact times to embody divine order and structure in your spiritual practice.`,
+      fr: `Effectuez vos 5 prières quotidiennes à leurs heures exactes pour incarner l'ordre divin et la structure dans votre pratique spirituelle.`
+    }
+  },
+  5: {
+    verse: {
+      en: `And We have created you in pairs`,
+      fr: `Et Nous vous avons créés en couples`,
+      arabic: `وَخَلَقْنَاكُمْ أَزْوَاجًا`
+    },
+    reference: "Surah An-Naba 78:8",
+    divineAttribute: {
+      en: "Al-Musawwir (The Fashioner, The Shaper)",
+      fr: "Al-Musawwir (Le Façonneur, Le Formateur)",
+      arabic: "المصور"
+    },
+    spiritualMeaning: {
+      en: `Life Path 5 reflects divine creativity and adaptability. Like Al-Musawwir, you shape-shift through experiences, exploring the diverse forms of creation with freedom and curiosity.`,
+      fr: `Le Chemin de Vie 5 reflète la créativité divine et l'adaptabilité. Comme Al-Musawwir, vous vous transformez à travers les expériences, explorant les formes diverses de la création avec liberté et curiosité.`
+    },
+    dailyPractice: {
+      en: `Before traveling or starting new experiences, recite "Bismillah" 5 times to invoke divine guidance through change.`,
+      fr: `Avant de voyager ou de commencer de nouvelles expériences, récitez "Bismillah" 5 fois pour invoquer la guidance divine à travers le changement.`
+    }
+  },
+  6: {
+    verse: {
+      en: `And lower to them the wing of humility out of mercy`,
+      fr: `Et abaisse pour eux l'aile de l'humilité par miséricorde`,
+      arabic: `وَاخْفِضْ لَهُمَا جَنَاحَ الذُّلِّ مِنَ الرَّحْمَةِ`
+    },
+    reference: "Surah Al-Isra 17:24",
+    divineAttribute: {
+      en: "Ar-Rahman (The Most Merciful)",
+      fr: "Ar-Rahman (Le Tout Miséricordieux)",
+      arabic: "الرحمن"
+    },
+    spiritualMeaning: {
+      en: `Life Path 6 embodies divine mercy and nurturing. Like Ar-Rahman, you extend unconditional compassion to family, community, and all who seek healing and harmony.`,
+      fr: `Le Chemin de Vie 6 incarne la miséricorde divine et le soin. Comme Ar-Rahman, vous étendez une compassion inconditionnelle à la famille, la communauté et tous ceux qui cherchent la guérison et l'harmonie.`
+    },
+    dailyPractice: {
+      en: `Begin each day by reciting "Bismillah Ar-Rahman Ar-Rahim" and setting an intention to serve your family or community with mercy.`,
+      fr: `Commencez chaque jour en récitant "Bismillah Ar-Rahman Ar-Rahim" et en définissant une intention de servir votre famille ou communauté avec miséricorde.`
+    }
+  },
+  7: {
+    verse: {
+      en: `Indeed, in the creation of the heavens and earth are signs for those of understanding`,
+      fr: `Certes, dans la création des cieux et de la terre, il y a des signes pour les gens doués d'intelligence`,
+      arabic: `إِنَّ فِي خَلْقِ السَّمَاوَاتِ وَالْأَرْضِ لَآيَاتٍ لِّأُولِي الْأَلْبَابِ`
+    },
+    reference: "Surah Ali 'Imran 3:190",
+    divineAttribute: {
+      en: "Al-Hakim (The Wise)",
+      fr: "Al-Hakim (Le Sage)",
+      arabic: "الحكيم"
+    },
+    spiritualMeaning: {
+      en: `Life Path 7 seeks divine wisdom through contemplation. Like Al-Hakim, you're called to study the signs, dive deep into mysteries, and uncover sacred knowledge through spiritual inquiry.`,
+      fr: `Le Chemin de Vie 7 cherche la sagesse divine à travers la contemplation. Comme Al-Hakim, vous êtes appelé à étudier les signes, plonger dans les mystères et découvrir la connaissance sacrée par l'enquête spirituelle.`
+    },
+    dailyPractice: {
+      en: `Spend 7 minutes after Fajr in silent contemplation (muraqaba) reflecting on the signs of Allah in creation.`,
+      fr: `Passez 7 minutes après le Fajr en contemplation silencieuse (muraqaba) réfléchissant sur les signes d'Allah dans la création.`
+    }
+  },
+  8: {
+    verse: {
+      en: `And to Allah belongs the dominion of the heavens and the earth`,
+      fr: `Et à Allah appartient le royaume des cieux et de la terre`,
+      arabic: `وَلِلَّهِ مُلْكُ السَّمَاوَاتِ وَالْأَرْضِ`
+    },
+    reference: "Surah Ali 'Imran 3:189",
+    divineAttribute: {
+      en: "Al-Malik (The Sovereign, The King)",
+      fr: "Al-Malik (Le Souverain, Le Roi)",
+      arabic: "الملك"
+    },
+    spiritualMeaning: {
+      en: `Life Path 8 manifests divine authority and abundance. Like Al-Malik, you're entrusted with power, resources, and leadership to establish justice and prosperity in the material realm.`,
+      fr: `Le Chemin de Vie 8 manifeste l'autorité divine et l'abondance. Comme Al-Malik, vous êtes investi de pouvoir, de ressources et de leadership pour établir la justice et la prospérité dans le domaine matériel.`
+    },
+    dailyPractice: {
+      en: `Recite "Ya Malik" 90 times on Fridays to align your material success with divine sovereignty and ethical leadership.`,
+      fr: `Récitez "Ya Malik" 90 fois le vendredi pour aligner votre succès matériel avec la souveraineté divine et le leadership éthique.`
+    }
+  },
+  9: {
+    verse: {
+      en: `And spend in the way of Allah and do not throw yourselves into destruction`,
+      fr: `Et dépensez dans le chemin d'Allah et ne vous jetez pas de vos propres mains dans la destruction`,
+      arabic: `وَأَنفِقُوا فِي سَبِيلِ اللَّهِ وَلَا تُلْقُوا بِأَيْدِيكُمْ إِلَى التَّهْلُكَةِ`
+    },
+    reference: "Surah Al-Baqarah 2:195",
+    divineAttribute: {
+      en: "Al-Karim (The Generous, The Bountiful)",
+      fr: "Al-Karim (Le Généreux, Le Noble)",
+      arabic: "الكريم"
+    },
+    spiritualMeaning: {
+      en: `Life Path 9 embodies divine generosity and completion. Like Al-Karim, you're called to give selflessly, serve humanity, and complete karmic cycles through compassionate service.`,
+      fr: `Le Chemin de Vie 9 incarne la générosité divine et l'achèvement. Comme Al-Karim, vous êtes appelé à donner sans ego, servir l'humanité et compléter les cycles karmiques par un service compatissant.`
+    },
+    dailyPractice: {
+      en: `Give charity (sadaqah) every day, even if small, and recite "Alhamdulillah" 9 times to embody divine generosity.`,
+      fr: `Donnez la charité (sadaqah) chaque jour, même petite, et récitez "Alhamdulillah" 9 fois pour incarner la générosité divine.`
+    }
+  },
+  11: {
+    verse: {
+      en: `Allah is the Light of the heavens and the earth`,
+      fr: `Allah est la Lumière des cieux et de la terre`,
+      arabic: `اللَّهُ نُورُ السَّمَاوَاتِ وَالْأَرْضِ`
+    },
+    reference: "Surah An-Nur 24:35",
+    divineAttribute: {
+      en: "An-Nur (The Light)",
+      fr: "An-Nur (La Lumière)",
+      arabic: "النور"
+    },
+    spiritualMeaning: {
+      en: `Master Number 11 channels divine illumination. Like An-Nur, you're a spiritual lighthouse meant to inspire, uplift, and guide others toward enlightenment through your heightened intuition.`,
+      fr: `Le Nombre Maître 11 canalise l'illumination divine. Comme An-Nur, vous êtes un phare spirituel destiné à inspirer, élever et guider les autres vers l'illumination par votre intuition élevée.`
+    },
+    dailyPractice: {
+      en: `Recite Ayat an-Nur (24:35) during Tahajjud prayer to strengthen your connection to divine light and spiritual vision.`,
+      fr: `Récitez Ayat an-Nur (24:35) pendant la prière de Tahajjud pour renforcer votre connexion à la lumière divine et la vision spirituelle.`
+    }
+  },
+  22: {
+    verse: {
+      en: `And We made from water every living thing`,
+      fr: `Et Nous avons fait de l'eau toute chose vivante`,
+      arabic: `وَجَعَلْنَا مِنَ الْمَاءِ كُلَّ شَيْءٍ حَيٍّ`
+    },
+    reference: "Surah Al-Anbiya 21:30",
+    divineAttribute: {
+      en: "Al-Bani (The Builder, The Architect)",
+      fr: "Al-Bani (Le Constructeur, L'Architecte)",
+      arabic: "الباني"
+    },
+    spiritualMeaning: {
+      en: `Master Number 22 builds divine vision into material reality. Like Al-Bani, you're the master architect capable of constructing systems, institutions, and legacies that serve humanity for generations.`,
+      fr: `Le Nombre Maître 22 construit la vision divine dans la réalité matérielle. Comme Al-Bani, vous êtes l'architecte maître capable de construire des systèmes, institutions et héritages qui servent l'humanité pour des générations.`
+    },
+    dailyPractice: {
+      en: `Before major projects, perform 2 rakat Salat al-Istikhara asking Allah to guide your building and manifestation work.`,
+      fr: `Avant les grands projets, effectuez 2 rakat Salat al-Istikhara demandant à Allah de guider votre travail de construction et de manifestation.`
+    }
+  },
+  33: {
+    verse: {
+      en: `Indeed, Allah is with those who are patient`,
+      fr: `Certes, Allah est avec les endurants`,
+      arabic: `إِنَّ اللَّهَ مَعَ الصَّابِرِينَ`
+    },
+    reference: "Surah Al-Baqarah 2:153",
+    divineAttribute: {
+      en: "As-Sabur (The Patient, The Timeless)",
+      fr: "As-Sabur (Le Patient, L'Intemporel)",
+      arabic: "الصبور"
+    },
+    spiritualMeaning: {
+      en: `Master Number 33 embodies divine compassion and mastery through sacrifice. Like As-Sabur, you're called to serve as a spiritual teacher and healer, patiently uplifting all beings with universal love.`,
+      fr: `Le Nombre Maître 33 incarne la compassion divine et la maîtrise par le sacrifice. Comme As-Sabur, vous êtes appelé à servir comme enseignant spirituel et guérisseur, élevant patiemment tous les êtres avec amour universel.`
+    },
+    dailyPractice: {
+      en: `Practice sabr (patience) consciously in 3 situations daily, and recite "Ya Sabur" 33 times after Isha to embody divine patience in your teaching.`,
+      fr: `Pratiquez le sabr (patience) consciemment dans 3 situations quotidiennes, et récitez "Ya Sabur" 33 fois après l'Isha pour incarner la patience divine dans votre enseignement.`
+    }
+  }
+};
+
+export function getQuranicConnection(lifePathNumber: number, lang: 'en' | 'fr' = 'en') {
+  const data = QURANIC_CONNECTIONS[lifePathNumber];
+  if (!data) return null;
+  
+  return {
+    verse: data.verse[lang],
+    verseArabic: data.verse.arabic,
+    reference: data.reference,
+    divineAttribute: data.divineAttribute[lang],
+    divineAttributeArabic: data.divineAttribute.arabic,
+    spiritualMeaning: data.spiritualMeaning[lang],
+    dailyPractice: data.dailyPractice[lang]
+  };
+}
+
+// ============================================================================
+// PHASE 2: Personal Year & Month Guidance
+// ============================================================================
+
+interface PersonalYearGuidance {
+  theme: { en: string; fr: string };
+  description: { en: string; fr: string };
+  focusAreas: { en: string[]; fr: string[] };
+  monthlyThemes: Record<number, { en: string; fr: string }>;
+  actionSteps: { en: string[]; fr: string[] };
+}
+
+const PERSONAL_YEAR_GUIDANCE: Record<number, PersonalYearGuidance> = {
+  1: {
+    theme: {
+      en: "New Beginnings & Independence",
+      fr: "Nouveaux Départs et Indépendance"
+    },
+    description: {
+      en: "This is your year to start fresh, plant seeds, and initiate new projects. Take the lead and trust your instincts.",
+      fr: "C'est votre année pour recommencer à zéro, planter des graines et initier de nouveaux projets. Prenez les devants et faites confiance à vos instincts."
+    },
+    focusAreas: {
+      en: ["Leadership", "Self-reliance", "New ventures", "Personal goals", "Independence"],
+      fr: ["Leadership", "Autonomie", "Nouvelles entreprises", "Objectifs personnels", "Indépendance"]
+    },
+    monthlyThemes: {
+      1: { en: "Plant the seeds", fr: "Plantez les graines" },
+      2: { en: "Build support", fr: "Construisez le soutien" },
+      3: { en: "Express your vision", fr: "Exprimez votre vision" },
+      4: { en: "Create structure", fr: "Créez la structure" },
+      5: { en: "Adapt and explore", fr: "Adaptez-vous et explorez" },
+      6: { en: "Nurture growth", fr: "Nourrissez la croissance" },
+      7: { en: "Reflect and refine", fr: "Réfléchissez et affinez" },
+      8: { en: "Take action", fr: "Passez à l'action" },
+      9: { en: "Release what doesn't serve", fr: "Libérez ce qui ne sert pas" }
+    },
+    actionSteps: {
+      en: [
+        "Start that project you've been delaying",
+        "Make a bold decision",
+        "Step into a leadership role",
+        "Define clear personal goals",
+        "Trust yourself and take the first step"
+      ],
+      fr: [
+        "Commencez ce projet que vous avez reporté",
+        "Prenez une décision audacieuse",
+        "Assumez un rôle de leader",
+        "Définissez des objectifs personnels clairs",
+        "Faites-vous confiance et faites le premier pas"
+      ]
+    }
+  },
+  2: {
+    theme: {
+      en: "Partnerships & Cooperation",
+      fr: "Partenariats et Coopération"
+    },
+    description: {
+      en: "This year emphasizes relationships, teamwork, and patience. Focus on building bridges and creating harmony.",
+      fr: "Cette année met l'accent sur les relations, le travail d'équipe et la patience. Concentrez-vous sur la construction de ponts et la création d'harmonie."
+    },
+    focusAreas: {
+      en: ["Relationships", "Collaboration", "Patience", "Diplomacy", "Balance"],
+      fr: ["Relations", "Collaboration", "Patience", "Diplomatie", "Équilibre"]
+    },
+    monthlyThemes: {
+      1: { en: "Connect with others", fr: "Connectez-vous avec les autres" },
+      2: { en: "Deepen partnerships", fr: "Approfondissez les partenariats" },
+      3: { en: "Communicate harmoniously", fr: "Communiquez harmonieusement" },
+      4: { en: "Build together", fr: "Construisez ensemble" },
+      5: { en: "Adapt as a team", fr: "Adaptez-vous en équipe" },
+      6: { en: "Serve relationships", fr: "Servez les relations" },
+      7: { en: "Understand deeply", fr: "Comprenez profondément" },
+      8: { en: "Manifest through unity", fr: "Manifestez par l'unité" },
+      9: { en: "Complete collaborations", fr: "Complétez les collaborations" }
+    },
+    actionSteps: {
+      en: [
+        "Strengthen existing relationships",
+        "Seek win-win solutions",
+        "Practice active listening",
+        "Join a partnership or team",
+        "Be patient with timing"
+      ],
+      fr: [
+        "Renforcez les relations existantes",
+        "Recherchez des solutions gagnant-gagnant",
+        "Pratiquez l'écoute active",
+        "Rejoignez un partenariat ou une équipe",
+        "Soyez patient avec le timing"
+      ]
+    }
+  },
+  3: {
+    theme: {
+      en: "Creativity & Self-Expression",
+      fr: "Créativité et Expression de Soi"
+    },
+    description: {
+      en: "This year invites you to create, communicate, and enjoy life. Share your gifts and let your personality shine.",
+      fr: "Cette année vous invite à créer, communiquer et profiter de la vie. Partagez vos dons et laissez briller votre personnalité."
+    },
+    focusAreas: {
+      en: ["Creativity", "Communication", "Joy", "Social life", "Artistic expression"],
+      fr: ["Créativité", "Communication", "Joie", "Vie sociale", "Expression artistique"]
+    },
+    monthlyThemes: {
+      1: { en: "Create something new", fr: "Créez quelque chose de nouveau" },
+      2: { en: "Share your ideas", fr: "Partagez vos idées" },
+      3: { en: "Express fully", fr: "Exprimez-vous pleinement" },
+      4: { en: "Build creative foundations", fr: "Construisez des bases créatives" },
+      5: { en: "Explore diverse expressions", fr: "Explorez diverses expressions" },
+      6: { en: "Create for others", fr: "Créez pour les autres" },
+      7: { en: "Refine your craft", fr: "Affinez votre art" },
+      8: { en: "Manifest creations", fr: "Manifestez les créations" },
+      9: { en: "Complete creative projects", fr: "Complétez les projets créatifs" }
+    },
+    actionSteps: {
+      en: [
+        "Start a creative project",
+        "Speak your truth",
+        "Attend social events",
+        "Take a class in the arts",
+        "Share your work publicly"
+      ],
+      fr: [
+        "Commencez un projet créatif",
+        "Dites votre vérité",
+        "Assistez à des événements sociaux",
+        "Suivez un cours dans les arts",
+        "Partagez votre travail publiquement"
+      ]
+    }
+  },
+  4: {
+    theme: {
+      en: "Building & Discipline",
+      fr: "Construction et Discipline"
+    },
+    description: {
+      en: "This year is about hard work, creating solid foundations, and establishing security. Focus on practical progress.",
+      fr: "Cette année concerne le travail acharné, la création de fondations solides et l'établissement de la sécurité. Concentrez-vous sur le progrès pratique."
+    },
+    focusAreas: {
+      en: ["Work", "Organization", "Foundation", "Security", "Discipline"],
+      fr: ["Travail", "Organisation", "Fondation", "Sécurité", "Discipline"]
+    },
+    monthlyThemes: {
+      1: { en: "Lay the groundwork", fr: "Posez les bases" },
+      2: { en: "Collaborate on systems", fr: "Collaborez sur les systèmes" },
+      3: { en: "Communicate plans", fr: "Communiquez les plans" },
+      4: { en: "Build methodically", fr: "Construisez méthodiquement" },
+      5: { en: "Adjust your approach", fr: "Ajustez votre approche" },
+      6: { en: "Serve through structure", fr: "Servez par la structure" },
+      7: { en: "Perfect the details", fr: "Perfectionnez les détails" },
+      8: { en: "Harvest results", fr: "Récoltez les résultats" },
+      9: { en: "Complete foundations", fr: "Complétez les fondations" }
+    },
+    actionSteps: {
+      en: [
+        "Create a detailed plan",
+        "Establish routines and systems",
+        "Work on long-term goals",
+        "Improve health and finances",
+        "Stay disciplined and focused"
+      ],
+      fr: [
+        "Créez un plan détaillé",
+        "Établissez des routines et des systèmes",
+        "Travaillez sur des objectifs à long terme",
+        "Améliorez la santé et les finances",
+        "Restez discipliné et concentré"
+      ]
+    }
+  },
+  5: {
+    theme: {
+      en: "Freedom & Change",
+      fr: "Liberté et Changement"
+    },
+    description: {
+      en: "This year brings unexpected changes, travel, and new experiences. Embrace variety and stay flexible.",
+      fr: "Cette année apporte des changements inattendus, des voyages et de nouvelles expériences. Embrassez la variété et restez flexible."
+    },
+    focusAreas: {
+      en: ["Change", "Freedom", "Travel", "Adventure", "Flexibility"],
+      fr: ["Changement", "Liberté", "Voyage", "Aventure", "Flexibilité"]
+    },
+    monthlyThemes: {
+      1: { en: "Initiate change", fr: "Initiez le changement" },
+      2: { en: "Navigate transitions together", fr: "Naviguez les transitions ensemble" },
+      3: { en: "Express your freedom", fr: "Exprimez votre liberté" },
+      4: { en: "Create flexible structures", fr: "Créez des structures flexibles" },
+      5: { en: "Embrace full freedom", fr: "Embrassez la pleine liberté" },
+      6: { en: "Balance freedom with responsibility", fr: "Équilibrez liberté et responsabilité" },
+      7: { en: "Understand the changes", fr: "Comprenez les changements" },
+      8: { en: "Channel change productively", fr: "Canalisez le changement productivement" },
+      9: { en: "Release what's complete", fr: "Libérez ce qui est complet" }
+    },
+    actionSteps: {
+      en: [
+        "Try something completely new",
+        "Travel or explore",
+        "Break old patterns",
+        "Meet new people",
+        "Stay open to unexpected opportunities"
+      ],
+      fr: [
+        "Essayez quelque chose de complètement nouveau",
+        "Voyagez ou explorez",
+        "Brisez les anciens schémas",
+        "Rencontrez de nouvelles personnes",
+        "Restez ouvert aux opportunités inattendues"
+      ]
+    }
+  },
+  6: {
+    theme: {
+      en: "Responsibility & Service",
+      fr: "Responsabilité et Service"
+    },
+    description: {
+      en: "This year focuses on family, home, and caring for others. Step into responsibilities with love.",
+      fr: "Cette année se concentre sur la famille, la maison et prendre soin des autres. Assumez les responsabilités avec amour."
+    },
+    focusAreas: {
+      en: ["Family", "Home", "Service", "Responsibility", "Love"],
+      fr: ["Famille", "Maison", "Service", "Responsabilité", "Amour"]
+    },
+    monthlyThemes: {
+      1: { en: "Start caring initiatives", fr: "Démarrez des initiatives de soin" },
+      2: { en: "Harmonize relationships", fr: "Harmonisez les relations" },
+      3: { en: "Express love", fr: "Exprimez l'amour" },
+      4: { en: "Build a stable home", fr: "Construisez un foyer stable" },
+      5: { en: "Balance duty and freedom", fr: "Équilibrez devoir et liberté" },
+      6: { en: "Serve fully", fr: "Servez pleinement" },
+      7: { en: "Reflect on service", fr: "Réfléchissez sur le service" },
+      8: { en: "Manifest through caring", fr: "Manifestez par le soin" },
+      9: { en: "Complete family matters", fr: "Complétez les affaires familiales" }
+    },
+    actionSteps: {
+      en: [
+        "Strengthen family bonds",
+        "Create a nurturing home",
+        "Help those in need",
+        "Take on more responsibility",
+        "Practice unconditional love"
+      ],
+      fr: [
+        "Renforcez les liens familiaux",
+        "Créez un foyer nourrissant",
+        "Aidez ceux dans le besoin",
+        "Assumez plus de responsabilités",
+        "Pratiquez l'amour inconditionnel"
+      ]
+    }
+  },
+  7: {
+    theme: {
+      en: "Reflection & Inner Growth",
+      fr: "Réflexion et Croissance Intérieure"
+    },
+    description: {
+      en: "This year calls for introspection, study, and spiritual development. Go inward to find answers.",
+      fr: "Cette année appelle à l'introspection, à l'étude et au développement spirituel. Allez à l'intérieur pour trouver des réponses."
+    },
+    focusAreas: {
+      en: ["Spirituality", "Study", "Solitude", "Wisdom", "Inner work"],
+      fr: ["Spiritualité", "Étude", "Solitude", "Sagesse", "Travail intérieur"]
+    },
+    monthlyThemes: {
+      1: { en: "Begin inner journey", fr: "Commencez le voyage intérieur" },
+      2: { en: "Seek deeper connections", fr: "Recherchez des connexions plus profondes" },
+      3: { en: "Express your insights", fr: "Exprimez vos idées" },
+      4: { en: "Build spiritual practices", fr: "Construisez des pratiques spirituelles" },
+      5: { en: "Explore diverse wisdom", fr: "Explorez diverses sagesses" },
+      6: { en: "Serve through wisdom", fr: "Servez par la sagesse" },
+      7: { en: "Dive deep within", fr: "Plongez profondément" },
+      8: { en: "Apply your knowledge", fr: "Appliquez vos connaissances" },
+      9: { en: "Release old beliefs", fr: "Libérez les anciennes croyances" }
+    },
+    actionSteps: {
+      en: [
+        "Meditate or pray daily",
+        "Study a spiritual topic",
+        "Spend time in nature alone",
+        "Journal your insights",
+        "Trust your intuition"
+      ],
+      fr: [
+        "Méditez ou priez quotidiennement",
+        "Étudiez un sujet spirituel",
+        "Passez du temps seul dans la nature",
+        "Tenez un journal de vos idées",
+        "Faites confiance à votre intuition"
+      ]
+    }
+  },
+  8: {
+    theme: {
+      en: "Power & Manifestation",
+      fr: "Pouvoir et Manifestation"
+    },
+    description: {
+      en: "This year is about achieving goals, building wealth, and stepping into your power. Think big and take action.",
+      fr: "Cette année concerne l'atteinte d'objectifs, la construction de richesse et l'appropriation de votre pouvoir. Pensez grand et passez à l'action."
+    },
+    focusAreas: {
+      en: ["Achievement", "Finance", "Power", "Success", "Authority"],
+      fr: ["Réussite", "Finance", "Pouvoir", "Succès", "Autorité"]
+    },
+    monthlyThemes: {
+      1: { en: "Initiate big goals", fr: "Initiez de grands objectifs" },
+      2: { en: "Build powerful alliances", fr: "Construisez des alliances puissantes" },
+      3: { en: "Communicate your vision", fr: "Communiquez votre vision" },
+      4: { en: "Create wealth foundations", fr: "Créez des bases de richesse" },
+      5: { en: "Adapt your strategy", fr: "Adaptez votre stratégie" },
+      6: { en: "Lead with integrity", fr: "Dirigez avec intégrité" },
+      7: { en: "Plan strategically", fr: "Planifiez stratégiquement" },
+      8: { en: "Manifest abundance", fr: "Manifestez l'abondance" },
+      9: { en: "Complete major projects", fr: "Complétez les projets majeurs" }
+    },
+    actionSteps: {
+      en: [
+        "Set ambitious financial goals",
+        "Invest in yourself or business",
+        "Step into leadership",
+        "Negotiate for what you deserve",
+        "Take calculated risks"
+      ],
+      fr: [
+        "Fixez des objectifs financiers ambitieux",
+        "Investissez en vous ou votre entreprise",
+        "Assumez le leadership",
+        "Négociez ce que vous méritez",
+        "Prenez des risques calculés"
+      ]
+    }
+  },
+  9: {
+    theme: {
+      en: "Completion & Humanitarianism",
+      fr: "Achèvement et Humanitarisme"
+    },
+    description: {
+      en: "This year brings endings, release, and compassion for all. Let go of what's complete and serve the world.",
+      fr: "Cette année apporte des fins, la libération et la compassion pour tous. Lâchez prise sur ce qui est complet et servez le monde."
+    },
+    focusAreas: {
+      en: ["Completion", "Release", "Compassion", "Service", "Forgiveness"],
+      fr: ["Achèvement", "Libération", "Compassion", "Service", "Pardon"]
+    },
+    monthlyThemes: {
+      1: { en: "Begin completing cycles", fr: "Commencez à compléter les cycles" },
+      2: { en: "Release relationships gently", fr: "Libérez les relations doucement" },
+      3: { en: "Express forgiveness", fr: "Exprimez le pardon" },
+      4: { en: "Dismantle old structures", fr: "Démanteler les anciennes structures" },
+      5: { en: "Let go freely", fr: "Lâchez prise librement" },
+      6: { en: "Serve humanity", fr: "Servez l'humanité" },
+      7: { en: "Understand endings", fr: "Comprenez les fins" },
+      8: { en: "Release attachment", fr: "Libérez l'attachement" },
+      9: { en: "Complete and prepare for new", fr: "Complétez et préparez le nouveau" }
+    },
+    actionSteps: {
+      en: [
+        "Forgive and let go",
+        "Donate or declutter",
+        "Serve a cause greater than yourself",
+        "Complete unfinished projects",
+        "Prepare for a new 9-year cycle"
+      ],
+      fr: [
+        "Pardonnez et lâchez prise",
+        "Donnez ou désencombrez",
+        "Servez une cause plus grande que vous",
+        "Complétez les projets inachevés",
+        "Préparez-vous pour un nouveau cycle de 9 ans"
+      ]
+    }
+  }
+};
+
+export function getPersonalYearGuidance(personalYearNumber: number, lang: 'en' | 'fr' = 'en') {
+  const data = PERSONAL_YEAR_GUIDANCE[personalYearNumber];
+  if (!data) return null;
+  
+  return {
+    theme: data.theme[lang],
+    description: data.description[lang],
+    focusAreas: data.focusAreas[lang],
+    monthlyThemes: Object.fromEntries(
+      Object.entries(data.monthlyThemes).map(([month, theme]) => [
+        month,
+        theme[lang]
+      ])
+    ),
+    actionSteps: data.actionSteps[lang]
+  };
+}
+
+// ============================================================================
+// PHASE 2: Karmic Debt Numbers
+// ============================================================================
+
+interface KarmicDebtData {
+  debtNumber: number;
+  reducesTo: number;
+  pastLifePattern: { en: string; fr: string };
+  thisLifeChallenge: { en: string; fr: string };
+  lessonsToLearn: { en: string[]; fr: string[] };
+  transformationPath: { en: string; fr: string };
+  spiritualPractice: { en: string; fr: string };
+  warningSign: { en: string; fr: string };
+  masteryGift: { en: string; fr: string };
+}
+
+const KARMIC_DEBT_NUMBERS: Record<number, KarmicDebtData> = {
+  13: {
+    debtNumber: 13,
+    reducesTo: 4,
+    pastLifePattern: {
+      en: `In past lives, you may have been lazy, avoided responsibility, or manipulated others to do your work. You took shortcuts and left projects incomplete.`,
+      fr: `Dans les vies passées, vous avez peut-être été paresseux, évité les responsabilités ou manipulé les autres pour faire votre travail. Vous avez pris des raccourcis et laissé des projets inachevés.`
+    },
+    thisLifeChallenge: {
+      en: `Nothing comes easy. You must work harder than others for the same results. Obstacles test your commitment. Laziness or negativity brings immediate consequences.`,
+      fr: `Rien ne vient facilement. Vous devez travailler plus dur que les autres pour les mêmes résultats. Les obstacles testent votre engagement. La paresse ou la négativité apporte des conséquences immédiates.`
+    },
+    lessonsToLearn: {
+      en: [
+        "Develop unwavering discipline and work ethic",
+        "Complete what you start, no matter how long it takes",
+        "Take full responsibility without blaming others",
+        "Transform obstacles into stepping stones",
+        "Maintain optimism through challenges"
+      ],
+      fr: [
+        "Développer une discipline et une éthique de travail inébranlables",
+        "Terminer ce que vous commencez, peu importe le temps que cela prend",
+        "Assumer l'entière responsabilité sans blâmer les autres",
+        "Transformer les obstacles en tremplins",
+        "Maintenir l'optimisme à travers les défis"
+      ]
+    },
+    transformationPath: {
+      en: `Once mastered, Karmic Debt 13/4 becomes the most resilient builder. Your struggles become your strength. You inspire others by showing that persistence conquers all.`,
+      fr: `Une fois maîtrisé, la Dette Karmique 13/4 devient le bâtisseur le plus résilient. Vos luttes deviennent votre force. Vous inspirez les autres en montrant que la persévérance conquiert tout.`
+    },
+    spiritualPractice: {
+      en: `Perform Salat al-Tahajjud (night prayer) regularly. The discipline of waking before dawn mirrors your karmic lesson of self-mastery through consistent effort.`,
+      fr: `Effectuez Salat al-Tahajjud (prière de nuit) régulièrement. La discipline de se réveiller avant l'aube reflète votre leçon karmique de maîtrise de soi par l'effort constant.`
+    },
+    warningSign: {
+      en: `When you feel like giving up or cutting corners, remember: this is your karmic test. Push through with integrity.`,
+      fr: `Quand vous avez envie d'abandonner ou de prendre des raccourcis, rappelez-vous: c'est votre test karmique. Persévérez avec intégrité.`
+    },
+    masteryGift: {
+      en: `Unshakeable foundation-building. You become the person others turn to when the going gets tough because you've mastered endurance.`,
+      fr: `Construction de fondations inébranlables. Vous devenez la personne vers qui les autres se tournent quand les choses deviennent difficiles parce que vous avez maîtrisé l'endurance.`
+    }
+  },
+  14: {
+    debtNumber: 14,
+    reducesTo: 5,
+    pastLifePattern: {
+      en: `In previous incarnations, you abused freedom and indulged excessively in physical pleasures, substances, or reckless behavior. You harmed your body and disrespected sacred boundaries.`,
+      fr: `Dans les incarnations précédentes, vous avez abusé de la liberté et vous êtes livré excessivement aux plaisirs physiques, aux substances ou au comportement imprudent. Vous avez nui à votre corps et manqué de respect aux limites sacrées.`
+    },
+    thisLifeChallenge: {
+      en: `You're prone to addiction, restlessness, and self-destructive patterns. Freedom becomes chaos without discipline. Your body is more sensitive to toxins and imbalance.`,
+      fr: `Vous êtes sujet à la dépendance, à l'agitation et aux schémas autodestructeurs. La liberté devient chaos sans discipline. Votre corps est plus sensible aux toxines et au déséquilibre.`
+    },
+    lessonsToLearn: {
+      en: [
+        "Practice moderation in all things",
+        "Respect your body as a sacred trust (amanah)",
+        "Channel restlessness into constructive exploration",
+        "Distinguish true freedom from mere escape",
+        "Commit to one path long enough to see results"
+      ],
+      fr: [
+        "Pratiquer la modération en toutes choses",
+        "Respecter votre corps comme une confiance sacrée (amanah)",
+        "Canaliser l'agitation vers l'exploration constructive",
+        "Distinguer la vraie liberté du simple échappatoire",
+        "S'engager sur un chemin assez longtemps pour voir les résultats"
+      ]
+    },
+    transformationPath: {
+      en: `Mastered 14/5 becomes the adaptable adventurer who finds freedom through discipline. You teach others that true liberation comes from self-control, not indulgence.`,
+      fr: `Le 14/5 maîtrisé devient l'aventurier adaptable qui trouve la liberté par la discipline. Vous enseignez aux autres que la vraie libération vient de la maîtrise de soi, pas de l'indulgence.`
+    },
+    spiritualPractice: {
+      en: `Fast regularly (not just Ramadan) to train your body in discipline. Practice mindful eating and make dua before consuming anything, honoring the body as Allah's trust.`,
+      fr: `Jeûnez régulièrement (pas seulement Ramadan) pour entraîner votre corps à la discipline. Pratiquez l'alimentation consciente et faites des dua avant de consommer quoi que ce soit, honorant le corps comme la confiance d'Allah.`
+    },
+    warningSign: {
+      en: `Notice when "just one more" becomes a pattern. Any time you justify excess, pause and reconnect with balance.`,
+      fr: `Remarquez quand "juste un de plus" devient un modèle. Chaque fois que vous justifiez l'excès, faites une pause et reconnectez-vous avec l'équilibre.`
+    },
+    masteryGift: {
+      en: `Conscious freedom. You show others how to experience life fully without losing themselves, becoming a guide for healthy exploration.`,
+      fr: `Liberté consciente. Vous montrez aux autres comment vivre pleinement sans se perdre, devenant un guide pour l'exploration saine.`
+    }
+  },
+  16: {
+    debtNumber: 16,
+    reducesTo: 7,
+    pastLifePattern: {
+      en: `In past lives, you may have abused spiritual knowledge, engaged in illicit relationships, or misused intimacy and trust. Pride and ego led to your downfall from a position of power.`,
+      fr: `Dans les vies passées, vous avez peut-être abusé de la connaissance spirituelle, vous êtes engagé dans des relations illicites ou avez mal utilisé l'intimité et la confiance. L'orgueil et l'ego ont conduit à votre chute d'une position de pouvoir.`
+    },
+    thisLifeChallenge: {
+      en: `Sudden, unexpected upheavals shatter your illusions. Just when you feel secure, life humbles you. Relationships may involve betrayal or karmic patterns. Your ego must be broken to rebuild on truth.`,
+      fr: `Des bouleversements soudains et inattendus brisent vos illusions. Juste quand vous vous sentez en sécurité, la vie vous humilie. Les relations peuvent impliquer la trahison ou des schémas karmiques. Votre ego doit être brisé pour reconstruire sur la vérité.`
+    },
+    lessonsToLearn: {
+      en: [
+        "Surrender ego and embrace humility",
+        "Welcome sudden changes as spiritual purification",
+        "Rebuild on authentic truth, not illusion",
+        "Honor sacred boundaries in relationships",
+        "Transform pride into divine devotion"
+      ],
+      fr: [
+        "Abandonner l'ego et embrasser l'humilité",
+        "Accueillir les changements soudains comme purification spirituelle",
+        "Reconstruire sur la vérité authentique, pas l'illusion",
+        "Honorer les limites sacrées dans les relations",
+        "Transformer l'orgueil en dévotion divine"
+      ]
+    },
+    transformationPath: {
+      en: `Mastered 16/7 becomes the enlightened mystic. Your breakdowns become breakthroughs. You gain profound spiritual wisdom through surrender and emerge as a humble spiritual teacher.`,
+      fr: `Le 16/7 maîtrisé devient le mystique éclairé. Vos effondrements deviennent des percées. Vous gagnez une profonde sagesse spirituelle par l'abandon et émergez comme un humble enseignant spirituel.`
+    },
+    spiritualPractice: {
+      en: `Perform sujud (prostration) outside of prayer as an act of surrender. Recite "La hawla wa la quwwata illa billah" (There is no power except with Allah) to dissolve ego.`,
+      fr: `Effectuez sujud (prosternation) en dehors de la prière comme acte d'abandon. Récitez "La hawla wa la quwwata illa billah" (Il n'y a de pouvoir qu'avec Allah) pour dissoudre l'ego.`
+    },
+    warningSign: {
+      en: `When you feel "too comfortable" or your ego inflates, expect a humbling lesson. Stay grounded in spiritual practice before the tower falls.`,
+      fr: `Quand vous vous sentez "trop à l'aise" ou que votre ego gonfle, attendez-vous à une leçon d'humilité. Restez ancré dans la pratique spirituelle avant que la tour ne s'effondre.`
+    },
+    masteryGift: {
+      en: `Divine humility and spiritual depth. You become unshakeable because you've learned that ego is the only thing that can be destroyed, and your true self is eternal.`,
+      fr: `Humilité divine et profondeur spirituelle. Vous devenez inébranlable parce que vous avez appris que l'ego est la seule chose qui peut être détruite, et votre vrai soi est éternel.`
+    }
+  },
+  19: {
+    debtNumber: 19,
+    reducesTo: 1,
+    pastLifePattern: {
+      en: `In previous lives, you abused power and position. You were likely a tyrant, dictator, or selfish leader who manipulated others for personal gain and showed no compassion for those beneath you.`,
+      fr: `Dans les vies précédentes, vous avez abusé du pouvoir et de la position. Vous étiez probablement un tyran, un dictateur ou un leader égoïste qui a manipulé les autres pour un gain personnel et n'a montré aucune compassion pour ceux en dessous de vous.`
+    },
+    thisLifeChallenge: {
+      en: `You resist asking for or accepting help from others. Deep fear of being controlled or dependent. You must learn to lead while also being vulnerable and receiving support.`,
+      fr: `Vous résistez à demander ou accepter l'aide des autres. Peur profonde d'être contrôlé ou dépendant. Vous devez apprendre à diriger tout en étant vulnérable et en recevant du soutien.`
+    },
+    lessonsToLearn: {
+      en: [
+        "Balance independence with healthy interdependence",
+        "Lead with compassion, not dominance",
+        "Ask for help without feeling weak",
+        "Give others credit and share power",
+        "Serve others while honoring your own needs"
+      ],
+      fr: [
+        "Équilibrer l'indépendance avec une interdépendance saine",
+        "Diriger avec compassion, pas domination",
+        "Demander de l'aide sans se sentir faible",
+        "Donner du crédit aux autres et partager le pouvoir",
+        "Servir les autres tout en honorant vos propres besoins"
+      ]
+    },
+    transformationPath: {
+      en: `Mastered 19/1 becomes the compassionate pioneer. You lead by empowering others, not controlling them. Your strength inspires while your vulnerability connects.`,
+      fr: `Le 19/1 maîtrisé devient le pionnier compatissant. Vous dirigez en autonomisant les autres, pas en les contrôlant. Votre force inspire tandis que votre vulnérabilité connecte.`
+    },
+    spiritualPractice: {
+      en: `Practice servant leadership. Volunteer to serve in your community, washing dishes at the mosque or helping elders, to dissolve the ego of superiority.`,
+      fr: `Pratiquez le leadership serviteur. Faites du bénévolat pour servir dans votre communauté, laver la vaisselle à la mosquée ou aider les aînés, pour dissoudre l'ego de supériorité.`
+    },
+    warningSign: {
+      en: `When you refuse help or feel superior to others, recognize this as your karmic pattern resurfacing. Consciously choose humility and connection.`,
+      fr: `Quand vous refusez l'aide ou vous sentez supérieur aux autres, reconnaissez cela comme votre modèle karmique qui refait surface. Choisissez consciemment l'humilité et la connexion.`
+    },
+    masteryGift: {
+      en: `Empowered leadership through service. You become a leader who lifts others up, understanding that true power comes from empowering, not dominating.`,
+      fr: `Leadership autonomisant par le service. Vous devenez un leader qui élève les autres, comprenant que le vrai pouvoir vient de l'autonomisation, pas de la domination.`
+    }
+  }
+};
+
+export function getKarmicDebtData(debtNumber: number, lang: 'en' | 'fr' = 'en') {
+  const data = KARMIC_DEBT_NUMBERS[debtNumber];
+  if (!data) return null;
+  
+  return {
+    debtNumber: data.debtNumber,
+    reducesTo: data.reducesTo,
+    pastLifePattern: data.pastLifePattern[lang],
+    thisLifeChallenge: data.thisLifeChallenge[lang],
+    lessonsToLearn: data.lessonsToLearn[lang],
+    transformationPath: data.transformationPath[lang],
+    spiritualPractice: data.spiritualPractice[lang],
+    warningSign: data.warningSign[lang],
+    masteryGift: data.masteryGift[lang]
+  };
+}
+
+// Helper function to detect if a number has karmic debt
+export function hasKarmicDebt(day: number, month: number, year: number): number | null {
+  // Check if birth day is a karmic debt number
+  if ([13, 14, 16, 19].includes(day)) return day;
+  
+  // Check each component for karmic debt patterns
+  const dayReduced = day > 9 ? String(day).split('').reduce((sum, digit) => sum + parseInt(digit), 0) : day;
+  const monthReduced = month > 9 ? String(month).split('').reduce((sum, digit) => sum + parseInt(digit), 0) : month;
+  const yearReduced = String(year).split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+  
+  // Check if any stage shows karmic debt
+  if ([13, 14, 16, 19].includes(dayReduced)) return dayReduced;
+  if ([13, 14, 16, 19].includes(monthReduced)) return monthReduced;
+  if ([13, 14, 16, 19].includes(yearReduced)) return yearReduced;
+  
+  return null;
+}
+
+// ============================================================================
+// PHASE 2: Life Path Compatibility Matrix
+// ============================================================================
+
+type CompatibilityLevel = 'harmonious' | 'challenging' | 'neutral' | 'soulmate' | 'karmic';
+
+interface CompatibilityData {
+  level: CompatibilityLevel;
+  summary: { en: string; fr: string };
+  strengths: { en: string[]; fr: string[] };
+  challenges: { en: string[]; fr: string[] };
+  advice: { en: string; fr: string };
+}
+
+// Compatibility matrix - organized by Life Path number pairs
+const LIFE_PATH_COMPATIBILITY: Record<string, CompatibilityData> = {
+  // Life Path 1 Compatibilities
+  "1-1": {
+    level: 'challenging',
+    summary: {
+      en: "Two strong leaders can clash or inspire each other to greatness.",
+      fr: "Deux leaders forts peuvent s'affronter ou s'inspirer mutuellement vers la grandeur."
+    },
+    strengths: {
+      en: ["Mutual respect for independence", "Both driven and ambitious", "Understand need for autonomy"],
+      fr: ["Respect mutuel pour l'indépendance", "Tous deux motivés et ambitieux", "Comprennent le besoin d'autonomie"]
+    },
+    challenges: {
+      en: ["Power struggles", "Both want to lead", "Ego clashes"],
+      fr: ["Luttes de pouvoir", "Tous deux veulent diriger", "Chocs d'ego"]
+    },
+    advice: {
+      en: "Take turns leading. Collaborate on shared projects where each has their domain of authority.",
+      fr: "Alternez pour diriger. Collaborez sur des projets partagés où chacun a son domaine d'autorité."
+    }
+  },
+  "1-2": {
+    level: 'harmonious',
+    summary: {
+      en: "Leader meets diplomat. A natural balance of yin and yang energy.",
+      fr: "Le leader rencontre le diplomate. Un équilibre naturel d'énergie yin et yang."
+    },
+    strengths: {
+      en: ["1 leads, 2 supports gracefully", "Complementary strengths", "2 softens 1's edges"],
+      fr: ["1 dirige, 2 soutient gracieusement", "Forces complémentaires", "2 adoucit les angles de 1"]
+    },
+    challenges: {
+      en: ["1 may dominate", "2 may feel overshadowed", "1 can be insensitive to 2's needs"],
+      fr: ["1 peut dominer", "2 peut se sentir éclipsé", "1 peut être insensible aux besoins de 2"]
+    },
+    advice: {
+      en: "1: Value 2's input and emotional intelligence. 2: Speak up for your needs clearly.",
+      fr: "1: Valorisez l'apport et l'intelligence émotionnelle de 2. 2: Exprimez clairement vos besoins."
+    }
+  },
+  "1-3": {
+    level: 'harmonious',
+    summary: {
+      en: "Dynamic duo! 1's drive meets 3's creativity for exciting partnerships.",
+      fr: "Duo dynamique! La motivation de 1 rencontre la créativité de 3 pour des partenariats passionnants."
+    },
+    strengths: {
+      en: ["High energy together", "3 brings joy to 1's ambitions", "Great for creative projects"],
+      fr: ["Haute énergie ensemble", "3 apporte de la joie aux ambitions de 1", "Excellent pour les projets créatifs"]
+    },
+    challenges: {
+      en: ["3 can be scattered", "1 may find 3 unfocused", "Different work styles"],
+      fr: ["3 peut être dispersé", "1 peut trouver 3 peu concentré", "Styles de travail différents"]
+    },
+    advice: {
+      en: "1: Let 3 bring playfulness to your goals. 3: Match 1's focus when it matters.",
+      fr: "1: Laissez 3 apporter de la légèreté à vos objectifs. 3: Égalez la concentration de 1 quand c'est important."
+    }
+  },
+  "1-5": {
+    level: 'harmonious',
+    summary: {
+      en: "Adventure partners! Both love freedom and new experiences.",
+      fr: "Partenaires d'aventure! Tous deux aiment la liberté et les nouvelles expériences."
+    },
+    strengths: {
+      en: ["Mutual respect for independence", "Exciting and dynamic", "Support each other's growth"],
+      fr: ["Respect mutuel de l'indépendance", "Excitant et dynamique", "Soutiennent la croissance de l'autre"]
+    },
+    challenges: {
+      en: ["Both avoid routine", "Can lack stability", "May grow apart"],
+      fr: ["Tous deux évitent la routine", "Peut manquer de stabilité", "Peuvent s'éloigner"]
+    },
+    advice: {
+      en: "Create shared adventures while maintaining individual pursuits. Schedule quality time.",
+      fr: "Créez des aventures partagées tout en maintenant des poursuites individuelles. Planifiez du temps de qualité."
+    }
+  },
+  "1-9": {
+    level: 'challenging',
+    summary: {
+      en: "Beginning meets ending. 1's self-focus clashes with 9's universal love.",
+      fr: "Le début rencontre la fin. L'auto-concentration de 1 s'oppose à l'amour universel de 9."
+    },
+    strengths: {
+      en: ["9's wisdom guides 1's ambition", "Both are leaders", "Can inspire humanitarian projects"],
+      fr: ["La sagesse de 9 guide l'ambition de 1", "Tous deux sont des leaders", "Peuvent inspirer des projets humanitaires"]
+    },
+    challenges: {
+      en: ["1 is self-focused, 9 is universal", "Different priorities", "9 may find 1 selfish"],
+      fr: ["1 est centré sur soi, 9 est universel", "Priorités différentes", "9 peut trouver 1 égoïste"]
+    },
+    advice: {
+      en: "1: Expand your vision to include service. 9: Allow 1 space for personal ambitions.",
+      fr: "1: Élargissez votre vision pour inclure le service. 9: Accordez à 1 de l'espace pour ses ambitions personnelles."
+    }
+  },
+  "2-2": {
+    level: 'harmonious',
+    summary: {
+      en: "Gentle, supportive partnership built on emotional understanding.",
+      fr: "Partenariat doux et solidaire construit sur la compréhension émotionnelle."
+    },
+    strengths: {
+      en: ["Deep emotional connection", "Mutual sensitivity", "Peaceful harmony"],
+      fr: ["Connexion émotionnelle profonde", "Sensibilité mutuelle", "Harmonie paisible"]
+    },
+    challenges: {
+      en: ["Both avoid conflict", "Lack of direction", "May be too passive"],
+      fr: ["Tous deux évitent le conflit", "Manque de direction", "Peuvent être trop passifs"]
+    },
+    advice: {
+      en: "Take turns being the initiator. Practice healthy conflict resolution together.",
+      fr: "Alternez pour être l'initiateur. Pratiquez ensemble la résolution saine des conflits."
+    }
+  },
+  "2-8": {
+    level: 'soulmate',
+    summary: {
+      en: "Divine balance of material and emotional. Power couple potential!",
+      fr: "Équilibre divin du matériel et de l'émotionnel. Potentiel de couple puissant!"
+    },
+    strengths: {
+      en: ["2 supports 8's ambitions", "8 provides security for 2", "Yin-yang perfection"],
+      fr: ["2 soutient les ambitions de 8", "8 fournit la sécurité pour 2", "Perfection yin-yang"]
+    },
+    challenges: {
+      en: ["8 can be domineering", "2 may feel controlled", "Work-life balance needed"],
+      fr: ["8 peut être autoritaire", "2 peut se sentir contrôlé", "Équilibre travail-vie nécessaire"]
+    },
+    advice: {
+      en: "8: Honor 2's emotional needs. 2: Trust 8's leadership without losing yourself.",
+      fr: "8: Honorez les besoins émotionnels de 2. 2: Faites confiance au leadership de 8 sans vous perdre."
+    }
+  },
+  "3-3": {
+    level: 'harmonious',
+    summary: {
+      en: "Creative explosion! Life is a joyful party with these two.",
+      fr: "Explosion créative! La vie est une fête joyeuse avec ces deux-là."
+    },
+    strengths: {
+      en: ["Endless fun and laughter", "Shared creative vision", "Social butterflies together"],
+      fr: ["Amusement et rires sans fin", "Vision créative partagée", "Papillons sociaux ensemble"]
+    },
+    challenges: {
+      en: ["Lack of discipline", "Financial irresponsibility", "Too scattered"],
+      fr: ["Manque de discipline", "Irresponsabilité financière", "Trop dispersés"]
+    },
+    advice: {
+      en: "Hire a 4 or 8 to handle practical matters. Schedule 'responsibility time' together.",
+      fr: "Engagez un 4 ou 8 pour gérer les questions pratiques. Planifiez ensemble du 'temps de responsabilité'."
+    }
+  },
+  "4-4": {
+    level: 'neutral',
+    summary: {
+      en: "Solid, stable, predictable. Security-focused partnership.",
+      fr: "Solide, stable, prévisible. Partenariat axé sur la sécurité."
+    },
+    strengths: {
+      en: ["Ultimate stability", "Shared values", "Build empire together"],
+      fr: ["Stabilité ultime", "Valeurs partagées", "Construisent un empire ensemble"]
+    },
+    challenges: {
+      en: ["Too much routine", "Lack of spontaneity", "Resistance to change"],
+      fr: ["Trop de routine", "Manque de spontanéité", "Résistance au changement"]
+    },
+    advice: {
+      en: "Schedule fun and adventure. Push each other out of comfort zones occasionally.",
+      fr: "Planifiez du plaisir et de l'aventure. Poussez-vous mutuellement hors des zones de confort occasionnellement."
+    }
+  },
+  "5-5": {
+    level: 'challenging',
+    summary: {
+      en: "Wild adventure! Exciting but potentially unstable.",
+      fr: "Aventure sauvage! Excitant mais potentiellement instable."
+    },
+    strengths: {
+      en: ["Never boring", "Freedom to explore", "Adventurous spirit"],
+      fr: ["Jamais ennuyeux", "Liberté d'explorer", "Esprit aventureux"]
+    },
+    challenges: {
+      en: ["No stability", "Commitment issues", "Financial chaos"],
+      fr: ["Pas de stabilité", "Problèmes d'engagement", "Chaos financier"]
+    },
+    advice: {
+      en: "Create grounding rituals. Have one stable anchor (home, routine) while exploring freely.",
+      fr: "Créez des rituels d'ancrage. Ayez une ancre stable (maison, routine) tout en explorant librement."
+    }
+  },
+  "6-6": {
+    level: 'harmonious',
+    summary: {
+      en: "Nurturing paradise. Home and family are the center of everything.",
+      fr: "Paradis nourricier. La maison et la famille sont le centre de tout."
+    },
+    strengths: {
+      en: ["Beautiful home life", "Shared values of service", "Emotionally supportive"],
+      fr: ["Belle vie de famille", "Valeurs partagées de service", "Soutien émotionnel"]
+    },
+    challenges: {
+      en: ["Martyrdom tendency", "Neglect personal growth", "Codependency risk"],
+      fr: ["Tendance au martyre", "Négligence de la croissance personnelle", "Risque de codépendance"]
+    },
+    advice: {
+      en: "Serve others but also nurture yourselves. Maintain individual identities and hobbies.",
+      fr: "Servez les autres mais nourrissez-vous aussi. Maintenez des identités et des loisirs individuels."
+    }
+  },
+  "7-7": {
+    level: 'neutral',
+    summary: {
+      en: "Deep spiritual connection but may lack warmth. Intellectual soulmates.",
+      fr: "Connexion spirituelle profonde mais peut manquer de chaleur. Âmes sœurs intellectuelles."
+    },
+    strengths: {
+      en: ["Profound understanding", "Respect for solitude", "Spiritual depth"],
+      fr: ["Compréhension profonde", "Respect de la solitude", "Profondeur spirituelle"]
+    },
+    challenges: {
+      en: ["Emotional distance", "Too much alone time", "Isolation from world"],
+      fr: ["Distance émotionnelle", "Trop de temps seul", "Isolement du monde"]
+    },
+    advice: {
+      en: "Schedule quality connection time. Balance spiritual pursuits with emotional intimacy.",
+      fr: "Planifiez du temps de connexion de qualité. Équilibrez les poursuites spirituelles avec l'intimité émotionnelle."
+    }
+  },
+  "8-8": {
+    level: 'challenging',
+    summary: {
+      en: "Power couple or power struggle. Both want control and success.",
+      fr: "Couple puissant ou lutte de pouvoir. Tous deux veulent le contrôle et le succès."
+    },
+    strengths: {
+      en: ["Material abundance", "Shared ambition", "Respect for success"],
+      fr: ["Abondance matérielle", "Ambition partagée", "Respect du succès"]
+    },
+    challenges: {
+      en: ["Competition", "Workaholism", "Neglect emotional/spiritual"],
+      fr: ["Compétition", "Travail excessif", "Négligence émotionnelle/spirituelle"]
+    },
+    advice: {
+      en: "Collaborate, don't compete. Remember success means nothing without love and spirituality.",
+      fr: "Collaborez, ne rivalisez pas. Rappelez-vous que le succès ne signifie rien sans amour et spiritualité."
+    }
+  },
+  "9-9": {
+    level: 'harmonious',
+    summary: {
+      en: "Compassionate healers united in service. Beautiful but can burn out.",
+      fr: "Guérisseurs compassionnés unis dans le service. Beau mais peut mener à l'épuisement."
+    },
+    strengths: {
+      en: ["Shared humanitarian vision", "Deep compassion", "Spiritual unity"],
+      fr: ["Vision humanitaire partagée", "Compassion profonde", "Unité spirituelle"]
+    },
+    challenges: {
+      en: ["Giving until empty", "Drama and intensity", "Neglecting practical needs"],
+      fr: ["Donner jusqu'à l'épuisement", "Drame et intensité", "Négligence des besoins pratiques"]
+    },
+    advice: {
+      en: "Set boundaries. Serve the world but also honor your personal needs and rest.",
+      fr: "Définissez des limites. Servez le monde mais honorez aussi vos besoins personnels et reposez-vous."
+    }
+  },
+  "11-11": {
+    level: 'soulmate',
+    summary: {
+      en: "Divine spiritual connection. Twin flames with shared mission.",
+      fr: "Connexion spirituelle divine. Flammes jumelles avec mission partagée."
+    },
+    strengths: {
+      en: ["Spiritual telepathy", "Inspire each other", "Shared higher purpose"],
+      fr: ["Télépathie spirituelle", "S'inspirent mutuellement", "But supérieur partagé"]
+    },
+    challenges: {
+      en: ["Intensity overload", "Anxiety amplified", "Grounding needed"],
+      fr: ["Surcharge d'intensité", "Anxiété amplifiée", "Ancrage nécessaire"]
+    },
+    advice: {
+      en: "Ground together daily. Balance spiritual highs with earthly practices.",
+      fr: "Ancrez-vous ensemble quotidiennement. Équilibrez les hauts spirituels avec des pratiques terrestres."
+    }
+  },
+  "22-22": {
+    level: 'harmonious',
+    summary: {
+      en: "Master builders creating legacy together. Practical visionaries.",
+      fr: "Maîtres bâtisseurs créant un héritage ensemble. Visionnaires pratiques."
+    },
+    strengths: {
+      en: ["Build empires", "Shared grand vision", "Practical manifestation"],
+      fr: ["Construisent des empires", "Vision grandiose partagée", "Manifestation pratique"]
+    },
+    challenges: {
+      en: ["Pressure to achieve", "Stress and burden", "Forget to enjoy life"],
+      fr: ["Pression pour réussir", "Stress et fardeau", "Oublient de profiter de la vie"]
+    },
+    advice: {
+      en: "Remember: the journey matters, not just the destination. Celebrate small wins together.",
+      fr: "Rappelez-vous: le voyage compte, pas seulement la destination. Célébrez ensemble les petites victoires."
+    }
+  },
+  "33-33": {
+    level: 'karmic',
+    summary: {
+      en: "Ultimate spiritual teachers and healers. Heavy karmic responsibility.",
+      fr: "Enseignants spirituels et guérisseurs ultimes. Lourde responsabilité karmique."
+    },
+    strengths: {
+      en: ["Unconditional love", "Transformative healing", "World service"],
+      fr: ["Amour inconditionnel", "Guérison transformatrice", "Service mondial"]
+    },
+    challenges: {
+      en: ["Martyr complex", "Overwhelming responsibility", "Self-sacrifice to detriment"],
+      fr: ["Complexe de martyr", "Responsabilité écrasante", "Auto-sacrifice au détriment"]
+    },
+    advice: {
+      en: "You can't save everyone. Practice radical self-care to sustain your healing work.",
+      fr: "Vous ne pouvez pas sauver tout le monde. Pratiquez un soin de soi radical pour maintenir votre travail de guérison."
+    }
+  }
+};
+
+export function getCompatibility(lifePathNumber1: number, lifePathNumber2: number, lang: 'en' | 'fr' = 'en') {
+  // Create a consistent key regardless of order
+  const key1 = `${lifePathNumber1}-${lifePathNumber2}`;
+  const key2 = `${lifePathNumber2}-${lifePathNumber1}`;
+  
+  const data = LIFE_PATH_COMPATIBILITY[key1] || LIFE_PATH_COMPATIBILITY[key2];
+  
+  if (!data) {
+    // Return neutral compatibility if not specifically defined
+    return {
+      level: 'neutral' as CompatibilityLevel,
+      summary: lang === 'en' ? 
+        "This combination has potential with effort and understanding." :
+        "Cette combinaison a du potentiel avec effort et compréhension.",
+      strengths: lang === 'en' ? 
+        ["Can learn from differences", "Growth through challenge"] :
+        ["Peuvent apprendre des différences", "Croissance par le défi"],
+      challenges: lang === 'en' ?
+        ["Different approaches to life", "Requires compromise"] :
+        ["Approches différentes de la vie", "Nécessite des compromis"],
+      advice: lang === 'en' ?
+        "Focus on communication and finding common ground." :
+        "Concentrez-vous sur la communication et trouvez un terrain d'entente."
+    };
+  }
+  
+  return {
+    level: data.level,
+    summary: data.summary[lang],
+    strengths: data.strengths[lang],
+    challenges: data.challenges[lang],
+    advice: data.advice[lang]
+  };
+}
+
 // Export getter functions for use in components
 export function getCareerGuidance(lifePathNumber: number, lang: 'en' | 'fr' = 'en') {
   const data = CAREER_GUIDANCE[lifePathNumber];

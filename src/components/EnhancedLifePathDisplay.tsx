@@ -23,7 +23,11 @@ import {
   getCareerGuidance,
   getBalanceTips,
   getShadowWork,
-  getPracticalGuidance 
+  getPracticalGuidance,
+  getQuranicConnection,
+  getPersonalYearGuidance,
+  getKarmicDebtData,
+  getCompatibility
 } from '../utils/enhancedLifePath';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -70,6 +74,11 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
   const [showBalance, setShowBalance] = useState(true);
   const [showShadow, setShowShadow] = useState(true);
   const [showPractical, setShowPractical] = useState(true);
+  
+  // Phase 2 Enhancement: State for new sections
+  const [showQuranic, setShowQuranic] = useState(true);
+  const [showPersonalYear, setShowPersonalYear] = useState(true);
+  const [showKarmicDebt, setShowKarmicDebt] = useState(true);
 
   // Extract data from the result
   const {
@@ -99,6 +108,11 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
   const balanceTips = getBalanceTips(lifePathNumber, lang);
   const shadowWork = getShadowWork(lifePathNumber, lang);
   const practicalGuidance = getPracticalGuidance(lifePathNumber, lang);
+  
+  // Phase 2 Enhancement: Get Phase 2 guidance data
+  const quranicConnection = getQuranicConnection(lifePathNumber, lang);
+  const personalYearGuidance = personalYear ? getPersonalYearGuidance(personalYear, lang) : null;
+  const karmicDebtData = karmicDebts && karmicDebts.length > 0 ? getKarmicDebtData(karmicDebts[0], lang) : null;
   
   // Element colors for visual display
   const elementColors: Record<string, string> = {
@@ -881,6 +895,299 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
                 </p>
                 <p className="text-sm text-slate-700 dark:text-slate-300">
                   {practicalGuidance.shadowToAvoid}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PHASE 2: Quranic Wisdom */}
+      {quranicConnection && (
+        <div className="bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/40 dark:to-green-900/40 rounded-xl p-6 shadow-lg border border-emerald-200 dark:border-emerald-700">
+          <button
+            type="button"
+            onClick={() => setShowQuranic(!showQuranic)}
+            className="w-full flex items-center justify-between text-left mb-4 group"
+          >
+            <div className="flex items-center gap-3">
+              <BookOpen className="w-6 h-6 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                {isFrench ? 'Sagesse Coranique' : 'Quranic Wisdom'}
+              </h3>
+            </div>
+            {showQuranic ? (
+              <ChevronUp className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            ) : (
+              <ChevronDown className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            )}
+          </button>
+          
+          <div 
+            className={`transition-all duration-300 overflow-hidden ${
+              showQuranic ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-5 border border-emerald-200 dark:border-emerald-700 space-y-4">
+              
+              {/* Quranic Verse */}
+              <div className="bg-gradient-to-r from-emerald-100 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30 rounded-lg p-4">
+                <p className="text-lg font-arabic text-center text-slate-900 dark:text-white mb-3 leading-loose">
+                  {quranicConnection.verseArabic}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300 text-center italic mb-1">
+                  "{quranicConnection.verse}"
+                </p>
+                <p className="text-xs text-emerald-700 dark:text-emerald-300 text-center font-semibold">
+                  {quranicConnection.reference}
+                </p>
+              </div>
+
+              {/* Divine Attribute */}
+              <div className="pt-3 border-t border-emerald-200 dark:border-emerald-700">
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                  <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                    {isFrench ? 'Attribut Divin' : 'Divine Attribute'}
+                  </p>
+                </div>
+                <p className="text-sm text-slate-900 dark:text-white font-semibold mb-1">
+                  {quranicConnection.divineAttribute}
+                </p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 font-arabic">
+                  {quranicConnection.divineAttributeArabic}
+                </p>
+              </div>
+
+              {/* Spiritual Meaning */}
+              <div className="pt-3 border-t border-emerald-200 dark:border-emerald-700">
+                <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300 mb-2">
+                  {isFrench ? 'Signification Spirituelle' : 'Spiritual Meaning'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {quranicConnection.spiritualMeaning}
+                </p>
+              </div>
+
+              {/* Daily Practice */}
+              <div className="pt-3 border-t border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-3">
+                <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300 mb-2">
+                  {isFrench ? 'Pratique Quotidienne' : 'Daily Practice'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">
+                  {quranicConnection.dailyPractice}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PHASE 2: Personal Year Guidance */}
+      {personalYearGuidance && (
+        <div className="bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-900/40 dark:to-blue-900/40 rounded-xl p-6 shadow-lg border border-sky-200 dark:border-sky-700">
+          <button
+            type="button"
+            onClick={() => setShowPersonalYear(!showPersonalYear)}
+            className="w-full flex items-center justify-between text-left mb-4 group"
+          >
+            <div className="flex items-center gap-3">
+              <Clock className="w-6 h-6 text-sky-600 dark:text-sky-400 group-hover:scale-110 transition-transform" />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                {isFrench ? `Année Personnelle ${personalYear}` : `Personal Year ${personalYear}`}
+              </h3>
+            </div>
+            {showPersonalYear ? (
+              <ChevronUp className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            ) : (
+              <ChevronDown className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            )}
+          </button>
+          
+          <div 
+            className={`transition-all duration-300 overflow-hidden ${
+              showPersonalYear ? 'max-h-[1200px] opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-5 border border-sky-200 dark:border-sky-700 space-y-4">
+              
+              {/* Theme */}
+              <div className="bg-gradient-to-r from-sky-100 to-blue-100 dark:from-sky-900/30 dark:to-blue-900/30 rounded-lg p-4 text-center">
+                <p className="text-2xl font-bold text-sky-900 dark:text-sky-100">
+                  {personalYearGuidance.theme}
+                </p>
+              </div>
+
+              {/* Description */}
+              <div>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {personalYearGuidance.description}
+                </p>
+              </div>
+
+              {/* Focus Areas */}
+              <div className="pt-3 border-t border-sky-200 dark:border-sky-700">
+                <p className="text-sm font-semibold text-sky-700 dark:text-sky-300 mb-3">
+                  {isFrench ? 'Domaines de Focus' : 'Focus Areas'}
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {personalYearGuidance.focusAreas.map((area, idx) => (
+                    <div key={idx} className="flex items-center gap-2 bg-sky-50 dark:bg-sky-900/20 rounded-lg p-2">
+                      <Target className="w-4 h-4 text-sky-600 dark:text-sky-400 flex-shrink-0" />
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{area}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Monthly Themes */}
+              <div className="pt-3 border-t border-sky-200 dark:border-sky-700">
+                <p className="text-sm font-semibold text-sky-700 dark:text-sky-300 mb-3">
+                  {isFrench ? 'Thèmes Mensuels' : 'Monthly Themes'}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {Object.entries(personalYearGuidance.monthlyThemes).map(([month, theme]) => (
+                    <div key={month} className="bg-sky-50 dark:bg-sky-900/20 rounded-lg p-2">
+                      <p className="text-xs font-semibold text-sky-600 dark:text-sky-400">
+                        {isFrench ? 'Mois' : 'Month'} {month}
+                      </p>
+                      <p className="text-xs text-slate-700 dark:text-slate-300">{theme}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Steps */}
+              <div className="pt-3 border-t border-sky-200 dark:border-sky-700">
+                <p className="text-sm font-semibold text-sky-700 dark:text-sky-300 mb-2">
+                  {isFrench ? 'Étapes d\'Action' : 'Action Steps'}
+                </p>
+                <ul className="space-y-2">
+                  {personalYearGuidance.actionSteps.map((step, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <TrendingUp className="w-4 h-4 text-sky-600 dark:text-sky-400 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{step}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PHASE 2: Karmic Debt */}
+      {karmicDebtData && (
+        <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/40 dark:to-pink-900/40 rounded-xl p-6 shadow-lg border border-rose-200 dark:border-rose-700">
+          <button
+            type="button"
+            onClick={() => setShowKarmicDebt(!showKarmicDebt)}
+            className="w-full flex items-center justify-between text-left mb-4 group"
+          >
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="w-6 h-6 text-rose-600 dark:text-rose-400 group-hover:scale-110 transition-transform" />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                {isFrench ? `Dette Karmique ${karmicDebtData.debtNumber}` : `Karmic Debt ${karmicDebtData.debtNumber}`}
+              </h3>
+            </div>
+            {showKarmicDebt ? (
+              <ChevronUp className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            ) : (
+              <ChevronDown className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            )}
+          </button>
+          
+          <div 
+            className={`transition-all duration-300 overflow-hidden ${
+              showKarmicDebt ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-5 border border-rose-200 dark:border-rose-700 space-y-4">
+              
+              {/* Reduces To */}
+              <div className="bg-rose-100 dark:bg-rose-900/30 rounded-lg p-3 text-center">
+                <p className="text-sm text-rose-700 dark:text-rose-300 mb-1">
+                  {isFrench ? 'Se réduit à' : 'Reduces to'}
+                </p>
+                <p className="text-3xl font-bold text-rose-900 dark:text-rose-100">
+                  {karmicDebtData.reducesTo}
+                </p>
+              </div>
+
+              {/* Past Life Pattern */}
+              <div className="pt-3 border-t border-rose-200 dark:border-rose-700">
+                <p className="text-sm font-semibold text-rose-700 dark:text-rose-300 mb-2">
+                  {isFrench ? 'Schéma de Vie Passée' : 'Past Life Pattern'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">
+                  {karmicDebtData.pastLifePattern}
+                </p>
+              </div>
+
+              {/* This Life Challenge */}
+              <div className="pt-3 border-t border-rose-200 dark:border-rose-700">
+                <p className="text-sm font-semibold text-rose-700 dark:text-rose-300 mb-2">
+                  {isFrench ? 'Défi de Cette Vie' : 'This Life Challenge'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">
+                  {karmicDebtData.thisLifeChallenge}
+                </p>
+              </div>
+
+              {/* Lessons to Learn */}
+              <div className="pt-3 border-t border-rose-200 dark:border-rose-700">
+                <p className="text-sm font-semibold text-rose-700 dark:text-rose-300 mb-2">
+                  {isFrench ? 'Leçons à Apprendre' : 'Lessons to Learn'}
+                </p>
+                <ul className="space-y-2">
+                  {karmicDebtData.lessonsToLearn.map((lesson, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <Lightbulb className="w-4 h-4 text-rose-600 dark:text-rose-400 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{lesson}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Transformation Path */}
+              <div className="pt-3 border-t border-rose-200 dark:border-rose-700 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-3">
+                <p className="text-sm font-semibold text-green-800 dark:text-green-300 mb-2">
+                  {isFrench ? 'Chemin de Transformation' : 'Transformation Path'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">
+                  {karmicDebtData.transformationPath}
+                </p>
+              </div>
+
+              {/* Spiritual Practice */}
+              <div className="pt-3 border-t border-rose-200 dark:border-rose-700">
+                <p className="text-sm font-semibold text-rose-700 dark:text-rose-300 mb-2">
+                  {isFrench ? 'Pratique Spirituelle' : 'Spiritual Practice'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">
+                  {karmicDebtData.spiritualPractice}
+                </p>
+              </div>
+
+              {/* Warning Sign */}
+              <div className="pt-3 border-t border-rose-200 dark:border-rose-700 bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
+                <p className="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-2 flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4" />
+                  {isFrench ? 'Signe d\'Avertissement' : 'Warning Sign'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">
+                  {karmicDebtData.warningSign}
+                </p>
+              </div>
+
+              {/* Mastery Gift */}
+              <div className="pt-3 border-t border-rose-200 dark:border-rose-700 bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 rounded-lg p-3">
+                <p className="text-sm font-semibold text-purple-800 dark:text-purple-300 mb-2 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  {isFrench ? 'Don de Maîtrise' : 'Mastery Gift'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">
+                  {karmicDebtData.masteryGift}
                 </p>
               </div>
             </div>
