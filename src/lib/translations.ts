@@ -368,6 +368,39 @@ export const translations = {
         personalYear: "The main theme and energy of your current year",
         personalMonth: "The monthly energy and focus",
       },
+
+      // Phase 1 Enhancements
+      elementalComposition: "Your Elemental Composition",
+      elementalCompositionDesc: "Based on your four core numbers, here's the elemental balance in your life path:",
+      dominantElement: "Dominant Element",
+      elementalBalance: "Elemental Balance",
+      
+      elementDescriptions: {
+        fire: "Fire brings passion, initiative, and drive. You're motivated to take action and lead.",
+        earth: "Earth brings stability, practicality, and groundedness. You build lasting foundations.",
+        air: "Air brings intellect, communication, and adaptability. You thrive on ideas and connections.",
+        water: "Water brings emotion, intuition, and sensitivity. You navigate life through feeling.",
+      },
+
+      careerGuidance: "Career Guidance",
+      careerGuidanceIntro: "Based on your Life Path Number, here are careers that align with your natural strengths:",
+      idealCareers: "Careers That Fit You Well",
+      careersToAvoid: "Environments That May Challenge You",
+      whyTheseFit: "Why these careers suit you:",
+      
+      balanceTips: "Balance & Self-Care Tips",
+      balanceTipsIntro: "Actionable ways to maintain balance and honor your Life Path energy:",
+      
+      shadowWork: "Shadow Work & Growth Edges",
+      shadowWorkIntro: "Every number has challenges. These aren't flaws—they're opportunities for growth:",
+      growthOpportunities: "Areas to Watch & Develop",
+      
+      practicalGuidance: "Practical Guidance",
+      pathSummary: "Your Path in Brief",
+      spiritualPractice: "Spiritual Practice",
+      quranicConnection: "Quranic Connection",
+      weeklyActions: "Weekly Action Steps",
+      shadowToAvoid: "Main Pattern to Watch",
     },
 
     // Compatibility
@@ -2496,6 +2529,39 @@ WITH this knowledge, they understand: "We're both trying to feel safe×just in d
           "Le thème principal et l'énergie de votre année en cours",
         personalMonth: "L'énergie mensuelle et le focus",
       },
+
+      // Améliorations Phase 1
+      elementalComposition: "Votre Composition Élémentaire",
+      elementalCompositionDesc: "Basé sur vos quatre nombres fondamentaux, voici l'équilibre élémentaire dans votre chemin de vie :",
+      dominantElement: "Élément Dominant",
+      elementalBalance: "Équilibre Élémentaire",
+      
+      elementDescriptions: {
+        fire: "Le Feu apporte passion, initiative et dynamisme. Vous êtes motivé à agir et diriger.",
+        earth: "La Terre apporte stabilité, praticité et ancrage. Vous construisez des fondations durables.",
+        air: "L'Air apporte intellect, communication et adaptabilité. Vous prospérez sur les idées et les connexions.",
+        water: "L'Eau apporte émotion, intuition et sensibilité. Vous naviguez la vie à travers le ressenti.",
+      },
+
+      careerGuidance: "Orientation Professionnelle",
+      careerGuidanceIntro: "Basé sur votre Nombre de Chemin de Vie, voici des carrières qui s'alignent avec vos forces naturelles :",
+      idealCareers: "Carrières Qui Vous Correspondent Bien",
+      careersToAvoid: "Environnements Qui Peuvent Vous Défier",
+      whyTheseFit: "Pourquoi ces carrières vous conviennent :",
+      
+      balanceTips: "Conseils d'Équilibre et de Soin Personnel",
+      balanceTipsIntro: "Moyens concrets pour maintenir l'équilibre et honorer l'énergie de votre Chemin de Vie :",
+      
+      shadowWork: "Travail d'Ombre et Opportunités de Croissance",
+      shadowWorkIntro: "Chaque nombre a ses défis. Ce ne sont pas des défauts—ce sont des opportunités de croissance :",
+      growthOpportunities: "Domaines à Surveiller et Développer",
+      
+      practicalGuidance: "Guidance Pratique",
+      pathSummary: "Votre Chemin en Bref",
+      spiritualPractice: "Pratique Spirituelle",
+      quranicConnection: "Connexion Coranique",
+      weeklyActions: "Actions Hebdomadaires",
+      shadowToAvoid: "Motif Principal à Surveiller",
     },
 
     // Ilm Huruf Panel
