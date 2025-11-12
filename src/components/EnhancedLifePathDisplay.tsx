@@ -5,7 +5,7 @@
  */
 
 import React, { useState } from 'react';
-import { Sparkles, Heart, Zap, Shield, CircleDot, Flame, ChevronDown, ChevronUp, BookOpen, Lightbulb, Library, Clock, AlertTriangle, Briefcase, Target, TrendingUp, AlertCircle } from 'lucide-react';
+import { Sparkles, Heart, Zap, Shield, CircleDot, Flame, ChevronDown, ChevronUp, BookOpen, Lightbulb, Library, Clock, AlertTriangle, Briefcase, Target, TrendingUp, AlertCircle, Users, Calendar, TrendingDown } from 'lucide-react';
 import { LIFE_PATH_MEANINGS, MASTER_NUMBERS } from '../constants/lifePathMeanings';
 import {
   calculateAllLifePathNumbers,
@@ -79,6 +79,12 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
   const [showQuranic, setShowQuranic] = useState(true);
   const [showPersonalYear, setShowPersonalYear] = useState(true);
   const [showKarmicDebt, setShowKarmicDebt] = useState(true);
+  
+  // Phase 3 Enhancement: State for interactive features
+  const [showCompatibility, setShowCompatibility] = useState(true);
+  const [showPersonalMonth, setShowPersonalMonth] = useState(true);
+  const [showPinnacles, setShowPinnacles] = useState(true);
+  const [selectedPartnerLifePath, setSelectedPartnerLifePath] = useState<number | null>(null);
 
   // Extract data from the result
   const {
@@ -113,6 +119,14 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
   const quranicConnection = getQuranicConnection(lifePathNumber, lang);
   const personalYearGuidance = personalYear ? getPersonalYearGuidance(personalYear, lang) : null;
   const karmicDebtData = karmicDebts && karmicDebts.length > 0 ? getKarmicDebtData(karmicDebts[0], lang) : null;
+  
+  // Phase 3 Enhancement: Get compatibility data
+  const compatibilityData = selectedPartnerLifePath 
+    ? getCompatibility(lifePathNumber, selectedPartnerLifePath, lang)
+    : null;
+  
+  // Available Life Path numbers for compatibility dropdown
+  const availableLifePaths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33];
   
   // Element colors for visual display
   const elementColors: Record<string, string> = {
@@ -1188,6 +1202,306 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
                 </p>
                 <p className="text-sm text-slate-700 dark:text-slate-300">
                   {karmicDebtData.masteryGift}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PHASE 3A: Life Path Compatibility Calculator */}
+      <div className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/40 dark:to-rose-900/40 rounded-xl p-6 shadow-lg border border-pink-200 dark:border-pink-700">
+        <button
+          type="button"
+          onClick={() => setShowCompatibility(!showCompatibility)}
+          className="w-full flex items-center justify-between text-left mb-4 group"
+        >
+          <div className="flex items-center gap-3">
+            <Users className="w-6 h-6 text-pink-600 dark:text-pink-400 group-hover:scale-110 transition-transform" />
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+              {isFrench ? 'Calculateur de Compatibilité' : 'Compatibility Calculator'}
+            </h3>
+          </div>
+          {showCompatibility ? (
+            <ChevronUp className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+          ) : (
+            <ChevronDown className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+          )}
+        </button>
+        
+        <div 
+          className={`transition-all duration-300 overflow-hidden ${
+            showCompatibility ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-5 border border-pink-200 dark:border-pink-700 space-y-4">
+            
+            {/* Life Path Selection */}
+            <div>
+              <label className="block text-sm font-semibold text-pink-700 dark:text-pink-300 mb-2">
+                {isFrench ? 'Sélectionnez le Chemin de Vie de votre partenaire:' : 'Select your partner\'s Life Path number:'}
+              </label>
+              <select
+                value={selectedPartnerLifePath || ''}
+                onChange={(e) => setSelectedPartnerLifePath(e.target.value ? Number(e.target.value) : null)}
+                className="w-full px-4 py-2 rounded-lg border-2 border-pink-300 dark:border-pink-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-none focus:ring-2 focus:ring-pink-500"
+              >
+                <option value="">
+                  {isFrench ? '-- Choisir un numéro --' : '-- Choose a number --'}
+                </option>
+                {availableLifePaths.map(num => (
+                  <option key={num} value={num}>
+                    {isFrench ? `Chemin de Vie ${num}` : `Life Path ${num}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Compatibility Results */}
+            {compatibilityData && (
+              <>
+                {/* Compatibility Level Badge */}
+                <div className="flex items-center justify-center gap-3 py-4">
+                  <div className={`px-6 py-3 rounded-full text-white font-bold text-lg shadow-lg ${
+                    compatibilityData.level === 'soulmate' ? 'bg-gradient-to-r from-purple-500 to-pink-500' :
+                    compatibilityData.level === 'harmonious' ? 'bg-gradient-to-r from-green-500 to-emerald-500' :
+                    compatibilityData.level === 'challenging' ? 'bg-gradient-to-r from-orange-500 to-red-500' :
+                    compatibilityData.level === 'karmic' ? 'bg-gradient-to-r from-violet-500 to-purple-500' :
+                    'bg-gradient-to-r from-blue-500 to-cyan-500'
+                  }`}>
+                    {compatibilityData.level.charAt(0).toUpperCase() + compatibilityData.level.slice(1)}
+                  </div>
+                </div>
+
+                {/* Summary */}
+                <div className="bg-pink-50 dark:bg-pink-900/20 rounded-lg p-4">
+                  <p className="text-sm text-slate-700 dark:text-slate-300 italic text-center">
+                    {compatibilityData.summary}
+                  </p>
+                </div>
+
+                {/* Strengths */}
+                <div className="pt-3 border-t border-pink-200 dark:border-pink-700">
+                  <div className="flex items-center gap-2 mb-3">
+                    <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
+                    <p className="text-sm font-semibold text-green-700 dark:text-green-300">
+                      {isFrench ? 'Forces' : 'Strengths'}
+                    </p>
+                  </div>
+                  <ul className="space-y-2">
+                    {compatibilityData.strengths.map((strength, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                        <span className="text-sm text-slate-700 dark:text-slate-300">{strength}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Challenges */}
+                <div className="pt-3 border-t border-pink-200 dark:border-pink-700">
+                  <div className="flex items-center gap-2 mb-3">
+                    <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                    <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
+                      {isFrench ? 'Défis' : 'Challenges'}
+                    </p>
+                  </div>
+                  <ul className="space-y-2">
+                    {compatibilityData.challenges.map((challenge, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-amber-600 dark:text-amber-400 mt-0.5">⚠</span>
+                        <span className="text-sm text-slate-700 dark:text-slate-300">{challenge}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Advice */}
+                <div className="pt-3 border-t border-pink-200 dark:border-pink-700 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lightbulb className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                    <p className="text-sm font-semibold text-purple-700 dark:text-purple-300">
+                      {isFrench ? 'Conseil' : 'Advice'}
+                    </p>
+                  </div>
+                  <p className="text-sm text-slate-700 dark:text-slate-300">
+                    {compatibilityData.advice}
+                  </p>
+                </div>
+              </>
+            )}
+
+            {!selectedPartnerLifePath && (
+              <div className="text-center py-8 text-slate-500 dark:text-slate-400">
+                <Users className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                <p className="text-sm">
+                  {isFrench 
+                    ? 'Sélectionnez un numéro de Chemin de Vie pour voir la compatibilité'
+                    : 'Select a Life Path number to see compatibility'}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* PHASE 3A: Personal Month Guidance */}
+      {personalMonth && personalYearGuidance && (
+        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/40 dark:to-blue-900/40 rounded-xl p-6 shadow-lg border border-indigo-200 dark:border-indigo-700">
+          <button
+            type="button"
+            onClick={() => setShowPersonalMonth(!showPersonalMonth)}
+            className="w-full flex items-center justify-between text-left mb-4 group"
+          >
+            <div className="flex items-center gap-3">
+              <Calendar className="w-6 h-6 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform" />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                {isFrench ? `Mois Personnel ${personalMonth}` : `Personal Month ${personalMonth}`}
+              </h3>
+            </div>
+            {showPersonalMonth ? (
+              <ChevronUp className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            ) : (
+              <ChevronDown className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            )}
+          </button>
+          
+          <div 
+            className={`transition-all duration-300 overflow-hidden ${
+              showPersonalMonth ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-5 border border-indigo-200 dark:border-indigo-700 space-y-4">
+              
+              {/* Month Position */}
+              <div className="bg-gradient-to-r from-indigo-100 to-blue-100 dark:from-indigo-900/30 dark:to-blue-900/30 rounded-lg p-4 text-center">
+                <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-1">
+                  {isFrench ? `Mois ${personalMonth} dans l'Année ${personalYear}` : `Month ${personalMonth} in Year ${personalYear}`}
+                </p>
+                <p className="text-lg font-bold text-indigo-900 dark:text-indigo-100">
+                  {personalYearGuidance.monthlyThemes[personalMonth as keyof typeof personalYearGuidance.monthlyThemes]}
+                </p>
+              </div>
+
+              {/* Month Energy Description */}
+              <div>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {isFrench 
+                    ? `Ce mois apporte l'énergie du ${personalMonth}, qui s'aligne avec le thème général de votre Année Personnelle ${personalYear}: "${personalYearGuidance.theme}".`
+                    : `This month brings the energy of ${personalMonth}, aligning with your Personal Year ${personalYear} theme: "${personalYearGuidance.theme}".`}
+                </p>
+              </div>
+
+              {/* Monthly Focus */}
+              <div className="pt-3 border-t border-indigo-200 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3">
+                <p className="text-sm font-semibold text-indigo-800 dark:text-indigo-300 mb-2">
+                  {isFrench ? 'Focus du Mois' : 'Monthly Focus'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">
+                  {isFrench
+                    ? 'Concentrez-vous sur les opportunités qui correspondent au thème de ce mois tout en gardant à l\'esprit les objectifs de votre année.'
+                    : 'Focus on opportunities that align with this month\'s theme while keeping your year\'s goals in mind.'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PHASE 3A: Pinnacles & Challenges Timeline */}
+      {pinnaclesAndChallenges && (
+        <div className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/40 dark:to-yellow-900/40 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-amber-700">
+          <button
+            type="button"
+            onClick={() => setShowPinnacles(!showPinnacles)}
+            className="w-full flex items-center justify-between text-left mb-4 group"
+          >
+            <div className="flex items-center gap-3">
+              <TrendingUp className="w-6 h-6 text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform" />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                {isFrench ? 'Sommets et Défis de Vie' : 'Life Pinnacles & Challenges'}
+              </h3>
+            </div>
+            {showPinnacles ? (
+              <ChevronUp className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            ) : (
+              <ChevronDown className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+            )}
+          </button>
+          
+          <div 
+            className={`transition-all duration-300 overflow-hidden ${
+              showPinnacles ? 'max-h-[1200px] opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-5 border border-amber-200 dark:border-amber-700 space-y-6">
+              
+              {/* Timeline Description */}
+              <p className="text-sm text-slate-700 dark:text-slate-300 italic mb-4">
+                {isFrench
+                  ? 'Votre vie est divisée en 4 périodes principales (Sommets) avec leurs défis correspondants. Chaque période apporte des leçons et opportunités uniques.'
+                  : 'Your life is divided into 4 major periods (Pinnacles) with corresponding challenges. Each period brings unique lessons and opportunities.'}
+              </p>
+
+              {/* Pinnacles Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Pinnacle 1 */}
+                <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border-l-4 border-amber-500">
+                  <p className="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-1">
+                    {isFrench ? 'Sommet 1' : 'Pinnacle 1'}
+                  </p>
+                  <p className="text-2xl font-bold text-amber-900 dark:text-amber-100">
+                    {pinnaclesAndChallenges.pinnacle1}
+                  </p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    {isFrench ? 'Défi:' : 'Challenge:'} {pinnaclesAndChallenges.challenge1}
+                  </p>
+                </div>
+
+                {/* Pinnacle 2 */}
+                <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 border-l-4 border-orange-500">
+                  <p className="text-xs font-semibold text-orange-700 dark:text-orange-300 mb-1">
+                    {isFrench ? 'Sommet 2' : 'Pinnacle 2'}
+                  </p>
+                  <p className="text-2xl font-bold text-orange-900 dark:text-orange-100">
+                    {pinnaclesAndChallenges.pinnacle2}
+                  </p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    {isFrench ? 'Défi:' : 'Challenge:'} {pinnaclesAndChallenges.challenge2}
+                  </p>
+                </div>
+
+                {/* Pinnacle 3 */}
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4 border-l-4 border-yellow-500">
+                  <p className="text-xs font-semibold text-yellow-700 dark:text-yellow-300 mb-1">
+                    {isFrench ? 'Sommet 3' : 'Pinnacle 3'}
+                  </p>
+                  <p className="text-2xl font-bold text-yellow-900 dark:text-yellow-100">
+                    {pinnaclesAndChallenges.pinnacle3}
+                  </p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    {isFrench ? 'Défi:' : 'Challenge:'} {pinnaclesAndChallenges.challenge3}
+                  </p>
+                </div>
+
+                {/* Pinnacle 4 */}
+                <div className="bg-lime-50 dark:bg-lime-900/20 rounded-lg p-4 border-l-4 border-lime-500">
+                  <p className="text-xs font-semibold text-lime-700 dark:text-lime-300 mb-1">
+                    {isFrench ? 'Sommet 4' : 'Pinnacle 4'}
+                  </p>
+                  <p className="text-2xl font-bold text-lime-900 dark:text-lime-100">
+                    {pinnaclesAndChallenges.pinnacle4}
+                  </p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    {isFrench ? 'Défi:' : 'Challenge:'} {pinnaclesAndChallenges.challenge4}
+                  </p>
+                </div>
+              </div>
+
+              {/* Current Status */}
+              <div className="mt-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg p-3">
+                <p className="text-sm font-semibold text-purple-800 dark:text-purple-300">
+                  {isFrench ? 'Actuellement:' : 'Currently:'} {isFrench ? 'Sommet' : 'Pinnacle'} {pinnaclesAndChallenges.currentPinnacle} | {isFrench ? 'Défi' : 'Challenge'} {pinnaclesAndChallenges.currentChallenge}
                 </p>
               </div>
             </div>
