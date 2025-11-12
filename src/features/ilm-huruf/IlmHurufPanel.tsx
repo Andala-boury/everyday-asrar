@@ -299,6 +299,7 @@ export function IlmHurufPanel() {
 
   // Refs for auto-scroll and animations
   const formSectionRef = useRef<HTMLDivElement>(null);
+  const resultsSectionRef = useRef<HTMLDivElement>(null);
   const [highlightInput, setHighlightInput] = useState(false);
 
   // Clear results when mode changes to prevent showing stale data
@@ -460,6 +461,14 @@ export function IlmHurufPanel() {
         }
         
         setResults(result);
+        
+        // Scroll to results section after state update
+        setTimeout(() => {
+          resultsSectionRef.current?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start'
+          });
+        }, 100);
       } else if (mode === 'compatibility' && name && name2) {
         // Calculate Abjad totals
         const calculateAbjadTotal = (text: string, abjadMap: Record<string, number>): number => {
@@ -486,9 +495,25 @@ export function IlmHurufPanel() {
           person2Element
         );
         setResults(result);
+        
+        // Scroll to results section after state update
+        setTimeout(() => {
+          resultsSectionRef.current?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start'
+          });
+        }, 100);
       } else if (mode === 'life-path' && birthDate && name) {
         const result = calculateEnhancedLifePath(name, new Date(birthDate));
         setResults(result);
+        
+        // Scroll to results section after state update
+        setTimeout(() => {
+          resultsSectionRef.current?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start'
+          });
+        }, 100);
       } else if (mode === 'timing' && birthDate && name) {
         // Calculate user's element from their name for personalized timing
         // Use simple Abjad calculation to avoid complex dependencies
@@ -511,6 +536,14 @@ export function IlmHurufPanel() {
           name: name,
           total: nameTotal
         });
+        
+        // Scroll to results section after state update
+        setTimeout(() => {
+          resultsSectionRef.current?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start'
+          });
+        }, 100);
       }
     } catch (error) {
       console.error('Analysis error:', error);
@@ -1076,26 +1109,28 @@ export function IlmHurufPanel() {
         </div>
       </div>
 
-      {/* Results */}
-      {results && results.error && (
-        <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
-          <div className="flex items-center gap-3 mb-2">
-            <MessageCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
-            <h3 className="text-lg font-bold text-red-800 dark:text-red-200">{t.ilmHuruf.analysisError}</h3>
+      {/* Results Section */}
+      <div ref={resultsSectionRef}>
+        {results && results.error && (
+          <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
+            <div className="flex items-center gap-3 mb-2">
+              <MessageCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
+              <h3 className="text-lg font-bold text-red-800 dark:text-red-200">{t.ilmHuruf.analysisError}</h3>
+            </div>
+            <p className="text-red-700 dark:text-red-300">{results.message}</p>
           </div>
-          <p className="text-red-700 dark:text-red-300">{results.message}</p>
-        </div>
-      )}
-      {results && !results.error && mode === 'destiny' && <DestinyResults results={results} />}
-      {results && !results.error && mode === 'compatibility' && results.person1 && results.person2 && <CompatibilityResults results={results} />}
-      {results && !results.error && mode === 'life-path' && <EnhancedLifePathDisplay data={results as EnhancedLifePathResult} />}
-      {results && !results.error && mode === 'timing' && results.element && (
-        <DivineTiming 
-          userElement={(results.element.toLowerCase() as 'fire' | 'air' | 'water' | 'earth')} 
-          userName={name || undefined}
-          birthDate={birthDate || undefined}
-        />
-      )}
+        )}
+        {results && !results.error && mode === 'destiny' && <DestinyResults results={results} />}
+        {results && !results.error && mode === 'compatibility' && results.person1 && results.person2 && <CompatibilityResults results={results} />}
+        {results && !results.error && mode === 'life-path' && <EnhancedLifePathDisplay data={results as EnhancedLifePathResult} />}
+        {results && !results.error && mode === 'timing' && results.element && (
+          <DivineTiming 
+            userElement={(results.element.toLowerCase() as 'fire' | 'air' | 'water' | 'earth')} 
+            userName={name || undefined}
+            birthDate={birthDate || undefined}
+          />
+        )}
+      </div>
     </div>
   );
 }
