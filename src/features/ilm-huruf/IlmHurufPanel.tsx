@@ -504,7 +504,12 @@ export function IlmHurufPanel() {
           });
         }, 100);
       } else if (mode === 'life-path' && birthDate && name) {
-        const result = calculateEnhancedLifePath(name, new Date(birthDate));
+        const result = calculateEnhancedLifePath(
+          name, 
+          new Date(birthDate),
+          undefined, // fatherName (not used yet)
+          motherName || undefined // Pass mother's name if provided
+        );
         setResults(result);
         
         // Scroll to results section after state update
@@ -730,6 +735,112 @@ export function IlmHurufPanel() {
                     onChange={(e) => setBirthDate(e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
                   />
+                </div>
+              )}
+
+              {/* Mother's Name field - only for life-path mode, optional, collapsible */}
+              {mode === 'life-path' && (
+                <div className="md:col-span-2">
+                  {!showMotherNameSection ? (
+                    <button
+                      onClick={() => setShowMotherNameSection(true)}
+                      className="flex items-center gap-2 text-sm font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
+                    >
+                      <Plus className="h-4 w-4" />
+                      <span>{language === 'fr' ? "Nom de la mère (optionnel pour l'influence héritée)" : "Mother's Name (optional for inherited influences)"}</span>
+                      <Info className="h-4 w-4 text-purple-500 dark:text-purple-400" />
+                    </button>
+                  ) : (
+                    <div className="bg-rose-50 dark:bg-rose-900/20 rounded-lg p-4 border border-rose-200 dark:border-rose-700 space-y-3 animate-slide-down">
+                      <div className="flex items-center justify-between">
+                        <label className="block text-sm font-medium text-rose-700 dark:text-rose-300">
+                          {language === 'fr' ? "Nom de la mère" : "Mother's Name"}
+                          <span className="text-xs text-rose-600 dark:text-rose-400 block mt-1">
+                            {language === 'fr' 
+                              ? "Pour activer l'analyse de l'influence maternelle"
+                              : "To enable maternal influence analysis"}
+                          </span>
+                        </label>
+                        <button
+                          onClick={() => {
+                            setShowMotherNameSection(false);
+                            setMotherName('');
+                            setMotherLatinInput('');
+                          }}
+                          className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 flex items-center gap-1"
+                        >
+                          <X className="h-3 w-3" />
+                          {language === 'fr' ? "Retirer" : "Remove"}
+                        </button>
+                      </div>
+                      
+                      {/* Mother's Latin Input with Autocomplete */}
+                      <div>
+                        <label className="block text-xs font-medium mb-1 text-rose-600 dark:text-rose-400">
+                          {language === 'fr' ? "Tapez en lettres latines" : "Type in Latin letters"}
+                        </label>
+                        <NameAutocomplete
+                          value={motherLatinInput}
+                          onChange={(value) => {
+                            setMotherLatinInput(value);
+                            if (value) {
+                              const arabicResult = transliterateLatinToArabic(value);
+                              setMotherName(arabicResult.primary);
+                            } else {
+                              setMotherName('');
+                            }
+                          }}
+                          onArabicSelect={(arabic, latin) => {
+                            setMotherName(arabic);
+                            setMotherLatinInput(latin);
+                          }}
+                          placeholder={language === 'fr' ? "Fatima, Aisha, Khadija, etc." : "Fatima, Aisha, Khadija, etc."}
+                          showHelper={false}
+                        />
+                      </div>
+
+                      {/* Mother's Arabic Input */}
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="block text-xs font-medium text-rose-600 dark:text-rose-400">
+                            {language === 'fr' ? "Ou en arabe" : "Or in Arabic"}
+                          </label>
+                          <button
+                            onClick={() => setShowMotherKeyboard(!showMotherKeyboard)}
+                            className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-colors ${
+                              showMotherKeyboard
+                                ? 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-700'
+                                : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600'
+                            }`}
+                          >
+                            <Keyboard className="w-3 h-3" />
+                            {showMotherKeyboard ? t.ilmHuruf.hideKeyboard : t.ilmHuruf.showKeyboard}
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          value={motherName}
+                          onChange={(e) => {
+                            setMotherName(e.target.value);
+                            setMotherLatinInput('');
+                          }}
+                          dir="rtl"
+                          placeholder={language === 'fr' ? "اسم الأم" : "Mother's name in Arabic"}
+                          className="w-full px-4 py-2 rounded-lg border border-rose-300 dark:border-rose-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-right"
+                        />
+                        
+                        {/* Mother's Virtual Keyboard */}
+                        {showMotherKeyboard && (
+                          <div className="mt-2">
+                            <ArabicKeyboard 
+                              onKeyPress={(char: string) => setMotherName(prev => prev + char)}
+                              onClose={() => setShowMotherKeyboard(false)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -1398,19 +1509,19 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       'Aggression': 'Agression',
       'Emotional coldness': 'Froideur émotionnelle',
       'Trust your gut': 'Faire confiance   votre instinct',
-      'Dream journaling': 'Journal des rªves',
+      'Dream journaling': 'Journal des rêves',
       'Water activities': 'Activités aquatiques',
       'Meditate': 'Méditer',
       'Logic-only thinking': 'Pensée uniquement logique',
       'Ignore intuition': 'Ignorer l\'intuition',
-      'Let go of the day': 'L¢cher prise sur la journée',
+      'Let go of the day': 'Lâcher prise sur la journée',
       'Forgive conflicts': 'Pardonner les conflits',
       'New fights': 'Nouvelles disputes',
       'Revenge planning': 'Planification de vengeance',
       'Alcohol': 'Alcool',
       
       // Mars tasks
-      'Start difficult tasks': 'Commencer les t¢ches difficiles',
+      'Start difficult tasks': 'Commencer les tâches difficiles',
       'Physical exercise': 'Exercice physique',
       'Tackle challenges': 'Relever des défis',
       'Assert yourself': 'S\'affirmer',
@@ -1420,16 +1531,16 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       'Sales pitches': 'Présentations de vente',
       'Push through obstacles': 'Surmonter les obstacles',
       'Take action': 'Passer   l\'action',
-      'Avoid conflict': '‰viter les conflits',
+      'Avoid conflict': 'Éviter les conflits',
       'Fence-sitting': 'Indécision',
       'Face your fear': 'Affronter votre peur',
       'Bold moves': 'Mouvements audacieux',
       'Defend boundaries': 'Défendre les limites',
       'Stand up for yourself': 'Défendre vos droits',
-      'Cowardice': 'L¢cheté',
+      'Cowardice': 'Lâcheté',
       'People-pleasing': 'Plaire aux autres',
       'Wind down intensity': 'Réduire l\'intensité',
-      'Repair any damage': 'Réparer les dég¢ts',
+      'Repair any damage': 'Réparer les dégâts',
       'Cool down': 'Se calmer',
       'Forgive self': 'Se pardonner',
       'Stir up conflict': 'Attiser les conflits',
@@ -1455,7 +1566,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       'Conflict': 'Conflit',
       'Distance': 'Distance',
       'Create art': 'Créer de l\'art',
-      'Listen to music': '‰couter de la musique',
+      'Listen to music': 'Écouter de la musique',
       'Indulge senses': 'Se faire plaisir',
       'Luxury bath': 'Bain de luxe',
       'Frugality': 'Frugalité',
@@ -1463,7 +1574,7 @@ function WeeklyResults({ results, selectedDay, setSelectedDay }: WeeklyResultsPr
       
       // Jupiter tasks
       'Think big picture': 'Penser   long terme',
-      'Study philosophy': '‰tudier la philosophie',
+      'Study philosophy': 'Étudier la philosophie',
       'Set ambitious goals': 'Fixer des objectifs ambitieux',
       'Small thinking': 'Pensée limitée',
       'Petty details': 'Détails insignifiants',

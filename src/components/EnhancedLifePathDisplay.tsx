@@ -5,7 +5,7 @@
  */
 
 import React, { useState } from 'react';
-import { Sparkles, Heart, Zap, Shield, CircleDot, Flame, ChevronDown, ChevronUp, BookOpen, Lightbulb, Library, Clock, AlertTriangle, Briefcase, Target, TrendingUp, AlertCircle, Users, Calendar, TrendingDown } from 'lucide-react';
+import { Sparkles, Heart, Zap, Shield, CircleDot, Flame, ChevronDown, ChevronUp, BookOpen, Lightbulb, Library, Clock, AlertTriangle, Briefcase, Target, TrendingUp, AlertCircle, Users, Calendar, TrendingDown, Star } from 'lucide-react';
 import { LIFE_PATH_MEANINGS, MASTER_NUMBERS } from '../constants/lifePathMeanings';
 import {
   calculateAllLifePathNumbers,
@@ -85,6 +85,10 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
   const [showPersonalMonth, setShowPersonalMonth] = useState(true);
   const [showPinnacles, setShowPinnacles] = useState(true);
   const [selectedPartnerLifePath, setSelectedPartnerLifePath] = useState<number | null>(null);
+  
+  // Phase 3B Enhancement: State for sacred numbers and maternal influence
+  const [showSacredNumbers, setShowSacredNumbers] = useState(true);
+  const [showMaternalInfluence, setShowMaternalInfluence] = useState(true);
 
   // Extract data from the result
   const {
@@ -100,6 +104,15 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
     pinnaclesAndChallenges,
     maternalInfluence
   } = data;
+  
+  // DEBUG: Log Phase 3B data to console
+  console.log('🔍 Phase 3B Data Check:', {
+    sacredNumbers,
+    sacredNumbersLength: sacredNumbers?.length,
+    maternalInfluence,
+    hasSacredNumbers: sacredNumbers && sacredNumbers.length > 0,
+    hasMaternalInfluence: !!maternalInfluence
+  });
   
   // Phase 1 Enhancement: Calculate elemental balance and get guidance data
   const elementalBalance = calculateElementalBalance(
@@ -127,6 +140,50 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
   
   // Available Life Path numbers for compatibility dropdown
   const availableLifePaths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33];
+  
+  // Phase 3B: Sacred number meanings
+  const sacredNumberMeanings: Record<number, { en: string; fr: string }> = {
+    7: { 
+      en: "Days of Creation - Spiritual completion and divine perfection",
+      fr: "Jours de la Création - Achèvement spirituel et perfection divine"
+    },
+    12: { 
+      en: "Months & Holy Imams - Cosmic order and divine leadership",
+      fr: "Mois et Imams Saints - Ordre cosmique et leadership divin"
+    },
+    19: { 
+      en: "Quranic Miracle Number - Mathematical proof of divine authorship",
+      fr: "Nombre Miracle Coranique - Preuve mathématique de l'auteur divin"
+    },
+    40: { 
+      en: "Testing Period - Spiritual transformation and purification",
+      fr: "Période d'Épreuve - Transformation spirituelle et purification"
+    },
+    70: { 
+      en: "Nations & Completion - Universal wisdom and fulfillment",
+      fr: "Nations et Achèvement - Sagesse universelle et accomplissement"
+    },
+    99: { 
+      en: "Names of Allah (Asma ul-Husna) - Divine attributes manifestation",
+      fr: "Noms d'Allah (Asma ul-Husna) - Manifestation des attributs divins"
+    },
+    111: { 
+      en: "Surah Al-Ikhlas Value - Pure monotheism and divine oneness",
+      fr: "Valeur de la Sourate Al-Ikhlas - Monothéisme pur et unicité divine"
+    },
+    313: { 
+      en: "Warriors of Badr - Victory through faith and courage",
+      fr: "Guerriers de Badr - Victoire par la foi et le courage"
+    },
+    786: { 
+      en: "Bismillah Value - Divine grace and blessed beginnings",
+      fr: "Valeur de Bismillah - Grâce divine et débuts bénis"
+    },
+    1000: { 
+      en: "Symbolic Perfection - Ultimate completion and mastery",
+      fr: "Perfection Symbolique - Achèvement ultime et maîtrise"
+    }
+  };
   
   // Element colors for visual display
   const elementColors: Record<string, string> = {
@@ -1508,6 +1565,157 @@ const EnhancedLifePathDisplay: React.FC<EnhancedLifePathDisplayProps> = ({
           </div>
         </div>
       )}
+
+      {/* Phase 3B: Sacred Numbers - ALWAYS SHOW */}
+      <div className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/40 dark:to-yellow-900/40 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-amber-700">
+        <button
+          type="button"
+          onClick={() => setShowSacredNumbers(!showSacredNumbers)}
+          className="w-full flex items-center justify-between text-left mb-4 group"
+        >
+          <div className="flex items-center gap-3">
+            <Star className="w-6 h-6 text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform" />
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+              {isFrench ? 'Nombres Sacrés dans Votre Nom' : 'Sacred Numbers in Your Name'}
+            </h3>
+          </div>
+          <ChevronDown 
+            className={`w-5 h-5 text-slate-500 dark:text-slate-400 transition-transform ${
+              showSacredNumbers ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
+
+        {showSacredNumbers && (
+          <div className="space-y-4">
+            {sacredNumbers && sacredNumbers.length > 0 ? (
+              <>
+                <p className="text-slate-700 dark:text-slate-300 text-sm">
+                  {isFrench 
+                    ? `Votre nom contient ${sacredNumbers.length} nombre${sacredNumbers.length > 1 ? 's' : ''} sacré${sacredNumbers.length > 1 ? 's' : ''} islamique${sacredNumbers.length > 1 ? 's' : ''}, portant une signification spirituelle profonde :`
+                    : `Your name contains ${sacredNumbers.length} sacred Islamic number${sacredNumbers.length > 1 ? 's' : ''}, carrying deep spiritual significance:`
+                  }
+                </p>
+
+                <div className="grid grid-cols-1 gap-3">
+                  {sacredNumbers.map((num) => (
+                    <div 
+                      key={num}
+                      className="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 border-amber-500 dark:border-amber-600 shadow-sm"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center">
+                          <span className="text-xl font-bold text-amber-700 dark:text-amber-400">
+                            {num}
+                          </span>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-slate-900 dark:text-white font-medium">
+                            {sacredNumberMeanings[num]?.[isFrench ? 'fr' : 'en'] || (isFrench ? 'Nombre sacré' : 'Sacred number')}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 p-4 bg-amber-100/50 dark:bg-amber-900/20 rounded-lg">
+                  <p className="text-sm text-slate-700 dark:text-slate-300 italic">
+                    {isFrench 
+                      ? `Ces nombres sacrés dans votre nom suggèrent une connexion profonde avec la tradition spirituelle islamique et portent des énergies spécifiques qui peuvent guider votre chemin de vie.`
+                      : `These sacred numbers in your name suggest a deep connection with Islamic spiritual tradition and carry specific energies that can guide your life path.`
+                    }
+                  </p>
+                </div>
+              </>
+            ) : (
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 border border-amber-200 dark:border-amber-700">
+                <p className="text-slate-600 dark:text-slate-400 text-center">
+                  {isFrench
+                    ? `Aucun nombre sacré islamique spécifique détecté dans votre nom pour l'instant. Les nombres sacrés incluent : 7 (création), 12 (mois/Imams), 19 (miracle coranique), 40 (transformation), 70 (nations), 99 (noms d'Allah), 111 (Al-Ikhlas), 313 (guerriers de Badr), 786 (Bismillah), 1000 (perfection).`
+                    : `No specific sacred Islamic numbers detected in your name at this time. Sacred numbers include: 7 (creation), 12 (months/Imams), 19 (Quranic miracle), 40 (transformation), 70 (nations), 99 (names of Allah), 111 (Al-Ikhlas), 313 (Badr warriors), 786 (Bismillah), 1000 (perfection).`
+                  }
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* PHASE 3B: Maternal Influence - ALWAYS SHOW */}
+      <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/40 dark:to-pink-900/40 rounded-xl p-6 shadow-lg border border-rose-200 dark:border-rose-700">
+        <button
+          type="button"
+          onClick={() => setShowMaternalInfluence(!showMaternalInfluence)}
+          className="w-full flex items-center justify-between text-left mb-4 group"
+        >
+          <div className="flex items-center gap-3">
+            <Heart className="w-6 h-6 text-rose-600 dark:text-rose-400 group-hover:scale-110 transition-transform" />
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+              {isFrench ? 'Influence Maternelle' : 'Maternal Influence'}
+            </h3>
+          </div>
+          {showMaternalInfluence ? (
+            <ChevronUp className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+          ) : (
+            <ChevronDown className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+          )}
+        </button>
+        
+        <div 
+          className={`transition-all duration-300 overflow-hidden ${
+            showMaternalInfluence ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          {maternalInfluence ? (
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-5 border border-rose-200 dark:border-rose-700 space-y-4">
+              
+              {/* Maternal Number */}
+              <div className="bg-gradient-to-r from-rose-100 to-pink-100 dark:from-rose-900/30 dark:to-pink-900/30 rounded-lg p-4 text-center">
+                <p className="text-sm text-rose-700 dark:text-rose-300 mb-2">
+                  {isFrench ? 'Nombre d\'Influence Maternelle' : 'Maternal Influence Number'}
+                </p>
+                <p className="text-4xl font-bold text-rose-900 dark:text-rose-100">
+                  {maternalInfluence}
+                </p>
+              </div>
+
+              {/* Influence Description */}
+              <div>
+                <p className="text-sm font-semibold text-rose-700 dark:text-rose-300 mb-2">
+                  {isFrench ? 'Influence Énergétique' : 'Energetic Influence'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {isFrench 
+                    ? `L'énergie du nombre ${maternalInfluence} de votre mère a façonné votre développement émotionnel et spirituel. Cette influence maternelle apporte des qualités uniques à votre parcours de vie.`
+                    : `The energy of your mother's number ${maternalInfluence} has shaped your emotional and spiritual development. This maternal influence brings unique qualities to your life path.`}
+                </p>
+              </div>
+
+              {/* Nurturing Qualities */}
+              <div className="pt-3 border-t border-rose-200 dark:border-rose-700 bg-rose-50 dark:bg-rose-900/20 rounded-lg p-3">
+                <p className="text-sm font-semibold text-rose-800 dark:text-rose-300 mb-2">
+                  {isFrench ? 'Qualités Nourricières' : 'Nurturing Qualities'}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">
+                  {isFrench 
+                    ? 'Cette influence maternelle enrichit votre compréhension émotionnelle et votre capacité à prendre soin des autres.'
+                    : 'This maternal influence enriches your emotional understanding and capacity to care for others.'}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-6 border border-rose-200 dark:border-rose-700">
+              <p className="text-slate-600 dark:text-slate-400 text-center">
+                {isFrench
+                  ? `Pour voir l'influence maternelle, veuillez fournir le nom de votre mère lors du calcul. Cette section montre comment l'énergie numérologique de votre mère influence votre développement émotionnel et spirituel.`
+                  : `To see maternal influence, please provide your mother's name during calculation. This section shows how your mother's numerological energy influences your emotional and spiritual development.`
+                }
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Synthesis */}
       <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/40 dark:to-teal-900/40 rounded-xl p-6 shadow-lg border border-emerald-200 dark:border-emerald-700">
