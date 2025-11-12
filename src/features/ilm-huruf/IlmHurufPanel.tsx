@@ -555,37 +555,37 @@ export function IlmHurufPanel() {
   };
 
   return (
-    <div className="space-y-6 max-w-full overflow-x-hidden">
-      {/* Mode Selection Header */}
-      <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-6 md:p-8 shadow-md">
-        <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-slate-100 flex items-center gap-3">
-          <Sparkles className="w-7 h-7 text-purple-500" />
+    <div className="space-y-4 max-w-full overflow-x-hidden">
+      {/* Mode Selection Header - Compact for Mobile */}
+      <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 md:p-6 shadow-md">
+        <h2 className="text-xl md:text-2xl font-bold mb-1 text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-purple-500" />
           {t.ilmHuruf.title}
         </h2>
-        <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 mb-6">
+        <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 mb-4">
           {t.ilmHuruf.subtitle}
         </p>
         
-        {/* Mode Selection Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Mode Selection Grid - Compact 2x2 Mobile Layout */}
+        <div className="grid grid-cols-2 gap-2 md:gap-3">
           {/* Destiny Mode */}
           <button
             onClick={() => handleModeChange('destiny')}
-            className={`relative group p-4 md:p-5 rounded-xl border-2 transition-all duration-300 transform ${
+            className={`relative group p-3 md:p-4 rounded-lg md:rounded-xl border-2 transition-all duration-300 transform ${
               mode === 'destiny'
-                ? 'border-purple-500 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/40 dark:to-purple-800/40 scale-105 shadow-xl ring-2 ring-purple-500 ring-offset-2 dark:ring-offset-slate-900'
-                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-purple-400 hover:shadow-lg hover:scale-102 hover:bg-purple-50/50 dark:hover:bg-purple-900/10'
+                ? 'border-purple-500 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/40 dark:to-purple-800/40 scale-[1.02] shadow-lg ring-2 ring-purple-500 ring-offset-1 dark:ring-offset-slate-900'
+                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-purple-400 hover:shadow-md active:scale-95'
             }`}
             aria-pressed={mode === 'destiny'}
           >
             <div className="relative">
-              <Target className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'destiny' ? 'text-purple-600' : 'text-purple-500 group-hover:text-purple-600'}`} />
-              <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'destiny' ? 'animate-scale-in' : ''}`}>
+              <Target className={`w-5 h-5 md:w-6 md:h-6 mx-auto mb-1 md:mb-2 transition-colors ${mode === 'destiny' ? 'text-purple-600' : 'text-purple-500 group-hover:text-purple-600'}`} />
+              <div className={`text-xs md:text-sm font-bold text-slate-900 dark:text-slate-100 transition-all leading-tight ${mode === 'destiny' ? 'animate-scale-in' : ''}`}>
                 {t.ilmHuruf.nameDestiny}
               </div>
               {mode === 'destiny' && (
                 <div className="absolute top-0 right-0 animate-scale-in">
-                  <CheckCircle2 className="w-4 h-4 text-purple-600" />
+                  <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-purple-600" />
                 </div>
               )}
             </div>
@@ -594,21 +594,21 @@ export function IlmHurufPanel() {
           {/* Compatibility Mode */}
           <button
             onClick={() => handleModeChange('compatibility')}
-            className={`relative group p-4 md:p-5 rounded-xl border-2 transition-all duration-300 transform ${
+            className={`relative group p-3 md:p-4 rounded-lg md:rounded-xl border-2 transition-all duration-300 transform ${
               mode === 'compatibility'
-                ? 'border-pink-500 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/40 dark:to-pink-800/40 scale-105 shadow-xl ring-2 ring-pink-500 ring-offset-2 dark:ring-offset-slate-900'
-                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-pink-400 hover:shadow-lg hover:scale-102 hover:bg-pink-50/50 dark:hover:bg-pink-900/10'
+                ? 'border-pink-500 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/40 dark:to-pink-800/40 scale-[1.02] shadow-lg ring-2 ring-pink-500 ring-offset-1 dark:ring-offset-slate-900'
+                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-pink-400 hover:shadow-md active:scale-95'
             }`}
             aria-pressed={mode === 'compatibility'}
           >
             <div className="relative">
-              <Users className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'compatibility' ? 'text-pink-600' : 'text-pink-500 group-hover:text-pink-600'}`} />
-              <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'compatibility' ? 'animate-scale-in' : ''}`}>
+              <Users className={`w-5 h-5 md:w-6 md:h-6 mx-auto mb-1 md:mb-2 transition-colors ${mode === 'compatibility' ? 'text-pink-600' : 'text-pink-500 group-hover:text-pink-600'}`} />
+              <div className={`text-xs md:text-sm font-bold text-slate-900 dark:text-slate-100 transition-all leading-tight ${mode === 'compatibility' ? 'animate-scale-in' : ''}`}>
                 {t.ilmHuruf.compatibility}
               </div>
               {mode === 'compatibility' && (
                 <div className="absolute top-0 right-0 animate-scale-in">
-                  <CheckCircle2 className="w-4 h-4 text-pink-600" />
+                  <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-pink-600" />
                 </div>
               )}
             </div>
@@ -617,21 +617,21 @@ export function IlmHurufPanel() {
           {/* Life Path Mode */}
           <button
             onClick={() => handleModeChange('life-path')}
-            className={`relative group p-4 md:p-5 rounded-xl border-2 transition-all duration-300 transform ${
+            className={`relative group p-3 md:p-4 rounded-lg md:rounded-xl border-2 transition-all duration-300 transform ${
               mode === 'life-path'
-                ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/40 dark:to-blue-800/40 scale-105 shadow-xl ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-slate-900'
-                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-blue-400 hover:shadow-lg hover:scale-102 hover:bg-blue-50/50 dark:hover:bg-blue-900/10'
+                ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/40 dark:to-blue-800/40 scale-[1.02] shadow-lg ring-2 ring-blue-500 ring-offset-1 dark:ring-offset-slate-900'
+                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-blue-400 hover:shadow-md active:scale-95'
             }`}
             aria-pressed={mode === 'life-path'}
           >
             <div className="relative">
-              <Compass className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'life-path' ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
-              <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'life-path' ? 'animate-scale-in' : ''}`}>
+              <Compass className={`w-5 h-5 md:w-6 md:h-6 mx-auto mb-1 md:mb-2 transition-colors ${mode === 'life-path' ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
+              <div className={`text-xs md:text-sm font-bold text-slate-900 dark:text-slate-100 transition-all leading-tight ${mode === 'life-path' ? 'animate-scale-in' : ''}`}>
                 {t.ilmHuruf.lifePath}
               </div>
               {mode === 'life-path' && (
                 <div className="absolute top-0 right-0 animate-scale-in">
-                  <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                  <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-blue-600" />
                 </div>
               )}
             </div>
@@ -640,21 +640,21 @@ export function IlmHurufPanel() {
           {/* Divine Timing Mode */}
           <button
             onClick={() => handleModeChange('timing')}
-            className={`relative group p-4 md:p-5 rounded-xl border-2 transition-all duration-300 transform ${
+            className={`relative group p-3 md:p-4 rounded-lg md:rounded-xl border-2 transition-all duration-300 transform ${
               mode === 'timing'
-                ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/40 dark:to-amber-800/40 scale-105 shadow-xl ring-2 ring-amber-500 ring-offset-2 dark:ring-offset-slate-900'
-                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-amber-400 hover:shadow-lg hover:scale-102 hover:bg-amber-50/50 dark:hover:bg-amber-900/10'
+                ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/40 dark:to-amber-800/40 scale-[1.02] shadow-lg ring-2 ring-amber-500 ring-offset-1 dark:ring-offset-slate-900'
+                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-amber-400 hover:shadow-md active:scale-95'
             }`}
             aria-pressed={mode === 'timing'}
           >
             <div className="relative">
-              <Clock className={`w-6 h-6 mx-auto mb-2 transition-colors ${mode === 'timing' ? 'text-amber-600' : 'text-amber-500 group-hover:text-amber-600'}`} />
-              <div className={`text-sm font-bold text-slate-900 dark:text-slate-100 transition-all ${mode === 'timing' ? 'animate-scale-in' : ''}`}>
+              <Clock className={`w-5 h-5 md:w-6 md:h-6 mx-auto mb-1 md:mb-2 transition-colors ${mode === 'timing' ? 'text-amber-600' : 'text-amber-500 group-hover:text-amber-600'}`} />
+              <div className={`text-xs md:text-sm font-bold text-slate-900 dark:text-slate-100 transition-all leading-tight ${mode === 'timing' ? 'animate-scale-in' : ''}`}>
                 {t.ilmHuruf.divineTiming}
               </div>
               {mode === 'timing' && (
                 <div className="absolute top-0 right-0 animate-scale-in">
-                  <CheckCircle2 className="w-4 h-4 text-amber-600" />
+                  <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-amber-600" />
                 </div>
               )}
             </div>
@@ -662,15 +662,15 @@ export function IlmHurufPanel() {
         </div>
       </div>
 
-      {/* Input Section with Highlight Animation */}
+      {/* Input Section with Highlight Animation - Compact */}
       <div 
         ref={formSectionRef}
-        className={`bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 md:p-8 transition-all duration-300 ${
+        className={`bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-4 md:p-6 transition-all duration-300 ${
           highlightInput ? 'animate-soft-highlight' : ''
         }`}
       >
-        <div className="mb-6 pb-6 border-b border-slate-200 dark:border-slate-700">
-          <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+        <div className="mb-4 pb-3 border-b border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg md:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <span className={`inline-block w-2 h-2 rounded-full transition-colors ${
               mode === 'destiny' ? 'bg-purple-500' : 
               mode === 'compatibility' ? 'bg-pink-500' : 
@@ -682,7 +682,7 @@ export function IlmHurufPanel() {
             {mode === 'life-path' && t.ilmHuruf.calculateLifePath}
             {mode === 'timing' && t.ilmHuruf.currentPlanetaryInfluence}
           </h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+          <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 mt-1">
             {mode === 'destiny' && t.ilmHuruf.nameDestinyDesc}
             {mode === 'compatibility' && t.ilmHuruf.compatibilityDesc}
             {mode === 'life-path' && t.ilmHuruf.lifePathDesc}
@@ -690,12 +690,12 @@ export function IlmHurufPanel() {
           </p>
         </div>
         
-        <div className="space-y-4 animate-slide-up">
+        <div className="space-y-3 animate-slide-up">
           {(mode === 'destiny' || mode === 'life-path') && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {/* Latin Input with Autocomplete */}
               <div className={mode === 'life-path' ? 'md:col-span-1' : 'md:col-span-2'}>
-                <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                <label className="block text-xs md:text-sm font-medium mb-1.5 text-slate-700 dark:text-slate-300">
                   {t.ilmHuruf.nameLatinLabel}
                 </label>
                 <NameAutocomplete
