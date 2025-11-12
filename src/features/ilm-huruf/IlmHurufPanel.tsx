@@ -99,7 +99,7 @@ import {
 import { CompatibilityLearningCenter } from '../../components/CompatibilityLearningCenter';
 import { MethodGuidePanel } from '../../components/MethodGuidePanel';
 import { CompatibilityGlossary } from '../../components/CompatibilityGlossary';
-import { BookMarked } from 'lucide-react';
+import { BookMarked, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // ============================================================================
 // ELEMENT HARMONY & LETTER CHEMISTRY CONSTANTS
@@ -3453,6 +3453,7 @@ function DestinyResults({ results }: { results: any }) {
 function CompatibilityResults({ results }: { results: any }) {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState<'results' | 'learning' | 'methods' | 'glossary'>('results');
+  const tabContainerRef = useRef<HTMLDivElement>(null);
   
   const tabs = {
     en: {
@@ -3470,6 +3471,38 @@ function CompatibilityResults({ results }: { results: any }) {
   };
   
   const tabLabels = language === 'fr' ? tabs.fr : tabs.en;
+  
+  // Tab order for navigation
+  const tabOrder: ('results' | 'learning' | 'methods' | 'glossary')[] = ['results', 'learning', 'methods', 'glossary'];
+  
+  // Navigate to previous/next tab
+  const navigateTab = (direction: 'prev' | 'next') => {
+    const currentIndex = tabOrder.indexOf(activeTab);
+    let newIndex: number;
+    
+    if (direction === 'prev') {
+      newIndex = currentIndex === 0 ? tabOrder.length - 1 : currentIndex - 1;
+    } else {
+      newIndex = currentIndex === tabOrder.length - 1 ? 0 : currentIndex + 1;
+    }
+    
+    setActiveTab(tabOrder[newIndex]);
+  };
+  
+  // Scroll tabs container
+  const scrollTabs = (direction: 'left' | 'right') => {
+    if (tabContainerRef.current) {
+      const scrollAmount = 200;
+      const newScrollLeft = direction === 'left' 
+        ? tabContainerRef.current.scrollLeft - scrollAmount
+        : tabContainerRef.current.scrollLeft + scrollAmount;
+      
+      tabContainerRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: 'smooth'
+      });
+    }
+  };
   
   // Helper function to get score interpretation
   const getScoreInterpretation = (score: number, quality: string): string[] => {
@@ -3639,55 +3672,93 @@ function CompatibilityResults({ results }: { results: any }) {
     return (
       <div className="space-y-6">
         
-        {/* Tab Navigation */}
+        {/* Tab Navigation with Scroll Controls */}
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
-          <div className="flex gap-2 p-2 border-b border-slate-200 dark:border-slate-700">
+          <div className="flex items-center gap-2 p-2 border-b border-slate-200 dark:border-slate-700">
+            
+            {/* Left Scroll Arrow */}
             <button
-              onClick={() => setActiveTab('results')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
-                activeTab === 'results'
-                  ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
+              onClick={() => scrollTabs('left')}
+              className="flex-shrink-0 p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all"
+              title={language === 'fr' ? 'Défiler à gauche' : 'Scroll left'}
+              aria-label={language === 'fr' ? 'Défiler à gauche' : 'Scroll left'}
             >
-              <Heart className="w-5 h-5" />
-              {tabLabels.results}
+              <ChevronLeft className="w-5 h-5" />
             </button>
             
-            <button
-              onClick={() => setActiveTab('learning')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
-                activeTab === 'learning'
-                  ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
+            {/* Tabs Container - Horizontally Scrollable */}
+            <div 
+              ref={tabContainerRef}
+              className="flex gap-2 flex-1 overflow-x-auto scroll-smooth"
+              style={{
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch'
+              }}
             >
-              <BookOpen className="w-5 h-5" />
-              {tabLabels.learning}
-            </button>
+              <style jsx>{`
+                div::-webkit-scrollbar {
+                  display: none;
+                }
+              `}</style>
+              
+              <button
+                onClick={() => setActiveTab('results')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all whitespace-nowrap flex-shrink-0 ${
+                  activeTab === 'results'
+                    ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                <Heart className="w-5 h-5" />
+                {tabLabels.results}
+              </button>
+              
+              <button
+                onClick={() => setActiveTab('learning')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all whitespace-nowrap flex-shrink-0 ${
+                  activeTab === 'learning'
+                    ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                <BookOpen className="w-5 h-5" />
+                {tabLabels.learning}
+              </button>
+              
+              <button
+                onClick={() => setActiveTab('methods')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all whitespace-nowrap flex-shrink-0 ${
+                  activeTab === 'methods'
+                    ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                <Compass className="w-5 h-5" />
+                {tabLabels.methods}
+              </button>
+              
+              <button
+                onClick={() => setActiveTab('glossary')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all whitespace-nowrap flex-shrink-0 ${
+                  activeTab === 'glossary'
+                    ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                <BookMarked className="w-5 h-5" />
+                {tabLabels.glossary}
+              </button>
+            </div>
             
+            {/* Right Scroll Arrow */}
             <button
-              onClick={() => setActiveTab('methods')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
-                activeTab === 'methods'
-                  ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
+              onClick={() => scrollTabs('right')}
+              className="flex-shrink-0 p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all"
+              title={language === 'fr' ? 'Défiler à droite' : 'Scroll right'}
+              aria-label={language === 'fr' ? 'Défiler à droite' : 'Scroll right'}
             >
-              <Compass className="w-5 h-5" />
-              {tabLabels.methods}
-            </button>
-            
-            <button
-              onClick={() => setActiveTab('glossary')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
-                activeTab === 'glossary'
-                  ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <BookMarked className="w-5 h-5" />
-              {tabLabels.glossary}
+              <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>

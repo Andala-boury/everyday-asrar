@@ -46,18 +46,14 @@ export const asghar = (n: number): number => {
 
 /**
  * Ḥadath: remainder when divided by 4
- * This is the authentic traditional method used in ʿIlm al-Ḥurūf
  */
 export const hadathRemainder = (n: number): 0 | 1 | 2 | 3 => {
   return (n % 4) as 0 | 1 | 2 | 3;
 };
 
 /**
- * Map Ḥadath remainder to element (Traditional/Authentic mapping)
- * 0 or 4 → Earth
- * 1 → Fire
- * 2 → Water
- * 3 → Air
+ * Map Ḥadath remainder to element (Maghrib mapping)
+ * 0→Earth, 1→Fire, 2→Water, 3→Air
  */
 export const hadathToElement = (r: 0 | 1 | 2 | 3): ElementType => {
   const map = { 0: 'Earth', 1: 'Fire', 2: 'Water', 3: 'Air' } as const;
