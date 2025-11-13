@@ -4814,16 +4814,16 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
               
               <div className="mb-4">
                 <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
-                  {t.lifePath.phaseOf9.replace('{number}', cycle.cycleNumber.toString())}
+                  {cycle?.cycleNumber && t.lifePath.phaseOf9.replace('{number}', cycle.cycleNumber.toString())}
                 </div>
                 <div className="text-lg font-semibold text-slate-700 dark:text-slate-300">
-                  {cycle.cycleStage}
+                  {cycle?.cycleStage}
                 </div>
               </div>
               
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                {t.lifePath.yearTheme.replace('{position}', cycle.positionInCycle.toString())} 
-                <span className="font-semibold text-indigo-600 dark:text-indigo-400"> {cycle.yearTheme}</span>
+                {cycle?.positionInCycle && t.lifePath.yearTheme.replace('{position}', cycle.positionInCycle.toString())} 
+                <span className="font-semibold text-indigo-600 dark:text-indigo-400"> {cycle?.yearTheme}</span>
               </p>
               
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-lg p-4 border-l-4 border-blue-500">
@@ -4832,7 +4832,7 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
                   {t.lifePath.focusAreas}
                 </div>
                 <div className="text-sm text-slate-700 dark:text-slate-300 font-medium">
-                  {cycle.focus.join(' • ')}
+                  {cycle?.focus?.join(' • ')}
                 </div>
               </div>
             </div>
@@ -4840,7 +4840,7 @@ function LifePathResults({ results }: { results: EnhancedLifePathResult }) {
             {/* Personal Year & Month - Calendar Cards */}
             <div className="space-y-4">
               <div className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.yourAge}:</span> {t.lifePath.years.replace('{age}', cycle.age.toString())}
+                <span className="font-semibold text-slate-900 dark:text-slate-100">{t.lifePath.yourAge}:</span> {cycle?.age && t.lifePath.years.replace('{age}', cycle.age.toString())}
               </div>
               
               <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
