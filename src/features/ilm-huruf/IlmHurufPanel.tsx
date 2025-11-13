@@ -99,6 +99,7 @@ import {
 import { CompatibilityLearningCenter } from '../../components/CompatibilityLearningCenter';
 import { MethodGuidePanel } from '../../components/MethodGuidePanel';
 import { CompatibilityGlossary } from '../../components/CompatibilityGlossary';
+import { NameDestinyLearningCenter, LetterGuidePanel, NameDestinyGlossary } from './education';
 import { BookMarked, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // ============================================================================
@@ -3579,6 +3580,25 @@ function DestinyResults({ results }: { results: any }) {
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Educational Materials for Name Destiny */}
+      <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-6 border-2 border-purple-200 dark:border-purple-700">
+        <div className="flex items-center gap-3 mb-6">
+          <BookMarked className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+          <div>
+            <h3 className="text-2xl font-bold text-purple-900 dark:text-purple-100">
+              {language === 'fr' ? 'Matériel Éducatif' : 'Educational Materials'}
+            </h3>
+            <p className="text-sm text-purple-700 dark:text-purple-300 mt-1">
+              {language === 'fr' 
+                ? 'Apprenez-en plus sur la Science des Lettres'
+                : 'Learn more about the Science of Letters'}
+            </p>
+          </div>
+        </div>
+
+        <NameDestinyLearningCenter currentLanguage={language === 'fr' ? 'fr' : 'en'} />
       </div>
     </div>
   );
