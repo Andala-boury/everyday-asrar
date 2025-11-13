@@ -602,16 +602,18 @@ export function getElementFromAbjadTotal(abjadTotal: number): 'fire' | 'water' |
 // HELPER: Letter-to-Element Distribution (Classical Method)
 // ============================================================================
 
-// Letter-to-element mapping based on classical tradition
+// MAGHRIBI SYSTEM - Authentic West/North African tradition (7 letters per element)
 const LETTER_ELEMENTS: Record<string, 'fire' | 'air' | 'water' | 'earth'> = {
-  // Fire letters (hot & dry): ا د ط م ف ش ذ
-  'ا': 'fire', 'د': 'fire', 'ط': 'fire', 'م': 'fire', 'ف': 'fire', 'ش': 'fire', 'ذ': 'fire',
-  // Air letters (hot & wet): ه و ي ن ص ت ض  
-  'ه': 'air', 'و': 'air', 'ي': 'air', 'ن': 'air', 'ص': 'air', 'ت': 'air', 'ض': 'air',
-  // Water letters (cold & wet): ب ح ل ع ر ك غ
-  'ب': 'water', 'ح': 'water', 'ل': 'water', 'ع': 'water', 'ر': 'water', 'ك': 'water', 'غ': 'water',
-  // Earth letters (cold & dry): ج ز س ق ث خ ظ
-  'ج': 'earth', 'ز': 'earth', 'س': 'earth', 'ق': 'earth', 'ث': 'earth', 'خ': 'earth', 'ظ': 'earth'
+  // 🔥 Fire (Nār/نار) - Hot & Dry - 7 letters
+  'ا': 'fire', 'ه': 'fire', 'ط': 'fire', 'م': 'fire', 'ف': 'fire', 'ش': 'fire', 'ذ': 'fire',
+  // 💨 Air (Hawā'/هواء) - Hot & Moist - 7 letters
+  'ب': 'air', 'و': 'air', 'ي': 'air', 'ن': 'air', 'ض': 'air', 'ظ': 'air', 'غ': 'air',
+  // 💧 Water (Mā'/ماء) - Cold & Moist - 7 letters
+  'ج': 'water', 'ز': 'water', 'ك': 'water', 'س': 'water', 'ق': 'water', 'ث': 'water', 'خ': 'water',
+  // 🌍 Earth (Turāb/تراب) - Cold & Dry - 7 letters
+  'د': 'earth', 'ح': 'earth', 'ل': 'earth', 'ع': 'earth', 'ر': 'earth', 'ص': 'earth', 'ت': 'earth',
+  // Special forms
+  'ة': 'earth' // Tā' marbūṭa (feminine ending) = same as ت
 };
 
 export interface ElementDistribution {

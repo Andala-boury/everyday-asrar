@@ -12,17 +12,18 @@ export const ABJAD: Record<string, number> = {
   'ق': 100, 'ر': 200, 'ش': 300, 'ت': 400, 'ث': 500, 'خ': 600, 'ذ': 700, 'ض': 800, 'ظ': 900, 'غ': 1000
 };
 
+// MAGHRIBI SYSTEM - Authentic West/North African tradition (7 letters per element)
 export const LETTER_ELEMENTS: Record<string, ElementType> = {
-  // Fire (Hot & Dry) - 6 letters
-  'ا': 'Fire', 'ه': 'Fire', 'ط': 'Fire', 'م': 'Fire', 'ف': 'Fire', 'ص': 'Fire',
-  // Water (Cold & Wet) - 5 letters
-  'ب': 'Water', 'و': 'Water', 'ي': 'Water', 'ن': 'Water', 'ق': 'Water',
-  // Air (Hot & Wet) - 5 letters
-  'ج': 'Air', 'ز': 'Air', 'ك': 'Air', 'س': 'Air', 'ش': 'Air',
-  // Earth (Cold & Dry) - 12 letters (includes ح, ذ, ض, ظ, ث, خ corrections)
-  'د': 'Earth', 'ل': 'Earth', 'ع': 'Earth', 'ر': 'Earth', 'ت': 'Earth', 
-  'ث': 'Earth', 'خ': 'Earth', 'ذ': 'Earth', 'ض': 'Earth', 'ظ': 'Earth', 'غ': 'Earth',
-  'ح': 'Earth'  // CORRECTED: ح is Cold & Dry (Earth), not Hot & Wet (Air)
+  // 🔥 Fire (Nār/نار) - Hot & Dry - 7 letters
+  'ا': 'Fire', 'ه': 'Fire', 'ط': 'Fire', 'م': 'Fire', 'ف': 'Fire', 'ش': 'Fire', 'ذ': 'Fire',
+  // 💨 Air (Hawā'/هواء) - Hot & Moist - 7 letters
+  'ب': 'Air', 'و': 'Air', 'ي': 'Air', 'ن': 'Air', 'ض': 'Air', 'ظ': 'Air', 'غ': 'Air',
+  // 💧 Water (Mā'/ماء) - Cold & Moist - 7 letters
+  'ج': 'Water', 'ز': 'Water', 'ك': 'Water', 'س': 'Water', 'ق': 'Water', 'ث': 'Water', 'خ': 'Water',
+  // 🌍 Earth (Turāb/تراب) - Cold & Dry - 7 letters
+  'د': 'Earth', 'ح': 'Earth', 'ل': 'Earth', 'ع': 'Earth', 'ر': 'Earth', 'ص': 'Earth', 'ت': 'Earth',
+  // Special forms
+  'ة': 'Earth' // Tā' marbūṭa (feminine ending) = same as ت
 };
 
 // ============================================================================
