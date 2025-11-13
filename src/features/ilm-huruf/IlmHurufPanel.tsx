@@ -2865,7 +2865,7 @@ function DestinyResults({ results }: { results: any }) {
         <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 border-2 border-purple-200 dark:border-purple-700 shadow-lg">
           <div className="mb-6 text-center">
             <h3 className="text-2xl font-bold text-purple-900 dark:text-purple-200 mb-1">
-              œ¨ {t.nameDestiny.higherResonance.title}
+              ✨ {t.nameDestiny.higherResonance.title}
             </h3>
             <p className="text-sm text-purple-700 dark:text-purple-300">
               {t.nameDestiny.higherResonance.subtitle}
