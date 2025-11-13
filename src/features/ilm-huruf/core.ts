@@ -113,7 +113,8 @@ export const PLANETARY_HOURS_ORDER: Planet[] = [
 
 /**
  * modIndex: Maps modulo result where 0 → base (for Ṭabʿ ÷ 4 and Burj ÷ 12)
- * Examples: (8 % 4) = 0 → 4 (Earth); (12 % 12) = 0 → 12 (Pisces)
+ * Examples: (8 % 4) = 0 → 4 (Water); (12 % 12) = 0 → 12 (Pisces)
+ * MAGHRIBI SYSTEM: 1=Fire, 2=Earth, 3=Air, 4=Water
  */
 export function modIndex(n: number, base: 4 | 12): number {
   const remainder = n % base;
