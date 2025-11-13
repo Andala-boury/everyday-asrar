@@ -80,8 +80,8 @@ export const LIFE_PATH_MEANINGS = {
     nameFrench: 'Le Pacificateur',
     planet: 'Moon',
     planetArabic: 'القمر',
-    element: 'water',
-    elementArabic: 'ماء',
+    element: 'earth',  // Maghribi: 2 = Earth
+    elementArabic: 'تراب',
     station: 'Wara\' (Scrupulousness)',
     stationArabic: 'الورع',
     
@@ -220,8 +220,8 @@ export const LIFE_PATH_MEANINGS = {
     nameFrench: 'Le Bâtisseur',
     planet: 'Saturn',
     planetArabic: 'زحل',
-    element: 'earth',
-    elementArabic: 'تراب',
+    element: 'water',  // Maghribi: 4 = Water (4%4=0→4)
+    elementArabic: 'ماء',
     station: 'Sabr (Patience)',
     stationArabic: 'الصبر',
     
@@ -289,8 +289,8 @@ export const LIFE_PATH_MEANINGS = {
     nameArabic: 'الحر',
     planet: 'Mercury',
     planetArabic: 'عطارد',
-    element: 'air',
-    elementArabic: 'هواء',
+    element: 'fire',  // Maghribi: 5 = Fire (5%4=1)
+    elementArabic: 'نار',
     station: 'Tawakkul (Trust)',
     stationArabic: 'التوكل',
     
@@ -352,7 +352,7 @@ export const LIFE_PATH_MEANINGS = {
     nameFrench: 'Le Nourricier',
     planet: 'Venus',
     planetArabic: 'الزهرة',
-    element: 'earth',
+    element: 'earth',  // Maghribi: 6 = Earth (6%4=2)
     elementArabic: 'تراب',
     station: 'Riḍā (Contentment)',
     stationArabic: 'الرضا',
@@ -422,8 +422,8 @@ export const LIFE_PATH_MEANINGS = {
     nameFrench: 'Le Chercheur',
     planet: 'Neptune (Spiritual) / Moon (Traditional)',
     planetArabic: 'نبتون (روحاني) / القمر (تقليدي)',
-    element: 'water',
-    elementArabic: 'ماء',
+    element: 'air',  // Maghribi: 7 = Air (7%4=3)
+    elementArabic: 'هواء',
     station: 'Tafakkur (Contemplation)',
     stationArabic: 'التفكر',
     
@@ -492,8 +492,8 @@ export const LIFE_PATH_MEANINGS = {
     nameFrench: 'Le Maître',
     planet: 'Mars',
     planetArabic: 'المريخ',
-    element: 'fire',
-    elementArabic: 'نار',
+    element: 'water',  // Maghribi: 8 = Water (8%4=0→4)
+    elementArabic: 'ماء',
     station: 'Murāqabah (Watchfulness)',
     stationArabic: 'المراقبة',
     

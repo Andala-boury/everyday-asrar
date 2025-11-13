@@ -120,7 +120,7 @@ export function calculateElementalTemperament(
   const sum = abjadTotal1 + abjadTotal2;
   const remainder = sum % 4 === 0 ? 4 : sum % 4; // Treat 0 as 4
   
-  // Map remainder to elements
+  // Map remainder to elements (MAGHRIBI SYSTEM: 1=Fire, 2=Earth, 3=Air, 4=Water)
   const elementMap: Record<number, { 
     element: 'fire' | 'water' | 'air' | 'earth';
     elementArabic: string;
@@ -140,13 +140,13 @@ export function calculateElementalTemperament(
       qualityFrench: 'Dynamique'
     },
     2: {
-      element: 'water',
-      elementArabic: 'ماء',
-      elementFrench: 'eau',
-      score: 80,
-      quality: 'harmonious',
-      qualityArabic: 'متناغم',
-      qualityFrench: 'Harmonieux'
+      element: 'earth',
+      elementArabic: 'تراب',
+      elementFrench: 'terre',
+      score: 90,
+      quality: 'complementary',
+      qualityArabic: 'تكميلي',
+      qualityFrench: 'Complémentaire'
     },
     3: {
       element: 'air',
@@ -158,13 +158,13 @@ export function calculateElementalTemperament(
       qualityFrench: 'Équilibré'
     },
     4: {
-      element: 'earth',
-      elementArabic: 'تراب',
-      elementFrench: 'terre',
-      score: 90,
-      quality: 'complementary',
-      qualityArabic: 'تكميلي',
-      qualityFrench: 'Complémentaire'
+      element: 'water',
+      elementArabic: 'ماء',
+      elementFrench: 'eau',
+      score: 80,
+      quality: 'harmonious',
+      qualityArabic: 'متناغم',
+      qualityFrench: 'Harmonieux'
     }
   };
   
@@ -585,13 +585,13 @@ export function analyzeRelationshipCompatibility(
 
 export function getElementFromAbjadTotal(abjadTotal: number): 'fire' | 'water' | 'air' | 'earth' {
   // Use Hadath (mod 4) to determine element - MAGHRIBI SYSTEM
-  // 0 = Earth, 1 = Fire, 2 = Water, 3 = Air
+  // 1 = Fire, 2 = Earth, 3 = Air, 4 (0) = Water
   const hadath = abjadTotal % 4;
   
   const elementMap: Record<number, 'fire' | 'water' | 'air' | 'earth'> = {
-    0: 'earth',  // ترابي (Earth)
+    0: 'water',  // 0 → 4 = مائي (Water)
     1: 'fire',   // ناري (Fire)
-    2: 'water',  // مائي (Water)
+    2: 'earth',  // ترابي (Earth)
     3: 'air'     // هوائي (Air)
   };
   

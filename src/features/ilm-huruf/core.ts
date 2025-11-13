@@ -121,8 +121,8 @@ export function modIndex(n: number, base: 4 | 12): number {
 }
 
 // ============================================================================
-// ELEMENTAL DATA (Ṭabʿ) - MAGHRIBI MAPPING: 1=Fire, 2=Earth, 3=Air, 4=Earth
-// IMPORTANT: mod 4 → 0 ⇒ 4 (Earth) per classical Maghribi tradition
+// ELEMENTAL DATA (Ṭabʿ) - MAGHRIBI MAPPING: 1=Fire, 2=Earth, 3=Air, 4=Water
+// IMPORTANT: mod 4 → 0 ⇒ 4 (Water) per classical Maghribi tradition
 // ============================================================================
 
 export type ElementKey = 1 | 2 | 3 | 4;
@@ -167,12 +167,12 @@ export const ELEMENTS: Record<ElementKey, ElementData> = {
   },
   4: {
     index: 4,
-    en: 'Earth',
-    fr: 'Terre',
-    ar: 'تراب',
-    icon: '🌍',
-    qualityEn: 'Cold & Dry',
-    qualityFr: 'Froid & sec',
+    en: 'Water',
+    fr: 'Eau',
+    ar: 'ماء',
+    icon: '💧',
+    qualityEn: 'Cold & Moist',
+    qualityFr: 'Froid & humide',
   },
 };
 
@@ -1761,7 +1761,8 @@ export function getDailyDhikr(hadath: number): {
 }
 
 function hadathToElement(hadath: 0 | 1 | 2 | 3): 'Fire' | 'Water' | 'Air' | 'Earth' {
-  const map = { 0: 'Earth', 1: 'Fire', 2: 'Water', 3: 'Air' } as const;
+  // MAGHRIBI SYSTEM: 1=Fire, 2=Earth, 3=Air, 4(0)=Water
+  const map = { 0: 'Water', 1: 'Fire', 2: 'Earth', 3: 'Air' } as const;
   return map[hadath];
 }
 

@@ -244,22 +244,24 @@ export function getSpiritualStationForCycle(cyclePosition: number): string {
 }
 
 /**
- * Get element for Life Path Number
+ * Get element for Life Path Number (MAGHRIBI SYSTEM)
+ * 1=Fire, 2=Earth, 3=Air, 4=Water
+ * Numbers 5-9 use modulo 4: 5→1(fire), 6→2(earth), 7→3(air), 8→0→4(water), 9→1(fire)
  */
 export function getElementForNumber(num: number): Element {
   const elementMap: Record<number, Element> = {
-    1: 'fire',
-    2: 'water',
-    3: 'air',
-    4: 'earth',
-    5: 'air',
-    6: 'earth',
-    7: 'water',
-    8: 'fire',
-    9: 'fire',
-    11: 'fire',
-    22: 'earth',
-    33: 'fire'
+    1: 'fire',   // Maghribi: 1 = Fire
+    2: 'earth',  // Maghribi: 2 = Earth
+    3: 'air',    // Maghribi: 3 = Air
+    4: 'water',  // Maghribi: 4 = Water
+    5: 'fire',   // 5 % 4 = 1 → Fire
+    6: 'earth',  // 6 % 4 = 2 → Earth
+    7: 'air',    // 7 % 4 = 3 → Air
+    8: 'water',  // 8 % 4 = 0 → 4 → Water
+    9: 'fire',   // 9 % 4 = 1 → Fire
+    11: 'air',   // 11 % 4 = 3 → Air
+    22: 'earth', // 22 % 4 = 2 → Earth
+    33: 'fire'   // 33 % 4 = 1 → Fire
   };
   
   return elementMap[num] || 'air';

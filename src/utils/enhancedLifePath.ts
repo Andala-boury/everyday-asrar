@@ -691,20 +691,21 @@ export const SACRED_NUMBER_INTERPRETATIONS: Record<number, SacredNumberDetails> 
 // PHASE 1 ENHANCEMENTS: Elemental Balance, Career, Tips, Shadow Work
 // ============================================================================
 
-// Map each number (1-9, 11, 22, 33) to its element
+// Map each number (1-9, 11, 22, 33) to its element - Maghribi System
+// 1 = Fire, 2 = Earth, 3 = Air, 4 = Water (repeating cycle)
 const NUMBER_TO_ELEMENT: Record<number, 'fire' | 'earth' | 'air' | 'water'> = {
-  1: 'fire',    // Leader - initiative
-  2: 'water',   // Peacemaker - emotion
-  3: 'air',     // Creator - communication
-  4: 'earth',   // Builder - stability
-  5: 'air',     // Explorer - ideas
-  6: 'water',   // Caregiver - emotion
-  7: 'air',     // Thinker - intellect
-  8: 'earth',   // Achiever - manifestation
-  9: 'water',   // Humanitarian - compassion
-  11: 'fire',   // Visionary - spiritual drive
-  22: 'earth',  // Master Builder - material mastery
-  33: 'water'   // Master Teacher - universal love
+  1: 'fire',    // Cycle position 1 - Fire
+  2: 'earth',   // Cycle position 2 - Earth
+  3: 'air',     // Cycle position 3 - Air
+  4: 'water',   // Cycle position 4 - Water
+  5: 'fire',    // Cycle position 1 - Fire (5 % 4 = 1)
+  6: 'earth',   // Cycle position 2 - Earth (6 % 4 = 2)
+  7: 'air',     // Cycle position 3 - Air (7 % 4 = 3)
+  8: 'water',   // Cycle position 4 - Water (8 % 4 = 0 → 4)
+  9: 'fire',    // Cycle position 1 - Fire (9 % 4 = 1)
+  11: 'air',    // Cycle position 3 - Air (11 % 4 = 3)
+  22: 'earth',  // Cycle position 2 - Earth (22 % 4 = 2)
+  33: 'fire'    // Cycle position 1 - Fire (33 % 4 = 1)
 };
 
 export interface ElementalBalance {

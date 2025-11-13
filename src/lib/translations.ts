@@ -1370,11 +1370,11 @@ WITH this knowledge, they understand: "We're both trying to feel safe×just in d
       hadathDef: "The Numerical Essence × The sum of all letter values in a name using the Abjad (أبجد) system. This number reveals spiritual essence and destiny patterns.",
       
       hadathDiv4: "al-Ḥadath ÷ 4",
-      hadathDiv4Def: `The classical method for determining elemental temperament. The remainder when Ḥadath is divided by 4 indicates the dominant element:
+      hadathDiv4Def: `The classical method for determining elemental temperament (MAGHRIBI SYSTEM). The remainder when Ḥadath is divided by 4 indicates the dominant element:
 • Remainder 1 = Fire (النار)
-• Remainder 2 = Air (الهواء)  
-• Remainder 3 = Water (الماء)
-• Remainder 0 = Earth (الأرض)`,
+• Remainder 2 = Earth (الأرض)  
+• Remainder 3 = Air (الهواء)
+• Remainder 0 = Water (الماء)`,
       
       zawajAlHuruf: "Zawāj al-Ḥurūf",
       zawajAlHurufArabic: "زواج الحروف",
@@ -3535,11 +3535,11 @@ AVEC cette connaissance, ils comprennent : "Nous essayons tous les deux de nous 
       hadathDef: "L'Essence Numérique × La somme de toutes les valeurs de lettres dans un nom utilisant le système Abjad (أبجد). Ce nombre révèle l'essence spirituelle et les schémas de destin.",
       
       hadathDiv4: "al-Ḥadath ÷ 4",
-      hadathDiv4Def: `La méthode classique pour déterminer le tempérament élémentaire. Le reste quand Ḥadath est divisé par 4 indique l'élément dominant :
+      hadathDiv4Def: `La méthode classique pour déterminer le tempérament élémentaire (SYSTÈME MAGHRIBI). Le reste quand Ḥadath est divisé par 4 indique l'élément dominant :
 • Reste 1 = Feu (النار)
-• Reste 2 = Air (الهواء)
-• Reste 3 = Eau (الماء)
-• Reste 0 = Terre (الأرض)`,
+• Reste 2 = Terre (الأرض)
+• Reste 3 = Air (الهواء)
+• Reste 0 = Eau (الماء)`,
       
       zawajAlHuruf: "Zawāj al-Ḥurūf",
       zawajAlHurufArabic: "زواج الحروف",

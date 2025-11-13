@@ -52,11 +52,11 @@ export const hadathRemainder = (n: number): 0 | 1 | 2 | 3 => {
 };
 
 /**
- * Map Ḥadath remainder to element (Maghrib mapping)
- * 0→Earth, 1→Fire, 2→Water, 3→Air
+ * Map Ḥadath remainder to element (MAGHRIBI SYSTEM)
+ * 1=Fire, 2=Earth, 3=Air, 4(0)=Water
  */
 export const hadathToElement = (r: 0 | 1 | 2 | 3): ElementType => {
-  const map = { 0: 'Earth', 1: 'Fire', 2: 'Water', 3: 'Air' } as const;
+  const map = { 0: 'Water', 1: 'Fire', 2: 'Earth', 3: 'Air' } as const;
   return map[r];
 };
 
