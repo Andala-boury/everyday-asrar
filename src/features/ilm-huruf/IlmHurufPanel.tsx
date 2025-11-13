@@ -3044,22 +3044,7 @@ function DestinyResults({ results }: { results: any }) {
         </div>
       </div>
 
-      {/* Section 6: Supporting Numerology Values */}
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-700 shadow-md">
-          <div className="text-xs uppercase tracking-wider text-purple-600 dark:text-purple-400 font-semibold mb-2">KabÄ«r (Grand Total)</div>
-          <div className="text-4xl font-bold text-purple-900 dark:text-purple-400">{results.kabir}</div>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">{t.nameDestiny.destinyNumber.sumOfLetters}</p>
-        </div>
-        
-        <div className="bg-white dark:bg-slate-800 rounded-lg p-5 border-2 border-blue-200 dark:border-blue-700 shadow-md">
-          <div className="text-xs uppercase tracking-wider text-blue-600 dark:text-blue-400 font-semibold mb-2">á¸🤝adath (Elemental Value)</div>
-          <div className="text-4xl font-bold text-blue-900 dark:text-blue-400">{results.hadath}</div>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">{t.nameDestiny.destinyNumber.reducedRoot}</p>
-        </div>
-      </div>
-
-      {/* Section 7: Qur'anic Resonance */}
+      {/* Section 6: Qur'anic Resonance */}
       {results.quranResonance && (
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border-2 border-emerald-500 dark:border-emerald-600 overflow-hidden">
           <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-5">
